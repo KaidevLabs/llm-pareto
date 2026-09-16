@@ -1,7 +1,7 @@
 # 017 — TDD discipline + test suite (unittest baseline, node:test principle)
 
-Date: 2026-09-16. **Status: EXECUTING — steps 1–2/5 executed (suite + AGENTS.md
-Testing section committed); step 3 next.**
+Date: 2026-09-16. **Status: EXECUTING — steps 1–3/5 executed (suite, AGENTS.md
+Testing, tdd skill rework committed); step 4 next.**
 Source: owner request (session, 2026-09-16) — the agent probes in `.tmp/` instead of
 test-first; make plan execution start at tests. No backlog item.
 Amendment 2026-09-16 (owner directive mid-step-1): the README gains a Tests
@@ -112,6 +112,23 @@ and the `plans` skill stops letting seam declaration be silently skipped.
   (explicit reference + test-first/fail-fast rules) is step 3; DoD item 4
   stays unchecked until then.
 
+### Step 3 (2026-09-16, commit 6b8042f)
+
+- `tdd` skill rework, all three plan clauses:
+  - (a) test-first: "Red before green" sharpened — the step's first act at a
+    declared seam is the failing test, expected values written before any
+    implementation.
+  - (b) fail-fast: new first loop rule — no standard test command in the
+    testing rules → stop; creating it is part of the step, declared at
+    review, never improvised; never degrade to throwaway probes.
+  - (c) probe → kept test: new "Throwaway probing" anti-pattern — a probe
+    that proves behavior is scaffolding; before step close its assertions
+    are promoted into kept tests at the declared seam and the probe is
+    deleted.
+- Dangling reference killed (completes DoD item 4 with 497eccc): the intro
+  and Rhythm bullet now name "AGENTS.md, Testing section" explicitly; the
+  foreign example command (`... test --compact ...`) is gone.
+
 ## Out of scope
 
 - ESM split / any JS tests now (A2 — candidate trigger: 004 org/family filter).
@@ -128,8 +145,9 @@ and the `plans` skill stops letting seam declaration be silently skipped.
       (54 tests green, 2026-09-16)
 - [x] Suite passes against current `update.py` with **zero** `update.py` edits
       (git diff shows none). (commit a514f4d touched tests/ + README only)
-- [ ] AGENTS.md Testing section exists; `tdd` skill references it instead of
-      dangling; no "repo testing rules" dead end.
+- [x] AGENTS.md Testing section exists; `tdd` skill references it instead of
+      dangling; no "repo testing rules" dead end. (AGENTS.md 497eccc; tdd
+      skill 6b8042f names "AGENTS.md, Testing section" in intro + Rhythm)
 - [ ] `plans` skill: seams mandatory-or-explicit for behavior-changing steps.
 - [ ] Observable at the next behavior-changing plan's review: its steps ran
       red → green (kept tests exist afterwards).
