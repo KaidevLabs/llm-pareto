@@ -1,6 +1,6 @@
 # 018 — Chart fit-to-data axes + TradingView-style zoom (dashboard)
 
-Date: 2026-09-16. **Status: EXECUTING (step 1/3 — step 1 committed b52561f, 2026-09-16).**
+Date: 2026-09-16. **Status: EXECUTING (step 2/3 — steps 1-2 committed b52561f, 3b863c5).**
 Source: owner request (session, 2026-09-16) — user feedback: the chart feels
 squeezed/elongated and most of its height is empty (nothing below ~1100 Elo /
 ~$0.03); owner asked for zoom-to-interesting-parts and the TradingView
@@ -75,10 +75,18 @@ clipped, never redrawn.
    y-strip wheel handler (strip = current grid.left offset; anchored window
    math, clamped, `dispatchAction`); drag pans both; dblclick resets; reset
    pill per panel head; zoom window preserved across re-renders (A2); axis
-   note text updated to teach the interaction.
-   Verify: each A3 gesture works per panel; frontier clipped, never redrawn;
-   window survives vision/family/mode/ratio/spread changes.
-   Commit: `chart: TradingView-style zoom/pan + reset`
+   note text updated to teach the interaction. — **✅ COMPLETE (committed 3b863c5, 2026-09-16)**
+   As-built: `GRID` const extracted (grid insets = y-strip geometry, single
+   source); `dataZoom` inside × 2, `filterMode:'none'`, y `zoomOnMouseWheel:
+   false`; `captureZoom`/`resetZoom`/`bindZoomChart` — y-strip wheel anchored
+   via `convertFromPixel`, factor 0.85/1.18, zoom-out clamped at the axis
+   extent (fit view = widest window, A1/A4); window captured as percents on
+   `datazoom` events and re-dispatched after the not-Merge `setOption` (A2);
+   dblclick + `⤢ fit` pill in each panel head; axis note teaches the
+   interaction. Owner validated in-session: "it just works". No deviations.
+   Seams: `no tests: same as step 1 — render-side interaction, owner manual
+   A/B` (017 A2, ESM split pending).
+   Commit: `chart: TradingView-style zoom/pan + reset` (3b863c5)
 3. **Feel-check pass** (no code expected): owner-style A/B on desktop + mobile
    emulation. Feel-check list: wheel-zoom x anchors at cursor (ECharts native
    behavior — verify, don't assume); pinch on touch — whether two inside
@@ -108,9 +116,10 @@ clipped, never redrawn.
 - [x] Plot reads ~2:1, centered, no horizontal scrollbar; mobile drag/pinch
       sane (behavior recorded). — superseded by A5′ full-width (owner feel-out
       2026-09-16); mobile/pinch part still owed to step 3
-- [ ] Wheel = x-zoom; wheel on y-strip = y-zoom; drag pans both; double-click
+- [x] Wheel = x-zoom; wheel on y-strip = y-zoom; drag pans both; double-click
       and the reset pill restore the fit view; zoom window survives filter
       changes; axes identical across filters (fitted to all data).
+      (owner-validated in-session, 2026-09-16)
 - [ ] Frontier line only ever clipped, never redrawn across hidden points
       (filterMode 'none' — verified in the feel-check pass).
 - [ ] Zero new dependencies; `python3 update.py` and `public/data/` untouched
