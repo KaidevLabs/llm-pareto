@@ -1,7 +1,12 @@
 # 001 — LLM Arena × OpenRouter pricing explorer
 
 Approved: 2026-09-15 (discovery session, Eureka protocol).
-**Status: CLOSED 2026-09-16** — all steps shipped, live at <https://lm-pareto.kaidev.io>.
+
+> **Status:** ARCHIVED (2026-09-16) — commits: 18c68c5 (init, data layer + site + plan),
+> 0d7f1cc (docs: live URL, DoD), 4383679 (redeploy trigger), 9ed260d (deploy: wrangler
+> static assets), 28693d6 (docs: deploy flow), 5075a8f (chart: horizontal orientation),
+> b3089a3 (chart: A11 blended view, plan closed). Live at
+> <https://lm-pareto.kaidev.io>.
 
 Web page: LMArena text leaderboard quality (Elo) vs OpenRouter pricing ($/M tokens),
 Pareto frontier highlighted, slick ECharts dark UI, deployed on Cloudflare as a
