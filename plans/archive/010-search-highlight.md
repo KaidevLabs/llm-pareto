@@ -1,6 +1,11 @@
 # 010 — Search box: live highlight
 
-Date: 2026-09-16. **Status: COMPLETE 2026-09-17 — steps 1–3 executed (ceba964, 9c9b2be, 6cb678c); owner approved 2026-09-17 (execution ordered in-session; D1 soft-dim re-confirmed). Deploy per A10 pending owner push.**
+Date: 2026-09-16. **Status: ARCHIVED (2026-09-17).** Owner approved execution
+2026-09-17 (execution ordered in-session; D1 soft-dim re-confirmed; step-3
+A/B pick: matches emphasized with a white ring / white halo on top of the
+dim). Steps 1–3 executed 2026-09-17.
+Commits: ceba964 (step 1), 9c9b2be (step 2), 6cb678c (step 3); plan commits
+168da5d, 40125db. Deploy per A10 pending owner push (rides with unpushed 019).
 Source: `plans/archive/002-exploration-backlog.md` item B7 + its exploration findings.
 Amendment 2026-09-17 (owner directive at the step-3 A/B): matches get a
 little emphasis beyond the dim — full-alpha fill + a 1.5px white ring on
