@@ -225,6 +225,32 @@
   }
   .ratio-cap { color: var(--muted); font-size: 11px; white-space: nowrap; }
   .ratio .pill { padding: 5px 10px; font-size: 12px; margin-left: 4px; }
+  .search {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--border);
+    background: rgba(148, 163, 184, 0.08);
+    border-radius: 10px;
+    padding: 0 12px;
+    height: 38px;
+  }
+  .search:focus-within { border-color: rgba(52, 211, 153, 0.45); }
+  .search input[type="search"] {
+    border: 0;
+    background: transparent;
+    color: var(--text);
+    font: 500 13px "Inter", system-ui, sans-serif;
+    width: 150px;
+    outline: none;
+  }
+  .search input[type="search"]::placeholder { color: var(--muted); }
+  .search-count {
+    font-size: 11px;
+    color: #d1fae5;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
   .hidden { display: none !important; }
   .swatch {
     display: inline-block;
@@ -351,6 +377,11 @@
   <div class="ofwrap">
     <button class="pill" id="of-toggle" aria-expanded="false" aria-controls="of-panel"><span class="diamond">◆</span> orgs &amp; families<span class="ofbadge hidden" id="of-badge"></span></button>
     <div class="ofpanel hidden" id="of-panel"></div>
+  </div>
+  <div class="search">
+    <input type="search" id="search-box" placeholder="Search models…"
+      aria-label="search models, dims non-matches">
+    <span class="search-count hidden" id="search-count"></span>
   </div>
   <button class="pill on" id="tgl-frontier"><span class="diamond">◈</span> Pareto frontier</button>
 </nav>
