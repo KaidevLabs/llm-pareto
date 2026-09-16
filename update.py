@@ -17,6 +17,8 @@ import re
 import struct
 import sys
 import tempfile
+import time
+import urllib.error
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
@@ -26,6 +28,8 @@ ARENA_URL = "https://lmarena.ai/leaderboard/text"
 OPENROUTER_URL = "https://openrouter.ai/api/v1/models"
 USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64) llm-arena-pareto-updater/1.0"
 TIMEOUT = 60
+FETCH_ATTEMPTS = 3
+RETRY_BASE_DELAY = 2
 
 ROOT = Path(__file__).resolve().parent
 OUT_DIR = ROOT / "public" / "data"
@@ -49,6 +53,14 @@ def die(msg):
     sys.exit(1)
 
 
+def _is_transient(e):
+    """True for fetch failures worth retrying: 5xx/429 responses,
+    timeouts, and connection-level errors (plan 013, D5)."""
+    if isinstance(e, urllib.error.HTTPError):
+        return e.code == 429 or 500 <= e.code < 600
+    return isinstance(e, (urllib.error.URLError, TimeoutError, ConnectionError))
+
+
 def fetch(url):
     req = urllib.request.Request(
         url,
@@ -57,11 +69,19 @@ def fetch(url):
             "Accept": "application/json, text/html;q=0.9, */*;q=0.8",
         },
     )
-    try:
-        with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
-            return r.read().decode("utf-8", errors="replace")
-    except Exception as e:
-        die(f"fetch failed: {url}: {e}")
+    for attempt in range(1, FETCH_ATTEMPTS + 1):
+        try:
+            with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
+                return r.read().decode("utf-8", errors="replace")
+        except Exception as e:
+            if attempt == FETCH_ATTEMPTS or not _is_transient(e):
+                die(f"fetch failed: {url}: {e}")
+            delay = RETRY_BASE_DELAY * 2 ** (attempt - 1)
+            print(
+                f"fetch: attempt {attempt}/{FETCH_ATTEMPTS} failed ({e}); "
+                f"retrying in {delay}s"
+            )
+            time.sleep(delay)
 
 
 # ---------------------------------------------------------------- arena
