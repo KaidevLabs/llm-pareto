@@ -96,7 +96,9 @@ README.md            # update flow, provenance, join rules
 
 1. `update.py` + `.gitignore`; run it; review the match report and generated data.
 2. Site: `public/index.html`, `public/app.js` (ECharts, filters, frontier).
-3. `README.md` + Cloudflare Pages deploy (git integration, no build, output `public/`).
+3. `README.md` + Cloudflare Pages deploy — git integration, build command `ls`
+   (no-op; the dashboard form requires a non-empty value), output `public/`,
+   custom domain <https://lm-pareto.kaidev.io>.
 
 ## Open branches (recorded)
 
@@ -120,11 +122,11 @@ README.md            # update flow, provenance, join rules
 
 ## Definition of done
 
-- [ ] `python3 update.py` fetches, normalizes, joins, validates; prints match report;
+- [x] `python3 update.py` fetches, normalizes, joins, validates; prints match report;
       exits non-zero on anomalies
-- [ ] Page renders the scatter + glowing Pareto frontier from committed JSON, dark
+- [x] Page renders the scatter + glowing Pareto frontier from committed JSON, dark
       ECharts theme
-- [ ] Filter bar works fully client-side (price mode incl. default "both", vision,
+- [x] Filter bar works fully client-side (price mode incl. default "both", vision,
       frontier)
-- [ ] Live on Cloudflare Pages; update = script → commit → push → live
-- [ ] README documents update flow, provenance, join rules
+- [x] Live on Cloudflare Pages; update = script → commit → push → live
+- [x] README documents update flow, provenance, join rules
