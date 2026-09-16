@@ -31,6 +31,7 @@ const state = {
   frontier: true,
   spread: false,
   ratio: 3,
+  search: "",
 };
 let DATA = [];
 let META = null;
@@ -124,6 +125,22 @@ function filtered() {
   if (state.families.size) rows = rows.filter((d) => state.families.has(orgOf(d) + "|" + familyOf(d)));
   if (state.vision === "vision") rows = rows.filter((d) => d.vision);
   return rows;
+}
+
+// Search match (plan 010 D2): case-insensitive substring over the
+// OpenRouter name/id and the arena side — org, model, and the config
+// variants collapsed into the point (arena_variants is a list). Stored
+// lowercase; an empty query matches everything.
+function searchHit(d) {
+  const q = state.search;
+  if (!q) return true;
+  return (
+    (d.or_name || "").toLowerCase().includes(q) ||
+    (d.or_id || "").toLowerCase().includes(q) ||
+    (d.arena_org || "").toLowerCase().includes(q) ||
+    (d.arena_model || "").toLowerCase().includes(q) ||
+    (d.arena_variants || []).join(" ").toLowerCase().includes(q)
+  );
 }
 
 // Blended $/M for the current input:output mix; falls back to the one
@@ -381,6 +398,9 @@ function chartOption(label, pts, frontier, spreadPts, bounds) {
       const color = ORG_COLOR[orgOf(d)] || ORG_FALLBACK;
       const org = orgOf(d);
       const isFrontier = frontierSet.has(d);
+      // Soft dim (plan 010 D1/D5): a search dims non-matching points only —
+      // position, size, and org color are kept, the frontier stays bright.
+      const dim = !isFrontier && !searchHit(d);
       const logo = logoFor(org);
       return {
         value: p.value,
@@ -397,12 +417,13 @@ function chartOption(label, pts, frontier, spreadPts, bounds) {
           : "circle",
         symbolSize: isFrontier ? [24, 24] : 10,
         itemStyle: {
-          color: isFrontier ? "rgba(0,0,0,0)" : withAlpha(color, 0.78),
-          borderColor: ov ? OVERRIDE : isFrontier ? "rgba(0,0,0,0)" : withAlpha(color, 1),
+          color: isFrontier ? "rgba(0,0,0,0)" : withAlpha(color, dim ? 0.25 : 0.78),
+          borderColor: ov ? OVERRIDE : isFrontier ? "rgba(0,0,0,0)" : withAlpha(color, dim ? 0.4 : 1),
           borderWidth: ov ? 2 : isFrontier ? 0 : 0.6,
           // no glow at rest — the owner wants a hard bubble; the glow is
-          // the hover state (and the frontier line keeps its own)
-          shadowBlur: !isFrontier && d.arena_rank <= 10 ? 10 : 0,
+          // the hover state (and the frontier line keeps its own). A
+          // dimmed point keeps its fill but not the glow (010 D1).
+          shadowBlur: !isFrontier && !dim && d.arena_rank <= 10 ? 10 : 0,
           shadowColor: withAlpha(color, 0.5),
         },
         label: isFrontier
@@ -789,6 +810,22 @@ function renderPanel(panelKey) {
     pts.length + " models" + (skipped ? " · " + skipped + " skipped (no price)" : "");
 }
 
+// "n/N" next to the search box (plan 010 D3): matches over the visible
+// set — the 004 family/vision filters still apply. Rendered from render()
+// so any filter change re-counts; hidden while the query is empty.
+function updateSearchCount() {
+  const el = document.getElementById("search-count");
+  if (!el) return;
+  if (!state.search) {
+    el.textContent = "";
+    el.classList.add("hidden");
+    return;
+  }
+  const rows = filtered();
+  el.textContent = rows.filter(searchHit).length + "/" + rows.length;
+  el.classList.remove("hidden");
+}
+
 function render() {
   const main = document.getElementById("main");
   main.setAttribute("data-mode", state.mode);
@@ -800,6 +837,7 @@ function render() {
     "hidden",
     state.mode !== "general"
   );
+  updateSearchCount();
   if (state.mode === "general") renderPanel("blend");
   else if (state.mode === "in") renderPanel("in");
   else renderPanel("out");
@@ -1087,6 +1125,14 @@ function bindFilters() {
     document.getElementById("ratio-val").textContent = slider.value + ":1";
     if (state.mode === "general") renderPanel("blend");
   });
+  // Search (plan 010): the box lands in index.html in step 2 — the guard
+  // keeps this step's logic inert until it does.
+  const searchBox = document.getElementById("search-box");
+  if (searchBox)
+    searchBox.addEventListener("input", () => {
+      state.search = searchBox.value.trim().toLowerCase();
+      render();
+    });
   const tgl = document.getElementById("tgl-frontier");
   tgl.addEventListener("click", () => {
     state.frontier = !state.frontier;
