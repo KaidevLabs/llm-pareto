@@ -1,6 +1,6 @@
 # 019 — Self-host runtime assets (out with the Google Fonts + jsdelivr CDNs)
 
-Date: 2026-09-16. **Status: EXECUTING (step 1/3 — step 1 committed f4ffd2a, 2026-09-17).**
+Date: 2026-09-16. **Status: EXECUTING (step 2/3 — steps 1-2 committed f4ffd2a, 408167b, 2026-09-17).**
 Source: owner directive 2026-09-16 ("no CDNs if I can"); measured baseline below.
 
 Owner approved execution 2026-09-17 (DoD item 1; "Execute" + step-level
@@ -58,8 +58,19 @@ Inter `v20`, echarts `5.6.0`).
    A/B` (017 A2, ESM split pending).
    Commit: `chart: self-host Inter font (drop Google Fonts CDN)` (f4ffd2a)
 2. ECharts: download echarts 5.6.0 dist → `public/js/echarts-5.6.0.min.js`;
-   sha256 into the commit message (D2); swap the `src` (D3).
-   Commit: `chart: vendor echarts 5.6.0 (drop jsdelivr CDN)`
+   sha256 into the commit message (D2); swap the `src` (D3). — **✅ COMPLETE
+   (committed 408167b, 2026-09-17)**
+   As-built: `public/js/echarts-5.6.0.min.js` (1,034,102 B — exactly the
+   plan's measured baseline); sha256 `bf4a2235…` in the commit message per
+   D2; `src` swap, load order intact (echarts before app.js); zero external
+   refs left in `index.html`. Provenance verified against the official npm
+   tarball `echarts-5.6.0.tgz` (`dist/echarts.min.js` byte-identical), not
+   just the CDN copy. Upstream quirk recorded: runtime `echarts.version`
+   constant reads "5.6.1", but npm only has 5.6.0 (5.6.1 was never
+   published).
+   Seams: `no tests: asset swap + src attr, no app.js logic — owner manual
+   A/B` (017 A2, ESM split pending).
+   Commit: `chart: vendor echarts 5.6.0 (drop jsdelivr CDN)` (408167b)
 3. Review pass: fresh visit, Network tab — zero external requests; look A/B
    (Inter identical, no FOUT); asset paths 404-free on the custom domain and
    workers.dev.
