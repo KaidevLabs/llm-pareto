@@ -7,9 +7,27 @@ LMArena frontier models ranked by quality (Elo) against OpenRouter pricing, Pare
 - Data update (the only "build"): `python3 update.py` — fetches both sources, joins, validates; exits non-zero on any anomaly. A failed run is never committed.
 - Deploy: `npx wrangler deploy` (after the data commit is pushed).
 
-## Verification
+## Testing
 
-No test suite exists. A change is verified by `python3 update.py` passing (sane match report — join counts, no unmatched regressions) plus a reviewed `public/data/` diff, `meta.json` first. If a change adds logic that deserves real tests, introduce a suite and drive it with the `tdd` skill before writing more code.
+- Suite: `tests/` (stdlib `unittest`, zero-dep), run from repo root:
+  `python3 -m unittest discover -s tests -v`; single module:
+  `python3 -m unittest tests.test_normalize`; single test:
+  `python3 -m unittest tests.test_normalize.TestNormalize.test_strips_config_suffixes_high_xhigh_max`.
+- Layout: `test_<unit>.py` per seam (normalize, match/join, validate,
+  parse_arena); one class per function, one behavior per test.
+- Discipline: tests are characterization — they document current behavior
+  as-is, expected values pinned from actual code output. A red test after a
+  logic change is a review signal, not a failure: decide before changing
+  either side. Drive behavior-changing work test-first with the `tdd` skill.
+- Fixtures: synthetic, hand-written (minimal RSC-shaped payloads for
+  `parse_arena`); never real page snapshots — schema drift is `update.py`
+  fail-fast's job, not the fixture's.
+- JS: `app.js` pure logic (Pareto, filters, formatting) is testable with
+  node:test once the ESM split lands — not before (plan 017, A2); DOM and
+  rendering stay manual A/B in the browser.
+- Verification hierarchy: suite green → `python3 update.py` passing (sane
+  match report — join counts, no unmatched regressions) → reviewed
+  `public/data/` diff, `meta.json` first.
 
 ## Conventions
 
