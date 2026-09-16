@@ -1,6 +1,6 @@
 # 018 — Chart fit-to-data axes + TradingView-style zoom (dashboard)
 
-Date: 2026-09-16. **Status: EXECUTING (step 2/3 — steps 1-2 committed b52561f, 3b863c5).**
+Date: 2026-09-16. **Status: ARCHIVED (2026-09-16).** Commits: b52561f (step 1), c55d2d7 (plan 1), 3b863c5 (step 2), 8394641 (plan 2).
 Source: owner request (session, 2026-09-16) — user feedback: the chart feels
 squeezed/elongated and most of its height is empty (nothing below ~1100 Elo /
 ~$0.03); owner asked for zoom-to-interesting-parts and the TradingView
@@ -94,7 +94,12 @@ clipped, never redrawn.
    true); drag-pan and tooltip don't fight; cursor feedback on the y-strip
    (ns-resize nicety — keep only if it doesn't fight zrender's cursor);
    dblclick doesn't collide with hover states.
-   Commit only if something changes.
+   — **✅ COMPLETE (2026-09-16, no code changes)**
+   As-built: owner ran the full feel-out (desktop + mobile emulation) and
+   reported everything working ("Tested everything is right"); no anomalies
+   surfaced on any checklist item, so no cursor nicety was added and no
+   behavior needed recording beyond "all gestures sane". No code changed.
+   Commit: none.
 
 ## Out of scope
 
@@ -110,17 +115,19 @@ clipped, never redrawn.
 
 - [x] Owner approves this plan (A1–A5) in a review session. (2026-09-16;
       A5 later amended to A5′ full-width by owner decision, see Amendments)
-- [ ] Default view: no 0→1100 dead band on y, x starts just under the cheapest
-      price; tick labels visible; edge bubbles unclipped. (step 1 in place,
-      not yet re-verified with zoom in place)
+- [x] Default view: no 0→1100 dead band on y, x starts just under the cheapest
+      price; tick labels visible; edge bubbles unclipped. (owner feel-out
+      2026-09-16)
 - [x] Plot reads ~2:1, centered, no horizontal scrollbar; mobile drag/pinch
       sane (behavior recorded). — superseded by A5′ full-width (owner feel-out
-      2026-09-16); mobile/pinch part still owed to step 3
+      2026-09-16); mobile/pinch verified sane by owner (step 3, 2026-09-16)
 - [x] Wheel = x-zoom; wheel on y-strip = y-zoom; drag pans both; double-click
       and the reset pill restore the fit view; zoom window survives filter
       changes; axes identical across filters (fitted to all data).
       (owner-validated in-session, 2026-09-16)
-- [ ] Frontier line only ever clipped, never redrawn across hidden points
-      (filterMode 'none' — verified in the feel-check pass).
-- [ ] Zero new dependencies; `python3 update.py` and `public/data/` untouched
-      (git status evidence).
+- [x] Frontier line only ever clipped, never redrawn across hidden points
+      (filterMode 'none' — verified in the feel-check pass). (owner feel-out
+      2026-09-16)
+- [x] Zero new dependencies; `python3 update.py` and `public/data/` untouched
+      (git status evidence: `git diff b52561f~1..HEAD -- public/data update.py`
+      empty, 2026-09-16).
