@@ -1,0 +1,159 @@
+{
+ "Alibaba": {
+  "file": "alibaba.svg",
+  "url": "https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/qwen.svg",
+  "license": "simple-icons, CC0 1.0",
+  "fetched": "2026-09-16",
+  "notes": "Qwen mark (#6950EF) - the org's arena lineup is Qwen; WVL Alibaba wordmark kept as an alternative",
+  "transform": "brand hex fill #6950EF added to the root (current simple-icons format omits fill; default is black)"
+ },
+ "Amazon": {
+  "file": "amazon.svg",
+  "url": "https://cdn.worldvectorlogo.com/logos/amazon-1.svg",
+  "license": "worldvectorlogo (free to use; Amazon trademark)",
+  "fetched": "2026-09-16",
+  "notes": "dark-tile variant (white wordmark + gold smile on dark)"
+ },
+ "Anthropic": {
+  "file": "anthropic.svg",
+  "url": "https://openrouter.ai/images/icons/Anthropic.svg",
+  "license": "Anthropic brand tile, served via OpenRouter icon CDN",
+  "fetched": "2026-09-16"
+ },
+ "Cohere": {
+  "file": "cohere.svg",
+  "url": "https://cohere.com/logo_mobile_dark.svg",
+  "license": "Cohere official dark-mode mark",
+  "fetched": "2026-09-16"
+ },
+ "DeepSeek": {
+  "file": "deepseek.svg",
+  "url": "https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/deepseek.svg",
+  "license": "simple-icons, CC0 1.0",
+  "fetched": "2026-09-16",
+  "transform": "brand hex fill #5786FE added to the root (current simple-icons format omits fill; default is black)"
+ },
+ "Google": {
+  "file": "google.svg",
+  "url": "https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/google.svg",
+  "license": "simple-icons, CC0 1.0",
+  "fetched": "2026-09-16",
+  "transform": "brand hex fill #4285F4 added to the root (current simple-icons format omits fill; default is black)"
+ },
+ "IBM": {
+  "file": "ibm.svg",
+  "url": "https://cdn.worldvectorlogo.com/logos/ibm.svg",
+  "license": "worldvectorlogo (free to use; IBM trademark)",
+  "fetched": "2026-09-16",
+  "transform": "wide wordmark centered on a square canvas"
+ },
+ "Inception AI": {
+  "file": "inception-ai.svg",
+  "url": "https://framerusercontent.com/images/Nf1O2vJko0itYUFANNjfjMuHn8.svg",
+  "license": "Inception Labs official site asset (Framer CDN)",
+  "fetched": "2026-09-16",
+  "transform": "mark paths only (wordmark path dropped)"
+ },
+ "Meta": {
+  "file": "meta.svg",
+  "url": "https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/meta.svg",
+  "license": "simple-icons, CC0 1.0",
+  "fetched": "2026-09-16",
+  "transform": "brand hex fill #0467DF added to the root (current simple-icons format omits fill; default is black)"
+ },
+ "Microsoft": {
+  "file": "microsoft.svg",
+  "url": "https://cdn.worldvectorlogo.com/logos/microsoft-1.svg",
+  "license": "worldvectorlogo (free to use; Microsoft trademark)",
+  "fetched": "2026-09-16",
+  "notes": "white-tile variant"
+ },
+ "MiniMax": {
+  "file": "minimax.svg",
+  "url": "https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/minimax.svg",
+  "license": "simple-icons, CC0 1.0",
+  "fetched": "2026-09-16",
+  "notes": "WVL white-tile variant kept as an alternative",
+  "transform": "brand hex fill #E73562 added to the root (current simple-icons format omits fill; default is black)"
+ },
+ "Mistral": {
+  "file": "mistral.svg",
+  "url": "https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/mistralai.svg",
+  "license": "simple-icons, CC0 1.0",
+  "fetched": "2026-09-16",
+  "transform": "brand hex fill #FA520F added to the root (current simple-icons format omits fill; default is black)"
+ },
+ "Moonshot": {
+  "file": "moonshot.png",
+  "url": "https://openrouter.ai/images/icons/MoonshotAI.png",
+  "license": "MoonshotAI brand asset, served via OpenRouter icon CDN",
+  "fetched": "2026-09-16",
+  "transform": "downscaled 1024x1024 to 256x256"
+ },
+ "OpenAI": {
+  "file": "openai.svg",
+  "url": "https://openrouter.ai/images/icons/OpenAI.svg",
+  "license": "OpenAI brand mark, served via OpenRouter icon CDN (provider-supplied)",
+  "fetched": "2026-09-16",
+  "transform": "recolor mark black to white for the dark theme (fill #ffffff on root)"
+ },
+ "SpaceXAI": {
+  "file": "spacexai.png",
+  "url": "https://x.ai/favicon.ico",
+  "license": "xAI favicon (x.ai)",
+  "fetched": "2026-09-16",
+  "transform": "extracted 48px frame; white monochrome mark on transparent"
+ },
+ "StepFun": {
+  "file": "stepfun.png",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/6/6c/StepFun.png",
+  "license": "Wikimedia Commons, public domain",
+  "fetched": "2026-09-16",
+  "transform": "black wordmark recolored to light (#e2e8f0) for the dark theme; square pad"
+ },
+ "Tencent": {
+  "file": "tencent.svg",
+  "url": "https://cdn.worldvectorlogo.com/logos/tencent.svg",
+  "license": "worldvectorlogo (free to use; Tencent trademark)",
+  "fetched": "2026-09-16",
+  "transform": "wide wordmark centered on a square canvas"
+ },
+ "Thinky": {
+  "file": "thinky.png",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/d/d9/Thinking_Machines_Lab_logo.jpg",
+  "license": "Wikimedia Commons, public domain",
+  "fetched": "2026-09-16",
+  "transform": "white background knocked out (fuzz 8%); fitted to 512 wide; 512x512 square pad"
+ },
+ "Upstage": {
+  "file": "upstage.png",
+  "url": "https://cdn.prod.website-files.com/6743d5190bb2b52f38e99e37/6743f495db2f0b0f43c196ae_Symbol_White.avif",
+  "license": "Upstage AI official site asset",
+  "fetched": "2026-09-16",
+  "transform": "AVIF to PNG; 274x326 symbol centered on a 326x326 canvas"
+ },
+ "Xiaomi": {
+  "file": "xiaomi.svg",
+  "url": "https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/xiaomi.svg",
+  "license": "simple-icons, CC0 1.0",
+  "fetched": "2026-09-16",
+  "transform": "brand hex fill #FF6900 added to the root (current simple-icons format omits fill; default is black)"
+ },
+ "Z.ai": {
+  "file": "z-ai.svg",
+  "url": "https://z-cdn.chatglm.cn/z-ai/static/logo.svg",
+  "license": "Z.ai official site asset",
+  "fetched": "2026-09-16"
+ },
+ "arcee-ai": {
+  "file": "arcee-ai.svg",
+  "url": null
+ },
+ "rekaai": {
+  "file": "rekaai.svg",
+  "url": "https://cdn.worldvectorlogo.com/logos/reka.svg",
+  "license": "worldvectorlogo (free to use)",
+  "fetched": "2026-09-16",
+  "notes": "read as Reka AI (reka.ai); confirm at owner A/B"
+ }
+}
