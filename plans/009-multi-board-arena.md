@@ -1,7 +1,7 @@
 # 009 — Multi-board arena data + board selector
 
 Date: 2026-09-16. **Status: PROPOSED — not reviewed, not executed.**
-Source: `plans/002-exploration-backlog.md` item B6 + its exploration findings.
+Source: `plans/archive/002-exploration-backlog.md` item B6 + its exploration findings.
 
 Scrape the standard arena boards (v1: text, vision, webdev, document, search)
 with the existing `parse_arena` pipeline — all five share the exact

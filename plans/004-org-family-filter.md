@@ -1,7 +1,7 @@
 # 004 — Org → family filter (dashboard)
 
 Date: 2026-09-16. **Status: PROPOSED — not reviewed, not executed.**
-Source: `plans/002-exploration-backlog.md` item B1 + its exploration findings.
+Source: `plans/archive/002-exploration-backlog.md` item B1 + its exploration findings.
 
 Org → model-family hierarchy in the filter bar, as one `<select>` with
 `<optgroup>` per org: pick an org, then the family within it. Hard-hide

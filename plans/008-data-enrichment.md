@@ -1,7 +1,7 @@
 # 008 — Data enrichment: dropped OR fields + price history
 
 Date: 2026-09-16. **Status: PROPOSED — not reviewed, not executed.**
-Source: `plans/002-exploration-backlog.md` item B5 + its exploration findings.
+Source: `plans/archive/002-exploration-backlog.md` item B5 + its exploration findings.
 
 Two-phase enrichment of the joined dataset. **v1** (zero new fetches):
 carry through the OpenRouter fields `update.py` currently drops — full

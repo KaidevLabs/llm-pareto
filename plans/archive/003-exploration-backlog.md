@@ -6,7 +6,7 @@ graduated to their own plans (011–016) and archived in the closing commit.
 This doc is the evidence base, linked from each plan.
 
 Source: owner's post-002 ideas (2026-09-16). Second exploration backlog; it
-**continues 002's ID space** (B1–B7 live in `plans/002-exploration-backlog.md`)
+**continues 002's ID space** (B1–B7 live in `plans/archive/002-exploration-backlog.md`)
 so item references stay unique across the two backlogs.
 
 ## Process (how this backlog gets worked)

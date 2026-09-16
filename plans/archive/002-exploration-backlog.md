@@ -1,9 +1,10 @@
 # 002 — Exploration backlog (dashboard)
 
-Date: 2026-09-16. **Status: step 1 (explore) executed — findings appended per
-item; step 2 (plan) executed — one draft plan doc per item: 004–010 (see the
-per-item "Plan:" pointers below), pending owner review; step 3 (owner review,
-then execution in owner-chosen order, commit-per-step) pending.**
+Date: 2026-09-16. **Status: ARCHIVED (2026-09-16)** — commits: 4e802e8 (doc +
+preliminary evidence); step-1 findings appended the same day (91233c0, together
+with the graduated plan docs 004–010); all items graduated to their own plans
+(004–010) and archived in the closing commit. This doc is the evidence base,
+linked from each plan.
 
 Source: owner's post-001 ideas (2026-09-16). Per 001's closing note, follow-ups
 start a new plan doc — this is that doc: a backlog plus the process to work it.
@@ -1261,6 +1262,25 @@ dependencies; natural order is B1 first — search then lands as a style branch
 on B1's `filtered()` path sharing the same state object — and B3's Q7 should
 be decided at B3's review. No data-layer or `update.py` changes; no new deps.
 
+## Graduated plans (step 2, 2026-09-16)
+
+Per the process, each item graduated to its own plan doc — one plan per
+examination, to be implemented or examined with the owner in separate future
+sessions:
+
+| item | plan | status |
+|------|------|--------|
+| B1 org → family filter | `plans/004-org-family-filter.md` | PROPOSED |
+| B2 benchmarks | `plans/005-benchmarks.md` | PROPOSED |
+| B3 details panel | `plans/006-model-details-panel.md` | PROPOSED |
+| B4 logos | `plans/007-logos.md` | PROPOSED |
+| B5 data enrichment | `plans/008-data-enrichment.md` | PROPOSED |
+| B6 multi-board arena | `plans/009-multi-board-arena.md` | PROPOSED |
+| B7 search highlight | `plans/010-search-highlight.md` | PROPOSED |
+
+Execution order is owner-chosen at review; items may be dropped, merged, or
+reordered there.
+
 ## Out of scope (for this backlog)
 
 - Backend, new deploy target, new chart library, i18n, PWA.
@@ -1268,10 +1288,12 @@ be decided at B3's review. No data-layer or `update.py` changes; no new deps.
 
 ## Definition of done
 
-- [ ] Owner reviews and approves this doc (process + item scoping).
+- [x] Owner reviews and approves this doc (process + item scoping).
 - [x] Exploration findings appended per item (2026-09-16; per-item "Findings"
       sections below, produced by one research-only sub-agent per item).
-- [x] Each surviving item has a `plans/00N-*.md` plan doc (004–010, drafts;
-      per-item "Plan:" pointers below).
+- [x] Each surviving item graduated to its **own** `plans/00N-*.md` plan doc
+      (004–010, PROPOSED — see Graduated plans; one plan per examination,
+      merges only by explicit owner decision).
 - [ ] Each plan is owner-reviewed; implementation starts only after agreement,
-      in the owner-chosen order, following 001's commit-per-step discipline.
+      in the owner-chosen order, following 001's commit-per-step discipline
+      (tracked per plan; deferred to future sessions).

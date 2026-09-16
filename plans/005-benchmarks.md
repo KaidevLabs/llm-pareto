@@ -1,7 +1,7 @@
 # 005 — Benchmarks: Epoch AI data + benchmark filter
 
 Date: 2026-09-16. **Status: PROPOSED — not reviewed, not executed.**
-Source: `plans/002-exploration-backlog.md` item B2 + its exploration findings.
+Source: `plans/archive/002-exploration-backlog.md` item B2 + its exploration findings.
 
 Add benchmark data to the data layer (Epoch AI as the single v1 source) and
 expose it in the site: enriched tooltips + a benchmark picker with a score

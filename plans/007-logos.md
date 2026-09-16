@@ -1,7 +1,7 @@
 # 007 — Org logos instead of colored bubbles
 
 Date: 2026-09-16. **Status: PROPOSED — not reviewed, not executed.**
-Source: `plans/002-exploration-backlog.md` item B4 + its exploration findings.
+Source: `plans/archive/002-exploration-backlog.md` item B4 + its exploration findings.
 
 Replace the org-color bubbles with per-org logo symbols (ECharts
 `symbol: 'image://…'`, natively supported, per data item). Size stays =

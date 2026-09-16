@@ -1,7 +1,7 @@
 # 006 — Model details panel (bubble click)
 
 Date: 2026-09-16. **Status: PROPOSED — not reviewed, not executed.**
-Source: `plans/002-exploration-backlog.md` item B3 + its exploration findings.
+Source: `plans/archive/002-exploration-backlog.md` item B3 + its exploration findings.
 
 Clicking a bubble (or a frontier marker) opens a ~340px overlay drawer on the
 right with the model's full detail info. Close via the × button or a click on

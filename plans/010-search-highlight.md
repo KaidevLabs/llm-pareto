@@ -1,7 +1,7 @@
 # 010 — Search box: live highlight
 
 Date: 2026-09-16. **Status: PROPOSED — not reviewed, not executed.**
-Source: `plans/002-exploration-backlog.md` item B7 + its exploration findings.
+Source: `plans/archive/002-exploration-backlog.md` item B7 + its exploration findings.
 
 A search input in the existing filter bar; typing live-dims the non-matching
 points (soft highlight — no hiding). Total change ~55–70 lines across
