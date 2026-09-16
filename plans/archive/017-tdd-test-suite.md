@@ -1,7 +1,8 @@
 # 017 — TDD discipline + test suite (unittest baseline, node:test principle)
 
-Date: 2026-09-16. **Status: EXECUTING — steps 1–4/5 executed (suite, AGENTS.md
-Testing, tdd skill, plans skill committed); step 5 (close audit) remaining.**
+Date: 2026-09-16. **Status: ARCHIVED (2026-09-16) — steps: a514f4d (suite +
+README), 497eccc (AGENTS.md Testing), 6b8042f (tdd skill), 62cc5a1 (plans
+skill); close audit green (54/54, update.py exit 0).**
 Source: owner request (session, 2026-09-16) — the agent probes in `.tmp/` instead of
 test-first; make plan execution start at tests. No backlog item.
 Amendment 2026-09-16 (owner directive mid-step-1): the README gains a Tests
@@ -138,6 +139,18 @@ and the `plans` skill stops letting seam declaration be silently skipped.
   their verification directly" (the backdoor around the new rule) now routes
   only `no tests:` opt-outs and non-behavior-changing steps down that path.
 
+### Step 5 (2026-09-16, verification-only — no code changes)
+
+- Full suite 54/54 OK. `python3 update.py` exit 0: 154 joined, top-20 20/20,
+  method mix identical to the last committed run (exact 162 / prefix-base 31
+  / prefix-variant 10 / fuzzy 6 / override 1) — no join regressions.
+- The run's data diff was live-drift only (`fetched_at`, OR catalog 351→352,
+  price/vote churn): restored, not committed — data updates are their own
+  commits.
+- DoD audited: 5/6 checked. The last item is observable only at the next
+  behavior-changing plan's review (red → green, kept tests exist) — tracked
+  per plan; deferred to future sessions.
+
 ## Out of scope
 
 - ESM split / any JS tests now (A2 — candidate trigger: 004 org/family filter).
@@ -160,4 +173,5 @@ and the `plans` skill stops letting seam declaration be silently skipped.
 - [x] `plans` skill: seams mandatory-or-explicit for behavior-changing steps.
       (62cc5a1: `(optional)` dropped + lifecycle backdoor closed)
 - [ ] Observable at the next behavior-changing plan's review: its steps ran
-      red → green (kept tests exist afterwards).
+      red → green (kept tests exist afterwards). (tracked per plan; deferred
+      to future sessions)
