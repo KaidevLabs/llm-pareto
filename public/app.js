@@ -11,7 +11,13 @@ const ORG_FALLBACK = "#64748b";
 const FRONTIER = "#34d399";
 const OVERRIDE = "#ffd166";
 
-const state = { mode: "general", vision: "all", frontier: true };
+const state = {
+  mode: "general",
+  vision: "all",
+  frontier: true,
+  spread: true,
+  ratio: 3,
+};
 let DATA = [];
 let META = null;
 let ORG_COLOR = {};
@@ -64,15 +70,26 @@ function filtered() {
   return DATA.filter((d) => d.vision);
 }
 
-function pointsFor(priceKey, rows) {
+// Blended $/M for the current input:output mix; falls back to the one
+// available price when the other is missing.
+function blendedPrice(d) {
+  const pin = d.price_in_per_m;
+  const pout = d.price_out_per_m;
+  if (pin == null || pout == null) return pin != null ? pin : pout;
+  const w = state.ratio / (state.ratio + 1);
+  return w * pin + (1 - w) * pout;
+}
+
+function pointsFor(getPrice, rows) {
   const pts = [];
   let skipped = 0;
   for (const d of rows) {
-    if (d[priceKey] == null || d.arena_elo == null) {
+    const price = getPrice(d);
+    if (price == null || d.arena_elo == null) {
       skipped++;
       continue;
     }
-    pts.push({ value: [d[priceKey], d.arena_elo], d });
+    pts.push({ value: [price, d.arena_elo], d });
   }
   return { pts, skipped };
 }
@@ -121,6 +138,9 @@ function tooltipHTML(p) {
     "arena #" + d.arena_rank +
       " · elo " + d.arena_elo.toFixed(1) + ci +
       " · " + fmtVotes(d.arena_votes) + " votes",
+    (state.mode === "general"
+      ? fmtPrice(blendedPrice(d)) + " blended (" + state.ratio + ":1) · "
+      : "") +
     fmtPrice(d.price_in_per_m) + " in · " + fmtPrice(d.price_out_per_m) +
       " out <span style='color:#8b98ab'>per M tokens</span>",
     orgOf(d) +
@@ -132,11 +152,51 @@ function tooltipHTML(p) {
   return parts.join('<br>');
 }
 
-function chartOption(label, pts, frontier) {
+function chartOption(label, pts, frontier, spreadPts) {
   const votes = pts.map((p) => p.d.arena_votes || 1);
   const lo = Math.min.apply(null, votes);
   const hi = Math.max.apply(null, votes);
   const series = [];
+
+  if (spreadPts && spreadPts.length) {
+    series.push({
+      name: "spread",
+      type: "custom",
+      silent: true,
+      z: 4,
+      data: spreadPts,
+      renderItem: (params, api) => {
+        const pin = api.value(0);
+        const pout = api.value(1);
+        const elo = api.value(2);
+        if (pin == null || pout == null || pin >= pout) return;
+        const s = api.coord([pin, elo]);
+        const e = api.coord([pout, elo]);
+        const left = [
+          { offset: 0, color: "rgba(96, 165, 250, 0.55)" },
+          { offset: 1, color: "rgba(245, 158, 11, 0.55)" },
+        ];
+        const right = [
+          { offset: 0, color: "rgba(245, 158, 11, 0.55)" },
+          { offset: 1, color: "rgba(96, 165, 250, 0.55)" },
+        ];
+        return {
+          type: "line",
+          shape: { x1: s[0], y1: s[1], x2: e[0], y2: e[1] },
+          style: {
+            stroke: new echarts.graphic.LinearGradient(
+              0,
+              0.5,
+              1,
+              0.5,
+              pin <= pout ? left : right
+            ),
+            lineWidth: 2,
+          },
+        };
+      },
+    });
+  }
 
   if (state.frontier && frontier.length > 0) {
     series.push({
@@ -226,38 +286,59 @@ function chartOption(label, pts, frontier) {
   };
 }
 
-function renderPanel(id, priceKey, axisLabel) {
-  const rows = filtered();
-  const { pts, skipped } = pointsFor(priceKey, rows);
-  const frontier = paretoFrontier(pts);
-  const key = id.split("-")[1];
+function renderPanel(panelKey) {
+  const isBlend = panelKey === "blend";
+  const priceKey =
+    panelKey === "in" ? "price_in_per_m" : "price_out_per_m";
+  const getPrice = isBlend ? blendedPrice : (d) => d[priceKey];
+  const axisLabel = isBlend
+    ? "$/M tokens · " + state.ratio + ":1 in:out blend (log)"
+    : "$/M " + (panelKey === "in" ? "input" : "output") + " tokens (log)";
 
+  const rows = filtered();
+  const { pts, skipped } = pointsFor(getPrice, rows);
+  const frontier = paretoFrontier(pts);
+  const spreadPts =
+    isBlend && state.spread
+      ? pts.map((p) => [
+          p.d.price_in_per_m,
+          p.d.price_out_per_m,
+          p.value[1],
+        ])
+      : null;
+
+  const id = "chart-" + panelKey;
   const el = document.getElementById(id);
   if (!charts[id]) {
     charts[id] = echarts.init(el, null, { renderer: "canvas" });
   }
   charts[id].setOption(
-    chartOption(axisLabel, pts, frontier),
+    chartOption(axisLabel, pts, frontier, spreadPts),
     true
   );
 
-  document.getElementById("badge-" + key).classList.toggle(
+  document.getElementById("badge-" + panelKey).classList.toggle(
     "hidden",
     !state.frontier || frontier.length === 0
   );
-  document.getElementById("count-" + key).textContent =
+  document.getElementById("count-" + panelKey).textContent =
     pts.length + " models" + (skipped ? " · " + skipped + " skipped (no price)" : "");
 }
 
 function render() {
   const main = document.getElementById("main");
   main.setAttribute("data-mode", state.mode);
-  if (state.mode === "general" || state.mode === "in") {
-    renderPanel("chart-in", "price_in_per_m", "$/M input tokens");
-  }
-  if (state.mode === "general" || state.mode === "out") {
-    renderPanel("chart-out", "price_out_per_m", "$/M output tokens");
-  }
+  document.getElementById("ratio-ctl").classList.toggle(
+    "hidden",
+    state.mode !== "general"
+  );
+  document.getElementById("legend-spread").classList.toggle(
+    "hidden",
+    state.mode !== "general"
+  );
+  if (state.mode === "general") renderPanel("blend");
+  else if (state.mode === "in") renderPanel("in");
+  else renderPanel("out");
   for (const id of Object.keys(charts)) {
     if (charts[id].getDom().offsetParent !== null) charts[id].resize();
   }
@@ -279,6 +360,12 @@ function renderFooter() {
       " — where the arena name is ambiguous, an explicit manual override fixes the model identity; that price is final. Overridden points are outlined in gold on the chart.</div>"
     : "";
   f.innerHTML =
+    '<div id="legend-spread"><span class="swatch"></span>' +
+    "Spread bar: each model's real price range on the log axis — " +
+    '<span class="ink">blue end = input</span>, ' +
+    '<span class="outk">amber end = output</span> $/M. ' +
+    "The point is the blended price at the slider's input:output ratio; " +
+    "a long bar means output tokens cost disproportionately more than input.<br>" +
     'Sources: <a href="https://lmarena.ai/leaderboard/text" target="_blank" rel="noopener">LMArena text leaderboard</a> · ' +
     '<a href="https://openrouter.ai/models" target="_blank" rel="noopener">OpenRouter models</a> · ' +
     "data " + ((META && META.fetched_at) || "unknown") +
@@ -309,6 +396,18 @@ function bindFilters() {
     b.classList.add("on");
     state.vision = b.getAttribute("data-vision");
     render();
+  });
+  const spreadTgl = document.getElementById("tgl-spread");
+  spreadTgl.addEventListener("click", () => {
+    state.spread = !state.spread;
+    spreadTgl.classList.toggle("on", state.spread);
+    if (state.mode === "general") renderPanel("blend");
+  });
+  const slider = document.getElementById("ratio-slider");
+  slider.addEventListener("input", () => {
+    state.ratio = +slider.value;
+    document.getElementById("ratio-val").textContent = slider.value + ":1";
+    if (state.mode === "general") renderPanel("blend");
   });
   const tgl = document.getElementById("tgl-frontier");
   tgl.addEventListener("click", () => {

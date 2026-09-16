@@ -103,14 +103,62 @@
   main {
     flex: 1;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 16px;
     padding: 0 28px;
     min-height: 0;
   }
-  main[data-mode="in"], main[data-mode="out"] { grid-template-columns: 1fr; }
+  main[data-mode="general"] #panel-in,
+  main[data-mode="general"] #panel-out { display: none; }
+  main[data-mode="in"] #panel-blend,
   main[data-mode="in"] #panel-out { display: none; }
+  main[data-mode="out"] #panel-blend,
   main[data-mode="out"] #panel-in { display: none; }
+
+  .ratio {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid var(--border);
+    background: rgba(148, 163, 184, 0.08);
+    border-radius: 10px;
+    padding: 0 12px;
+    height: 38px;
+  }
+  .ratio.hidden { display: none; }
+  .ratio input[type="range"] {
+    width: 140px;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+  .ratio-val {
+    color: #d1fae5;
+    font-weight: 600;
+    font-size: 13px;
+    min-width: 30px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  .ratio-cap { color: var(--muted); font-size: 11px; white-space: nowrap; }
+  .ratio .pill { padding: 5px 10px; font-size: 12px; margin-left: 4px; }
+  .hidden { display: none !important; }
+  .swatch {
+    display: inline-block;
+    width: 30px;
+    height: 4px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, #60a5fa, #f59e0b);
+    vertical-align: middle;
+    margin-right: 6px;
+  }
+  .ink { color: #60a5fa; }
+  .outk { color: #f59e0b; }
+  .grad-sw {
+    background: linear-gradient(90deg, #60a5fa, #f59e0b) !important;
+    border-radius: 2px !important;
+    width: 16px !important;
+    height: 4px !important;
+  }
 
   .panel {
     background: var(--panel);
@@ -204,6 +252,13 @@
     <button data-mode="in">Input $/M</button>
     <button data-mode="out">Output $/M</button>
   </div>
+  <div class="ratio" id="ratio-ctl">
+    <span class="ratio-val" id="ratio-val">3:1</span>
+    <input type="range" id="ratio-slider" min="1" max="10" step="1" value="3"
+      aria-label="input to output token ratio for the blended price">
+    <span class="ratio-cap">input:output mix</span>
+    <button class="pill on" id="tgl-spread" title="Show/hide the real $in→$out spread bars"><span class="diamond">▭</span>spread</button>
+  </div>
   <div class="seg" id="seg-vision" role="tablist" aria-label="vision filter">
     <button data-vision="all" class="on">All models</button>
     <button data-vision="vision">✨ Vision-capable</button>
@@ -211,9 +266,22 @@
   <button class="pill on" id="tgl-frontier"><span class="diamond">◈</span> Pareto frontier</button>
 </nav>
 
-<div class="axis-note">x: OpenRouter price per M tokens, log scale (cheaper → left) · y: LMArena Elo (higher = better) · bubble: arena votes · color: organization · top-left = best of both</div>
+<div class="axis-note">x: price $/M tokens, log scale (cheaper → left) — General blends in/out at the slider's ratio · y: LMArena Elo (higher = better) · bubble: arena votes · color: organization · bar behind a point: its real price spread (blue = input → amber = output) · top-left = best of both</div>
 
 <main id="main" data-mode="general">
+  <section class="panel" id="panel-blend">
+    <div class="panel-head">
+      <h2>Blended price</h2>
+      <span class="badge" id="badge-blend">◈ frontier</span>
+      <span class="count" id="count-blend"></span>
+    </div>
+    <div class="chart" id="chart-blend"></div>
+    <div class="legend-row">
+      <span><span class="sw" style="background:#34d399"></span>pareto frontier — nothing beats these on both quality and price</span>
+      <span><span class="sw ov-sw"></span>manual override — identity fixed by owner decision, price final</span>
+      <span><span class="sw grad-sw"></span>real price spread of the model — <span class="ink">blue = input</span>, <span class="outk">amber = output</span> $/M</span>
+    </div>
+  </section>
   <section class="panel" id="panel-in">
     <div class="panel-head">
       <h2>Input price</h2>
