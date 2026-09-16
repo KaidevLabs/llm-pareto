@@ -19,6 +19,7 @@ Single repo; data updates by a committed script, manually triggered.
 | A7 | Script: Python, stdlib only (urllib, json, re, difflib) | owner | 2026-09-15 |
 | A8 | Trigger: manual — run script, review report, commit, push | owner | 2026-09-15 |
 | A9 | `muse-spark` (arena rank #13) → `meta/muse-spark-1.3` via `overrides.json` | bare arena name is ambiguous (OR lists only numbered 1.1/1.2/1.3); all versions price identically ($1.25/$4.25 per M), bare name tracks the current release | 2026-09-15 |
+| A10 | Deploy mechanism: Cloudflare **Workers static site** (worker `llm-pareto`, `wrangler.jsonc` assets = `public/`), not Pages | the CF dashboard git-deploy wizard (required "deploy command" field, no output dir) creates Workers; verified live at lm-pareto.kaidev.io | 2026-09-16 |
 
 ## Data sources (evidence 2026-09-15)
 
@@ -96,9 +97,10 @@ README.md            # update flow, provenance, join rules
 
 1. `update.py` + `.gitignore`; run it; review the match report and generated data.
 2. Site: `public/index.html`, `public/app.js` (ECharts, filters, frontier).
-3. `README.md` + Cloudflare Pages deploy — git integration, build command `ls`
-   (no-op; the dashboard form requires a non-empty value), output `public/`,
-   custom domain <https://lm-pareto.kaidev.io>.
+3. `README.md` + Cloudflare deploy — the dashboard git-deploy wizard created a
+   **Workers** static site (worker `llm-pareto`), not a Pages project: the repo's
+   `wrangler.jsonc` serves `public/` as assets; dashboard build command `ls`
+   (required, no-op); custom domain <https://lm-pareto.kaidev.io>. Verified live 2026-09-16.
 
 ## Open branches (recorded)
 

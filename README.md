@@ -26,7 +26,8 @@ and the unmatched list) and commit:
 git add update.py overrides.json public/data && git commit -m "data: <date>"
 ```
 
-Push → Cloudflare Pages deploys automatically.
+Push → Cloudflare deploys automatically (Workers static site — `wrangler.jsonc`
+serves `public/` as assets; build command in the dashboard is a no-op `ls`).
 
 ## How the join works
 
