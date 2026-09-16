@@ -11,6 +11,11 @@ const ORG_FALLBACK = "#64748b";
 const FRONTIER = "#34d399";
 const OVERRIDE = "#ffd166";
 
+// Chart grid insets (single source: axis geometry the y-strip wheel handler
+// needs too) and per-panel zoom windows captured across re-renders (018 A2).
+const GRID = { left: 58, right: 24, top: 26, bottom: 56 };
+const ZOOM = {};
+
 const state = {
   mode: "general",
   vision: "all",
@@ -317,7 +322,20 @@ function chartOption(label, pts, frontier, spreadPts, bounds) {
   return {
     backgroundColor: "transparent",
     animationDuration: 450,
-    grid: { left: 58, right: 24, top: 26, bottom: 56 },
+    grid: GRID,
+    // TradingView model (018 A3/A4): wheel zooms x (price) natively; wheel on
+    // the y-axis strip zooms Elo via a custom handler; drag pans both. The
+    // y dataZoom's own wheel zoom is off. filterMode 'none' everywhere: the
+    // frontier line is only ever clipped, never re-connected (A4).
+    dataZoom: [
+      { type: "inside", xAxisIndex: 0, filterMode: "none" },
+      {
+        type: "inside",
+        yAxisIndex: 0,
+        filterMode: "none",
+        zoomOnMouseWheel: false,
+      },
+    ],
     tooltip: {
       backgroundColor: "rgba(10,14,23,0.94)",
       borderColor: "rgba(148,163,184,0.25)",
@@ -355,6 +373,59 @@ function chartOption(label, pts, frontier, spreadPts, bounds) {
     },
     series,
   };
+}
+
+function captureZoom(chart, id) {
+  const dz = chart.getOption().dataZoom || [];
+  const z = {};
+  for (const d of dz) {
+    if (d.xAxisIndex === 0) z.x = { start: d.start, end: d.end };
+    if (d.yAxisIndex === 0) z.y = { start: d.start, end: d.end };
+  }
+  ZOOM[id] = z;
+}
+
+function resetZoom(chart, id) {
+  ZOOM[id] = { x: { start: 0, end: 100 }, y: { start: 0, end: 100 } };
+  chart.dispatchAction({ type: "dataZoom", dataZoomIndex: 0, start: 0, end: 100 });
+  chart.dispatchAction({ type: "dataZoom", dataZoomIndex: 1, start: 0, end: 100 });
+}
+
+// Wheel on the y-axis strip zooms Elo anchored at the cursor (ECharts can't
+// scope inside-zoom to the axis strip — 018 A3). Zoom-out clamps at the fit
+// bounds (the axis extent): the fit view is the widest window, axes never
+// rescale behind the viewer (A1/A4).
+function bindZoomChart(chart, id) {
+  const dom = chart.getDom();
+  chart.on("datazoom", () => captureZoom(chart, id));
+  dom.addEventListener(
+    "wheel",
+    (e) => {
+      if (e.offsetX > GRID.left) return; // plot area: ECharts zooms x natively
+      e.preventDefault();
+      const y = (p) =>
+        chart.convertFromPixel({ seriesIndex: 0 }, [0, p])[1];
+      const h = dom.clientHeight;
+      const anchor = y(e.offsetY);
+      const top = y(GRID.top);
+      const bot = y(h - GRID.bottom);
+      const factor = e.deltaY < 0 ? 0.85 : 1.18;
+      let lo = anchor - (anchor - bot) * factor;
+      let hi = anchor + (top - anchor) * factor;
+      const ext = chart.getOption().yAxis[0];
+      lo = Math.max(lo, ext.min);
+      hi = Math.min(hi, ext.max);
+      if (!(hi > lo)) return;
+      chart.dispatchAction({
+        type: "dataZoom",
+        dataZoomIndex: 1,
+        startValue: lo,
+        endValue: hi,
+      });
+    },
+    { passive: false }
+  );
+  dom.addEventListener("dblclick", () => resetZoom(chart, id));
 }
 
 function renderPanel(panelKey) {
@@ -399,11 +470,31 @@ function renderPanel(panelKey) {
   const el = document.getElementById(id);
   if (!charts[id]) {
     charts[id] = echarts.init(el, null, { renderer: "canvas" });
+    bindZoomChart(charts[id], id);
   }
   charts[id].setOption(
     chartOption(axisLabel, pts, frontier, spreadPts, bounds),
     true
   );
+
+  // The zoom window survives the not-Merge setOption (018 A2).
+  const z = ZOOM[id];
+  if (z) {
+    if (z.x)
+      charts[id].dispatchAction({
+        type: "dataZoom",
+        dataZoomIndex: 0,
+        start: z.x.start,
+        end: z.x.end,
+      });
+    if (z.y)
+      charts[id].dispatchAction({
+        type: "dataZoom",
+        dataZoomIndex: 1,
+        start: z.y.start,
+        end: z.y.end,
+      });
+  }
 
   document.getElementById("badge-" + panelKey).classList.toggle(
     "hidden",
@@ -706,6 +797,11 @@ function bindFilters() {
     tgl.classList.toggle("on", state.frontier);
     render();
   });
+  for (const key of ["blend", "in", "out"]) {
+    const chart = charts["chart-" + key];
+    const pill = document.getElementById("reset-" + key);
+    if (chart && pill) pill.addEventListener("click", () => resetZoom(chart, "chart-" + key));
+  }
   window.addEventListener("resize", () => {
     for (const id of Object.keys(charts)) {
       if (charts[id].getDom().offsetParent !== null) charts[id].resize();

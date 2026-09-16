@@ -343,13 +343,14 @@
   <button class="pill on" id="tgl-frontier"><span class="diamond">◈</span> Pareto frontier</button>
 </nav>
 
-<div class="axis-note">x: price $/M tokens, log scale (cheaper → left) — General blends in/out at the slider's ratio · y: LMArena Elo (higher = better) · bubble: arena votes · color: organization · bar behind a point: its real price spread (blue = input → amber = output) · top-left = best of both</div>
+<div class="axis-note">wheel: zoom price (anchored at cursor) · wheel on the Elo axis: zoom Elo · drag: pan · double-click or ⤢ fit: reset to full view · x: price $/M tokens, log scale (cheaper → left) — General blends in/out at the slider's ratio · y: LMArena Elo (higher = better) · bubble: arena votes · color: organization · bar behind a point: its real price spread (blue = input → amber = output) · top-left = best of both</div>
 
 <main id="main" data-mode="general">
   <section class="panel" id="panel-blend">
     <div class="panel-head">
       <h2>Blended price</h2>
       <span class="badge" id="badge-blend">◈ frontier</span>
+      <button class="pill" id="reset-blend" title="Reset both axes to fit">⤢ fit</button>
       <span class="count" id="count-blend"></span>
     </div>
     <div class="chart" id="chart-blend"></div>
@@ -363,6 +364,7 @@
     <div class="panel-head">
       <h2>Input price</h2>
       <span class="badge" id="badge-in">◈ frontier</span>
+      <button class="pill" id="reset-in" title="Reset both axes to fit">⤢ fit</button>
       <span class="count" id="count-in"></span>
     </div>
     <div class="chart" id="chart-in"></div>
@@ -375,6 +377,7 @@
     <div class="panel-head">
       <h2>Output price</h2>
       <span class="badge" id="badge-out">◈ frontier</span>
+      <button class="pill" id="reset-out" title="Reset both axes to fit">⤢ fit</button>
       <span class="count" id="count-out"></span>
     </div>
     <div class="chart" id="chart-out"></div>
