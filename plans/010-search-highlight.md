@@ -1,6 +1,6 @@
 # 010 — Search box: live highlight
 
-Date: 2026-09-16. **Status: PROPOSED — not reviewed, not executed.**
+Date: 2026-09-16. **Status: EXECUTING — owner approved 2026-09-17 (execution ordered in-session; D1 soft-dim semantics re-confirmed: matches keep org color, non-matches dimmed). Step 1 committed ceba964 (2026-09-17).**
 Source: `plans/archive/002-exploration-backlog.md` item B7 + its exploration findings.
 
 A search input in the existing filter bar; typing live-dims the non-matching
@@ -41,7 +41,7 @@ points (soft highlight — no hiding). Total change ~55–70 lines across
 
 ## Definition of done
 
-- [ ] Owner approves this plan (incl. the step-3 A/B pick).
+- [x] Owner approves this plan (execution ordered 2026-09-17; the step-3 A/B pick still to land).
 - [ ] Typing live-dims non-matches; the frontier stays global.
 - [ ] The "n/154" count is correct and tracks the filtered set.
 - [ ] The 0-match state reads as "0/154" + all dimmed.
