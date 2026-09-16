@@ -100,6 +100,79 @@
   }
   .pill .diamond { color: var(--accent); }
 
+  .ofwrap { position: relative; }
+  .ofbadge {
+    margin-left: 6px;
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+    color: #d1fae5;
+  }
+  .ofpanel {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    z-index: 30;
+    width: 340px;
+    max-height: 62vh;
+    overflow-y: auto;
+    background: #0a0e16;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
+    padding: 10px;
+  }
+  .ofsearch {
+    width: 100%;
+    margin-bottom: 8px;
+    border: 1px solid var(--border);
+    background: rgba(148, 163, 184, 0.08);
+    color: var(--text);
+    font: 500 13px "Inter", system-ui, sans-serif;
+    padding: 8px 10px;
+    border-radius: 8px;
+    outline: none;
+  }
+  .ofsearch::placeholder { color: var(--muted); }
+  .ofsearch:focus { border-color: rgba(52, 211, 153, 0.45); }
+  .oforg, .offam {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--muted);
+    user-select: none;
+  }
+  .oforg:hover, .offam:hover { background: rgba(148, 163, 184, 0.08); color: var(--text); }
+  .offam { margin-left: 24px; font-size: 12px; }
+  .ofchev {
+    border: 0;
+    background: transparent;
+    color: var(--muted);
+    width: 18px;
+    padding: 0;
+    cursor: pointer;
+    font-size: 10px;
+    line-height: 1;
+    transition: transform 0.15s;
+  }
+  .ofchev.open { transform: rotate(90deg); }
+  .ofname { flex: 1; }
+  .ofcount { font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .ofchip {
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 1px 7px;
+  }
+  .oforg.on, .offam.on { color: #d1fae5; background: var(--accent-dim); }
+  .oforg.on .ofchip, .offam.on .ofchip, .oforg.part .ofchip { color: var(--accent); }
+  .oforg.part { color: #a7f3d0; }
+
   main {
     flex: 1;
     display: grid;
@@ -262,6 +335,10 @@
   <div class="seg" id="seg-vision" role="tablist" aria-label="vision filter">
     <button data-vision="all" class="on">All models</button>
     <button data-vision="vision">✨ Vision-capable</button>
+  </div>
+  <div class="ofwrap">
+    <button class="pill" id="of-toggle" aria-expanded="false" aria-controls="of-panel"><span class="diamond">◆</span> orgs &amp; families<span class="ofbadge hidden" id="of-badge"></span></button>
+    <div class="ofpanel hidden" id="of-panel"></div>
   </div>
   <button class="pill on" id="tgl-frontier"><span class="diamond">◈</span> Pareto frontier</button>
 </nav>

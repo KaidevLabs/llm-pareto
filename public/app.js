@@ -14,8 +14,7 @@ const OVERRIDE = "#ffd166";
 const state = {
   mode: "general",
   vision: "all",
-  org: "all",
-  family: "all",
+  families: new Set(),
   frontier: true,
   spread: false,
   ratio: 3,
@@ -103,8 +102,7 @@ function fmtVotes(v) {
 
 function filtered() {
   let rows = DATA;
-  if (state.org !== "all") rows = rows.filter((d) => orgOf(d) === state.org);
-  if (state.family !== "all") rows = rows.filter((d) => familyOf(d) === state.family);
+  if (state.families.size) rows = rows.filter((d) => state.families.has(orgOf(d) + "|" + familyOf(d)));
   if (state.vision === "vision") rows = rows.filter((d) => d.vision);
   return rows;
 }
@@ -417,6 +415,208 @@ function renderFooter() {
     ((META && META.fetched_at) || "—");
 }
 
+// Org/family accordion panel (plan 004 D3): multi-select tree — a leaf is
+// "org|family"; an org row toggles all its children (union semantics, no
+// exclusions); the searcher filters tree nodes only (model search is 010's).
+let OF_PER = null;
+let OF_ROWS = null;
+const OF_EXPANDED = new Set();
+
+function buildOfPanel() {
+  OF_PER = {};
+  for (const d of DATA) {
+    const o = orgOf(d), f = familyOf(d);
+    OF_PER[o] = OF_PER[o] || {};
+    OF_PER[o][f] = (OF_PER[o][f] || 0) + 1;
+  }
+  OF_ROWS = { org: {}, leaf: {} };
+  const panel = document.getElementById("of-panel");
+  const search = document.createElement("input");
+  search.type = "search";
+  search.className = "ofsearch";
+  search.id = "of-search";
+  search.placeholder = "Filter orgs & families…";
+  search.setAttribute("aria-label", "filter orgs and families");
+  panel.appendChild(search);
+  const tree = document.createElement("div");
+  tree.id = "of-tree";
+  panel.appendChild(tree);
+  for (const o of Object.keys(ORG_COLOR)) {
+    const fams = OF_PER[o];
+    if (!fams) continue;
+    const total = Object.values(fams).reduce((x, y) => x + y, 0);
+    const org = document.createElement("div");
+    org.className = "oforg";
+    org.dataset.org = o;
+    org.setAttribute("role", "button");
+    org.setAttribute("tabindex", "0");
+    const chev = document.createElement("button");
+    chev.className = "ofchev";
+    chev.textContent = "▸";
+    chev.setAttribute("aria-label", "expand " + o);
+    const name = document.createElement("span");
+    name.className = "ofname";
+    name.textContent = o;
+    const count = document.createElement("span");
+    count.className = "ofcount";
+    count.textContent = String(total);
+    const chip = document.createElement("span");
+    chip.className = "ofchip";
+    org.appendChild(chev);
+    org.appendChild(name);
+    org.appendChild(count);
+    org.appendChild(chip);
+    const kids = document.createElement("div");
+    kids.className = "offams hidden";
+    kids.dataset.kids = o;
+    for (const f of Object.keys(fams).sort((a, b) => fams[b] - fams[a] || a.localeCompare(b))) {
+      const row = document.createElement("div");
+      row.className = "offam";
+      row.dataset.key = o + "|" + f;
+      row.setAttribute("role", "button");
+      row.setAttribute("tabindex", "0");
+      const fname = document.createElement("span");
+      fname.className = "ofname";
+      fname.textContent = f;
+      const fcount = document.createElement("span");
+      fcount.className = "ofcount";
+      fcount.textContent = String(fams[f]);
+      const fchip = document.createElement("span");
+      fchip.className = "ofchip";
+      row.appendChild(fname);
+      row.appendChild(fcount);
+      row.appendChild(fchip);
+      OF_ROWS.leaf[o + "|" + f] = { row, chip: fchip };
+      kids.appendChild(row);
+    }
+    OF_ROWS.org[o] = { row: org, kids, chip, chev };
+    tree.appendChild(org);
+    tree.appendChild(kids);
+  }
+}
+
+function toggleOfOpen(o, force) {
+  const open = force !== undefined ? force : !OF_EXPANDED.has(o);
+  if (open) OF_EXPANDED.add(o);
+  else OF_EXPANDED.delete(o);
+  OF_ROWS.org[o].kids.classList.toggle("hidden", !open);
+  OF_ROWS.org[o].chev.classList.toggle("open", open);
+}
+
+function applyOfSearch() {
+  const q = document.getElementById("of-search").value.trim().toLowerCase();
+  for (const [o, fams] of Object.entries(OF_PER)) {
+    const org = OF_ROWS.org[o];
+    const orgHit = !q || o.toLowerCase().includes(q);
+    let kidHits = 0;
+    for (const f of Object.keys(fams)) {
+      const hit = orgHit || f.toLowerCase().includes(q);
+      OF_ROWS.leaf[o + "|" + f].row.classList.toggle("hidden", q ? !hit : false);
+      if (hit) kidHits++;
+    }
+    org.row.classList.toggle("hidden", q ? !(orgHit || kidHits) : false);
+    const open = q ? kidHits > 0 : OF_EXPANDED.has(o);
+    org.kids.classList.toggle("hidden", !open);
+    org.chev.classList.toggle("open", open);
+  }
+}
+
+function updateOfPanel() {
+  let models = 0;
+  for (const [o, fams] of Object.entries(OF_PER)) {
+    const keys = Object.keys(fams);
+    let on = 0;
+    for (const f of keys) {
+      const act = state.families.has(o + "|" + f);
+      if (act) {
+        models += fams[f];
+        on++;
+      }
+      const leaf = OF_ROWS.leaf[o + "|" + f];
+      leaf.row.classList.toggle("on", act);
+      leaf.chip.textContent = act ? "on" : "";
+    }
+    const full = on === keys.length;
+    const org = OF_ROWS.org[o];
+    org.row.classList.toggle("on", full);
+    org.row.classList.toggle("part", on > 0 && !full);
+    org.chip.textContent = full ? "on" : on > 0 ? "part" : "";
+  }
+  const badge = document.getElementById("of-badge");
+  badge.textContent = models ? String(models) : "";
+  badge.classList.toggle("hidden", !models);
+}
+
+function toggleOfLeaf(key) {
+  if (state.families.has(key)) state.families.delete(key);
+  else state.families.add(key);
+  updateOfPanel();
+  render();
+}
+
+function toggleOfOrg(o) {
+  const keys = Object.keys(OF_PER[o] || {}).map((f) => o + "|" + f);
+  const all = keys.every((k) => state.families.has(k));
+  for (const k of keys) {
+    if (all) state.families.delete(k);
+    else state.families.add(k);
+  }
+  updateOfPanel();
+  render();
+}
+
+function bindOfPanel() {
+  const ofToggle = document.getElementById("of-toggle");
+  const ofPanel = document.getElementById("of-panel");
+  const setOfOpen = (open) => {
+    ofPanel.classList.toggle("hidden", !open);
+    ofToggle.classList.toggle("on", open);
+    ofToggle.setAttribute("aria-expanded", String(open));
+    if (open) document.getElementById("of-search").focus();
+  };
+  ofToggle.addEventListener("click", (e) => {
+    e.stopPropagation();
+    setOfOpen(ofPanel.classList.contains("hidden"));
+  });
+  document.addEventListener("click", (e) => {
+    if (!ofPanel.classList.contains("hidden") && !ofPanel.contains(e.target) && !ofToggle.contains(e.target)) {
+      setOfOpen(false);
+    }
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape" || ofPanel.classList.contains("hidden")) return;
+    const q = document.getElementById("of-search");
+    if (document.activeElement === q && q.value) {
+      q.value = "";
+      applyOfSearch();
+      return;
+    }
+    setOfOpen(false);
+  });
+  const ofActivate = (e) => {
+    const chev = e.target.closest(".ofchev");
+    if (chev) {
+      toggleOfOpen(chev.parentElement.dataset.org);
+      return;
+    }
+    const fam = e.target.closest(".offam");
+    if (fam) {
+      toggleOfLeaf(fam.dataset.key);
+      return;
+    }
+    const org = e.target.closest(".oforg");
+    if (org) toggleOfOrg(org.dataset.org);
+  };
+  ofPanel.addEventListener("click", ofActivate);
+  ofPanel.addEventListener("keydown", (e) => {
+    if ((e.key === "Enter" || e.key === " ") && e.target.closest(".oforg,.offam")) {
+      e.preventDefault();
+      ofActivate(e);
+    }
+  });
+  document.getElementById("of-search").addEventListener("input", applyOfSearch);
+}
+
 function bindFilters() {
   const segMode = document.getElementById("seg-mode");
   segMode.addEventListener("click", (e) => {
@@ -436,6 +636,7 @@ function bindFilters() {
     state.vision = b.getAttribute("data-vision");
     render();
   });
+  bindOfPanel();
   const spreadTgl = document.getElementById("tgl-spread");
   spreadTgl.addEventListener("click", () => {
     state.spread = !state.spread;
@@ -482,6 +683,7 @@ async function main() {
     return;
   }
   ORG_COLOR = buildOrgColors(DATA);
+  buildOfPanel();
   renderFooter();
   bindFilters();
   render();
