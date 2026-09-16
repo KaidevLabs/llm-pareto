@@ -72,12 +72,13 @@ function pointsFor(priceKey, rows) {
       skipped++;
       continue;
     }
-    pts.push({ value: [d.arena_elo, d[priceKey]], d });
+    pts.push({ value: [d[priceKey], d.arena_elo], d });
   }
   return { pts, skipped };
 }
 
-// Pareto frontier: no other point has both >= elo and <= price.
+// Pareto frontier: no other point has both lower price and higher elo.
+// points are [price, elo]; the frontier trades lower price for lower elo.
 function paretoFrontier(pts) {
   const out = [];
   for (const p of pts) {
@@ -85,9 +86,9 @@ function paretoFrontier(pts) {
     for (const q of pts) {
       if (q === p) continue;
       if (
-        q.value[0] >= p.value[0] &&
-        q.value[1] <= p.value[1] &&
-        (q.value[0] > p.value[0] || q.value[1] < p.value[1])
+        q.value[0] <= p.value[0] &&
+        q.value[1] >= p.value[1] &&
+        (q.value[0] < p.value[0] || q.value[1] > p.value[1])
       ) {
         dominated = true;
         break;
@@ -95,7 +96,7 @@ function paretoFrontier(pts) {
     }
     if (!dominated) out.push(p);
   }
-  out.sort((a, b) => b.value[0] - a.value[0]);
+  out.sort((a, b) => a.value[0] - b.value[0]);
   return out;
 }
 
@@ -187,7 +188,7 @@ function chartOption(label, pts, frontier) {
   return {
     backgroundColor: "transparent",
     animationDuration: 450,
-    grid: { left: 64, right: 24, top: 26, bottom: 46 },
+    grid: { left: 58, right: 24, top: 26, bottom: 56 },
     tooltip: {
       backgroundColor: "rgba(10,14,23,0.94)",
       borderColor: "rgba(148,163,184,0.25)",
@@ -198,20 +199,10 @@ function chartOption(label, pts, frontier) {
       formatter: (p) => (p.seriesName === "models" ? tooltipHTML(p.data) : p.tooltip),
     },
     xAxis: {
-      type: "value",
-      name: "Arena Elo",
-      nameLocation: "middle",
-      nameGap: 30,
-      nameTextStyle: { color: "#8b98ab", fontSize: 11 },
-      axisLine: { show: true, lineStyle: { color: "rgba(148,163,184,0.25)" } },
-      axisLabel: { color: "#8b98ab", fontSize: 11 },
-      splitLine: { lineStyle: { color: "rgba(148,163,184,0.07)" } },
-    },
-    yAxis: {
       type: "log",
       name: label,
       nameLocation: "middle",
-      nameGap: 48,
+      nameGap: 38,
       nameTextStyle: { color: "#8b98ab", fontSize: 11 },
       axisLine: { show: true, lineStyle: { color: "rgba(148,163,184,0.25)" } },
       axisLabel: {
@@ -219,6 +210,16 @@ function chartOption(label, pts, frontier) {
         fontSize: 11,
         formatter: (v) => (v >= 1 ? "$" + v : "$" + v.toFixed(2)),
       },
+      splitLine: { lineStyle: { color: "rgba(148,163,184,0.07)" } },
+    },
+    yAxis: {
+      type: "value",
+      name: "Arena Elo",
+      nameLocation: "middle",
+      nameGap: 40,
+      nameTextStyle: { color: "#8b98ab", fontSize: 11 },
+      axisLine: { show: true, lineStyle: { color: "rgba(148,163,184,0.25)" } },
+      axisLabel: { color: "#8b98ab", fontSize: 11 },
       splitLine: { lineStyle: { color: "rgba(148,163,184,0.07)" } },
     },
     series,
