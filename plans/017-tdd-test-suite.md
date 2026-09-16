@@ -1,7 +1,7 @@
 # 017 — TDD discipline + test suite (unittest baseline, node:test principle)
 
-Date: 2026-09-16. **Status: EXECUTING — step 1/5 executed (baseline suite committed);
-steps 2–5 pending.**
+Date: 2026-09-16. **Status: EXECUTING — steps 1–2/5 executed (suite + AGENTS.md
+Testing section committed); step 3 next.**
 Source: owner request (session, 2026-09-16) — the agent probes in `.tmp/` instead of
 test-first; make plan execution start at tests. No backlog item.
 Amendment 2026-09-16 (owner directive mid-step-1): the README gains a Tests
@@ -77,7 +77,9 @@ and the `plans` skill stops letting seam declaration be silently skipped.
 5. Close: full suite green + `python3 update.py` sanity run (no diff surprises)
    + DoD audit. (Verification-only.)
 
-## As-built — step 1 (2026-09-16, commit a514f4d)
+## As-built
+
+### Step 1 (2026-09-16, commit a514f4d)
 
 - 54 tests: test_normalize (12), test_match_join (18), test_validate (16),
   test_parse_arena (9). `discover -s tests` green in ~0.01s; all three
@@ -95,6 +97,20 @@ and the `plans` skill stops letting seam declaration be silently skipped.
     via prefix-base to `openai/gpt-5.5`.
 - Probes (`.tmp/`) deleted; their assertions live on as kept tests.
 - README Tests section added per owner directive (see amendment above).
+
+### Step 2 (2026-09-16, commit 497eccc)
+
+- AGENTS.md's stale Verification section ("No test suite exists") replaced
+  by **Testing**: suite + the three command forms, `test_<unit>.py` layout,
+  characterization discipline (red-after-change = review signal, red→green
+  via the `tdd` skill), synthetic-fixture convention, the A2 node:test
+  one-liner, and the verification hierarchy (suite → `update.py` run →
+  reviewed diff, `meta.json` first).
+- The single-test example command was verified against the live suite.
+- Resolves diagnosis #2: the `tdd` skill's "repo's testing rules (its agent
+  guidelines)" reference now lands on real rules. The skill's own rework
+  (explicit reference + test-first/fail-fast rules) is step 3; DoD item 4
+  stays unchecked until then.
 
 ## Out of scope
 
