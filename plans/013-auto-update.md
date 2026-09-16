@@ -1,13 +1,16 @@
 # 013 — Automated update + deploy (cron)
 
-Date: 2026-09-16. **Status: PROPOSED — not reviewed, not executed.**
+Date: 2026-09-16. **Status: EXECUTING (step 1/3; step 4 is post-review).**
 Source: `plans/archive/003-exploration-backlog.md` item B10 + its exploration findings.
 
 Unattended `update.py` refresh on a schedule, with controlled deploy semantics
 — amending the A1/A8 "manual updates only" convention by explicit owner
 decision. A failed run deploys nothing; the site always serves last-good data.
 
-## Proposed decisions (settled at owner review)
+Owner approved execution 2026-09-17 (DoD item 1; "Execute plan
+@plans/013-auto-update.md" + step-level staging).
+
+## Settled decisions (owner-approved 2026-09-17 — do not revisit)
 
 | # | decision | rationale |
 |---|----------|-----------|
@@ -50,6 +53,19 @@ weekly-ish manual review is enough for now).
    final failure. Verification: `python3 update.py` green; simulate a 5xx
    (scratch) and confirm the retry.
    Commit: `update: retry transient fetch failures`
+   — **✅ COMPLETE (committed 3c5d823, 2026-09-17)**
+   As-built: 3 attempts total (1 initial + 2 retries); backoff 2s → 4s
+   (RETRY_BASE_DELAY doubled per retry); retry set = HTTP 5xx, 429, timeouts,
+   connection-level errors (URLError/ConnectionError) — 429 added beyond
+   D5's "5xx/timeout" as transient (flagged to the owner at step-1 review;
+   staged and accepted);
+   other 4xx fail fast with no sleep. Each retry prints to stdout (Actions
+   log, D6); final failure keeps the original die() message. 8 new
+   characterization tests at the update.fetch seam (tests/test_fetch.py,
+   urlopen/sleep mocked); suite 105 → 113. Verified: full suite green; live
+   run green (1.6 s, real drift caught and left to the next data commit per
+   B10 precedent); simulated 503 on first attempt → retry line in log after
+   2 s → success, payload intact.
 2. `.github/workflows/update-data.yml`: schedule (D4) + dispatch; checkout,
    setup-python, `python3 update.py` (match report to the log, non-zero = red);
    D3 gate; PR creation (D2) with the match report in the PR body.
@@ -68,7 +84,9 @@ weekly-ish manual review is enough for now).
 
 ## Definition of done
 
-- [ ] Owner approves this plan (D1–D6) in a review session.
+- [x] Owner approves this plan (D1–D6) in a review session. (2026-09-17:
+      "Execute plan @plans/013-auto-update.md" + step-level staging; D1–D6 as
+      proposed, no amendments)
 - [ ] A scheduled run produces a green Actions run + a PR when data changed, and a no-op green run when nothing changed.
 - [ ] A failing run (forced 5xx / threshold violation) leaves no PR and no deploy; the site serves last-good data.
 - [ ] A merged PR auto-deploys via the CF git-integration (verified live).
