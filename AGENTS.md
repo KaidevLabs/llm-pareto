@@ -34,3 +34,13 @@ LMArena frontier models ranked by quality (Elo) against OpenRouter pricing, Pare
 - No formatter or linter is configured — keep Python PEP 8-clean by hand.
 - Commit style: `<type>: <message>` — data, chart, docs, deploy, init.
 - Scratch and throwaway files go in `.tmp/`, never the repo root or source dirs.
+- Cookieless (plan 020, settled 2026-09-17): the site sets no cookies, so
+  no GDPR consent mechanism is required — and must stay that way. Rules:
+  no runtime third parties (019 vendored echarts + self-hosted Inter);
+  inline JS never reaches for `document.cookie`/`localStorage`/
+  `sessionStorage`/`IndexedDB` (grep before commit); CF zone features that
+  can set cookies (challenge actions → `__cf_bm`, Transform Rules
+  `Set-Cookie`, Turnstile) stay off — or use `block`, never `challenge`;
+  re-run the cookie probe at every deploy (cookie-jar curl over `/` plus
+  every asset the HTML references, desktop + curl + mobile UAs — recipe in
+  plans/archive/020-cookie-exploration.md).
