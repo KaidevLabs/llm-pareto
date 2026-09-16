@@ -1,8 +1,13 @@
 # 017 — TDD discipline + test suite (unittest baseline, node:test principle)
 
-Date: 2026-09-16. **Status: PROPOSED — not reviewed, not executed.**
+Date: 2026-09-16. **Status: EXECUTING — step 1/5 executed (baseline suite committed);
+steps 2–5 pending.**
 Source: owner request (session, 2026-09-16) — the agent probes in `.tmp/` instead of
 test-first; make plan execution start at tests. No backlog item.
+Amendment 2026-09-16 (owner directive mid-step-1): the README gains a Tests
+section (suite layout + commands) and a `tests/` layout line, so the testing
+rules are discoverable from the repo entry point — committed with the
+step-1 code.
 
 Make TDD actually happen: plan execution starts at a failing test at a declared
 seam and ends with kept tests, instead of throwaway `.tmp/` probes. This needs
@@ -72,6 +77,25 @@ and the `plans` skill stops letting seam declaration be silently skipped.
 5. Close: full suite green + `python3 update.py` sanity run (no diff surprises)
    + DoD audit. (Verification-only.)
 
+## As-built — step 1 (2026-09-16, commit a514f4d)
+
+- 54 tests: test_normalize (12), test_match_join (18), test_validate (16),
+  test_parse_arena (9). `discover -s tests` green in ~0.01s; all three
+  planned invocation forms work from repo root; no `__init__.py` or
+  sys.path boilerplate needed (`python -m` puts the cwd on sys.path).
+- No bug exposed — every behavior rational, pinned as-is. Findings locked
+  by tests:
+  - `:(batch|free)$` tier stripping was never generic (regex unchanged since
+    init 18c68c5); the earlier "generic :token" note (memory #341) was
+    stale — corrected. `foo:nodebug` keeps its colon.
+  - Space removal inserts no dashes (`Claude Sonnet 4.5 (Thinking)` →
+    `claudesonnet4-5`): spaced arena names join only via fuzzy — e.g.
+    `Mistral Medium` → `mistral-medium` at 0.96, just over the 0.95 gate.
+  - `-medium`/`-low` survive normalization, yet `gpt-5.5-low` still joins
+    via prefix-base to `openai/gpt-5.5`.
+- Probes (`.tmp/`) deleted; their assertions live on as kept tests.
+- README Tests section added per owner directive (see amendment above).
+
 ## Out of scope
 
 - ESM split / any JS tests now (A2 — candidate trigger: 004 org/family filter).
@@ -81,11 +105,13 @@ and the `plans` skill stops letting seam declaration be silently skipped.
 
 ## Definition of done
 
-- [ ] Owner approves this plan (A1–A4) in a review session.
-- [ ] `python3 -m unittest discover -s tests -v` green; covers normalize,
+- [x] Owner approves this plan (A1–A4) in a review session. (owner execute
+      directive, session 2026-09-16)
+- [x] `python3 -m unittest discover -s tests -v` green; covers normalize,
       match/join, validate thresholds, parse_arena; fixtures synthetic.
-- [ ] Suite passes against current `update.py` with **zero** `update.py` edits
-      (git diff shows none).
+      (54 tests green, 2026-09-16)
+- [x] Suite passes against current `update.py` with **zero** `update.py` edits
+      (git diff shows none). (commit a514f4d touched tests/ + README only)
 - [ ] AGENTS.md Testing section exists; `tdd` skill references it instead of
       dangling; no "repo testing rules" dead end.
 - [ ] `plans` skill: seams mandatory-or-explicit for behavior-changing steps.
