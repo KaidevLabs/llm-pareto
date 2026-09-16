@@ -14,6 +14,8 @@ const OVERRIDE = "#ffd166";
 const state = {
   mode: "general",
   vision: "all",
+  org: "all",
+  family: "all",
   frontier: true,
   spread: false,
   ratio: 3,
@@ -43,6 +45,40 @@ function buildOrgColors(data) {
   return map;
 }
 
+// Model family, derived mechanically from the OpenRouter display name
+// (plan 004 D1'; owner directive: families are 100% source-derived, no
+// hand-curated map). From or_name: drop parentheticals and the "Org: "
+// prefix, drop date and size tokens; a single letter+digit token reduces
+// to the letter ("o1" -> "O"), a word+digit token keeps letters plus the
+// major version ("Qwen3.5" -> "Qwen3", "GPT-5.6" -> "GPT-5"), otherwise
+// the leading word plus a following word ("Claude Opus"). Families follow
+// the source: when OR renames a line, they move on the next data refresh.
+const FAMILY_NOISE = new Set(["instruct", "thinking", "preview", "latest", "chat", "beta"]);
+
+function familyOf(d) {
+  const body = (d.or_name || "")
+    .replace(/\([^)]*\)/g, " ")
+    .replace(/^[A-Za-z0-9 .&'-]+:\s*/, "")
+    .trim();
+  if (!body) return orgOf(d);
+  const parts = body.split(/[\s-]+/).filter(Boolean);
+  const join = body.split(" ")[0].includes("-") ? "-" : " ";
+  const isVer = (t) => /^\d+(\.\d+)*[a-z]{0,2}$/i.test(t);
+  const isSize = (t) => /^\d+x?\d*b$/i.test(t) || /^[a-z]\d+b$/i.test(t);
+  const isDate = (t) => /^\d{4}$/.test(t);
+  const isWord = (t) => !!t && !isVer(t) && !isSize(t) && !isDate(t) && !FAMILY_NOISE.has(t.toLowerCase());
+  const major = (t) => /\d+(\.\d+)*/.exec(t)[0].split(".")[0];
+  const t0 = parts[0];
+  let m;
+  if ((m = /^([a-z])\d/i.exec(t0))) return m[1].toUpperCase();
+  if ((m = /^([a-z]{2,})\d/i.exec(t0))) return t0.slice(0, m[1].length) + major(t0);
+  const t1 = parts[1];
+  if (t1 && isVer(t1)) return t0 + join + major(t1);
+  if (t1 && /^[a-z]\d/i.test(t1)) return t0 + join + t1[0].toUpperCase();
+  const w = [t1, ...parts.slice(2)].find(isWord);
+  return w ? t0 + join + w.replace(/\+/g, "") : t0;
+}
+
 function withAlpha(hex, a) {
   const r = parseInt(hex.slice(1, 3), 16);
   const g = parseInt(hex.slice(3, 5), 16);
@@ -66,8 +102,11 @@ function fmtVotes(v) {
 }
 
 function filtered() {
-  if (state.vision !== "vision") return DATA;
-  return DATA.filter((d) => d.vision);
+  let rows = DATA;
+  if (state.org !== "all") rows = rows.filter((d) => orgOf(d) === state.org);
+  if (state.family !== "all") rows = rows.filter((d) => familyOf(d) === state.family);
+  if (state.vision === "vision") rows = rows.filter((d) => d.vision);
+  return rows;
 }
 
 // Blended $/M for the current input:output mix; falls back to the one
