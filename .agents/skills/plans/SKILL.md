@@ -35,7 +35,7 @@ The lifecycle for non-trivial work: **Eureka** (discover) → **Planning** (writ
 - **As-built record** — written at close: what actually happened, deviations, owner decisions made mid-review.
 - **Spec** — the files to create or edit, the changes, and "not touched in this step" for everything adjacent.
 - **Verification** — the exact commands (and grep audits) that prove the step is done.
-- **Seams under test** (optional) — for behavior-changing steps: the public boundaries the step's tests exercise, confirmed at owner review. The step's TDD loop never tests outside these.
+- **Seams under test** — for behavior-changing steps: the public boundaries the step's tests exercise, confirmed at owner review. The step's TDD loop never tests outside these. Mandatory: declared seams **or** an explicit `no tests: <reason>` line the owner reviews — a behavior-changing step never ships silently untested.
 
 ## Status vocabulary
 
@@ -62,7 +62,7 @@ Write `00-overview.md` and all step files, then commit them — the plan enters 
 
 Resume protocol: read the overview (status + execution order), verify the previous steps' code commits and plan commits exist, verify the tree is clean — then implement only that step.
 
-Behavior-changing steps with declared seams are driven by the `tdd` skill: red → green in vertical slices at the declared seams, the single test file after every cycle, the step's full verification at close. Steps without seams follow their verification directly.
+Behavior-changing steps with declared seams are driven by the `tdd` skill: red → green in vertical slices at the declared seams, the single test file after every cycle, the step's full verification at close. Behavior-changing steps with a `no tests:` opt-out, and non-behavior-changing steps, follow their verification directly.
 
 Step close — two commits, in order, automatic on the owner's commit signal. The owner reviews the diff and stages the code; that signal is the close signal. The agent then:
 
