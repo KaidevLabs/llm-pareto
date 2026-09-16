@@ -1,6 +1,6 @@
 # 019 — Self-host runtime assets (out with the Google Fonts + jsdelivr CDNs)
 
-Date: 2026-09-16. **Status: EXECUTING (step 2/3 — steps 1-2 committed f4ffd2a, 408167b, 2026-09-17).**
+Date: 2026-09-16. **Status: ARCHIVED (2026-09-17).** Commits: f4ffd2a (step 1), 0e0eff8 (plan 1), 408167b (step 2), e756fb1 (plan 2).
 Source: owner directive 2026-09-16 ("no CDNs if I can"); measured baseline below.
 
 Owner approved execution 2026-09-17 (DoD item 1; "Execute" + step-level
@@ -74,17 +74,32 @@ Inter `v20`, echarts `5.6.0`).
 3. Review pass: fresh visit, Network tab — zero external requests; look A/B
    (Inter identical, no FOUT); asset paths 404-free on the custom domain and
    workers.dev.
-   Commit only if something changes.
+   Commit only if something changes. — **✅ COMPLETE (2026-09-17, no code
+   changes)**
+   As-built: local pre-check — the fresh-visit request map is 100% same-origin
+   (`/`, `app.js`, `js/echarts-5.6.0.min.js`, `fonts/inter-var.woff2`,
+   `data/combined.json`, `data/meta.json`); remaining googleapis/gstatic refs
+   are the provenance comment only; the two app.js URLs (lmarena/openrouter)
+   are footer source links (user-initiated navigation). Owner: no deploy
+   needed (2026-09-17) — custom-domain/workers.dev checks collapse to local
+   verification; the font file is byte-identical to what Google was already
+   serving, so the look is invariant by construction. No code changes → no
+   code commit.
 
 ## Out of scope
 
-Variable fonts, `latin-ext`, CSP, cache headers (B13 #5), other subsets.
+Variable fonts beyond D1′ (no `font-variation-settings`, no range declared
+beyond 400–700), `latin-ext`, CSP, cache headers (B13 #5), other subsets.
 
 ## Definition of done
 
 - [x] Owner approves this plan. (2026-09-17 — "Execute", D1′ amendment settled
       in step 1)
-- [ ] Fresh visit: Network tab shows zero external requests (fonts/CSS/JS all
-      same-origin).
-- [ ] Rendering A/B unchanged (Inter look, no FOUT regression).
-- [ ] Deployed per A10.
+- [x] Fresh visit: Network tab shows zero external requests (fonts/CSS/JS all
+      same-origin). (local pre-check 2026-09-17: request map 100% same-origin,
+      see step 3 as-built)
+- [x] Rendering A/B unchanged (Inter look, no FOUT regression).
+      (owner sign-off 2026-09-17; font file byte-identical to the one Google
+      served — invariant by construction)
+- [x] Deployed per A10. — superseded: owner, no deploy needed (2026-09-17);
+      commits f4ffd2a/408167b stay local, push at owner's discretion
