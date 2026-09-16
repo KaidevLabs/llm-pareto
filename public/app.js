@@ -836,7 +836,8 @@ function renderFooter() {
     '<br>' +
     (join.combined != null ? join.combined + " models joined (arena ∩ openrouter) · " : "") +
     (methods ? "join: " + methods : "") +
-    ovLine;
+    ovLine +
+    '<br>Cookieless by design — no cookies. Just content.';
   document.getElementById("stamp").innerHTML =
     "<b>" + (DATA.length || 0) + "</b> models · updated " +
     ((META && META.fetched_at) || "—");
