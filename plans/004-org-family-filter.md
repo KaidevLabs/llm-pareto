@@ -1,6 +1,6 @@
 # 004 — Org → family filter (dashboard)
 
-Date: 2026-09-16. **Status: EXECUTING — approved by owner 2026-09-16 (steps 1–2 executed; step 3 review pass remains).**
+Date: 2026-09-16. **Status: EXECUTING — steps 1–3 executed (step 3 review pass: no code changes needed); deploy per A10 pending.**
 Source: `plans/archive/002-exploration-backlog.md` item B1 + its exploration findings.
 Amendment 2026-09-16 (owner directive mid-step-1): families must be 100%
 source-derived — generated from the OpenRouter display name, nothing hand-fixed
