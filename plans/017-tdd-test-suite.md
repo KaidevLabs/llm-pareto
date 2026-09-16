@@ -1,7 +1,7 @@
 # 017 — TDD discipline + test suite (unittest baseline, node:test principle)
 
-Date: 2026-09-16. **Status: EXECUTING — steps 1–3/5 executed (suite, AGENTS.md
-Testing, tdd skill rework committed); step 4 next.**
+Date: 2026-09-16. **Status: EXECUTING — steps 1–4/5 executed (suite, AGENTS.md
+Testing, tdd skill, plans skill committed); step 5 (close audit) remaining.**
 Source: owner request (session, 2026-09-16) — the agent probes in `.tmp/` instead of
 test-first; make plan execution start at tests. No backlog item.
 Amendment 2026-09-16 (owner directive mid-step-1): the README gains a Tests
@@ -129,6 +129,15 @@ and the `plans` skill stops letting seam declaration be silently skipped.
   and Rhythm bullet now name "AGENTS.md, Testing section" explicitly; the
   foreign example command (`... test --compact ...`) is gone.
 
+### Step 4 (2026-09-16, commit 62cc5a1)
+
+- `plans` skill, "Seams under test": `(optional)` dropped — a behavior-
+  changing step declares seams **or** carries an explicit `no tests: <reason>`
+  line the owner reviews; "never ships silently untested."
+- Lifecycle consistency: the Executing section's "steps without seams follow
+  their verification directly" (the backdoor around the new rule) now routes
+  only `no tests:` opt-outs and non-behavior-changing steps down that path.
+
 ## Out of scope
 
 - ESM split / any JS tests now (A2 — candidate trigger: 004 org/family filter).
@@ -148,6 +157,7 @@ and the `plans` skill stops letting seam declaration be silently skipped.
 - [x] AGENTS.md Testing section exists; `tdd` skill references it instead of
       dangling; no "repo testing rules" dead end. (AGENTS.md 497eccc; tdd
       skill 6b8042f names "AGENTS.md, Testing section" in intro + Rhythm)
-- [ ] `plans` skill: seams mandatory-or-explicit for behavior-changing steps.
+- [x] `plans` skill: seams mandatory-or-explicit for behavior-changing steps.
+      (62cc5a1: `(optional)` dropped + lifecycle backdoor closed)
 - [ ] Observable at the next behavior-changing plan's review: its steps ran
       red → green (kept tests exist afterwards).
