@@ -11,6 +11,14 @@ const ORG_FALLBACK = "#64748b";
 const FRONTIER = "#34d399";
 const OVERRIDE = "#ffd166";
 
+// org -> logo filename in assets/logos/ (plan 007 D3/D8). Comes from
+// meta.json (written by update.py from the logos.json registry), so a new
+// org's logo needs no change here — the path is derived mechanically.
+function logoFor(org) {
+  const f = (META && META.logos || {})[org];
+  return f ? "assets/logos/" + f : null;
+}
+
 // Chart grid insets (single source: axis geometry the y-strip wheel handler
 // needs too) and per-panel zoom windows captured across re-renders (018 A2).
 const GRID = { left: 58, right: 24, top: 26, bottom: 56 };
@@ -59,11 +67,17 @@ function buildOrgColors(data) {
 // the source: when OR renames a line, they move on the next data refresh.
 const FAMILY_NOISE = new Set(["instruct", "thinking", "preview", "latest", "chat", "beta"]);
 
-function familyOf(d) {
-  const body = (d.or_name || "")
+// Cleaned OpenRouter display name: parentheticals and the "Org: " prefix
+// stripped. Shared by familyOf and the frontier point labels (plan 007 D5).
+function displayName(d) {
+  return (d.or_name || "")
     .replace(/\([^)]*\)/g, " ")
     .replace(/^[A-Za-z0-9 .&'-]+:\s*/, "")
     .trim();
+}
+
+function familyOf(d) {
+  const body = displayName(d);
   if (!body) return orgOf(d);
   const parts = body.split(/[\s-]+/).filter(Boolean);
   const join = body.split(" ")[0].includes("-") ? "-" : " ";
@@ -159,10 +173,66 @@ function paretoFrontier(pts) {
   return out;
 }
 
-function bubbleSize(votes, lo, hi) {
-  const t = (Math.sqrt(Math.max(votes, 0)) - Math.sqrt(lo)) /
-    (Math.sqrt(hi) - Math.sqrt(lo) || 1);
-  return 5 + Math.max(0, Math.min(1, t)) * 25;
+// Frontier badge (owner A/B 2026-09-16): the logo sits on a dark disc with
+// an org-color ring, composited once per org at load. Compositing it into
+// the symbol image means the hover glow (canvas shadow follows the drawn
+// alpha) halos the disc — the bubble, not the logo.
+const BADGE = {};
+
+function compositeBadge(draw, color) {
+  const c = document.createElement("canvas");
+  c.width = c.height = 256;
+  const x = c.getContext("2d");
+  x.fillStyle = "#0a0e16";
+  x.beginPath();
+  x.arc(128, 128, 112, 0, Math.PI * 2);
+  x.fill();
+  x.strokeStyle = color;
+  x.lineWidth = 12;
+  x.beginPath();
+  x.arc(128, 128, 120, 0, Math.PI * 2);
+  x.stroke();
+  draw(x);
+  return c.toDataURL();
+}
+
+function badgeFromImage(img, color) {
+  return compositeBadge((x) => {
+    const s = Math.min(150 / img.width, 150 / img.height);
+    const w = img.width * s;
+    const h = img.height * s;
+    x.drawImage(img, 128 - w / 2, 128 - h / 2, w, h);
+  }, color);
+}
+
+function fallbackBadge(org) {
+  const letter = (org.trim()[0] || "?").toUpperCase();
+  const color = ORG_COLOR[org] || ORG_FALLBACK;
+  return compositeBadge((x) => {
+    x.fillStyle = color;
+    x.font = "600 110px Inter, sans-serif";
+    x.textAlign = "center";
+    x.textBaseline = "middle";
+    x.fillText(letter, 128, 136);
+  }, color);
+}
+
+async function buildBadges() {
+  const logos = (META && META.logos) || {};
+  await Promise.all(
+    Object.entries(logos).map(async ([org, file]) => {
+      const img = await new Promise((res) => {
+        const i = new Image();
+        i.onload = () => res(i);
+        i.onerror = () => res(null);
+        i.src = "assets/logos/" + file;
+      });
+      // a failed load leaves no badge — the raw logo still renders (soft)
+      BADGE[org] = img
+        ? badgeFromImage(img, ORG_COLOR[org] || ORG_FALLBACK)
+        : null;
+    })
+  );
 }
 
 function tooltipHTML(p) {
@@ -174,8 +244,16 @@ function tooltipHTML(p) {
     d.match_method === "override"
       ? '<div style="color:' + OVERRIDE + '">⚑ manual override — identity fixed by owner decision, price final</div>'
       : "match: " + d.match_method + (d.match_ratio ? " (similarity " + d.match_ratio + ")" : "");
-  const parts = [
-    '<div style="font-weight:600;font-size:13px">' + d.or_name + "</div>",
+    const lg = logoFor(orgOf(d));
+    const parts = [
+    '<div style="font-weight:600;font-size:13px">' +
+      (lg
+        ? '<img src="' +
+          lg +
+          '" width="18" height="18" style="vertical-align:-5px;margin-right:6px;border-radius:3px">'
+        : "") +
+      d.or_name +
+      "</div>",
     '<div style="color:#8b98ab;font-size:11px;margin-bottom:6px">' + d.or_id + "</div>",
     "arena #" + d.arena_rank +
       " · elo " + d.arena_elo.toFixed(1) + ci +
@@ -227,14 +305,14 @@ function fitLog(vals) {
 }
 
 function chartOption(label, pts, frontier, spreadPts, bounds) {
-  const votes = pts.map((p) => p.d.arena_votes || 1);
-  const lo = Math.min.apply(null, votes);
-  const hi = Math.max.apply(null, votes);
+  // Per-panel frontier set (plan 007 D7): the "frontier" tag lives in the
+  // scatter tooltip — the marker-less line has nothing to hover.
+  const frontierSet = new Set(frontier.map((p) => p.d));
   const series = [];
 
   if (spreadPts && spreadPts.length) {
     series.push({
-      name: "spread",
+        name: "spread",
       type: "custom",
       silent: true,
       z: 4,
@@ -277,9 +355,9 @@ function chartOption(label, pts, frontier, spreadPts, bounds) {
       name: "Pareto frontier",
       type: "line",
       data: frontier.map((p) => p.value),
-      symbol: "circle",
-      symbolSize: 7,
-      itemStyle: { color: FRONTIER, borderColor: "#06080d", borderWidth: 1 },
+      // A pure line (plan 007 D1): logos and labels are the scatter's, the
+      // line carries no symbols and no tooltip of its own.
+      symbol: "none",
       lineStyle: {
         color: withAlpha(FRONTIER, 0.85),
         width: 2,
@@ -287,53 +365,127 @@ function chartOption(label, pts, frontier, spreadPts, bounds) {
         shadowBlur: 14,
       },
       z: 6,
-      tooltip: {
-        formatter: (p) => {
-          const pt = frontier[p.dataIndex];
-          return "<b>frontier</b><br>" + tooltipHTML(pt);
-        },
-      },
     });
   }
 
   series.push({
     name: "models",
     type: "scatter",
+    // Frontier points render the org logo + a small permanent name label
+    // (plan 007 D1/D5); everything else is a fixed 10px org-colored circle
+    // (D4 — votes no longer encode in size, tooltip only).
+    labelLayout: { moveOverlap: "shiftY" },
     data: pts.map((p) => {
       const d = p.d;
       const ov = d.match_method === "override";
       const color = ORG_COLOR[orgOf(d)] || ORG_FALLBACK;
+      const org = orgOf(d);
+      const isFrontier = frontierSet.has(d);
+      const logo = logoFor(org);
       return {
         value: p.value,
         d: d,
-        symbolSize: bubbleSize(d.arena_votes, lo, hi),
+        // "image://" (two slashes) is the ECharts image-symbol prefix —
+        // a single "image:" prefix falls through to a rect path and renders
+        // nothing (verified 2026-09-16: the badge drew as an empty box)
+        symbol: isFrontier
+          ? BADGE[org]
+            ? "image://" + BADGE[org]
+            : logo
+              ? "image://" + logo
+              : "image://" + fallbackBadge(org)
+          : "circle",
+        symbolSize: isFrontier ? [24, 24] : 10,
         itemStyle: {
-          color: withAlpha(color, 0.78),
-          borderColor: ov ? OVERRIDE : withAlpha(color, 1),
-          borderWidth: ov ? 2 : 0.6,
-          shadowBlur: d.arena_rank <= 10 ? 10 : 0,
+          color: isFrontier ? "rgba(0,0,0,0)" : withAlpha(color, 0.78),
+          borderColor: ov ? OVERRIDE : isFrontier ? "rgba(0,0,0,0)" : withAlpha(color, 1),
+          borderWidth: ov ? 2 : isFrontier ? 0 : 0.6,
+          // no glow at rest — the owner wants a hard bubble; the glow is
+          // the hover state (and the frontier line keeps its own)
+          shadowBlur: !isFrontier && d.arena_rank <= 10 ? 10 : 0,
           shadowColor: withAlpha(color, 0.5),
+        },
+        label: isFrontier
+          ? {
+              show: true,
+              // per-data `label.text` is silently ignored in 5.6.0 — the
+              // label fell back to the value formatter (price, elo); only
+              // `formatter` renders the custom text (verified 2026-09-16).
+              // Single tone: rich two-tone spans don't paint on 5.6.0 inner
+              // text (chip paints, spans don't — repro'd; 6.1.0 paints) —
+              // revisit only on an echarts upgrade.
+              formatter: () =>
+                (displayName(d) || org) +
+                " (" +
+                Math.round(d.arena_elo) +
+                ")",
+              position: "top",
+              distance: 4,
+              color: "#e2e8f0",
+              fontSize: 9,
+              fontWeight: 600,
+              fontFamily: "Inter, system-ui, sans-serif",
+              // label chip — hard box behind the text so it reads over the
+              // line/points; org-tinted border ties it to its bubble. Sized
+              // as a caption to the 24px badge (slim: tight line box,
+              // x-padded, whisper of a border)
+              backgroundColor: "#0a0e16",
+              borderColor: withAlpha(color, 0.18),
+              borderWidth: 1,
+              borderRadius: 2,
+              padding: [3, 8],
+              lineHeight: 10,
+            }
+          : undefined,
+        emphasis: {
+          // Numeric scale = final-size ratio for scatter symbols (10→16, 24→32).
+          scale: isFrontier ? 32 / 24 : 16 / 10,
+          itemStyle: {
+            color: isFrontier ? "rgba(0,0,0,0)" : withAlpha(color, 0.95),
+            borderColor: ov ? OVERRIDE : withAlpha(color, 1),
+            // the badge bakes its ring into the image — a square itemStyle
+            // border around the badge would read as a box (5.6.0 image
+            // symbols stroke their bounding box)
+            borderWidth: ov ? 2 : isFrontier ? 0 : 1.5,
+            shadowBlur: 18,
+            shadowColor: withAlpha(color, 0.65),
+          },
         },
       };
     }),
-    z: 5,
+    z: 7,
   });
 
   return {
     backgroundColor: "transparent",
     animationDuration: 450,
+    // Gesture updates (wheel/drag/ratio slider) must be instant — the default
+    // 300ms update animation makes continuous zoom/pan trail the cursor (D9).
+    animationDurationUpdate: 0,
     grid: GRID,
-    // TradingView model (018 A3/A4): wheel zooms x (price) natively; wheel on
-    // the y-axis strip zooms Elo via a custom handler; drag pans both. The
-    // y dataZoom's own wheel zoom is off. filterMode 'none' everywhere: the
-    // frontier line is only ever clipped, never re-connected (A4).
+    // Manual gesture model (D9, 018 A3/A4): native inside-dataZoom gestures
+    // are off (the x/y mutex makes a native drag pan x only); wheel = 2D
+    // zoom at cursor, drag = 2D pan, driven by batched dataZoom dispatches.
+    // filterMode 'none' everywhere: the frontier line is only ever clipped,
+    // never re-connected (A4).
     dataZoom: [
-      { type: "inside", xAxisIndex: 0, filterMode: "none" },
+      {
+        type: "inside",
+        xAxisIndex: 0,
+        filterMode: "none",
+        // Wheel is the 2D zoom in bindZoomChart, drag is the 2D pan in
+        // bindPan — the native inside gestures would fight the other
+        // dataZoom through ECharts' interaction mutex (a drag panned x
+        // only, a wheel zoomed one axis only).
+        zoomOnMouseWheel: false,
+        moveOnMouseMove: false,
+      },
       {
         type: "inside",
         yAxisIndex: 0,
         filterMode: "none",
         zoomOnMouseWheel: false,
+        moveOnMouseMove: false,
       },
     ],
     tooltip: {
@@ -343,7 +495,11 @@ function chartOption(label, pts, frontier, spreadPts, bounds) {
       padding: [10, 12],
       textStyle: { color: "#e2e8f0", fontSize: 12 },
       confine: true,
-      formatter: (p) => (p.seriesName === "models" ? tooltipHTML(p.data) : p.tooltip),
+      formatter: (p) =>
+        p.seriesName === "models"
+          ? (frontierSet.has(p.data.d) ? "<b>frontier</b><br>" : "") +
+            tooltipHTML(p.data)
+          : p.tooltip,
     },
     xAxis: {
       type: "log",
@@ -387,45 +543,172 @@ function captureZoom(chart, id) {
 
 function resetZoom(chart, id) {
   ZOOM[id] = { x: { start: 0, end: 100 }, y: { start: 0, end: 100 } };
-  chart.dispatchAction({ type: "dataZoom", dataZoomIndex: 0, start: 0, end: 100 });
-  chart.dispatchAction({ type: "dataZoom", dataZoomIndex: 1, start: 0, end: 100 });
+  chart.dispatchAction({
+    type: "dataZoom",
+    dataZoomIndex: 0,
+    // `batch` is the single-action form for multi-component updates — the
+    // array form (dispatchAction([...])) is silently ignored (5.6.0)
+    batch: [
+      { dataZoomIndex: 0, start: 0, end: 100 },
+      { dataZoomIndex: 1, start: 0, end: 100 },
+    ],
+  });
 }
 
-// Wheel on the y-axis strip zooms Elo anchored at the cursor (ECharts can't
-// scope inside-zoom to the axis strip — 018 A3). Zoom-out clamps at the fit
-// bounds (the axis extent): the fit view is the widest window, axes never
-// rescale behind the viewer (A1/A4).
+// Wheel zooms BOTH axes anchored at the cursor (owner A/B 2026-09-16;
+// replaces the 018 A3 per-axis wheel — native inside-zoom can't do a
+// 2D cursor-anchored zoom, so the gesture is manual on both windows).
+// Zoom-out clamps at the fit bounds: the fit view is the widest window,
+// axes never rescale behind the viewer (A1/A4).
 function bindZoomChart(chart, id) {
   const dom = chart.getDom();
+  // Capture phase: zrender's canvas listeners stopPropagation on wheel
+  // (verified on 5.6.0), so a bubble listener on the chart div never sees
+  // the event — capture on the div fires first.
   chart.on("datazoom", () => captureZoom(chart, id));
+  const windows = () => {
+    const o = chart.getOption();
+    const fitx = o.xAxis[0];
+    const fits = o.yAxis[0];
+    const dz = o.dataZoom;
+    const xz = dz.find((z) => z.xAxisIndex === 0);
+    const yz = dz.find((z) => z.yAxisIndex === 0);
+    return {
+      fitx: { min: fitx.min, max: fitx.max },
+      fits: { min: fits.min, max: fits.max },
+      // dataZoom percents map LINEARLY across [min, max] even on the log
+      // axis (verified against 5.6.0 dispatch behavior)
+      Wmin: fitx.min + (fitx.max - fitx.min) * (xz.start / 100),
+      Wmax: fitx.min + (fitx.max - fitx.min) * (xz.end / 100),
+      Ymin: fits.min + (fits.max - fits.min) * (yz.start / 100),
+      Ymax: fits.min + (fits.max - fits.min) * (yz.end / 100),
+    };
+  };
   dom.addEventListener(
     "wheel",
     (e) => {
-      if (e.offsetX > GRID.left) return; // plot area: ECharts zooms x natively
       e.preventDefault();
-      const y = (p) =>
-        chart.convertFromPixel({ seriesIndex: 0 }, [0, p])[1];
-      const h = dom.clientHeight;
-      const anchor = y(e.offsetY);
-      const top = y(GRID.top);
-      const bot = y(h - GRID.bottom);
+      const w = windows();
+      const [p0, e0] = chart.convertFromPixel({
+        seriesIndex: 0,
+      }, [e.offsetX, e.offsetY]);
       const factor = e.deltaY < 0 ? 0.85 : 1.18;
-      let lo = anchor - (anchor - bot) * factor;
-      let hi = anchor + (top - anchor) * factor;
-      const ext = chart.getOption().yAxis[0];
-      lo = Math.max(lo, ext.min);
-      hi = Math.min(hi, ext.max);
-      if (!(hi > lo)) return;
+      // x: zoom in log space, anchored at the cursor's price
+      const lp = Math.log10(p0);
+      let Wmin = Math.pow(10, lp + (Math.log10(w.Wmin) - lp) * factor);
+      let Wmax = Math.pow(10, lp + (Math.log10(w.Wmax) - lp) * factor);
+      // y: zoom in linear space, anchored at the cursor's elo
+      let Ymin = e0 + (w.Ymin - e0) * factor;
+      let Ymax = e0 + (w.Ymax - e0) * factor;
+      Wmin = Math.max(Wmin, w.fitx.min);
+      Wmax = Math.min(Wmax, w.fitx.max);
+      Ymin = Math.max(Ymin, w.fits.min);
+      Ymax = Math.min(Ymax, w.fits.max);
+      if (Wmax <= Wmin || Ymax <= Ymin) return;
+      // one batched action per event — two sequential dispatches double the
+      // render work per wheel tick (D9)
       chart.dispatchAction({
         type: "dataZoom",
-        dataZoomIndex: 1,
-        startValue: lo,
-        endValue: hi,
+        dataZoomIndex: 0,
+        batch: [
+          { dataZoomIndex: 0, startValue: Wmin, endValue: Wmax },
+          { dataZoomIndex: 1, startValue: Ymin, endValue: Ymax },
+        ],
       });
     },
-    { passive: false }
+    { passive: false, capture: true }
   );
   dom.addEventListener("dblclick", () => resetZoom(chart, id));
+}
+
+// 2D pan (owner A/B 2026-09-16): a drag moves BOTH axis windows — zoom with
+// the wheel (2D, bindZoomChart), then navigate with the cursor. The native
+// inside drag only panned x (the two inside dataZooms fight for the gesture
+// through ECharts' interaction mutex), so the gesture is manual: both
+// windows are translated by the cursor delta and dispatched.
+function bindPan(chart) {
+  const dom = chart.getDom();
+  let drag = null;
+  dom.addEventListener("mousedown", (e) => {
+    if (e.button !== 0) return;
+    const w = dom.clientWidth - GRID.left - GRID.right;
+    const h = dom.clientHeight - GRID.top - GRID.bottom;
+    if (
+      e.offsetX < GRID.left ||
+      e.offsetX > GRID.left + w ||
+      e.offsetY < GRID.top ||
+      e.offsetY > GRID.top + h
+    )
+      return;
+    const fitx = chart.getOption().xAxis[0];
+    const fits = chart.getOption().yAxis[0];
+    const dz = chart.getOption().dataZoom;
+    const xz = dz.find((z) => z.xAxisIndex === 0);
+    const yz = dz.find((z) => z.yAxisIndex === 0);
+    drag = {
+      x0: e.clientX,
+      y0: e.clientY,
+      w,
+      h,
+      fitx: fitx.min,
+      fitxMax: fitx.max,
+      fits: fits.min,
+      fitsMax: fits.max,
+      // current window at gesture start; moves accumulate from this base
+      // (percents map linearly across [min, max], even on the log axis)
+      Wmin: fitx.min + (fitx.max - fitx.min) * (xz.start / 100),
+      Wmax: fitx.min + (fitx.max - fitx.min) * (xz.end / 100),
+      Ymin: fits.min + (fits.max - fits.min) * (yz.start / 100),
+      Ymax: fits.min + (fits.max - fits.min) * (yz.end / 100),
+    };
+    dom.style.cursor = "grabbing";
+    // the tooltip chasing the cursor under a panning view is pure churn
+    // (a reposition per mousemove) — hide it for the gesture (D9)
+    chart.setOption({ tooltip: { show: false } });
+    e.preventDefault();
+  });
+  // Capture phase: zrender stops mousemove bubbling while a button is down
+  // (verified on 5.6.0), so a window/bubble listener never sees the drag.
+  dom.addEventListener(
+    "mousemove",
+    (e) => {
+      if (!drag) return;
+      const dpx = e.clientX - drag.x0;
+      const dpy = e.clientY - drag.y0;
+      // x: log window translates by the delta in log units
+      const k = Math.pow(
+        10,
+        (-dpx / drag.w) * Math.log10(drag.Wmax / drag.Wmin)
+      );
+      let Wmin = drag.Wmin * k;
+      let Wmax = drag.Wmax * k;
+      // y: linear window translates by the delta in elo units
+      const dy = (dpy / drag.h) * (drag.Ymax - drag.Ymin);
+      let Ymin = drag.Ymin + dy;
+      let Ymax = drag.Ymax + dy;
+      // clamp to the fit bounds (the fit view is the widest window, 018 A4)
+      Wmin = Math.max(Wmin, drag.fitx);
+      Wmax = Math.min(Wmax, drag.fitxMax);
+      Ymin = Math.max(Ymin, drag.fits);
+      Ymax = Math.min(Ymax, drag.fitsMax);
+      if (Wmax <= Wmin || Ymax <= Ymin) return;
+      chart.dispatchAction({
+        type: "dataZoom",
+        dataZoomIndex: 0,
+        batch: [
+          { dataZoomIndex: 0, startValue: Wmin, endValue: Wmax },
+          { dataZoomIndex: 1, startValue: Ymin, endValue: Ymax },
+        ],
+      });
+    },
+    { capture: true }
+  );
+  window.addEventListener("mouseup", () => {
+    if (!drag) return;
+    drag = null;
+    dom.style.cursor = "";
+    chart.setOption({ tooltip: { show: true } });
+  });
 }
 
 function renderPanel(panelKey) {
@@ -471,6 +754,7 @@ function renderPanel(panelKey) {
   if (!charts[id]) {
     charts[id] = echarts.init(el, null, { renderer: "canvas" });
     bindZoomChart(charts[id], id);
+    bindPan(charts[id]);
   }
   charts[id].setOption(
     chartOption(axisLabel, pts, frontier, spreadPts, bounds),
@@ -480,19 +764,20 @@ function renderPanel(panelKey) {
   // The zoom window survives the not-Merge setOption (018 A2).
   const z = ZOOM[id];
   if (z) {
+    const batch = [];
     if (z.x)
-      charts[id].dispatchAction({
-        type: "dataZoom",
+      batch.push({
         dataZoomIndex: 0,
         start: z.x.start,
         end: z.x.end,
       });
     if (z.y)
+      batch.push({ dataZoomIndex: 1, start: z.y.start, end: z.y.end });
+    if (batch.length)
       charts[id].dispatchAction({
         type: "dataZoom",
-        dataZoomIndex: 1,
-        start: z.y.start,
-        end: z.y.end,
+        dataZoomIndex: 0,
+        batch,
       });
   }
 
@@ -596,6 +881,16 @@ function buildOfPanel() {
     chev.className = "ofchev";
     chev.textContent = "▸";
     chev.setAttribute("aria-label", "expand " + o);
+    const lg = logoFor(o);
+    if (lg) {
+      const img = document.createElement("img");
+      img.src = lg;
+      img.width = 16;
+      img.height = 16;
+      img.alt = "";
+      img.style.borderRadius = "3px";
+      org.appendChild(img);
+    }
     const name = document.createElement("span");
     name.className = "ofname";
     name.textContent = o;
@@ -798,9 +1093,13 @@ function bindFilters() {
     render();
   });
   for (const key of ["blend", "in", "out"]) {
-    const chart = charts["chart-" + key];
     const pill = document.getElementById("reset-" + key);
-    if (chart && pill) pill.addEventListener("click", () => resetZoom(chart, "chart-" + key));
+    // The chart is lazy (first render of its mode), so look it up on click.
+    if (pill)
+      pill.addEventListener("click", () => {
+        const c = charts["chart-" + key];
+        if (c) resetZoom(c, "chart-" + key);
+      });
   }
   window.addEventListener("resize", () => {
     for (const id of Object.keys(charts)) {
@@ -830,6 +1129,7 @@ async function main() {
     return;
   }
   ORG_COLOR = buildOrgColors(DATA);
+  await buildBadges();
   buildOfPanel();
   renderFooter();
   bindFilters();

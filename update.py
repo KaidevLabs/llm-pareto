@@ -556,7 +556,8 @@ def logos_sync(
     For every org in the data: a missing file with a url gets fetched,
     verified (type, size cap, squareness — SVGs square-normalized on
     write) and placed; a missing url gets a candidate probe. Files land
-    even when flagged manual — the app.js map entry is the gate. The
+    even when flagged manual — the site reads the org->file map from
+    meta.json, so no app-side change is needed for a new logo. The
     registry is rewritten canonically only when the state changed.
     Soft domain: everything reports, nothing raises.
     """
@@ -569,10 +570,7 @@ def logos_sync(
     n_ok = n_manual = n_new = 0
 
     def map_line(org, fname):
-        return (
-            f'  logo: wrote {fname} for "{org}" — '
-            f'app.js:   "{org}": "assets/logos/{fname}",'
-        )
+        return f'  logo: wrote {fname} for "{org}"'
 
     # phase 1 (no network): classify each org and collect the urls to fetch
     plan = {}
@@ -631,7 +629,7 @@ def logos_sync(
                 n_manual += 1
                 lines.append(
                     f'  logo: "{org}": {fpath.name} needs manual normalize '
-                    f"({kind} {detail}) — before the app.js entry"
+                    f"({kind} {detail})"
                 )
             continue
 
@@ -773,6 +771,21 @@ def logos_sync(
     return manifest, lines
 
 
+def logos_for_site(manifest, log_dir):
+    """org -> served filename, for the site map in meta.json.
+
+    Only entries with a file actually on disk: the site derives the
+    asset path mechanically (assets/logos/<file>), so the app needs no
+    map of its own and a new org's logo needs no JS change.
+    """
+    out = {}
+    for org, entry in manifest.items():
+        fname = entry.get("file")
+        if fname and (log_dir / fname).exists():
+            out[org] = fname
+    return out
+
+
 # ---------------------------------------------------------- validation
 
 def validate(arena_entries, or_models, combined, unmatched):
@@ -860,6 +873,13 @@ def main():
 
     validate(arena_entries, or_models, combined, unmatched)
 
+    # logos (soft domain: reports, never dies — plan 007 D8); runs before
+    # the meta write so the org->file map lands in meta.json
+    logo_orgs = sorted({c["arena_org"] for c in combined if c.get("arena_org")})
+    logo_manifest, logo_lines = logos_sync(
+        logo_orgs, load_logos(LOGOS_PATH), LOGOS_DIR, LOGOS_PATH
+    )
+
     unmatched_or = [
         m["id"] for m in or_models if m["id"] not in {c["or_id"] for c in combined}
     ]
@@ -882,6 +902,9 @@ def main():
             # so the joined price is final)
             "overrides_applied": applied_overrides,
         },
+        # org -> filename served from assets/logos/; the site derives the
+        # path mechanically, so new logos need no app-side change
+        "logos": logos_for_site(logo_manifest, LOGOS_DIR),
     }
 
     write_json(OUT_DIR / "arena.json", arena_entries)
@@ -891,14 +914,6 @@ def main():
     for name in ("arena.json", "openrouter.json", "combined.json", "meta.json"):
         p = OUT_DIR / name
         print(f"  wrote {p.relative_to(ROOT)} ({p.stat().st_size} bytes)")
-
-    # logos (soft domain: reports, never dies — plan 007 D8)
-    logo_orgs = sorted(
-        {c["arena_org"] for c in combined if c.get("arena_org")}
-    )
-    _logo_manifest, logo_lines = logos_sync(
-        logo_orgs, load_logos(LOGOS_PATH), LOGOS_DIR, LOGOS_PATH
-    )
 
     print()
     print("match report")

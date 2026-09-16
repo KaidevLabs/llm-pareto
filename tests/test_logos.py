@@ -242,12 +242,7 @@ class TestLogosSyncFetch(LogosSyncBase):
         self.assertEqual(
             update.svg_viewbox(self.written("foo.svg")), (0.0, 0.0, 24.0, 24.0)
         )
-        self.assertTrue(
-            any(
-                'wrote foo.svg' in l and '"Foo": "assets/logos/foo.svg"' in l
-                for l in lines
-            )
-        )
+        self.assertTrue(any('wrote foo.svg for "Foo"' in l for l in lines))
 
     def test_non_square_svg_normalized_on_write(self):
         url = "https://x/foo.svg"
@@ -269,15 +264,16 @@ class TestLogosSyncFetch(LogosSyncBase):
         self.assertEqual(self.written("foo.png")[:8], b"\x89PNG\r\n\x1a\n")
         self.assertEqual(manifest["Foo"]["file"], "foo.png")
         self.assertTrue(any("100x50" in l and "manual" in l for l in lines))
+        self.assertEqual(
+            update.logos_for_site(manifest, self.log_dir), {"Foo": "foo.png"}
+        )
 
     def test_square_png_written_and_accepted(self):
         url = "https://x/foo.png"
         fetch, (manifest, lines) = self.sync(
             ["Foo"], {"Foo": {"url": url}}, {url: _png(100, 100)}
         )
-        self.assertTrue(
-            any('"Foo": "assets/logos/foo.png"' in l for l in lines)
-        )
+        self.assertTrue(any('wrote foo.png for "Foo"' in l for l in lines))
 
     def test_ico_frame_extracted_and_written_as_png(self):
         url = "https://x/favicon.ico"
@@ -470,6 +466,26 @@ class TestLogosSyncParallel(LogosSyncBase):
             today="2026-09-16",
         )
         self.assertTrue((self.log_dir / "foo.svg").exists())
+
+
+class TestLogosForSite(LogosSyncBase):
+    def test_maps_org_to_filename_when_file_exists(self):
+        (self.log_dir / "foo.svg").write_bytes(b'<svg viewBox="0 0 1 1"/>')
+        manifest = {"Foo": {"file": "foo.svg", "url": "u"}}
+        self.assertEqual(
+            update.logos_for_site(manifest, self.log_dir), {"Foo": "foo.svg"}
+        )
+
+    def test_omits_entries_without_a_file_on_disk(self):
+        manifest = {"Foo": {"file": None, "url": None}}
+        self.assertEqual(update.logos_for_site(manifest, self.log_dir), {})
+
+    def test_omits_entries_whose_file_was_removed(self):
+        (self.log_dir / "foo.svg").write_bytes(b"x")
+        manifest = {"Foo": {"file": "foo.svg"}, "Gone": {"file": "gone.svg"}}
+        self.assertEqual(
+            update.logos_for_site(manifest, self.log_dir), {"Foo": "foo.svg"}
+        )
 
 
 class TestLoadLogos(LogosSyncBase):
