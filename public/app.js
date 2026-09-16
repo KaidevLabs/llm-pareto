@@ -398,9 +398,16 @@ function chartOption(label, pts, frontier, spreadPts, bounds) {
       const color = ORG_COLOR[orgOf(d)] || ORG_FALLBACK;
       const org = orgOf(d);
       const isFrontier = frontierSet.has(d);
+      const hit = searchHit(d);
       // Soft dim (plan 010 D1/D5): a search dims non-matching points only —
       // position, size, and org color are kept, the frontier stays bright.
-      const dim = !isFrontier && !searchHit(d);
+      // Matches get a little emphasis on top (step-3 A/B, owner 2026-09-17):
+      // circles get a full-alpha fill + a thin white ring; frontier badges
+      // get the same as a white halo — a border on an image symbol strokes
+      // its bounding box (5.6.0), the shadow follows the disc's alpha.
+      const dim = !isFrontier && !hit;
+      const hot = !isFrontier && state.search && hit;
+      const hotF = isFrontier && state.search && hit;
       const logo = logoFor(org);
       return {
         value: p.value,
@@ -417,14 +424,16 @@ function chartOption(label, pts, frontier, spreadPts, bounds) {
           : "circle",
         symbolSize: isFrontier ? [24, 24] : 10,
         itemStyle: {
-          color: isFrontier ? "rgba(0,0,0,0)" : withAlpha(color, dim ? 0.25 : 0.78),
-          borderColor: ov ? OVERRIDE : isFrontier ? "rgba(0,0,0,0)" : withAlpha(color, dim ? 0.4 : 1),
-          borderWidth: ov ? 2 : isFrontier ? 0 : 0.6,
+          color: isFrontier ? "rgba(0,0,0,0)" : withAlpha(color, dim ? 0.25 : hot ? 1 : 0.78),
+          borderColor: ov ? OVERRIDE : isFrontier ? "rgba(0,0,0,0)" : hot ? "#e2e8f0" : dim ? withAlpha(color, 0.4) : withAlpha(color, 1),
+          borderWidth: ov ? 2 : isFrontier ? 0 : hot ? 1.5 : 0.6,
           // no glow at rest — the owner wants a hard bubble; the glow is
           // the hover state (and the frontier line keeps its own). A
-          // dimmed point keeps its fill but not the glow (010 D1).
-          shadowBlur: !isFrontier && !dim && d.arena_rank <= 10 ? 10 : 0,
-          shadowColor: withAlpha(color, 0.5),
+          // dimmed point keeps its fill but not the glow (010 D1); a
+          // search-matched frontier badge is the only other glow, as the
+          // white selection halo (step-3 A/B).
+          shadowBlur: hotF ? 14 : !isFrontier && !dim && d.arena_rank <= 10 ? 10 : 0,
+          shadowColor: hotF ? withAlpha("#e2e8f0", 0.9) : withAlpha(color, 0.5),
         },
         label: isFrontier
           ? {
@@ -463,13 +472,13 @@ function chartOption(label, pts, frontier, spreadPts, bounds) {
           scale: isFrontier ? 32 / 24 : 16 / 10,
           itemStyle: {
             color: isFrontier ? "rgba(0,0,0,0)" : withAlpha(color, 0.95),
-            borderColor: ov ? OVERRIDE : withAlpha(color, 1),
+            borderColor: ov ? OVERRIDE : hot ? "#e2e8f0" : withAlpha(color, 1),
             // the badge bakes its ring into the image — a square itemStyle
             // border around the badge would read as a box (5.6.0 image
             // symbols stroke their bounding box)
             borderWidth: ov ? 2 : isFrontier ? 0 : 1.5,
             shadowBlur: 18,
-            shadowColor: withAlpha(color, 0.65),
+            shadowColor: hotF ? withAlpha("#e2e8f0", 1) : withAlpha(color, 0.65),
           },
         },
       };
