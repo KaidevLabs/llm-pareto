@@ -1,5 +1,5 @@
 {
- "fetched_at": "2026-09-16T20:12:28Z",
+ "fetched_at": "2026-09-16T20:28:12Z",
  "sources": {
   "arena": {
    "url": "https://lmarena.ai/leaderboard/text",
@@ -68,5 +68,30 @@
     "openrouter_id": "meta/muse-spark-1.3"
    }
   ]
+ },
+ "logos": {
+  "Alibaba": "alibaba.svg",
+  "Amazon": "amazon.svg",
+  "Anthropic": "anthropic.svg",
+  "Cohere": "cohere.svg",
+  "DeepSeek": "deepseek.svg",
+  "Google": "google.svg",
+  "IBM": "ibm.svg",
+  "Inception AI": "inception-ai.svg",
+  "Meta": "meta.svg",
+  "Microsoft": "microsoft.svg",
+  "MiniMax": "minimax.svg",
+  "Mistral": "mistral.svg",
+  "Moonshot": "moonshot.png",
+  "OpenAI": "openai.svg",
+  "SpaceXAI": "spacexai.png",
+  "StepFun": "stepfun.png",
+  "Tencent": "tencent.svg",
+  "Thinky": "thinky.png",
+  "Upstage": "upstage.png",
+  "Xiaomi": "xiaomi.svg",
+  "Z.ai": "z-ai.svg",
+  "arcee-ai": "arcee-ai.svg",
+  "rekaai": "rekaai.svg"
  }
 }

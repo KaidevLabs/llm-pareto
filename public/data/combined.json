@@ -1371,8 +1371,8 @@
  {
   "or_id": "deepseek/deepseek-v4-flash",
   "or_name": "DeepSeek: DeepSeek V4 Flash 0423",
-  "price_in_per_m": 0.08246,
-  "price_out_per_m": 0.16492,
+  "price_in_per_m": 0.08092,
+  "price_out_per_m": 0.16184,
   "vision": false,
   "context_length": 1048576,
   "arena_rank": 87,
