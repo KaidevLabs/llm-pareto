@@ -60,6 +60,20 @@ Multiple arena config-variants of the same model (e.g. `gpt-5.5` /
 (most highly ranked) variant. Anything ambiguous falls through to the
 unmatched list in the report and `meta.json` — reported, never guessed.
 
+## Tests
+
+The join logic in `update.py` (normalize, match, join, validate, arena
+parse) is pinned by a characterization suite: `tests/`, stdlib `unittest`,
+zero deps. Run from the repo root:
+
+```sh
+python3 -m unittest discover -s tests -v    # whole suite
+python3 -m unittest tests.test_normalize    # one module
+```
+
+The tests document current behavior as-is: a red test after a logic change
+is a review signal, not a failure — decide before changing either side.
+
 ## Data provenance
 
 | File | Source | Notes |
@@ -73,6 +87,7 @@ unmatched list in the report and `meta.json` — reported, never guessed.
 
 ```
 update.py        # the whole update mechanism (Python 3, stdlib only)
+tests/           # characterization suite for update.py (stdlib unittest)
 overrides.json   # explicit arena-name → openrouter-id pins
 public/          # web root (deployed as-is)
   index.html     # the page
