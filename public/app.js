@@ -189,7 +189,39 @@ function tooltipHTML(p) {
   return parts.join('<br>');
 }
 
-function chartOption(label, pts, frontier, spreadPts) {
+// Fit-to-data axis bounds (plan 018 A1): computed at render time from ALL
+// joined data — never hardcoded, never from the filtered set (A2) — padded
+// and snapped so edge bubbles stay unclipped and tick labels stay inside.
+function fitLinear(vals) {
+  let lo = Infinity, hi = -Infinity;
+  for (const v of vals) {
+    if (v < lo) lo = v;
+    if (v > hi) hi = v;
+  }
+  if (lo === Infinity) return null;
+  const pad = (hi - lo) * 0.05;
+  return {
+    min: Math.floor((lo - pad) / 25) * 25,
+    max: Math.ceil((hi + pad) / 25) * 25,
+  };
+}
+
+function fitLog(vals) {
+  const pos = vals.filter((v) => v > 0);
+  if (!pos.length) return null;
+  let lo = Infinity, hi = -Infinity;
+  for (const v of pos) {
+    if (v < lo) lo = v;
+    if (v > hi) hi = v;
+  }
+  const pad = Math.log10(hi / lo) * 0.1;
+  return {
+    min: Math.pow(10, Math.log10(lo) - pad),
+    max: Math.pow(10, Math.log10(hi) + pad),
+  };
+}
+
+function chartOption(label, pts, frontier, spreadPts, bounds) {
   const votes = pts.map((p) => p.d.arena_votes || 1);
   const lo = Math.min.apply(null, votes);
   const hi = Math.max.apply(null, votes);
@@ -297,6 +329,7 @@ function chartOption(label, pts, frontier, spreadPts) {
     },
     xAxis: {
       type: "log",
+      ...(bounds.x || {}),
       name: label,
       nameLocation: "middle",
       nameGap: 38,
@@ -311,6 +344,7 @@ function chartOption(label, pts, frontier, spreadPts) {
     },
     yAxis: {
       type: "value",
+      ...(bounds.y || {}),
       name: "Arena Elo",
       nameLocation: "middle",
       nameGap: 40,
@@ -344,13 +378,30 @@ function renderPanel(panelKey) {
         ])
       : null;
 
+  // Axes are fitted to ALL joined data, not the filtered set (018 A1/A2):
+  // they never move when a filter changes. With spread bars on, the blend
+  // panel's x range also covers the real in/out prices the bars span.
+  let xvals = pointsFor(getPrice, DATA).pts.map((p) => p.value[0]);
+  if (isBlend && state.spread) {
+    for (const d of DATA) {
+      if (d.price_in_per_m > 0) xvals.push(d.price_in_per_m);
+      if (d.price_out_per_m > 0) xvals.push(d.price_out_per_m);
+    }
+  }
+  const bounds = {
+    x: fitLog(xvals),
+    y: fitLinear(
+      DATA.map((d) => d.arena_elo).filter((v) => v != null)
+    ),
+  };
+
   const id = "chart-" + panelKey;
   const el = document.getElementById(id);
   if (!charts[id]) {
     charts[id] = echarts.init(el, null, { renderer: "canvas" });
   }
   charts[id].setOption(
-    chartOption(axisLabel, pts, frontier, spreadPts),
+    chartOption(axisLabel, pts, frontier, spreadPts, bounds),
     true
   );
 
