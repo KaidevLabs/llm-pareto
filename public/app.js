@@ -15,7 +15,7 @@ const state = {
   mode: "general",
   vision: "all",
   frontier: true,
-  spread: true,
+  spread: false,
   ratio: 3,
 };
 let DATA = [];
