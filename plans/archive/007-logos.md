@@ -1,6 +1,9 @@
 # 007 — Org logos on the frontier points
 
-Date: 2026-09-16. **Status: PROPOSED — owner-approved 2026-09-16 (revised D1–D7 + D8), steps 1–3 executed 2026-09-16 (step 3 pending owner staging).**
+Date: 2026-09-16. **Status: ARCHIVED (2026-09-17).** Owner-approved
+2026-09-16 (revised D1–D7 + D8); steps 1–3 executed + deployed 2026-09-16
+(commits aa02e7e, adc1210, 92a411b, b4a7eb4, 6928a51); DoD closed 74a33a2;
+owner-accepted.
 Source: `plans/archive/002-exploration-backlog.md` item B4 + its exploration findings.
 Amended 2026-09-16 (owner directives, replacing old D1/D4): all non-frontier
 bubbles keep a fixed size and the current per-org color; the org logo appears
