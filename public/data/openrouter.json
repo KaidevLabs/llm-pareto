@@ -1,5 +1,14 @@
 [
  {
+  "id": "stealth/union-alpha",
+  "name": "Union Alpha",
+  "org": "stealth",
+  "price_in_per_m": 0.0,
+  "price_out_per_m": 0.0,
+  "vision": true,
+  "context_length": 262144
+ },
+ {
   "id": "inference-net/schematron-v2-turbo",
   "name": "Inference.net: Schematron V2 Turbo",
   "org": "inference-net",
@@ -57,8 +66,8 @@
   "id": "deepseek/deepseek-v4.1-flash",
   "name": "DeepSeek: DeepSeek V4.1 Flash",
   "org": "deepseek",
-  "price_in_per_m": 0.3,
-  "price_out_per_m": 1.2,
+  "price_in_per_m": 0.15,
+  "price_out_per_m": 0.6,
   "vision": true,
   "context_length": 1048576
  },
@@ -210,8 +219,8 @@
   "id": "z-ai/glm-5.3-flash",
   "name": "Z.ai: GLM 5.3 Flash",
   "org": "z-ai",
-  "price_in_per_m": 0.1,
-  "price_out_per_m": 0.3333,
+  "price_in_per_m": 0.09,
+  "price_out_per_m": 0.3,
   "vision": true,
   "context_length": 1310720
  },
@@ -327,8 +336,8 @@
   "id": "deepseek/deepseek-v4-pro-0813",
   "name": "DeepSeek: DeepSeek V4 Pro 0813",
   "org": "deepseek",
-  "price_in_per_m": 0.9834,
-  "price_out_per_m": 2.9502,
+  "price_in_per_m": 0.57948,
+  "price_out_per_m": 1.73844,
   "vision": false,
   "context_length": 1048576
  },
@@ -408,8 +417,8 @@
   "id": "deepseek/deepseek-v4-flash-0731",
   "name": "DeepSeek: DeepSeek V4 Flash 0731",
   "org": "deepseek",
-  "price_in_per_m": 0.055,
-  "price_out_per_m": 0.11,
+  "price_in_per_m": 0.06,
+  "price_out_per_m": 0.12,
   "vision": false,
   "context_length": 1310720
  },
@@ -534,8 +543,8 @@
   "id": "moonshotai/kimi-k3",
   "name": "MoonshotAI: Kimi K3",
   "org": "moonshotai",
-  "price_in_per_m": 2.648138,
-  "price_out_per_m": 13.282724,
+  "price_in_per_m": 3.0,
+  "price_out_per_m": 15.0,
   "vision": true,
   "context_length": 1048576
  },
@@ -642,8 +651,8 @@
   "id": "tencent/hy3",
   "name": "Tencent: Hy3",
   "org": "tencent",
-  "price_in_per_m": 0.132,
-  "price_out_per_m": 0.528,
+  "price_in_per_m": 0.0825,
+  "price_out_per_m": 0.33,
   "vision": false,
   "context_length": 262144
  },
@@ -786,8 +795,8 @@
   "id": "nvidia/nemotron-3-ultra-550b-a55b",
   "name": "NVIDIA: Nemotron 3 Ultra",
   "org": "nvidia",
-  "price_in_per_m": 0.625,
-  "price_out_per_m": 3.125,
+  "price_in_per_m": 0.6,
+  "price_out_per_m": 2.4,
   "vision": false,
   "context_length": 262144
  },
@@ -993,8 +1002,8 @@
   "id": "deepseek/deepseek-v4-flash",
   "name": "DeepSeek: DeepSeek V4 Flash 0423",
   "org": "deepseek",
-  "price_in_per_m": 0.088606,
-  "price_out_per_m": 0.177212,
+  "price_in_per_m": 0.08246,
+  "price_out_per_m": 0.16492,
   "vision": false,
   "context_length": 1048576
  },
@@ -1920,8 +1929,8 @@
   "id": "qwen/qwen3-vl-30b-a3b-instruct",
   "name": "Qwen: Qwen3 VL 30B A3B Instruct",
   "org": "qwen",
-  "price_in_per_m": 0.15,
-  "price_out_per_m": 0.6,
+  "price_in_per_m": 0.13,
+  "price_out_per_m": 0.52,
   "vision": true,
   "context_length": 262144
  },
@@ -3135,8 +3144,8 @@
   "id": "gryphe/mythomax-l2-13b",
   "name": "MythoMax 13B",
   "org": "gryphe",
-  "price_in_per_m": 0.06,
-  "price_out_per_m": 0.06,
+  "price_in_per_m": 0.08,
+  "price_out_per_m": 0.11,
   "vision": false,
   "context_length": 8192
  },
