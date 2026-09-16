@@ -1,6 +1,6 @@
 # 004 — Org → family filter (dashboard)
 
-Date: 2026-09-16. **Status: EXECUTING — steps 1–3 executed (step 3 review pass: no code changes needed); deploy per A10 pending.**
+Date: 2026-09-16. **Status: ARCHIVED 2026-09-16 — steps 1–3 executed (371eb04, f0e0cbd; step-3 review pass needed no code changes, e323626); deploy/push waived by owner.**
 Source: `plans/archive/002-exploration-backlog.md` item B1 + its exploration findings.
 Amendment 2026-09-16 (owner directive mid-step-1): families must be 100%
 source-derived — generated from the OpenRouter display name, nothing hand-fixed
@@ -54,4 +54,4 @@ under hide — GPT-5.x (13 pts) → 4, orgs of 1–3 models → "frontier = ever
 - [x] Accordion panel multi-selects orgs/families; active leaves hard-hide the chart (frontier, scale, counts recompute); searcher filters tree nodes.
 - [x] Any model gets a family from its OR name (D1'; fallback: org name); the chart never breaks.
 - [x] No data-layer change (`python3 update.py` outputs byte-identical; update.py and `public/data/` untouched — git status evidence).
-- [ ] Filter composes with the existing five controls; deployed per A10.
+- [x] Filter composes with the existing five controls (verified in the step-3 review pass); deploy per A10 waived by owner 2026-09-16 — the feature lives on local main, unpushed.
