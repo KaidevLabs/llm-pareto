@@ -182,13 +182,18 @@ Commit: `chart: frontier logos + name labels`
 - [x] Owner approves this plan (incl. the logo set + step-3 A/B picks).
       (2026-09-16 — approved as revised D1–D7; the logo set + A/B picks settle
       at step 3.)
-- [ ] All non-frontier bubbles render at the fixed size with the current org
+- [x] All non-frontier bubbles render at the fixed size with the current org
       color; votes are no longer encoded in size (tooltip only, axis note
-      updated).
-- [ ] Frontier points render the org logo (fallback glyph when missing) plus
-      the small name label; nothing else is labeled.
-- [ ] Frontier line, override ring, top-10 glow, spread bars visually
-      unchanged.
+      updated). (2026-09-16 — CDP-verified: 145 circles at 10px, two-tier
+      sizes exactly {10, [24,24]}, votes only in the tooltip.)
+- [x] Frontier points render the org logo (fallback glyph when missing) plus
+      the small name label; nothing else is labeled. (2026-09-16 — badge
+      composite on all 9 frontier points; fallback = initial-in-circle
+      badge; labels only on frontier.)
+- [x] Frontier line, override ring, top-10 glow, spread bars visually
+      unchanged. (2026-09-16 — line pure symbol 'none' with its own glow;
+      rest glow removed from points per owner A/B, hover glow kept;
+      override ring retained for override points.)
 - [x] New org: `update.py` auto-creates the `logos.json` entry on the next
       run; with a url it auto-fetches (soft-fail; match-report line);
       without → candidate URLs (D8). No app-side change — the site map
@@ -197,4 +202,8 @@ Commit: `chart: frontier logos + name labels`
       candidate-probe and soft-fail paths; step 2 dogfood: the arcee-ai
       no-url path reports its one line every run; step-3 amendment:
       `logos_for_site` + the meta.json key, tested at the same seam.)
-- [ ] Deployed per A10.
+- [x] Deployed per A10. (2026-09-16 — pushed aa02e7e..6928a51; the CF
+      git-build stalled at "pending", so deployed manually with
+      `npx wrangler deploy` after removing the leaked `public/.wrangler`
+      cache dir first; live app.js hash verified == disk, meta logos 23
+      orgs, `/.wrangler/` path 404.)
