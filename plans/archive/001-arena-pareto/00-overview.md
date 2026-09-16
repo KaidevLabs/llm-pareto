@@ -6,7 +6,7 @@ Approved: 2026-09-15 (discovery session, Eureka protocol).
 > 0d7f1cc (docs: live URL, DoD), 4383679 (redeploy trigger), 9ed260d (deploy: wrangler
 > static assets), 28693d6 (docs: deploy flow), 5075a8f (chart: horizontal orientation),
 > b3089a3 (chart: A11 blended view, plan closed). Live at
-> <https://lm-pareto.kaidev.io>.
+> <https://llm-pareto.kaidev.io>.
 
 Web page: LMArena text leaderboard quality (Elo) vs OpenRouter pricing ($/M tokens),
 Pareto frontier highlighted, slick ECharts dark UI, deployed on Cloudflare as a
@@ -26,7 +26,7 @@ manually triggered.
 | A7 | Script: Python, stdlib only (urllib, json, re, difflib) | owner | 2026-09-15 |
 | A8 | Trigger: manual — run script, review report, commit, push | owner | 2026-09-15 |
 | A9 | `muse-spark` (arena rank #13) → `meta/muse-spark-1.3` via `overrides.json` | bare arena name is ambiguous (OR lists only numbered 1.1/1.2/1.3); all versions price identically ($1.25/$4.25 per M), bare name tracks the current release | 2026-09-15 |
-| A10 | Deploy mechanism: Cloudflare **Workers static site** (worker `llm-pareto`, `wrangler.jsonc` assets = `public/`), not Pages | the CF dashboard git-deploy wizard (required "deploy command" field, no output dir) creates Workers; verified live at lm-pareto.kaidev.io | 2026-09-16 |
+| A10 | Deploy mechanism: Cloudflare **Workers static site** (worker `llm-pareto`, `wrangler.jsonc` assets = `public/`), not Pages | the CF dashboard git-deploy wizard (required "deploy command" field, no output dir) creates Workers; verified live at llm-pareto.kaidev.io | 2026-09-16 |
 | A11 | General view = **single blended chart**: blended $/M = w·pin + (1−w)·pout, input share w driven by a live slider (1:1 → 10:1, default 3:1); frontier recomputes at the current ratio; a spread bar behind each point shows the model's real $in→$out. The spread bar is a blue (input end) → amber (output end) gradient, toggleable via the "spread" pill (default on); the mechanic is explained in a footer legend row + the panel legend. The in/out ratio is an explicit workload assumption (arena data carries no token counts), stated in the axis label and tooltip. Input/Output modes stay raw, one click away | owner: "one graph condensing the information" + "other project did a slider"; out/in price ratio is median 4× across the join, so the blend materially reorders the frontier | 2026-09-16 |
 
 ## Data sources (evidence 2026-09-15)
@@ -110,7 +110,7 @@ README.md            # update flow, provenance, join rules
 3. `README.md` + Cloudflare deploy — the dashboard git-deploy wizard created a
    **Workers** static site (worker `llm-pareto`), not a Pages project: the repo's
    `wrangler.jsonc` serves `public/` as assets; dashboard build command `ls`
-   (required, no-op); custom domain <https://lm-pareto.kaidev.io>. Verified live 2026-09-16.
+   (required, no-op); custom domain <https://llm-pareto.kaidev.io>. Verified live 2026-09-16.
 
 ## Open branches (recorded)
 
@@ -140,14 +140,14 @@ README.md            # update flow, provenance, join rules
       ECharts theme
 - [x] Filter bar works fully client-side (price mode incl. default "both", vision,
       frontier)
-- [x] Live on Cloudflare (Workers static site, lm-pareto.kaidev.io); update =
+- [x] Live on Cloudflare (Workers static site, llm-pareto.kaidev.io); update =
       script → commit → push → `npx wrangler deploy` → live
 - [x] README documents update flow, provenance, join rules
 
 ## Closing notes (2026-09-16)
 
 - All three steps shipped in-session; site live at
-  <https://lm-pareto.kaidev.io> (Workers static site, worker `llm-pareto`,
+  <https://llm-pareto.kaidev.io> (Workers static site, worker `llm-pareto`,
   `wrangler.jsonc` assets = `public/`).
 - Deploy reality: the dashboard's git-deploy wizard created a Worker, not a Pages
   project, and did not wire continuous git builds — deploys are explicit

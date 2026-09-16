@@ -4,7 +4,7 @@ LMArena frontier models ranked by quality (Elo) against OpenRouter pricing,
 with the Pareto frontier highlighted. Fully static site built from committed
 JSON — no backend, no build step.
 
-Live: <https://lm-pareto.kaidev.io>
+Live: <https://llm-pareto.kaidev.io>
 
 ## Update the data
 
