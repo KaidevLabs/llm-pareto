@@ -1,6 +1,7 @@
 # 006 — Model details panel (bubble click)
 
-Date: 2026-09-16. **Status: EXECUTING (step 3/3).**
+Date: 2026-09-16. **Status: ARCHIVED (2026-09-17). Commits: `e7f52c3`
+(step 1 data), `5fc1368` (step 2 drawer); deployed at `610d60f`.**
 Source: `plans/archive/002-exploration-backlog.md` item B3 + its exploration findings.
 
 Clicking a bubble (or a frontier marker) opens a ~340px overlay drawer on the
@@ -45,9 +46,17 @@ empty chart area.
     on a frontier-line midpoint (resolves to a frontier model), close via ×
     and empty-area, D4 badge appears/clears on the vision filter, handlers
     survive not-Merge re-renders, pan-then-release does not open the drawer.
-3. Review pass: "filtered out" indicator (D4), long variant lists, and
-   verify `https://openrouter.ai/<or_id>` resolves for all 154 ids before
-   wiring the link. Commit only if something changes.
+ 3. Review pass: "filtered out" indicator (D4), long variant lists, and
+    verify `https://openrouter.ai/<or_id>` resolves for all 154 ids before
+    wiring the link. Commit only if something changes.
+    ✅ Complete — 2026-09-17 (no code changes). Review-pass results: (a) the
+    D4 "filtered out" indicator shipped with step 2 and is CDP-verified
+    (badge appears when the selection is excluded by the vision filter,
+    clears when lifted); (b) the longest variant list is 5 (`openai/gpt-4`)
+    — CDP-verified all 5 render in the row; (c) `https://openrouter.ai/
+    <or_id>` resolves for all 154 joined ids — 0 failures, 0 redirects, no
+    `:`-tier-suffixed ids in the joined set (audit 2026-09-17 ~09:35 UTC,
+    raw results `.tmp/or-url-audit.json`).
 
 ## Out of scope
 
@@ -64,4 +73,7 @@ empty chart area.
 - [x] Closes via × and empty-area click. — CDP check, 2026-09-17.
 - [x] A filtered-out selection shows the "filtered out" indicator. — CDP
       check, 2026-09-17.
-- [ ] Deployed per A10.
+- [x] Deployed per A10 — `610d60f` pushed to main 2026-09-17; CF git build
+      green ("Workers Builds: llm-pareto" check success on the commit),
+      live `app.js` sha256 == local HEAD; cookie probe re-run per 020
+      (3 UAs × 8 assets, 0 Set-Cookie, empty jar).
