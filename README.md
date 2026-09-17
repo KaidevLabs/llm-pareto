@@ -13,14 +13,16 @@ Live: <https://llm-pareto.kaidev.io>
 The `update-data` GitHub Actions workflow
 (`.github/workflows/update-data.yml`) runs `python3 update.py` every 6 h
 (cron `15 */6 * * *` UTC) and can also be triggered by hand from the Actions
-tab. If `arena.json`, `openrouter.json` or `combined.json` changed, it opens a
-PR with the data diff and the full match report in the body; a `meta.json`-only
-run (timestamp bump, no data change) is a green no-op that opens nothing.
+tab. If `arena.json`, `openrouter.json` or `combined.json` changed, it commits
+the data straight to `main` (as `github-actions[bot]`, message
+`data: scheduled refresh (<UTC stamp>)`) and pushes; a `meta.json`-only run
+(timestamp bump, no data change) is a green no-op that commits nothing.
 Fetch failures retry up to 3 attempts before the run goes red.
 
-Merge the PR after reviewing the diff + report: the push to `main` auto-deploys
-via the Cloudflare git integration. A red run opens no PR and deploys nothing —
-the site keeps serving last-good data, and the match report is in the run log.
+The push to `main` auto-deploys via the Cloudflare git integration (the
+dashboard build command runs the wrangler deploy). Review surface: the data
+commit's diff on `main` + the match report in the run log. A red run commits
+nothing and deploys nothing — the site keeps serving last-good data.
 
 ### Manual
 
