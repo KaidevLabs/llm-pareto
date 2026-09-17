@@ -527,6 +527,16 @@
 
 <footer id="footer"></footer>
 
+<!-- echarts-gl 2.1.0 (plan 023 step 4) — the WebGL extension for the 3D
+     showcase, vendored like echarts itself (019's no-runtime-third-parties
+     rule). NOT loaded eagerly: app.js injects it on first entry to the 3D
+     view (the lazy-fetch pattern of 023 D5), so every 2D-only visit pays
+     zero bytes for it. Provenance: fetched 2026-09-17 from
+     https://unpkg.com/echarts-gl@2.1.0/dist/echarts-gl.min.js
+     sha256 d6d60f2165ce3eb1ea360ef62e8490835e0ae2c1e0c1788a772fff918e350842
+     (639,846 B; peer-dep echarts ^5.1.2 || ^6.0.0; Apache-2.0). Browser UMD
+     global: window["echarts-gl"], which registers grid3D/scatter3D/lines3D
+     onto the global echarts. -->
 <script src="./js/echarts-5.6.0.min.js"></script>
 <script src="./app.js"></script>
 </body>
