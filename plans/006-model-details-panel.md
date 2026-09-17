@@ -1,6 +1,6 @@
 # 006 — Model details panel (bubble click)
 
-Date: 2026-09-16. **Status: PROPOSED — not reviewed, not executed.**
+Date: 2026-09-16. **Status: EXECUTING (step 2/3).**
 Source: `plans/archive/002-exploration-backlog.md` item B3 + its exploration findings.
 
 Clicking a bubble (or a frontier marker) opens a ~340px overlay drawer on the
@@ -23,6 +23,13 @@ empty chart area.
    `join()` into `combined.json` (new fields only). Run `update.py`; review
    the data diff.
    Commit: `data: modelUrl + arena price carry-through`
+   ✅ Complete — `e7f52c3` (2026-09-17). As-built: three fields carried from
+   the `best` (max-Elo) entry — `arena_model_url`, `arena_price_in_per_m`,
+   `arena_price_out_per_m` — same representative as every other `arena_`
+   field (18/34 collapsed variant groups differ on URL, 13 on price).
+   Characterization: pinned row-shape dict in test_match_join updated; new
+   test pins best-entry carry. Suite 114 green. Data diff = 154×3 new keys +
+   one upstream GLM-4.6 price drift (arena and OR sides moved together).
 2. app.js + index.html: drawer markup + dark-theme CSS; `chart.on("click")`
    on the models and frontier series (survives `setOption(opt, true)`
    re-renders); `state.selected`; `renderDetails()`; close affordances (D5).
