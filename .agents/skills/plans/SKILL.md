@@ -72,6 +72,8 @@ Step close — two commits, in order, automatic on the owner's commit signal. Th
 4. updates the overview: status, the execution-order row (including the commit sha), and any Definition-of-done items the step satisfies;
 5. stages the plan files and commits them: `plan: <slug> — step NN`.
 
+No push at step close — the push and its deploy are owner-driven (Push policy).
+
 Mid-step plan edits (a newly settled decision, a touched open branch) ride along in the same plan commit. A deviation from a settled decision, or a step that touches an open branch → stop and confirm with the owner; the answer settles into the Settled decisions table and the branch line moves out.
 
 ### Execution mechanics
@@ -81,6 +83,10 @@ Mid-step plan edits (a newly settled decision, a touched open branch) ride along
 - Specify the what, not the how: a step file says what changes, where, and how you'll know it's done — not line-by-line how. Repo conventions cover the how.
 - Divide cleanly or not at all: when the work is one logical unit that doesn't divide cleanly, it stays one step. An honest large step beats two entangled ones.
 
+### Push policy
+
+The agent never pushes during plan work. Step close and the closing step produce commits only — no push. The push (and its Cloudflare auto-deploy) is owner-driven: the owner pushes, or tells the agent to, and each push to `main` triggers a deploy, so pushes are batched deliberately rather than per step or per plan. When the agent pushes, it runs `git pull` first (merge) to absorb any automated data-refresh commits the bot has pushed to `main` — keeping the plan-recorded commit SHAs valid — then `git push`.
+
 ### Closing
 
 Every plan ends with a `NN-close.md` step: the final verification (usually the full suite), the Definition-of-done audit, and this procedure. The close step follows the step-close rule: a code commit first when it has code (often it is verification-only and has none), then the closing plan commit. In it the agent:
@@ -88,3 +94,5 @@ Every plan ends with a `NN-close.md` step: the final verification (usually the f
 1. updates the plan files — the close step's as-built record and title, every execution-order row, the Definition of done;
 2. sets the overview status to `ARCHIVED (date)` with the plan's commit history;
 3. moves `plans/<slug>/` to `plans/archive/<slug>/`, stages the plan files, and commits — the final state and the archived plan in one commit, message suffixed ` (plan: <slug>)`.
+
+No push at close — the plan's push (and deploy) is owner-driven (Push policy).
