@@ -36,9 +36,11 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          changed=$(git diff --name-only -- public/data/arena.json public/data/openrouter.json public/data/combined.json)
+          changed=$(git diff --name-only -- \
+            public/data/arena.json public/data/openrouter.json \
+            public/data/combined.json public/data/endpoints.json)
           if [ -z "$changed" ]; then
-            echo "No data changes (gate: arena/openrouter/combined.json) — no commit."
+            echo "No data changes (gate: arena/openrouter/combined/endpoints.json) — no commit."
             exit 0
           fi
           echo "Changed data files:"
