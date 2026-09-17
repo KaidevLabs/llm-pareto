@@ -1,7 +1,7 @@
 # 022 — Provider data foundation (per-provider layer, all models)
 
-Date: 2026-09-17. **Status: EXECUTING (step 2/5). Owner approved by
-execute trigger (2026-09-17). Step 1: `4b93918`.**
+Date: 2026-09-17. **Status: EXECUTING (step 3/5). Owner approved by
+execute trigger (2026-09-17). Step 1: `4b93918`. Step 2: `e4493ca`.**
 Source: `plans/021-exploration-backlog.md` items B14/B15 + their exploration
 findings + plan-decomposition round 2 (owner decision A: this is the shared
 data plan; 023/024/025 consume it).
@@ -76,7 +76,19 @@ validated, and is diff-reviewed in the data commits; 023 (speed axis) and
    (the provenance block lands in step 3). Commit:
    `update: normalize provider layer (endpoints.json schema)`. Seams under
    test: page parse (synthetic RSC), join + duplicate merge, rounding/trim
-   (pure functions) in `tests/test_provider_normalize.py`.
+       (pure functions) in `tests/test_provider_normalize.py`.
+    ✅ Complete — `e4493ca` (2026-09-17). As-built: the `endpointStats`
+    queryKey array IS the dehydrated endpoint object array (stats embedded —
+    the spec's two bullets are one structure, verified in the raw stream);
+    the API `tag` appears on the page side as `provider_slug` OR
+    `provider_info.slug` (measured both directions: baidu/fp8 vs alibaba), so
+    the join tries provider_slug exact first, then info.slug, unique-match
+    only. Duplicate page rows joining one merged API entry keep the
+    max-`request_count` stats (real BaseTen×2: 2505 vs 2248). Unjoined page
+    entries keep page-side context/quantization/pricing (uniform schema; 0
+    of these in the live run). Live run: 797 entries, 806/806 joined, 9 dup
+    groups merged, 756/797 with stats (95% — matches the 021 measurement).
+    Suite 142 green (20 new tests at the declared seams).
 3. `update.py`: validation + write + report. Bands D8 + structural floors;
    atomic write of `endpoints.json` (only when state changed — canonical
    form, like `logos.json`); `meta.json` provenance block (sources, counts,
