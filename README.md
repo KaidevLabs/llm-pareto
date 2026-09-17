@@ -8,7 +8,23 @@ Live: <https://llm-pareto.kaidev.io>
 
 ## Update the data
 
-Manual, by design:
+### Scheduled (default)
+
+The `update-data` GitHub Actions workflow
+(`.github/workflows/update-data.yml`) runs `python3 update.py` every 6 h
+(cron `15 */6 * * *` UTC) and can also be triggered by hand from the Actions
+tab. If `arena.json`, `openrouter.json` or `combined.json` changed, it opens a
+PR with the data diff and the full match report in the body; a `meta.json`-only
+run (timestamp bump, no data change) is a green no-op that opens nothing.
+Fetch failures retry up to 3 attempts before the run goes red.
+
+Merge the PR after reviewing the diff + report: the push to `main` auto-deploys
+via the Cloudflare git integration. A red run opens no PR and deploys nothing —
+the site keeps serving last-good data, and the match report is in the run log.
+
+### Manual
+
+The manual flow stays available:
 
 ```sh
 python3 update.py
@@ -23,18 +39,23 @@ Then review the diff of `public/data/` (especially `meta.json` — join counts
 and the unmatched list) and commit:
 
 ```sh
-git add update.py overrides.json public/data && git commit -m "data: <date>"
+git add update.py overrides.json logos.json public/data public/assets/logos && git commit -m "data: <date>"
 ```
 
-Push to GitHub, then deploy (Workers static site — `wrangler.jsonc` serves
-`public/` as assets):
+Push to GitHub — the Cloudflare git integration auto-deploys `main` (Workers
+static site, `wrangler.jsonc` serves `public/` as assets). Manual fallback if
+the git integration is ever switched off: `npx wrangler deploy` from the repo
+root.
 
-```sh
-npx wrangler deploy
-```
+### Deploy hygiene (`wrangler`)
 
-(No dashboard needed. If continuous git builds get enabled in the Cloudflare
-dashboard for this worker, the `wrangler deploy` step becomes optional.)
+Wrangler writes a local `.wrangler/` cache dir in its working directory. Run
+it from the repo root so the cache lands in the gitignored root `.wrangler/`
+— if it ever lands inside `public/` (e.g. wrangler was run from `public/`),
+`npx wrangler deploy` uploads it as a public asset (measured on wrangler
+4.133.0, which does not exclude dot dirs from assets). Before a manual deploy:
+`rm -rf public/.wrangler`. The scheduled path is unaffected — Actions runs on
+fresh checkouts with no local cache.
 
 ## How the join works
 
@@ -89,6 +110,7 @@ is a review signal, not a failure — decide before changing either side.
 update.py        # the whole update mechanism (Python 3, stdlib only)
 tests/           # characterization suite for update.py (stdlib unittest)
 overrides.json   # explicit arena-name → openrouter-id pins
+.github/workflows/update-data.yml  # scheduled data-update workflow (PR per changed run)
 public/          # web root (deployed as-is)
   index.html     # the page
   app.js         # ECharts rendering + filters

@@ -1,0 +1,66 @@
+name: update-data
+
+on:
+  schedule:
+    - cron: "15 */6 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: update-data
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Run update.py
+        run: |
+          mkdir -p .tmp
+          set +e
+          python3 update.py > .tmp/update-report.txt 2>&1
+          status=$?
+          set -e
+          cat .tmp/update-report.txt
+          exit $status
+      - name: Open PR if data changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          changed=$(git diff --name-only -- public/data/arena.json public/data/openrouter.json public/data/combined.json)
+          if [ -z "$changed" ]; then
+            echo "No data changes (gate: arena/openrouter/combined.json) — no PR."
+            exit 0
+          fi
+          echo "Changed data files:"
+          printf '%s\n' "$changed"
+          stamp=$(date -u +%FT%TZ)
+          branch="data/auto-update-${stamp//:/}"
+          git checkout -b "$branch"
+          git add public/data public/assets/logos logos.json
+          git commit -m "data: scheduled refresh ($stamp)"
+          {
+            echo "Scheduled data update — $stamp."
+            echo
+            echo "Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            echo
+            echo "Match report:"
+            echo
+            echo '```'
+            cat .tmp/update-report.txt
+            echo '```'
+          } > .tmp/pr-body.md
+          git push -u origin "$branch"
+          gh pr create --base main --head "$branch" \
+            --title "data: scheduled refresh ($stamp)" \
+            --body-file .tmp/pr-body.md
