@@ -104,6 +104,17 @@ mode alongside.
    the frontier; a no-stats model is absent + footnoted; filters apply; the
    cached fetch fires once), the cookie probe (no new storage/cookies —
    #333), owner manual A/B, deploy.
+   ✅ Complete — pushed `63687a4` (2026-09-17). As-built: CDP checks ran in
+   the step-2 harness (31 assertions, all PASS — the 404/fail-tolerance
+   cases included); cookieless grep clean (no storage APIs in app.js /
+   index.html); cookie-jar probe on live over `/` + every asset the HTML
+   references (app.js, echarts, combined/meta/endpoints.json, woff2),
+   desktop + curl + mobile UAs — all 200, zero Set-Cookie, empty jar.
+   Deployed via the git integration: push → "Workers Builds: llm-pareto"
+   success → deployment 2026-09-17T12:24:42Z → live `/` carries the Speed
+   button + speedOf in app.js. Owner manual A/B deferred — the owner
+   delegated this run ("decide yourself … cross correct later"); the
+   feel-out happens at the review session.
 4. `public/js/echarts-gl-2.1.0.min.js`: vendoring (fetch from unpkg;
    provenance comment block in `index.html` — source URL, fetch date,
    sha256, same pattern as the Inter font and the vendored echarts) + the
