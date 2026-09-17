@@ -693,4 +693,16 @@ lacks:
 
 **Recommendation: A.** It is the owner's described structure with the seam
 placed at the true data/UI boundary, and it keeps the shared plan
-independent of any display decision. **Owner decision pending.**
+independent of any display decision.
+
+**Decision (owner, 2026-09-17): A — four plans, table standalone.**
+`022` provider data foundation (shared, no UI) / `023` speed axis (B14's
+display) / `024` provider table (B15's display) / `025` two-model comparator
+(B16). All four graduate as PROPOSED plan docs the same day; execution order
+is the owner's, with 022 before 023/024.
+
+**State note (2026-09-17, post-findings):** 006 moved to EXECUTING (step
+3/3) — the details drawer landed (`5fc1368`, review pass outstanding), so
+the B15/B16 findings' "006 PROPOSED, not executed" characterization is
+superseded: 024's "drawer section" surface is now the viable default, and
+025's "fold into 006" option is live.
