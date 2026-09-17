@@ -1,6 +1,7 @@
 # 022 — Provider data foundation (per-provider layer, all models)
 
-Date: 2026-09-17. **Status: PROPOSED — not reviewed, not executed.**
+Date: 2026-09-17. **Status: EXECUTING (step 2/5). Owner approved by
+execute trigger (2026-09-17). Step 1: `4b93918`.**
 Source: `plans/021-exploration-backlog.md` items B14/B15 + their exploration
 findings + plan-decomposition round 2 (owner decision A: this is the shared
 data plan; 023/024/025 consume it).
@@ -52,7 +53,14 @@ validated, and is diff-reviewed in the data commits; 023 (speed axis) and
    per-source fetch counts. Not touched: join, validation, the 4 existing
    outputs. Commit: `update: fetch per-model endpoints + model pages`.
    Seams under test: the two fetch functions (urlopen mocked — retry,
-   backoff, 404-vs-5xx fail-fast) in `tests/test_provider_fetch.py`.
+       backoff, 404-vs-5xx fail-fast) in `tests/test_provider_fetch.py`.
+    ✅ Complete — `4b93918` (2026-09-17). As-built: both fetchers delegate to
+    the existing `fetch()` (retry/backoff/timeout/UA inherited); the layer
+    loop runs in `main()` after `validate()` — a failing run then fetches
+    nothing (~4 min / 182 MB saved); raw payloads land at
+    `.tmp/provider/ep_<org>__<model>.json` + `page_<org>__<model>.html`.
+    First 154-scale live probe of D9: 308/308 payloads (182 MB ≈ the ~173 MB
+    estimate), zero 429s. Suite 122 green (8 new tests at the seam).
 2. `update.py`: parse + normalize. Page RSC parse: the dehydrated endpoint
    object array + the `endpointStats` query (reuse `RSC_RE` +
    chunk-decode + bracket-match; new anchors — synthetic RSC fixtures,
@@ -109,7 +117,8 @@ validated, and is diff-reviewed in the data commits; 023 (speed axis) and
 
 ## Definition of done
 
-- [ ] Owner approves this plan (D1–D9) in a review session.
+- [x] Owner approves this plan (D1–D9) in a review session — execute
+      trigger + staged step 1 (2026-09-17).
 - [ ] `python3 update.py` green with the new provider report section
       (endpoint counts, stats coverage, join misses, merged duplicates);
       full suite green incl. the three new seams.
