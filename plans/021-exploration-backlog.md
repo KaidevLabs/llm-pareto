@@ -618,6 +618,60 @@ row), 005 (benchmarks rows), 008 (modality/divergence rows), 009 (per-board
 elo rows), 006 (modelUrl + arena-price carry-throughs as extra rows) — each
 is additive afterward, not a blocker.
 
+### B17 — Fetch cost & blocking resilience
+
+Owner's question (2026-09-17, verbatim): "every time you run the python
+update does a lot of real requests, could we get blocked eventually? Should
+we controll what to donwload and what not? Should we limit the calls in any
+way? or controll when we are bloqued?"
+
+**Context (measured 2026-09-17, during 022 step 3):**
+
+- Per `update.py` run: 1 arena page + 1 OpenRouter list + 2 × 154 provider
+  layer fetches (154 endpoints-API + 154 model pages) + logo fetches (0 at
+  steady state) ≈ **310 requests, ~185 MB, ~5 min**, sequential at 0.5 s
+  spacing (~1/s), unauthenticated, from GH Actions runner egress IPs.
+- Cadence: 013 cron `15 */6 * * *` UTC = 4×/day ≈ **1,250 provider
+  requests/day** (~37k/month), plus the 2 shared fetches × 4.
+- First 154-scale live run: **zero 429s** (308 fetches, ~5 min) — the 0.5 s
+  spacing (022 D9) held at scale today.
+- Blocking containment today: `fetch()` is fail-fast — 429/5xx → 3 attempts
+  (2 s/4 s backoff) → die → non-zero exit → no commit, no deploy; the site
+  keeps serving last-good data. Runner egress IPs rotate, so a per-IP block
+  is usually ephemeral for us.
+
+**Measured constraints (2026-09-17):**
+
+- Neither source sends cache validators: the endpoints API returns a bare
+  200 (no ETag/Last-Modified/Cache-Control); the model page sends
+  `cache-control: public, max-age=0, must-revalidate`. Server-side 304
+  conditional fetch is out.
+- The bulk `/api/v1/models` carries **no** per-model endpoints (0/444) — no
+  1-call replacement for the 154 per-model API calls.
+- `fetch()` treats 429 exactly like 5xx: 2 s/4 s backoff, no `Retry-After`
+  parsing, ~6 s total budget. A rate-limit 429 typically means "wait ~60 s";
+  the current ladder exhausts its budget inside one short limit window.
+  (This is the "hardening" the owner asked about: parse `Retry-After` and
+  sleep that long, else a 429-specific longer base, plus a 429 count in the
+  run log. Parked with the rest per owner: explore first.)
+
+**Candidate options (unexplored):**
+
+1. **429 hardening in `fetch()`** — `Retry-After`-aware, 429-specific
+   backoff, 429 count in the run log. Small and structural; benefits all
+   fetches (arena/OR/provider/logos).
+2. **TTL skip (client-side state)** — refetch a model's endpoints+page only
+   if the last fetch is older than N hours. Complicates: where the state
+   lives (committed file vs `.tmp`), and freshness semantics — `stats` is a
+   rolling 30-min window (any TTL > 30 min means stats are always
+   stale-by-TTL; pricing/provider-list/uptime are the slow fields the
+   display plans actually show). Cross-ref: B15 open question 6 (daily
+   endpoints refresh as fallback).
+3. **429 budget** — max N rate-limit responses per run, then die with a
+   clear message (don't burn 5 min through a limit storm).
+4. **Deeper probe** — any bulk provider/endpoints or stats API we haven't
+   found; OpenRouter's documented limits for the public surfaces.
+
 ## Plan decomposition — round 2 (2026-09-17)
 
 Owner directive (2026-09-17): split the items into separate linked plans;
