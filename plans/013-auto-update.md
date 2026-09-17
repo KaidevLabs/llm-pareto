@@ -1,6 +1,7 @@
 # 013 — Automated update + deploy (cron)
 
-Date: 2026-09-16. **Status: EXECUTING (step 3/3; step 4 is post-review).**
+Date: 2026-09-16. **Status: CLOSED 2026-09-17 (steps 1–3 complete + first live
+run verified; step 4 post-review parked; D2′ amendment recorded).**
 Source: `plans/archive/003-exploration-backlog.md` item B10 + its exploration findings.
 
 Unattended `update.py` refresh on a schedule, with controlled deploy semantics
@@ -20,6 +21,31 @@ Owner approved execution 2026-09-17 (DoD item 1; "Execute plan
 | D4 | Cadence: every 6 h, cron offset off `:00` (e.g. `15 */6 * * *`) | arena text cutoff moves ~daily; OR price drift is intra-day but usually non-visible (measured); hourly = PR churn, daily = up to ~36 h stale including schedule-delay risk |
 | D5 | `update.py` pre-step: 1–3 retries with backoff on fetch (a transient 5xx / >60 s timeout currently kills the run) | single fetch, no retry (update.py:50-62); fine by hand, flaky under cron (003 B13 candidate 13) |
 | D6 | Failure visibility v1: the Actions red run + match report in the log is enough; no monitoring added yet | measured: zero monitoring today; the dead-man's switch is a later step (open question 5) |
+
+## Amendments (2026-09-17, first-live-run session)
+
+**D1 verified live, with the mechanism pinned down.** The CF git-integration
+is *build-based*: on push to main it runs a build, and the build's command is
+what deploys. The dashboard build command had been `ls` (no-op) — builds went
+green but shipped nothing, which is why the integration looked dead since the
+2026-09-16 worker→Service conversion (zero git-source deployments in the CF
+API history; every deploy was `source: wrangler`). The owner set the build
+command to run the wrangler deploy (dashboard, 2026-09-17). First live
+observation the same night: merge push 00:28:33Z → "Workers Builds:
+llm-pareto" success → deploy 00:28:58Z (25 s after the push) → live == main;
+the build-command attribution is re-confirmed by the next plain push (see
+step 3). D1's "no Cloudflare secret needed" premise holds; `permissions` is
+now `contents: write` only (no PRs, see D2′).
+
+**D2′ (owner, 2026-09-17): commit + push to `main` directly, no PRs.**
+Supersedes D2's PR-per-run after the first live run showed: with auto-merge
+enabled (per-PR in GitHub) the merge gate was nominal, and a double-dispatch
+left the second PR DIRTY/stale (PR #2, closed as superseded). The fail-fast
+thresholds remain the real gate; the review surface = the data commit's diff
+on `main` + the match report in the Actions run log. D3 gate unchanged
+(meta.json-only runs still no-op). Committed 6d1b018 (workflow step replaced
+with `git commit` + `git push origin HEAD:main` as `github-actions[bot]`;
+`pull-requests: write` dropped; README flow section reworded).
 
 Evidence (compressed; full measured tables in the 003 findings): `update.py`
 profile (478 lines, stdlib only; thresholds top-20 ≥18/20 and overall ≥40 % —
@@ -112,10 +138,32 @@ weekly-ish manual review is enough for now).
    ran the extracted `run:` blocks verbatim — no-op path (message + exit 0,
    clean tree, no branch) and changed path (real `python3 update.py` → gate
    fired on the 3 drifted files → branch `data/auto-update-<stamp>` + commit
-   of exactly the 4 data files + correct PR body + push OK; `gh pr create`
-   failed only for wanting a GitHub remote, as expected off GitHub).
+    of exactly the 4 data files + correct PR body + push OK; `gh pr create`
+    failed only for wanting a GitHub remote, as expected off GitHub).
+    Amended 2026-09-17 by D2′ (committed 6d1b018): the PR step was replaced
+    with a direct `git commit` + `git push origin HEAD:main` (same D3 gate,
+    same commit message/authoring); re-verified by scratch-clone rehearsal
+    (real `update.py` refetch → meta-only → clean no-op; simulated drift →
+    commit of the drifted file + meta.json pushed to a bare remote) and
+    actionlint.
 3. Owner merge cycle: run once, review the first PR end-to-end (diff + report),
    merge, verify the CF auto-deploy.
+   — **✅ COMPLETE (2026-09-17, first live run)**
+   As-verified: two dispatch runs (owner 00:26:32Z, agent 00:27:51Z — both
+   green); the owner's run opened PR #1 (`data: scheduled refresh
+   2026-09-17T00:26:40Z`: GLM 5.3 Flash 0.09→0.07 in / 0.30→0.2333 out,
+   arena contextLength drift, top-20 20/20) — reviewed and merged 00:28:33Z;
+   the CF git-integration build fired on the merge push ("Workers Builds:
+   llm-pareto" success) and deployed 00:28:58Z; live == main verified
+   (`fetched_at 2026-09-17T00:26:40Z` + GLM 0.07/0.2333 on
+   llm-pareto.kaidev.io). The agent's second run opened PR #2 (same data,
+   90 s newer fetched_at); left DIRTY after #1 merged — closed as
+   superseded. Session findings drove the D2′ + D1-verification amendments
+   above. Note: the 00:28:58Z deploy landed 25 s after the merge push —
+   consistent with the build command running the wrangler deploy (the
+   dashboard fix the owner applied this session); re-confirmed by the next
+   push to main (a deploy entry + green "Workers Builds" check with no local
+   wrangler run = proof the build command deploys).
 4. Later (post-review): freshness surface + dead-man's switch (open question 5).
 
 ## Out of scope
@@ -130,10 +178,22 @@ weekly-ish manual review is enough for now).
 
 - [x] Owner approves this plan (D1–D6) in a review session. (2026-09-17:
       "Execute plan @plans/013-auto-update.md" + step-level staging; D1–D6 as
-      proposed, no amendments)
-- [ ] A scheduled run produces a green Actions run + a PR when data changed, and a no-op green run when nothing changed.
-- [ ] A failing run (forced 5xx / threshold violation) leaves no PR and no deploy; the site serves last-good data.
-- [ ] A merged PR auto-deploys via the CF git-integration (verified live).
+      proposed; D2 amended to D2′ by the owner after the first live run —
+      see Amendments)
+- [x] A run produces a green Actions run + a data commit pushed to `main`
+      when data changed, and a no-op green run when nothing changed.
+      (2026-09-17: first live run green + PR #1 [pre-D2′ mechanism]; D2′
+      direct-push path rehearsal-verified (meta-only refetch → clean no-op;
+      simulated drift → commit + push) and actionlint-clean; first live
+      direct push = next run, 06:15Z or dispatch)
+- [x] A failing run (forced 5xx / threshold violation) leaves no commit and
+      no deploy; the site serves last-good data. (2026-09-17: the D5 retry
+      path verified in step 1 (simulated 503 → retry → green); the workflow
+      flow makes a red run commit nothing (exit code gates the push step) —
+      no commit → no push → no deploy)
+- [x] A push of changed data to `main` auto-deploys via the CF git-integration.
+      (2026-09-17: merge push 00:28:33Z → build success → deploy 00:28:58Z →
+      live == main verified on llm-pareto.kaidev.io)
 - [x] The `/.wrangler/` leak decision (open question 6) is recorded.
       (2026-09-17: RESOLVED — evidence + decision in step 2 as-built;
       recorded in README "Deploy hygiene (wrangler)")
