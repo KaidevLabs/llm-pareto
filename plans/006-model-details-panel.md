@@ -1,6 +1,6 @@
 # 006 — Model details panel (bubble click)
 
-Date: 2026-09-16. **Status: EXECUTING (step 2/3).**
+Date: 2026-09-16. **Status: EXECUTING (step 3/3).**
 Source: `plans/archive/002-exploration-backlog.md` item B3 + its exploration findings.
 
 Clicking a bubble (or a frontier marker) opens a ~340px overlay drawer on the
@@ -30,10 +30,21 @@ empty chart area.
    Characterization: pinned row-shape dict in test_match_join updated; new
    test pins best-entry carry. Suite 114 green. Data diff = 154×3 new keys +
    one upstream GLM-4.6 price drift (arena and OR sides moved together).
-2. app.js + index.html: drawer markup + dark-theme CSS; `chart.on("click")`
-   on the models and frontier series (survives `setOption(opt, true)`
-   re-renders); `state.selected`; `renderDetails()`; close affordances (D5).
-   Commit: `chart: model details drawer`
+ 2. app.js + index.html: drawer markup + dark-theme CSS; `chart.on("click")`
+    on the models and frontier series (survives `setOption(opt, true)`
+    re-renders); `state.selected`; `renderDetails()`; close affordances (D5).
+    Commit: `chart: model details drawer`
+    ✅ Complete — `5fc1368` (2026-09-17). As-built: two close paths because
+    an empty plot never reaches ECharts' `chart.on("click")` (no series hit)
+    — close-on-empty binds at the zrender level (`getZr().on("click")`, no
+    target); a pan ends in a synthetic click, so `lastPanEnd` is stamped on
+    the pan's `mousemove` (mouseup fires the click first) and swallows
+    clicks within 300 ms. `renderDetails()` re-renders from `render()` so
+    the D4 badge tracks filters without touching the selection. Verified via
+    CDP-driven headless Chromium with real mouse events: open on bubble and
+    on a frontier-line midpoint (resolves to a frontier model), close via ×
+    and empty-area, D4 badge appears/clears on the vision filter, handlers
+    survive not-Merge re-renders, pan-then-release does not open the drawer.
 3. Review pass: "filtered out" indicator (D4), long variant lists, and
    verify `https://openrouter.ai/<or_id>` resolves for all 154 ids before
    wiring the link. Commit only if something changes.
@@ -47,9 +58,10 @@ empty chart area.
 
 ## Definition of done
 
-- [ ] Owner approves this plan (D1–D5).
-- [ ] Bubble click opens the drawer with the D2 content; frontier markers
-      work too.
-- [ ] Closes via × and empty-area click.
-- [ ] A filtered-out selection shows the "filtered out" indicator.
+- [x] Owner approves this plan (D1–D5) — `Execute` trigger 2026-09-17.
+- [x] Bubble click opens the drawer with the D2 content; frontier markers
+      work too. — CDP check, 2026-09-17 (`.tmp/drawer-check.mjs`).
+- [x] Closes via × and empty-area click. — CDP check, 2026-09-17.
+- [x] A filtered-out selection shows the "filtered out" indicator. — CDP
+      check, 2026-09-17.
 - [ ] Deployed per A10.
