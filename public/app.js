@@ -133,6 +133,15 @@ function fmtToks(v) {
   return String(v >= 10 ? Math.round(v) : Math.round(v * 10) / 10);
 }
 
+// latency for the 024 D9 summary block: ms → "489ms" / "3.1s". No TTFT
+// claim — 023 D6 labels what is certain and keeps the metric question open.
+function fmtMs(v) {
+  if (v == null) return "—";
+  return v < 1000
+    ? Math.round(v) + "ms"
+    : (v / 1000).toFixed(1).replace(/\.0$/, "") + "s";
+}
+
 function esc(s) {
   return String(s).replace(/[&<>"]/g, (c) =>
     ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
@@ -273,7 +282,10 @@ function pointsFor(getPrice, rows) {
       skipped++;
       continue;
     }
-    pts.push({ value: [price, d.arena_elo], d });
+    // The hover card shows p50 speed in every view (owner A/B, 024 step 1):
+    // the same 023 D2 aggregation as the speed axis — null until the
+    // endpoints fetch settles, hidden then, same as the drawer.
+    pts.push({ value: [price, d.arena_elo], d, spd: speedOf(d.or_id, ENDPOINTS) });
   }
   return { pts, skipped };
 }
@@ -409,6 +421,12 @@ function tooltipHTML(p) {
       ? '<div style="color:' + OVERRIDE + '">⚑ manual override — identity fixed by owner decision, price final</div>'
       : "match: " + d.match_method + (d.match_ratio ? " (similarity " + d.match_ratio + ")" : "");
     const lg = logoFor(orgOf(d));
+    // p50 speed in every view (023 D2/D6): the value plus its basis — the
+    // median rule and the 30-min window are shown, not hidden. The 3D view
+    // plots speed as its depth axis, so it carries the same lines. p.spd is
+    // the render-time value (speed/3D builders); the live recompute keeps
+    // the blend/price cards correct even before any post-fetch re-render.
+    const spd = p.spd || speedOf(d.or_id, ENDPOINTS);
     const parts = [
     '<div style="font-weight:600;font-size:13px">' +
       (lg
@@ -420,27 +438,36 @@ function tooltipHTML(p) {
       "</div>",
     '<div style="color:#8b98ab;font-size:11px;margin-bottom:6px">' + d.or_id + "</div>",
     "arena #" + d.arena_rank +
-      " · elo " + d.arena_elo.toFixed(1) + ci +
-      " · " + fmtVotes(d.arena_votes) + " votes",
-    // Speed view (023 D2/D6): the value plus its basis — the median rule
-    // and the 30-min window are shown, not hidden. The 3D view plots speed
-    // as its depth axis, so it carries the same lines.
-    ((state.mode === "speed" || state.three3d) && p.spd
+      ' · elo <span style="color:#34d399">' +
+      d.arena_elo.toFixed(1) +
+      ci +
+      '</span> · ' +
+      fmtVotes(d.arena_votes) +
+      " votes",
+    // (basis as above — see the spd note at the top of this function)
+    (spd
       ? '<div style="color:#34d399;font-weight:600">' +
-        fmtToks(p.spd.toks) + ' tok/s output p50 <span style="color:#8b98ab;font-weight:400">(30-min window)</span></div>' +
-        '<div style="color:#8b98ab;font-size:11px">median of ' + p.spd.n +
-        (p.spd.n === 1 ? " endpoint" : " endpoints") + " · " +
-        p.spd.rc.toLocaleString("en-US") + " requests" +
-        (p.spd.latency != null
-          ? " · latency p50 (ms) " + Math.round(p.spd.latency)
+        fmtToks(spd.toks) + ' tok/s output p50 <span style="color:#8b98ab;font-weight:400">(30-min window)</span></div>' +
+        '<div style="color:#8b98ab;font-size:11px">median of ' + spd.n +
+        (spd.n === 1 ? " endpoint" : " endpoints") + " · " +
+        spd.rc.toLocaleString("en-US") + " requests" +
+        (spd.latency != null
+          ? " · latency p50 (ms) " + Math.round(spd.latency)
           : "") +
         "</div>"
       : ""),
     (state.mode === "general"
-      ? fmtPrice(blendedPrice(d)) + " blended (" + state.ratio + ":1) · "
+      ? "<b>" +
+        fmtPrice(blendedPrice(d)) +
+        "</b> blended (" +
+        state.ratio +
+        ':1) · '
       : "") +
-    fmtPrice(d.price_in_per_m) + " in · " + fmtPrice(d.price_out_per_m) +
-      " out <span style='color:#8b98ab'>per M tokens</span>",
+    '<span style="color:#60a5fa">' +
+    fmtPrice(d.price_in_per_m) +
+    "</span> in · <span style='color:#f59e0b'>" +
+    fmtPrice(d.price_out_per_m) +
+    "</span> out <span style='color:#8b98ab'>per M tokens</span>",
     orgOf(d) +
       (d.arena_license ? " · " + d.arena_license : "") +
       (d.context_length ? " · " + fmtVotes(d.context_length) + " ctx" : "") +
@@ -1378,6 +1405,181 @@ function updateSearchCount() {
   el.classList.remove("hidden");
 }
 
+// Providers section (plan 024): two stacked tables. On top, the D9
+// percentile summary (speed/latency p50–p99 per model, price/context as
+// single values). Below, the model's OpenRouter endpoints (022's
+// endpoints.json via 023's shared lazy fetch) per provider — quantization,
+// $/M in, $/M out, context, uptime 1 d, speed p50 tok/s. Display only (D7):
+// the chart point keeps its model-level list price; the endpoint whose
+// prices equal it gets the marker (D4). Sort is module state (D3) so it
+// survives the drawer's innerHTML re-renders.
+let PROV_SORT = { key: "in", dir: 1 };
+
+// D9 (owner note 2026-09-17; layout settled at step 1 review): the
+// percentile summary atop the section — percentiles as columns, metrics as
+// rows. Speed/latency are aggregated per percentile with the 023 D2 rule
+// (median across the rc>=30 endpoints), so the p50 column equals the value
+// plotted on the speed axis. Price and context are not distributions: one
+// value spanning the p columns.
+function speedSummaryHTML(d, eps) {
+  const use = eps.filter(
+    (e) =>
+      e.stats &&
+      e.stats.p50_throughput > 0 &&
+      (e.stats.request_count || 0) >= 30
+  );
+  const PCTS = ["p50", "p75", "p90", "p95", "p99"];
+  const prow = (label, vals) =>
+    '<tr><td class="pl">' +
+    label +
+    "</td>" +
+    vals.map((v) => "<td>" + (v == null ? "—" : v) + "</td>").join("") +
+    "</tr>";
+  const span = (label, v) =>
+    '<tr><td class="pl">' + label + '</td><td colspan="5">' + v + "</td></tr>";
+  const basis = use.length
+    ? "across " +
+      use.length +
+      (use.length > 1 ? " endpoints" : " endpoint") +
+      " (rc≥30) · " +
+      use.reduce((s, e) => s + (e.stats.request_count || 0), 0) +
+      " requests · " +
+      (use[0].stats.window_minutes || 30) +
+      "-min window"
+    : "";
+  return (
+    '<table class="ptable psum"><thead><tr><th class="pl"></th>' +
+    PCTS.map((p) => "<th>" + p + "</th>").join("") +
+    "</tr></thead><tbody>" +
+    prow("speed tok/s", PCTS.map((p) => fmtToks(
+      use.length ? median(use.map((e) => e.stats[p + "_throughput"])) : null
+    ))) +
+    prow("latency", PCTS.map((p) => fmtMs(
+      use.length ? median(use.map((e) => e.stats[p + "_latency"])) : null
+    ))) +
+    span(
+      "price $/M",
+      '<span class="ink">' +
+        fmtPrice(d.price_in_per_m) +
+        '</span> in · <span class="outk">' +
+        fmtPrice(d.price_out_per_m) +
+        "</span> out"
+    ) +
+    span("context", fmtVotes(d.context_length)) +
+    "</tbody></table>" +
+    (basis ? '<div class="dnote">' + basis + "</div>" : "")
+  );
+}
+
+function providersHTML(d) {
+  let out = '<div class="dsec">Providers</div>';
+  if (!ENDPOINTS_DONE) return out + '<div class="dnote">—</div>';
+  if (!ENDPOINTS)
+    return (
+      out +
+      '<div class="dnote">provider data unavailable' +
+      (ENDPOINTS_ERROR ? " (" + esc(ENDPOINTS_ERROR) + ")" : "") +
+      "</div>"
+    );
+  const eps = ENDPOINTS[d.or_id] || [];
+  if (!eps.length)
+    return out + '<div class="dnote">no provider data for this model</div>';
+
+  const perM = (s) => (s == null ? null : parseFloat(s) * 1e6);
+  const near = (a, b) => a != null && b != null && Math.abs(a - b) < 1e-9;
+  const marked = eps.map((e) => {
+    const p = e.pricing || {};
+    return (
+      near(perM(p.prompt), d.price_in_per_m) &&
+      near(perM(p.completion), d.price_out_per_m)
+    );
+  });
+
+  const sortVal = (e) => {
+    switch (PROV_SORT.key) {
+      case "in": return perM((e.pricing || {}).prompt);
+      case "out": return perM((e.pricing || {}).completion);
+      case "up": return e.uptime_last_1d;
+      default: return e.stats ? e.stats.p50_throughput : null;
+    }
+  };
+  const rows = eps
+    .map((e, i) => ({ e, m: marked[i] }))
+    .sort((a, b) => {
+      const va = sortVal(a.e);
+      const vb = sortVal(b.e);
+      const na = va == null;
+      const nb = vb == null;
+      if (na || nb) return na && nb ? 0 : na ? 1 : -1;
+      return (va - vb) * PROV_SORT.dir;
+    });
+
+  const th = (key, label) => {
+    const on = PROV_SORT.key === key;
+    return (
+      '<th data-sort="' + key + '">' + label +
+      (on
+        ? ' <span class="arr">' + (PROV_SORT.dir === 1 ? "▲" : "▼") + "</span>"
+        : "") +
+      "</th>"
+    );
+  };
+  const trs = rows.map(({ e, m }) => {
+    const p = e.pricing || {};
+    const st = e.stats || {};
+    return (
+      "<tr" +
+      (m ? ' class="pmarked"' : "") +
+      ">" +
+      '<td class="pl"><div>' +
+      (m ? '<span class="pmark">●</span> ' : "") +
+      esc(e.provider) +
+      "</div>" +
+      (e.tag ? '<div class="ptag">' + esc(e.tag) + "</div>" : "") +
+      "</td>" +
+      "<td>" + esc(e.quantization == null ? "—" : e.quantization) + "</td>" +
+      "<td>" + fmtPrice(perM(p.prompt)) + "</td>" +
+      "<td>" + fmtPrice(perM(p.completion)) + "</td>" +
+      "<td>" + fmtVotes(e.context_length) + "</td>" +
+      "<td>" + (e.uptime_last_1d == null ? "—" : e.uptime_last_1d + "%") + "</td>" +
+      "<td>" + fmtToks(st.p50_throughput) + "</td>" +
+      "</tr>"
+    );
+  });
+
+  const notes = [];
+  if (marked.some(Boolean))
+    notes.push({
+      t: "● chart price — the endpoint the chart point prices on",
+      g: true,
+    });
+  if (eps.length === 1) notes.push({ t: "single provider" });
+  if (!eps.some((e) => e.stats && e.stats.p50_throughput != null))
+    notes.push({ t: "no speed data (low traffic)" });
+  if (d.match_method === "override")
+    notes.push({
+      t: "chart price is final — provider prices are reference",
+      g: true,
+    });
+  return (
+    out +
+    speedSummaryHTML(d, eps) +
+    '<div class="dsub">per provider</div>' +
+    '<table class="ptable epts"><thead><tr><th class="pl">provider</th><th>quant</th>' +
+    th("in", "$/M in") +
+    th("out", "$/M out") +
+    "<th>ctx</th>" +
+    th("up", "up 1d") +
+    th("spd", "tok/s") +
+    "</tr></thead><tbody>" +
+    trs.join("") +
+    "</tbody></table>" +
+    notes
+      .map((n) => '<div class="dnote' + (n.g ? " gold" : "") + '">' + n.t + "</div>")
+      .join("")
+  );
+}
+
 // Details drawer (plan 006): the content is the joined row — D2's v1 set,
 // plus the derived OpenRouter page link and the "filtered out" state (D4).
 // Rendered from render() too, so any filter change refreshes the indicator
@@ -1455,7 +1657,8 @@ function detailsHTML(d, visible) {
     '<span class="dname">' + esc(d.or_name) + "</span>" +
     '<div class="did">' + esc(d.or_id) + "</div></div>" +
     rows.join("") +
-    '<div class="dlinks">' + links.join("") + "</div>"
+    '<div class="dlinks">' + links.join("") + "</div>" +
+    providersHTML(d)
   );
 }
 
@@ -1471,6 +1674,10 @@ function renderDetails() {
   const visible = filtered().some((r) => r.or_id === d.or_id);
   body.innerHTML = detailsHTML(d, visible);
   el.classList.remove("hidden");
+  // 024 D8: the Providers section renders once the shared lazy fetch
+  // settles — a one-frame "—" placeholder until then, never a spinner.
+  // renderDetails re-reads state.selected, so a late settle is idempotent.
+  if (!ENDPOINTS_DONE) fetchEndpoints().then(() => renderDetails());
 }
 
 function render() {
@@ -1813,6 +2020,16 @@ function bindFilters() {
     state.selected = null;
     renderDetails();
   });
+  // 024 D3: provider-table sort headers — delegated on the static drawer
+  // shell (details-body is re-set via innerHTML on every render).
+  document.getElementById("details").addEventListener("click", (e) => {
+    const th = e.target.closest("th[data-sort]");
+    if (!th) return;
+    const key = th.getAttribute("data-sort");
+    if (PROV_SORT.key === key) PROV_SORT.dir = -PROV_SORT.dir;
+    else PROV_SORT = { key, dir: 1 };
+    renderDetails();
+  });
   for (const key of ["blend", "in", "out", "speed"]) {
     const pill = document.getElementById("reset-" + key);
     // The chart is lazy (first render of its mode), so look it up on click.
@@ -1855,6 +2072,12 @@ async function main() {
   renderFooter();
   bindFilters();
   render();
+  // Fire the shared endpoints fetch (023 D8) on load, after first paint:
+  // the hover card's p50 speed line (024 step 1) needs it without the
+  // caller having to open a drawer first. Non-blocking — the 2.2 MB file
+  // never delays first paint; the tooltip recomputes live per hover, so
+  // the line appears as soon as the fetch settles, no re-render needed.
+  fetchEndpoints();
 }
 
 main();

@@ -354,14 +354,14 @@
     top: 0;
     right: 28px;
     bottom: 0;
-    width: 340px;
+    width: 400px;
     z-index: 20;
     background: #0a0e16;
     border: 1px solid var(--border);
     border-radius: 14px;
     box-shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
     overflow-y: auto;
-    padding: 16px;
+    padding: 18px;
   }
   .drawer-x {
     position: absolute;
@@ -377,7 +377,7 @@
     cursor: pointer;
   }
   .drawer-x:hover { color: var(--text); background: rgba(148, 163, 184, 0.08); }
-  .dhead { padding-right: 26px; margin-bottom: 8px; }
+  .dhead { padding-right: 26px; margin-bottom: 12px; }
   .dhead img { vertical-align: -4px; margin-right: 6px; border-radius: 3px; }
   .dname { font-weight: 600; font-size: 14px; }
   .did { color: var(--muted); font-size: 11px; margin-top: 3px; }
@@ -394,7 +394,7 @@
     display: flex;
     justify-content: space-between;
     gap: 12px;
-    padding: 6px 0;
+    padding: 8px 0;
     border-top: 1px solid rgba(148, 163, 184, 0.08);
     font-size: 12px;
   }
@@ -405,7 +405,7 @@
   .dlinks {
     display: flex;
     gap: 14px;
-    margin-top: 10px;
+    margin-top: 14px;
     font-size: 12px;
   }
   .dlinks a {
@@ -414,6 +414,70 @@
     border-bottom: 1px solid var(--border);
   }
   .dlinks a:hover { border-bottom-color: var(--accent); }
+  /* Providers section (plan 024): the model's OpenRouter endpoints as a
+     tight 7-column table — provider (+ tag), quantization, $/M in, $/M out,
+     context, uptime 1 d, speed p50 tok/s. */
+  .dsec {
+    margin-top: 18px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(148, 163, 184, 0.08);
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  /* per-provider sublabel under the D9 summary block */
+  .dsub {
+    margin-top: 12px;
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .ptable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+    font-size: 11px;
+  }
+  .ptable th {
+    color: var(--muted);
+    font-weight: 500;
+    text-align: right;
+    padding: 2px 4px 8px;
+    white-space: nowrap;
+  }
+  .ptable th.pl { text-align: left; }
+  .ptable th[data-sort] { cursor: pointer; }
+  .ptable th[data-sort]:hover { color: var(--text); }
+  .ptable th .arr { font-size: 9px; }
+  .ptable td {
+    padding: 6px 4px;
+    border-top: 1px solid rgba(148, 163, 184, 0.08);
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    vertical-align: top;
+  }
+  .ptable td.pl { text-align: left; white-space: normal; }
+  .ptable td.pl > div { font-size: 12px; white-space: nowrap; }
+  .ptable .ptag { color: var(--muted); font-size: 10px; }
+  .ptable .pmark { color: var(--gold); font-size: 9px; position: relative; top: -1px; }
+  /* chart-price rows: gold left rail (all rows carry a transparent one so
+     the rail doesn't shift the column) */
+  .ptable.epts td:first-child { border-left: 2px solid transparent; }
+  .ptable.epts tr.pmarked > td:first-child { border-left-color: var(--gold); }
+  /* D9 summary color hints: the p50 column is the plotted value (accent),
+     row labels follow the site's existing encoding — speed = accent,
+     latency = warm, price = input blue / output amber (.ink/.outk). */
+  .psum td.pl { color: var(--muted); }
+  .psum thead th:nth-child(2) { color: var(--accent); }
+  .psum tbody tr:nth-child(1) td.pl { color: var(--accent); }
+  .psum tbody tr:nth-child(2) td.pl { color: #f59e0b; }
+  .psum tbody tr:nth-child(3) td.pl { color: var(--text); }
+  .psum tbody tr:nth-child(-n+2) td:nth-child(2) { background: var(--accent-dim); }
+  .dnote { color: var(--muted); font-size: 11px; margin-top: 8px; }
+  .dnote.gold { color: var(--gold); }
 
   footer {
     margin-top: 18px;
