@@ -241,6 +241,9 @@ class TestJoin(unittest.TestCase):
                 "arena_model": "GPT-5.5 (high)",
                 "arena_variants": ["GPT-5.5", "GPT-5.5 (high)"],
                 "arena_context_length": None,
+                "arena_model_url": None,
+                "arena_price_in_per_m": None,
+                "arena_price_out_per_m": None,
                 "match_method": "exact",
                 "match_ratio": None,
             },
@@ -249,6 +252,33 @@ class TestJoin(unittest.TestCase):
         self.assertEqual(method_counts, {"exact": 2})
         self.assertEqual(unmatched, [])
         self.assertEqual(applied, [])
+
+    def test_model_url_and_arena_price_carry_from_best_entry(self):
+        entries = [
+            arena_entry(
+                3,
+                "GPT-5.5",
+                1500,
+                100,
+                modelUrl="https://example.com/base",
+                inputPricePerMillion=1.0,
+                outputPricePerMillion=2.0,
+            ),
+            arena_entry(
+                5,
+                "GPT-5.5 (high)",
+                1600,
+                90,
+                modelUrl="https://example.com/high",
+                inputPricePerMillion=4.0,
+                outputPricePerMillion=8.0,
+            ),
+        ]
+        combined, _, _, _, _, _ = update.join(entries, OR_MODELS, self.overrides)
+        record = combined[0]
+        self.assertEqual(record["arena_model_url"], "https://example.com/high")
+        self.assertEqual(record["arena_price_in_per_m"], 4.0)
+        self.assertEqual(record["arena_price_out_per_m"], 8.0)
 
     def test_override_applied_recorded_and_org_falls_back(self):
         entries = [arena_entry(9, "muse-spark", 1300, 50)]

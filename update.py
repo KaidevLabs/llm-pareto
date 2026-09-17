@@ -339,6 +339,9 @@ def join(arena_entries, or_models, overrides):
                     x.get("modelDisplayName") for x in entries
                 ),
                 "arena_context_length": best.get("contextLength"),
+                "arena_model_url": best.get("modelUrl"),
+                "arena_price_in_per_m": best.get("inputPricePerMillion"),
+                "arena_price_out_per_m": best.get("outputPricePerMillion"),
                 "match_method": rec["match_method"],
                 "match_ratio": rec["match_ratio"],
             }
