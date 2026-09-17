@@ -194,11 +194,17 @@
     position: relative;
   }
   main[data-mode="general"] #panel-in,
-  main[data-mode="general"] #panel-out { display: none; }
+  main[data-mode="general"] #panel-out,
+  main[data-mode="general"] #panel-speed { display: none; }
   main[data-mode="in"] #panel-blend,
-  main[data-mode="in"] #panel-out { display: none; }
+  main[data-mode="in"] #panel-out,
+  main[data-mode="in"] #panel-speed { display: none; }
   main[data-mode="out"] #panel-blend,
-  main[data-mode="out"] #panel-in { display: none; }
+  main[data-mode="out"] #panel-in,
+  main[data-mode="out"] #panel-speed { display: none; }
+  main[data-mode="speed"] #panel-blend,
+  main[data-mode="speed"] #panel-in,
+  main[data-mode="speed"] #panel-out { display: none; }
 
   .ratio {
     display: inline-flex;
@@ -432,6 +438,7 @@
     <button data-mode="general" class="on">General</button>
     <button data-mode="in">Input $/M</button>
     <button data-mode="out">Output $/M</button>
+    <button data-mode="speed">Speed tok/s</button>
   </div>
   <div class="ratio" id="ratio-ctl">
     <span class="ratio-val" id="ratio-val">3:1</span>
@@ -496,6 +503,19 @@
     <div class="chart" id="chart-out"></div>
     <div class="legend-row">
       <span><span class="sw" style="background:#34d399"></span>pareto frontier — nothing beats these on both quality and price</span>
+      <span><span class="sw ov-sw"></span>manual override — identity fixed by owner decision, price final</span>
+    </div>
+  </section>
+  <section class="panel" id="panel-speed">
+    <div class="panel-head">
+      <h2>Output speed</h2>
+      <span class="badge" id="badge-speed">◈ frontier</span>
+      <button class="pill" id="reset-speed" title="Reset both axes to fit">⤢ fit</button>
+      <span class="count" id="count-speed"></span>
+    </div>
+    <div class="chart" id="chart-speed"></div>
+    <div class="legend-row">
+      <span><span class="sw" style="background:#34d399"></span>pareto frontier — nothing beats these on both quality and speed</span>
       <span><span class="sw ov-sw"></span>manual override — identity fixed by owner decision, price final</span>
     </div>
   </section>

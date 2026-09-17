@@ -125,6 +125,13 @@ function fmtVotes(v) {
   return String(v);
 }
 
+// tok/s axis + tooltip formatting (023 D6): integers from 10 up, one
+// decimal below.
+function fmtToks(v) {
+  if (v == null) return "—";
+  return String(v >= 10 ? Math.round(v) : Math.round(v * 10) / 10);
+}
+
 function esc(s) {
   return String(s).replace(/[&<>"]/g, (c) =>
     ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
@@ -172,6 +179,10 @@ function blendedPrice(d) {
 // state; ENDPOINTS_ERROR records why for the footer note.
 let ENDPOINTS = null;
 let ENDPOINTS_ERROR = null;
+// The fetch has settled (any outcome). ENDPOINTS/ENDPOINTS_ERROR alone
+// can't distinguish "still loading" from "fetched, nothing there" — a 404
+// leaves both falsy, and the loading guard would re-schedule forever.
+let ENDPOINTS_DONE = false;
 let endpointsPromise = null;
 
 function fetchEndpoints() {
@@ -191,6 +202,9 @@ function fetchEndpoints() {
       .catch((err) => {
         ENDPOINTS_ERROR = err.message;
         return null;
+      })
+      .finally(() => {
+        ENDPOINTS_DONE = true;
       });
   }
   return endpointsPromise;
@@ -242,16 +256,19 @@ function pointsFor(getPrice, rows) {
 
 // Pareto frontier: no other point has both lower price and higher elo.
 // points are [price, elo]; the frontier trades lower price for lower elo.
-function paretoFrontier(pts) {
+// highX flips the x semantics for axes where the higher value wins (the
+// speed view, 023 D3): dominated iff another point is strictly faster AND
+// strictly higher-elo. Either way the line sorts monotonic along x.
+function paretoFrontier(pts, highX) {
   const out = [];
   for (const p of pts) {
     let dominated = false;
     for (const q of pts) {
       if (q === p) continue;
       if (
-        q.value[0] <= p.value[0] &&
+        (highX ? q.value[0] >= p.value[0] : q.value[0] <= p.value[0]) &&
         q.value[1] >= p.value[1] &&
-        (q.value[0] < p.value[0] || q.value[1] > p.value[1])
+        (q.value[0] !== p.value[0] || q.value[1] > p.value[1])
       ) {
         dominated = true;
         break;
@@ -259,7 +276,9 @@ function paretoFrontier(pts) {
     }
     if (!dominated) out.push(p);
   }
-  out.sort((a, b) => a.value[0] - b.value[0]);
+  out.sort((a, b) =>
+    highX ? b.value[0] - a.value[0] : a.value[0] - b.value[0]
+  );
   return out;
 }
 
@@ -348,6 +367,19 @@ function tooltipHTML(p) {
     "arena #" + d.arena_rank +
       " · elo " + d.arena_elo.toFixed(1) + ci +
       " · " + fmtVotes(d.arena_votes) + " votes",
+    // Speed view (023 D2/D6): the value plus its basis — the median rule
+    // and the 30-min window are shown, not hidden.
+    (state.mode === "speed" && p.spd
+      ? '<div style="color:#34d399;font-weight:600">' +
+        fmtToks(p.spd.toks) + ' tok/s output p50 <span style="color:#8b98ab;font-weight:400">(30-min window)</span></div>' +
+        '<div style="color:#8b98ab;font-size:11px">median of ' + p.spd.n +
+        (p.spd.n === 1 ? " endpoint" : " endpoints") + " · " +
+        p.spd.rc.toLocaleString("en-US") + " requests" +
+        (p.spd.latency != null
+          ? " · latency p50 (ms) " + Math.round(p.spd.latency)
+          : "") +
+        "</div>"
+      : ""),
     (state.mode === "general"
       ? fmtPrice(blendedPrice(d)) + " blended (" + state.ratio + ":1) · "
       : "") +
@@ -394,7 +426,7 @@ function fitLog(vals) {
   };
 }
 
-function chartOption(label, pts, frontier, spreadPts, bounds) {
+function chartOption(label, pts, frontier, spreadPts, bounds, xFmt) {
   // Per-panel frontier set (plan 007 D7): the "frontier" tag lives in the
   // scatter tooltip — the marker-less line has nothing to hover.
   const frontierSet = new Set(frontier.map((p) => p.d));
@@ -485,6 +517,7 @@ function chartOption(label, pts, frontier, spreadPts, bounds) {
       return {
         value: p.value,
         d: d,
+        spd: p.spd,
         // "image://" (two slashes) is the ECharts image-symbol prefix —
         // a single "image:" prefix falls through to a rect path and renders
         // nothing (verified 2026-09-16: the badge drew as an empty box)
@@ -615,7 +648,9 @@ function chartOption(label, pts, frontier, spreadPts, bounds) {
       axisLabel: {
         color: "#8b98ab",
         fontSize: 11,
-        formatter: (v) => (v >= 1 ? "$" + v : "$" + v.toFixed(2)),
+        // price panels format $; the speed panel passes its own tok/s
+        // formatter (023 D6)
+        formatter: xFmt || ((v) => (v >= 1 ? "$" + v : "$" + v.toFixed(2))),
       },
       splitLine: { lineStyle: { color: "rgba(148,163,184,0.07)" } },
     },
@@ -855,6 +890,40 @@ function bindPan(chart) {
   });
 }
 
+// Chart lifecycle shared by every panel (023 step 2: the speed panel joins
+// the price panels): lazy init + the four interaction binds, and the zoom
+// window restore after each not-Merge setOption (018 A2).
+function ensureChart(id) {
+  if (!charts[id]) {
+    charts[id] = echarts.init(
+      document.getElementById(id),
+      null,
+      { renderer: "canvas" }
+    );
+    bindZoomChart(charts[id], id);
+    bindPan(charts[id]);
+    charts[id].on("click", (p) => onChartClick(id, p));
+    bindDrawerClose(charts[id]);
+  }
+  return charts[id];
+}
+
+function restoreZoom(id) {
+  const z = ZOOM[id];
+  if (!z) return;
+  const batch = [];
+  if (z.x)
+    batch.push({ dataZoomIndex: 0, start: z.x.start, end: z.x.end });
+  if (z.y)
+    batch.push({ dataZoomIndex: 1, start: z.y.start, end: z.y.end });
+  if (batch.length)
+    charts[id].dispatchAction({
+      type: "dataZoom",
+      dataZoomIndex: 0,
+      batch,
+    });
+}
+
 function renderPanel(panelKey) {
   const isBlend = panelKey === "blend";
   const priceKey =
@@ -895,38 +964,13 @@ function renderPanel(panelKey) {
 
   const id = "chart-" + panelKey;
   FRONTIERS[id] = frontier;
-  const el = document.getElementById(id);
-  if (!charts[id]) {
-    charts[id] = echarts.init(el, null, { renderer: "canvas" });
-    bindZoomChart(charts[id], id);
-    bindPan(charts[id]);
-    charts[id].on("click", (p) => onChartClick(id, p));
-    bindDrawerClose(charts[id]);
-  }
-  charts[id].setOption(
+  ensureChart(id).setOption(
     chartOption(axisLabel, pts, frontier, spreadPts, bounds),
     true
   );
 
   // The zoom window survives the not-Merge setOption (018 A2).
-  const z = ZOOM[id];
-  if (z) {
-    const batch = [];
-    if (z.x)
-      batch.push({
-        dataZoomIndex: 0,
-        start: z.x.start,
-        end: z.x.end,
-      });
-    if (z.y)
-      batch.push({ dataZoomIndex: 1, start: z.y.start, end: z.y.end });
-    if (batch.length)
-      charts[id].dispatchAction({
-        type: "dataZoom",
-        dataZoomIndex: 0,
-        batch,
-      });
-  }
+  restoreZoom(id);
 
   document.getElementById("badge-" + panelKey).classList.toggle(
     "hidden",
@@ -934,6 +978,91 @@ function renderPanel(panelKey) {
   );
   document.getElementById("count-" + panelKey).textContent =
     pts.length + " models" + (skipped ? " · " + skipped + " skipped (no price)" : "");
+}
+
+// Speed view (023 step 2): x = per-model output speed (D2's median across
+// the model's endpoints, log scale), y = arena Elo, the frontier is the
+// per-view 2-D set over the plotted points with flipped x semantics (D3 —
+// better is faster AND higher elo). Models without speed data are excluded
+// from the plot and counted in the panel's status line (D4). First entry
+// lazily fetches endpoints.json (D5) — the price views never wait on it,
+// and a missing/failed file leaves the other views untouched.
+const X_SPEED = "output tok/s (p50, 30-min window, log)";
+const NOTE_PRICE = "wheel: zoom price + Elo (anchored at cursor) · drag: pan (both axes) · double-click or ⤢ fit: reset to full view · click a bubble or the frontier: model details · x: price $/M tokens, log scale (cheaper → left) — General blends in/out at the slider's ratio · y: LMArena Elo (higher = better) · color: organization · bar behind a point: its real price spread (blue = input → amber = output) · top-left = best of both";
+const NOTE_SPEED = "wheel: zoom speed + Elo (anchored at cursor) · drag: pan (both axes) · double-click or ⤢ fit: reset to full view · click a bubble or the frontier: model details · x: output tok/s, p50 across the model's serving endpoints, log scale (faster → right) · y: LMArena Elo (higher = better) · color: organization · top-right = best of both";
+
+function renderSpeedPanel() {
+  if (!ENDPOINTS_DONE) {
+    document.getElementById("count-speed").textContent =
+      "loading speed data…";
+    fetchEndpoints().then(() => {
+      if (state.mode === "speed") renderSpeedPanel();
+    });
+    return;
+  }
+
+  const id = "chart-speed";
+  const count = document.getElementById("count-speed");
+  const badge = document.getElementById("badge-speed");
+
+  if (!ENDPOINTS) {
+    // 404 or a failed fetch: an empty panel, the price views unaffected.
+    count.textContent = ENDPOINTS_ERROR
+      ? "speed data unavailable (" + ENDPOINTS_ERROR + ")"
+      : "no speed data available";
+    badge.classList.add("hidden");
+    if (charts[id]) charts[id].clear();
+    FRONTIERS[id] = [];
+    return;
+  }
+
+  const pts = [];
+  let noElo = 0;
+  let noSpeed = 0;
+  for (const d of filtered()) {
+    if (d.arena_elo == null) {
+      noElo++;
+      continue;
+    }
+    const s = speedOf(d.or_id, ENDPOINTS);
+    if (!s) {
+      noSpeed++;
+      continue;
+    }
+    pts.push({ value: [s.toks, d.arena_elo], d, spd: s });
+  }
+  const frontier = paretoFrontier(pts, true);
+
+  // Axes fitted over ALL joined data, not the filtered set (018 A1/A2).
+  const xvals = [];
+  for (const d of DATA) {
+    const s = speedOf(d.or_id, ENDPOINTS);
+    if (s) xvals.push(s.toks);
+  }
+  const bounds = {
+    x: fitLog(xvals),
+    y: fitLinear(DATA.map((d) => d.arena_elo).filter((v) => v != null)),
+  };
+
+  FRONTIERS[id] = frontier;
+  ensureChart(id).setOption(
+    chartOption(
+      X_SPEED,
+      pts,
+      frontier,
+      null,
+      bounds,
+      (v) => (v >= 10 ? String(Math.round(v)) : String(Math.round(v * 10) / 10))
+    ),
+    true
+  );
+  restoreZoom(id);
+
+  badge.classList.toggle("hidden", !state.frontier || frontier.length === 0);
+  count.textContent =
+    pts.length + " models" +
+    (noSpeed ? " · " + noSpeed + " without speed data hidden" : "") +
+    (noElo ? " · " + noElo + " skipped (no elo)" : "");
 }
 
 // "n/N" next to the search box (plan 010 D3): matches over the visible
@@ -1058,10 +1187,13 @@ function render() {
     "hidden",
     state.mode !== "general"
   );
+  document.querySelector(".axis-note").textContent =
+    state.mode === "speed" ? NOTE_SPEED : NOTE_PRICE;
   updateSearchCount();
   if (state.mode === "general") renderPanel("blend");
   else if (state.mode === "in") renderPanel("in");
-  else renderPanel("out");
+  else if (state.mode === "out") renderPanel("out");
+  else renderSpeedPanel();
   renderDetails();
   for (const id of Object.keys(charts)) {
     if (charts[id].getDom().offsetParent !== null) charts[id].resize();
@@ -1367,7 +1499,7 @@ function bindFilters() {
     state.selected = null;
     renderDetails();
   });
-  for (const key of ["blend", "in", "out"]) {
+  for (const key of ["blend", "in", "out", "speed"]) {
     const pill = document.getElementById("reset-" + key);
     // The chart is lazy (first render of its mode), so look it up on click.
     if (pill)
