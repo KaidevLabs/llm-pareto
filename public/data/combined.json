@@ -517,8 +517,8 @@
  {
   "or_id": "z-ai/glm-5.3-flash",
   "or_name": "Z.ai: GLM 5.3 Flash",
-  "price_in_per_m": 0.09,
-  "price_out_per_m": 0.3,
+  "price_in_per_m": 0.07,
+  "price_out_per_m": 0.2333,
   "vision": true,
   "context_length": 1310720,
   "arena_rank": 29,
@@ -936,7 +936,7 @@
    "claude-sonnet-4-5-20250929",
    "claude-sonnet-4-5-20250929-high-32k"
   ],
-  "arena_context_length": 200000,
+  "arena_context_length": 1000000,
   "match_method": "prefix-base",
   "match_ratio": null
  },
@@ -965,8 +965,8 @@
  {
   "or_id": "tencent/hy3",
   "or_name": "Tencent: Hy3",
-  "price_in_per_m": 0.0825,
-  "price_out_per_m": 0.33,
+  "price_in_per_m": 0.132,
+  "price_out_per_m": 0.528,
   "vision": false,
   "context_length": 262144,
   "arena_rank": 60,
@@ -1371,8 +1371,8 @@
  {
   "or_id": "deepseek/deepseek-v4-flash",
   "or_name": "DeepSeek: DeepSeek V4 Flash 0423",
-  "price_in_per_m": 0.08092,
-  "price_out_per_m": 0.16184,
+  "price_in_per_m": 0.088606,
+  "price_out_per_m": 0.177212,
   "vision": false,
   "context_length": 1048576,
   "arena_rank": 87,
