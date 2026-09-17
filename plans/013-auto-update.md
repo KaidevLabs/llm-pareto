@@ -1,6 +1,6 @@
 # 013 — Automated update + deploy (cron)
 
-Date: 2026-09-16. **Status: EXECUTING (step 1/3; step 4 is post-review).**
+Date: 2026-09-16. **Status: EXECUTING (step 3/3; step 4 is post-review).**
 Source: `plans/archive/003-exploration-backlog.md` item B10 + its exploration findings.
 
 Unattended `update.py` refresh on a schedule, with controlled deploy semantics
@@ -46,6 +46,14 @@ weekly-ish manual review is enough for now).
 6. Deploy hygiene: the local `npx wrangler deploy` leaks `/.wrangler/cache/*`
    into the public surface (003 B8 finding) — settle before or with cron (clean
    local path, or exclude the cache dir from assets).
+   **RESOLVED 2026-09-17 (step 2):** measured on wrangler 4.133.0 — the config
+   schema has no `assets.exclude` and a `--dry-run` asset count goes 36 → 39
+   with a fake `public/.wrangler/cache/wrangler-account.json` present, so the
+   clean-local-path option is the only repo-side fix: always run wrangler from
+   the repo root (cache → gitignored root `.wrangler/`, never inside
+   `public/`) and `rm -rf public/.wrangler` before a manual deploy; the cron
+   path is structurally immune (fresh checkout / fresh CF clone). The README
+   documents this; revisit if upstream adds an assets exclude.
 
 ## Steps (commit per step; owner stages each diff)
 
@@ -69,7 +77,43 @@ weekly-ish manual review is enough for now).
 2. `.github/workflows/update-data.yml`: schedule (D4) + dispatch; checkout,
    setup-python, `python3 update.py` (match report to the log, non-zero = red);
    D3 gate; PR creation (D2) with the match report in the PR body.
-   Commit: `ci: scheduled data-update workflow (PR per changed run)`
+   Commit: `ci: scheduled data-update workflow (PR per changed run)` —
+   **✅ COMPLETE (committed c5d6c43, 2026-09-17)**
+
+   As-built: cron `15 */6 * * *` UTC + `workflow_dispatch`; permissions
+   `contents: write` + `pull-requests: write`; `concurrency` group
+   `update-data` (serializes a delayed schedule vs a manual dispatch); 10-min
+   timeout. Run step: report → `.tmp/update-report.txt` (needs `mkdir -p
+   .tmp` — gitignored dirs don't exist in Actions checkouts; caught in the
+   rehearsal), echoed to the log, exit code preserved (red run → no PR). Gate
+   verbatim D3 (`git diff --name-only` over arena/openrouter/combined.json;
+   meta.json-only → green no-op, log line "No data changes"). On fire:
+   timestamped branch `data/auto-update-<stamp>`, commit
+   `data: scheduled refresh (<stamp>)` staging `public/data` +
+   `public/assets/logos` + `logos.json` (a committed meta.json logos-map must
+   not reference uncommitted logo files), PR body = stamp + run link + fenced
+   match report, `gh pr create` on `main` with `GITHUB_TOKEN`.
+   Q6 RESOLVED (evidence: wrangler 4.133.0 config schema has no `assets.exclude`
+   and a `--dry-run` asset count goes 36 → 39 with a fake
+   `public/.wrangler/cache/wrangler-account.json` present — dot dirs are still
+   uploaded today): decision = always run wrangler from the repo root (cache
+   lands in the gitignored root `.wrangler/`, never inside `public/`) and
+   `rm -rf public/.wrangler` before a manual deploy; the cron path is immune
+   (fresh checkout → no local cache; fresh CF clone → no local cache).
+   Revisit if upstream wrangler adds an assets exclude. Recorded in README
+   ("Deploy hygiene (wrangler)").
+   README (DoD item 6): new "Scheduled (default)" section documenting the
+   cron + PR + merge → CF auto-deploy flow; stale "if continuous git builds
+   get enabled" note replaced with the live-verified fact (deployed
+   meta.json == committed — git integration active on push); the manual
+   commit line now also stages `logos.json` + `public/assets/logos`.
+   Verified: actionlint clean (before + after the `mkdir -p .tmp` fix), YAML
+   parses, and a full dress rehearsal in a scratch clone against a bare remote
+   ran the extracted `run:` blocks verbatim — no-op path (message + exit 0,
+   clean tree, no branch) and changed path (real `python3 update.py` → gate
+   fired on the 3 drifted files → branch `data/auto-update-<stamp>` + commit
+   of exactly the 4 data files + correct PR body + push OK; `gh pr create`
+   failed only for wanting a GitHub remote, as expected off GitHub).
 3. Owner merge cycle: run once, review the first PR end-to-end (diff + report),
    merge, verify the CF auto-deploy.
 4. Later (post-review): freshness surface + dead-man's switch (open question 5).
@@ -90,5 +134,9 @@ weekly-ish manual review is enough for now).
 - [ ] A scheduled run produces a green Actions run + a PR when data changed, and a no-op green run when nothing changed.
 - [ ] A failing run (forced 5xx / threshold violation) leaves no PR and no deploy; the site serves last-good data.
 - [ ] A merged PR auto-deploys via the CF git-integration (verified live).
-- [ ] The `/.wrangler/` leak decision (open question 6) is recorded.
-- [ ] README documents the new flow (the manual flow stays available).
+- [x] The `/.wrangler/` leak decision (open question 6) is recorded.
+      (2026-09-17: RESOLVED — evidence + decision in step 2 as-built;
+      recorded in README "Deploy hygiene (wrangler)")
+- [x] README documents the new flow (the manual flow stays available).
+      (2026-09-17: "Scheduled (default)" + "Manual" + "Deploy hygiene"
+      sections, committed c5d6c43)
