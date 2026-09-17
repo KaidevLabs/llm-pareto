@@ -1781,8 +1781,8 @@
  {
   "or_id": "meta/muse-glimmer-30b",
   "or_name": "Meta: Muse Glimmer 30B",
-  "price_in_per_m": 0.35,
-  "price_out_per_m": 1.5,
+  "price_in_per_m": 0.3,
+  "price_out_per_m": 1.1,
   "vision": true,
   "context_length": 131072,
   "arena_rank": 104,
@@ -1902,8 +1902,8 @@
   ],
   "arena_context_length": 204800,
   "arena_model_url": "https://docs.z.ai/guides/llm/glm-4.6",
-  "arena_price_in_per_m": 0.5,
-  "arena_price_out_per_m": 2,
+  "arena_price_in_per_m": 0.43,
+  "arena_price_out_per_m": 1.75,
   "match_method": "exact",
   "match_ratio": null
  },
