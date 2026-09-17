@@ -14,6 +14,7 @@ import difflib
 import json
 import os
 import re
+import statistics
 import struct
 import sys
 import tempfile
@@ -634,7 +635,12 @@ def build_provider_layer(raw_layers):
         "duplicates_merged": 0,
         "entries": 0,
         "entries_with_stats": 0,
+        "models_detail": [],
+        "join_misses": [],
+        "providers_distinct": 0,
+        "top_providers": [],
     }
+    provider_counts = {}
     for or_id, ep_raw, page_html in raw_layers:
         api_eps = parse_endpoints_api(ep_raw)
         page_eps = parse_provider_page(page_html)
@@ -642,6 +648,7 @@ def build_provider_layer(raw_layers):
         entries, unjoined, n_joined = join_provider_layers(merged, page_eps)
         all_entries = entries + unjoined
         layer[or_id] = all_entries
+        n_stats = sum(1 for e in all_entries if e["stats"] is not None)
         rep["models"] += 1
         rep["api_endpoints"] += len(api_eps)
         rep["page_endpoints"] += len(page_eps)
@@ -649,10 +656,150 @@ def build_provider_layer(raw_layers):
         rep["page_unjoined"] += len(unjoined)
         rep["duplicates_merged"] += n_merged
         rep["entries"] += len(all_entries)
-        rep["entries_with_stats"] += sum(
-            1 for e in all_entries if e["stats"] is not None
+        rep["entries_with_stats"] += n_stats
+        rep["models_detail"].append(
+            {
+                "or_id": or_id,
+                "api_endpoints": len(api_eps),
+                "page_endpoints": len(page_eps),
+                "joined": n_joined,
+                "page_unjoined": len(unjoined),
+                "duplicates_merged": n_merged,
+                "entries": len(all_entries),
+                "entries_with_stats": n_stats,
+            }
         )
+        rep["join_misses"].extend(
+            f"{or_id}: {e['provider']} ({e['tag']})" for e in unjoined
+        )
+        for e in all_entries:
+            provider_counts[e["provider"]] = (
+                provider_counts.get(e["provider"], 0) + 1
+            )
+    rep["providers_distinct"] = len(provider_counts)
+    rep["top_providers"] = sorted(
+        provider_counts.items(), key=lambda kv: (-kv[1], kv[0])
+    )[:10]
     return layer, rep
+
+
+# --- provider validation, report, write (plan 022, step 3)
+
+ENDPOINTS_PATH = OUT_DIR / "endpoints.json"
+MODELS_WITH_STATS_HARD_MIN = 0.5
+MODELS_WITH_STATS_WARN_MIN = 0.8
+JOIN_HIT_RATE_MIN = 0.90
+
+
+def validate_provider_layer(layer, detail):
+    """D8 bands + structural floors (plan 022). Dies on a violation —
+    before any file is written. detail = the models_detail rows from
+    build_provider_layer; layer = {or_id: entries}."""
+    n = len(detail)
+    if not n:
+        die("provider: layer is empty (no joined models?)")
+    zero_api = [r["or_id"] for r in detail if r["api_endpoints"] == 0]
+    if zero_api:
+        die(f"provider: {len(zero_api)} model(s) with 0 API endpoints: "
+            f"{zero_api[:5]}")
+    with_stats = sum(1 for r in detail if r["entries_with_stats"] > 0)
+    if with_stats / n < MODELS_WITH_STATS_HARD_MIN:
+        die(
+            f"provider: only {with_stats}/{n} models have stats "
+            f"(need >= {MODELS_WITH_STATS_HARD_MIN:.0%})"
+        )
+    if with_stats / n < MODELS_WITH_STATS_WARN_MIN:
+        print(
+            f"  provider warn: {with_stats}/{n} models with stats "
+            f"({100 * with_stats / n:.0f}%) below "
+            f"{MODELS_WITH_STATS_WARN_MIN:.0%}"
+        )
+    page_total = sum(r["page_endpoints"] for r in detail)
+    joined = sum(r["joined"] for r in detail)
+    if page_total and joined / page_total < JOIN_HIT_RATE_MIN:
+        die(
+            f"provider: join hit rate {joined}/{page_total} "
+            f"({100 * joined / page_total:.0f}%) below {JOIN_HIT_RATE_MIN:.0%}"
+        )
+    for or_id in sorted(layer):
+        for e in layer[or_id]:
+            s = e.get("stats")
+            if isinstance(s, dict):
+                for metric in ("latency", "throughput"):
+                    present = [
+                        s.get(f"p{q}_{metric}")
+                        for q in (50, 75, 90, 95, 99)
+                        if s.get(f"p{q}_{metric}") is not None
+                    ]
+                    if any(a > b for a, b in zip(present, present[1:])):
+                        die(
+                            f"provider: {or_id}: {e.get('provider')}: "
+                            f"{metric} percentiles not monotonic: {present}"
+                        )
+                    if metric == "throughput" and any(v == 0 for v in present):
+                        die(
+                            f"provider: {or_id}: {e.get('provider')}: "
+                            f"throughput percentile is 0: {present}"
+                        )
+            price = (e.get("pricing") or {}).get("prompt")
+            if price is not None and float(price) <= 0:
+                die(
+                    f"provider: {or_id}: {e.get('provider')}: "
+                    f"prompt price not > 0: {price!r}"
+                )
+
+
+def provider_report_lines(rep):
+    """The provider report section lines (plan 022, step 3)."""
+    counts = [r["entries"] for r in rep["models_detail"]]
+    n = len(counts)
+    med = statistics.median(counts)
+    med_s = str(int(med)) if float(med) == int(med) else str(med)
+    with_stats_models = sum(
+        1 for r in rep["models_detail"] if r["entries_with_stats"]
+    )
+    lines = [
+        f"  endpoints per model: min {min(counts)}, median {med_s}, "
+        f"max {max(counts)} ({n} models)",
+        f"  providers distinct: {rep['providers_distinct']}",
+        f"  stats coverage: {with_stats_models}/{n} models "
+        f"({100 * with_stats_models / n:.0f}%), "
+        f"{rep['entries_with_stats']}/{rep['entries']} endpoints "
+        f"({100 * rep['entries_with_stats'] / rep['entries']:.0f}%)",
+        f"  join misses: {rep['page_unjoined']} page endpoints",
+    ]
+    for miss in rep["join_misses"][:10]:
+        lines.append(f"    {miss}")
+    if len(rep["join_misses"]) > 10:
+        lines.append(f"    … and {len(rep['join_misses']) - 10} more")
+    lines.append(f"  duplicates merged: {rep['duplicates_merged']}")
+    lines.append(
+        "  top providers by endpoints: "
+        + ", ".join(f"{name} ({c})" for name, c in rep["top_providers"])
+    )
+    return lines
+
+
+def write_endpoints(layer, path=ENDPOINTS_PATH):
+    """Canonical atomic write of endpoints.json (plan 022, D2/D7) — only
+    when state changed, like logos.json. Returns True when written."""
+    path = Path(path)
+    new_text = json.dumps(
+        {k: layer[k] for k in sorted(layer)}, indent=1, ensure_ascii=False
+    ) + "\n"
+    old_text = path.read_text() if path.exists() else None
+    if old_text == new_text:
+        return False
+    fd, tmp = tempfile.mkstemp(dir=path.parent, suffix=".tmp")
+    try:
+        with os.fdopen(fd, "w") as f:
+            f.write(new_text)
+        os.replace(tmp, path)
+    except BaseException:
+        if os.path.exists(tmp):
+            os.unlink(tmp)
+        raise
+    return True
 
 
 # ---------------------------------------------------------------- logos
@@ -1207,6 +1354,8 @@ def main():
         f"{provider_rep['duplicates_merged']} duplicates merged, "
         f"{provider_rep['entries_with_stats']} with stats)"
     )
+    # D8 bands: a violation dies here, before any file is written
+    validate_provider_layer(provider_layer, provider_rep["models_detail"])
 
     # logos (soft domain: reports, never dies — plan 007 D8); runs before
     # the meta write so the org->file map lands in meta.json
@@ -1240,6 +1389,26 @@ def main():
         # org -> filename served from assets/logos/; the site derives the
         # path mechanically, so new logos need no app-side change
         "logos": logos_for_site(logo_manifest, LOGOS_DIR),
+        # provider layer provenance (plan 022, D2): source URLs, counts,
+        # stats coverage
+        "provider": {
+            "sources": {
+                "endpoints_api": ENDPOINTS_URL,
+                "model_page": MODEL_PAGE_URL,
+            },
+            "models": len(provider_layer),
+            "endpoints": provider_rep["entries"],
+            "stats": {
+                "models_with_stats": sum(
+                    1 for r in provider_rep["models_detail"]
+                    if r["entries_with_stats"]
+                ),
+                "endpoints_with_stats": provider_rep["entries_with_stats"],
+            },
+            "joined_page_endpoints": provider_rep["joined"],
+            "page_endpoints_unjoined": provider_rep["page_unjoined"],
+            "duplicates_merged": provider_rep["duplicates_merged"],
+        },
     }
 
     write_json(OUT_DIR / "arena.json", arena_entries)
@@ -1249,6 +1418,13 @@ def main():
     for name in ("arena.json", "openrouter.json", "combined.json", "meta.json"):
         p = OUT_DIR / name
         print(f"  wrote {p.relative_to(ROOT)} ({p.stat().st_size} bytes)")
+    if write_endpoints(provider_layer):
+        print(
+            f"  wrote {ENDPOINTS_PATH.relative_to(ROOT)} "
+            f"({ENDPOINTS_PATH.stat().st_size} bytes)"
+        )
+    else:
+        print(f"  {ENDPOINTS_PATH.relative_to(ROOT)} unchanged")
 
     print()
     print("match report")
@@ -1273,6 +1449,9 @@ def main():
     print()
     print("logo report")
     for line in logo_lines:
+        print(line)
+    print("provider report")
+    for line in provider_report_lines(provider_rep):
         print(line)
     print("done.")
 
