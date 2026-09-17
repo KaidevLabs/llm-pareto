@@ -83,6 +83,23 @@ mode alongside.
    labels with tok/s + basis + latency (D6), the D4 exclusion + footer
    note, fit/zoom/filters inherited. Not touched: the other modes,
    `update.py`, `combined.json`. Commit: `chart: speed axis mode`.
+   ✅ Complete — `2a2899c` (2026-09-17). As-built: seg gains "Speed tok/s";
+   `#panel-speed` mirrors the in/out panels; `paretoFrontier(pts, highX)`
+   grew the flipped-x flag (D3) — price views unchanged; `chartOption`
+   takes an x-formatter param and carries `spd` on scatter data; tooltip
+   shows tok/s + basis + latency p50 (D2/D6); D4 exclusion counted in the
+   panel's status line ("143 models · 11 without speed data hidden") —
+   the plan's "panel-footer note" landed there, matching the existing
+   count-line pattern; chart init + zoom-restore extracted into
+   `ensureChart`/`restoreZoom` shared by all panels; the axis-note swaps
+   per mode. Found + fixed during CDP verification: a 404 left
+   ENDPOINTS/ENDPOINTS_ERROR both falsy so the loading guard re-scheduled
+   forever — added the ENDPOINTS_DONE settled flag. Verified by
+   `.tmp/cdp_verify.mjs` (31 CDP assertions, all PASS): 4 seg buttons,
+   panel visibility, frontier present, 143 points, claude-opus-4 absent,
+   count text, x label, axis-note swap, tooltip lines, fetch-once +
+   no-refetch on re-entry, search dims (15/154, plot keeps 143), family
+   filter shrinks, 404 + hard-fail graceful states, other views unaffected.
 3. Verify 2D Speed mode + ship: CDP structural checks (mode switch renders
    the frontier; a no-stats model is absent + footnoted; filters apply; the
    cached fetch fires once), the cookie probe (no new storage/cookies —
