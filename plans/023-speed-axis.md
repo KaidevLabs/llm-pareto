@@ -136,6 +136,34 @@ mode alongside.
    (D8: glow default + `lines3D` ribbon toggle), click → the existing model
    card, sparse labels, filters/search/vision through the existing state
    path. Commit: `chart: 3D showcase mode`.
+   ✅ Complete — `76c0a5a` (2026-09-17). **DEVIATION from D8, delegated
+   decision:** the `lines3D` ribbon is NOT shipped — every data-shape
+   variant of `lines3D` on `cartesian3D` throws synchronously in
+   echarts-gl 2.1.0 + echarts 5.6.0 (`Cannot read properties of undefined
+   (reading '0')` in the GL view update — data processing, not WebGL, so it
+   breaks in any browser). Isolated by headless bisection of the real option
+   piece-by-piece; glow-only ships, and D8's "ribbon as optional toggle"
+   stays parked until echarts-gl or echarts fix the incompatibility (the
+   D8 math — 3-objective non-dominated set — is fully shipped as the glow).
+   As-built: axes are x = blended price (General's blend at the current
+   ratio), depth = output tok/s, up = Elo (z is vertical in echarts-gl);
+   log₁₀ values on linear axes with whole-decade ticks ($1/$10/$100);
+   glow = a 22px 0.16-alpha halo twin sphere behind each frontier core
+   (WebGL has no shadowBlur); sparse labels via a series-level formatter
+   that formats empty for non-frontier points (per-data labels untrusted
+   after #427/#428); `autoRotateAfterStill: 4` (idle rotation, never fights
+   the hand); the 2D pan/zoom layer is NOT bound to chart-3d (D9's mode
+   guard is structural — 3D init skips bindZoomChart/bindPan); the details
+   card + drawer-close reuse the 2D machinery; filters/search/vision via
+   the same state path. Second headless find: **echarts-gl must register
+   before the chart instance is created** — an instance initialized before
+   the extension loads throws on its first GL render; render3DPanel now
+   awaits the cached `loadEchartsGL()` before `echarts.init`. Harness
+   extended: the point set and frontier size are cross-checked against an
+   independent recomputation from the raw JSONs (143/143, 31/31), halo ==
+   frontier size, pill lazy-loads gl exactly once, click wiring opens the
+   card, family filter shrinks the scene, leave/re-enter clean, 404 and
+   fail runs degrade gracefully ("3D unavailable" / empty count).
 6. Verify 3D + ship: CDP structural checks (the pill lazy-loads
    echarts-gl exactly once; the scene renders spheres + the glow frontier;
    the ribbon toggle adds the `lines3D` series; clicking a sphere opens the
