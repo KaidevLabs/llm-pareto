@@ -67,6 +67,17 @@ mode alongside.
    `speedOf(modelId, endpoints)` derivation (D2: median, rc≥30 filter,
    latency + basis). No render wiring yet. Commit:
    `chart: speed derivation from endpoints.json`.
+   ✅ Complete — `a6ef77f` (2026-09-17). As-built: `fetchEndpoints()` +
+   `speedOf(modelId, eps)` + `median(xs)` inserted after `blendedPrice`;
+   endpoints.json's real shape is `{or_id: [endpoint]}` with a `stats`
+   block per endpoint (`p50_throughput` tok/s, `p50_latency` ms,
+   `request_count`, `window_minutes: 30`) — the plan's flat field names
+   resolved to `e.stats.*`. 404 tolerated (ENDPOINTS null, no error), other
+   failures recorded in ENDPOINTS_ERROR. Verified with a stub-eval script
+   (`.tmp/verify_step1.mjs`, 23 assertions): medians (odd/even/empty),
+   rc≥30 boundary (rc=30 passes), 0-tok/s excluded, real-data dogfood
+   (143/154 models get a speed; claude-opus-4 null per D4; range 6–368
+   tok/s), fetch 200/404/500/network. No render wiring (step 2 wires it).
 2. `app.js` + `index.html`: the Speed mode — the fourth seg button + panel,
    the series config (log x, Elo y, per-view frontier per D3), tooltip/
    labels with tok/s + basis + latency (D6), the D4 exclusion + footer
