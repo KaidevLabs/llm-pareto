@@ -32,11 +32,16 @@ const state = {
   spread: false,
   ratio: 3,
   search: "",
+  selected: null,
 };
 let DATA = [];
 let META = null;
 let ORG_COLOR = {};
 let charts = {};
+// Per-panel frontier arrays (plan 006 D3): the frontier line series carries
+// no row references, so line clicks resolve through this stash — refreshed
+// on every render, same lifetime as the chart instances themselves.
+const FRONTIERS = {};
 
 function orgOf(d) {
   return d.arena_org && d.arena_org.trim() !== ""
@@ -118,6 +123,11 @@ function fmtVotes(v) {
   if (v == null) return "—";
   if (v >= 1000) return Math.round(v / 1000) + "k";
   return String(v);
+}
+
+function esc(s) {
+  return String(s).replace(/[&<>"]/g, (c) =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 }
 
 function filtered() {
@@ -651,6 +661,40 @@ function bindZoomChart(chart, id) {
   dom.addEventListener("dblclick", () => resetZoom(chart, id));
 }
 
+// A pan ends with a synthetic click at the release point — ignore clicks
+// shortly after a real drag so a pan never opens/closes the details drawer.
+let lastPanEnd = 0;
+
+// Click → details drawer (plan 006 D1/D3/D5): a bubble or a frontier
+// segment selects its model, anything else (empty plot, axis) closes. The
+// handlers live on the chart instance, so they survive the not-Merge
+// setOption re-renders (D3). Empty plot areas never reach the ECharts-level
+// "click" (no series hit) — only the zrender-level one fires, with no
+// target — so the close-on-empty is bound there.
+function onChartClick(id, p) {
+  if (Date.now() - lastPanEnd < 300) return;
+  if (p.seriesName === "models") {
+    state.selected = p.data.d;
+  } else if (p.seriesName === "Pareto frontier") {
+    const fp = (FRONTIERS[id] || [])[p.dataIndex];
+    if (!fp) return;
+    state.selected = fp.d;
+  } else {
+    if (!state.selected) return;
+    state.selected = null;
+  }
+  renderDetails();
+}
+
+function bindDrawerClose(chart) {
+  chart.getZr().on("click", (e) => {
+    if (e.target || Date.now() - lastPanEnd < 300) return;
+    if (!state.selected) return;
+    state.selected = null;
+    renderDetails();
+  });
+}
+
 // 2D pan (owner A/B 2026-09-16): a drag moves BOTH axis windows — zoom with
 // the wheel (2D, bindZoomChart), then navigate with the cursor. The native
 // inside drag only panned x (the two inside dataZooms fight for the gesture
@@ -730,6 +774,13 @@ function bindPan(chart) {
           { dataZoomIndex: 1, startValue: Ymin, endValue: Ymax },
         ],
       });
+      // Stamp on the move, not the mouseup: zrender fires the synthetic
+      // click during the canvas mouseup, which runs before the window-level
+      // mouseup handler — a flag set there would land after the click.
+      if (
+        Math.abs(e.clientX - drag.x0) + Math.abs(e.clientY - drag.y0) > 4
+      )
+        lastPanEnd = Date.now();
     },
     { capture: true }
   );
@@ -780,11 +831,14 @@ function renderPanel(panelKey) {
   };
 
   const id = "chart-" + panelKey;
+  FRONTIERS[id] = frontier;
   const el = document.getElementById(id);
   if (!charts[id]) {
     charts[id] = echarts.init(el, null, { renderer: "canvas" });
     bindZoomChart(charts[id], id);
     bindPan(charts[id]);
+    charts[id].on("click", (p) => onChartClick(id, p));
+    bindDrawerClose(charts[id]);
   }
   charts[id].setOption(
     chartOption(axisLabel, pts, frontier, spreadPts, bounds),
@@ -835,6 +889,101 @@ function updateSearchCount() {
   el.classList.remove("hidden");
 }
 
+// Details drawer (plan 006): the content is the joined row — D2's v1 set,
+// plus the derived OpenRouter page link and the "filtered out" state (D4).
+// Rendered from render() too, so any filter change refreshes the indicator
+// without touching the selection.
+function detailsHTML(d, visible) {
+  const org = orgOf(d);
+  const ci =
+    d.arena_elo_upper != null && d.arena_elo != null
+      ? " (±" + Math.round(d.arena_elo_upper - d.arena_elo) + ")"
+      : "";
+  const match =
+    d.match_method === "override"
+      ? "⚑ manual override — identity fixed by owner decision, price final"
+      : d.match_method +
+        (d.match_ratio ? " (similarity " + d.match_ratio + ")" : "");
+  const lg = logoFor(org);
+  const row = (k, v, cls) =>
+    '<div class="drow"><span class="k">' + k + "</span><span class=\"v" +
+    (cls ? " " + cls : "") + "\">" + v + "</span></div>";
+  const rows = [];
+  if (!visible)
+    rows.push('<div class="dfilter">⚠ filtered out — hidden by the current filters</div>');
+  rows.push(
+    row(
+      "arena",
+      "#" + d.arena_rank + " · elo " + d.arena_elo.toFixed(1) + ci +
+        " · " + fmtVotes(d.arena_votes) + " votes"
+    )
+  );
+  rows.push(
+    row(
+      "openrouter $/m",
+      fmtPrice(d.price_in_per_m) + " in · " + fmtPrice(d.price_out_per_m) + " out"
+    )
+  );
+  if (d.arena_price_in_per_m != null || d.arena_price_out_per_m != null)
+    rows.push(
+      row(
+        "arena $/m (reported)",
+        fmtPrice(d.arena_price_in_per_m) + " in · " +
+          fmtPrice(d.arena_price_out_per_m) + " out",
+        "dim"
+      )
+    );
+  let ctx = fmtVotes(d.context_length);
+  if (
+    d.arena_context_length != null &&
+    d.arena_context_length !== d.context_length
+  )
+    ctx += " · arena: " + fmtVotes(d.arena_context_length);
+  rows.push(row("context", ctx));
+  rows.push(
+    row(
+      "org",
+      esc(org) +
+        (d.arena_license ? " · " + esc(d.arena_license) : "") +
+        (d.vision ? " · ✨ vision" : "")
+    )
+  );
+  if (d.arena_variants && d.arena_variants.length)
+    rows.push(row("variants", esc(d.arena_variants.join(" · "))));
+  rows.push(row("match", esc(match), d.match_method === "override" ? "gold" : ""));
+  const links = [
+    '<a href="https://openrouter.ai/' + esc(d.or_id) + '" target="_blank" rel="noopener">OpenRouter page ↗</a>',
+  ];
+  if (d.arena_model_url)
+    links.push(
+      '<a href="' + esc(d.arena_model_url) + '" target="_blank" rel="noopener">arena model page ↗</a>'
+    );
+  return (
+    '<div class="dhead">' +
+    (lg
+      ? '<img src="' + lg + '" width="20" height="20" alt="">'
+      : "") +
+    '<span class="dname">' + esc(d.or_name) + "</span>" +
+    '<div class="did">' + esc(d.or_id) + "</div></div>" +
+    rows.join("") +
+    '<div class="dlinks">' + links.join("") + "</div>"
+  );
+}
+
+function renderDetails() {
+  const el = document.getElementById("details");
+  const body = document.getElementById("details-body");
+  if (!state.selected) {
+    el.classList.add("hidden");
+    body.innerHTML = "";
+    return;
+  }
+  const d = state.selected;
+  const visible = filtered().some((r) => r.or_id === d.or_id);
+  body.innerHTML = detailsHTML(d, visible);
+  el.classList.remove("hidden");
+}
+
 function render() {
   const main = document.getElementById("main");
   main.setAttribute("data-mode", state.mode);
@@ -850,6 +999,7 @@ function render() {
   if (state.mode === "general") renderPanel("blend");
   else if (state.mode === "in") renderPanel("in");
   else renderPanel("out");
+  renderDetails();
   for (const id of Object.keys(charts)) {
     if (charts[id].getDom().offsetParent !== null) charts[id].resize();
   }
@@ -1147,6 +1297,12 @@ function bindFilters() {
     state.frontier = !state.frontier;
     tgl.classList.toggle("on", state.frontier);
     render();
+  });
+  // Details drawer close (plan 006 D5): the × is static shell — bound once;
+  // chart clicks and empty-area clicks go through onChartClick.
+  document.getElementById("details-x").addEventListener("click", () => {
+    state.selected = null;
+    renderDetails();
   });
   for (const key of ["blend", "in", "out"]) {
     const pill = document.getElementById("reset-" + key);
