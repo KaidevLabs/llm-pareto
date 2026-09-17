@@ -1154,7 +1154,7 @@
   "license": "Proprietary",
   "inputPricePerMillion": 3,
   "outputPricePerMillion": 15,
-  "contextLength": 200000,
+  "contextLength": 1000000,
   "pricePerImage": null,
   "pricePerSecond": null,
   "releaseType": null
@@ -1294,7 +1294,7 @@
   "license": "Proprietary",
   "inputPricePerMillion": 3,
   "outputPricePerMillion": 15,
-  "contextLength": 200000,
+  "contextLength": 1000000,
   "pricePerImage": null,
   "pricePerSecond": null,
   "releaseType": null
