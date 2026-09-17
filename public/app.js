@@ -418,7 +418,7 @@ function tooltipHTML(p) {
     : "";
   const match =
     d.match_method === "override"
-      ? '<div style="color:' + OVERRIDE + '">⚑ manual override — identity fixed by owner decision, price final</div>'
+      ? '<span style="color:' + OVERRIDE + '">⚑ manual override — identity fixed by owner decision, price final</span>'
       : "match: " + d.match_method + (d.match_ratio ? " (similarity " + d.match_ratio + ")" : "");
     const lg = logoFor(orgOf(d));
     // p50 speed in every view (023 D2/D6): the value plus its basis — the
@@ -427,7 +427,7 @@ function tooltipHTML(p) {
     // the render-time value (speed/3D builders); the live recompute keeps
     // the blend/price cards correct even before any post-fetch re-render.
     const spd = p.spd || speedOf(d.or_id, ENDPOINTS);
-    const parts = [
+    const rows = [
     '<div style="font-weight:600;font-size:13px">' +
       (lg
         ? '<img src="' +
@@ -436,45 +436,51 @@ function tooltipHTML(p) {
         : "") +
       d.or_name +
       "</div>",
-    '<div style="color:#8b98ab;font-size:11px;margin-bottom:6px">' + d.or_id + "</div>",
-    "arena #" + d.arena_rank +
+    '<div style="color:#8b98ab;font-size:11px;margin-top:1px">' + d.or_id + "</div>",
+    '<div style="margin-top:6px">arena #' + d.arena_rank +
       ' · elo <span style="color:#34d399">' +
       d.arena_elo.toFixed(1) +
       ci +
       '</span> · ' +
       fmtVotes(d.arena_votes) +
-      " votes",
-    // (basis as above — see the spd note at the top of this function)
-    (spd
-      ? '<div style="color:#34d399;font-weight:600">' +
-        fmtToks(spd.toks) + ' tok/s output p50 <span style="color:#8b98ab;font-weight:400">(30-min window)</span></div>' +
-        '<div style="color:#8b98ab;font-size:11px">median of ' + spd.n +
+      " votes</div>",
+    ];
+    if (spd) {
+      // (basis as above — see the spd note at the top of this function)
+      rows.push(
+      '<div style="margin-top:5px;color:#34d399;font-weight:600">' +
+        fmtToks(spd.toks) + ' tok/s output p50 <span style="color:#8b98ab;font-weight:400">(30-min window)</span></div>',
+      '<div style="color:#8b98ab;font-size:11px">median of ' + spd.n +
         (spd.n === 1 ? " endpoint" : " endpoints") + " · " +
         spd.rc.toLocaleString("en-US") + " requests" +
         (spd.latency != null
           ? " · latency p50 (ms) " + Math.round(spd.latency)
           : "") +
-        "</div>"
-      : ""),
-    (state.mode === "general"
-      ? "<b>" +
-        fmtPrice(blendedPrice(d)) +
-        "</b> blended (" +
-        state.ratio +
-        ':1) · '
-      : "") +
-    '<span style="color:#60a5fa">' +
-    fmtPrice(d.price_in_per_m) +
-    "</span> in · <span style='color:#f59e0b'>" +
-    fmtPrice(d.price_out_per_m) +
-    "</span> out <span style='color:#8b98ab'>per M tokens</span>",
-    orgOf(d) +
+        "</div>",
+      );
+    }
+    rows.push(
+    '<div style="margin-top:6px">' +
+      (state.mode === "general"
+        ? "<b>" +
+          fmtPrice(blendedPrice(d)) +
+          "</b> blended (" +
+          state.ratio +
+          ':1) · '
+        : "") +
+      '<span style="color:#60a5fa">' +
+      fmtPrice(d.price_in_per_m) +
+      "</span> in · <span style='color:#f59e0b'>" +
+      fmtPrice(d.price_out_per_m) +
+      "</span> out <span style='color:#8b98ab'>per M tokens</span></div>",
+    '<div>' + orgOf(d) +
       (d.arena_license ? " · " + d.arena_license : "") +
       (d.context_length ? " · " + fmtVotes(d.context_length) + " ctx" : "") +
-      (d.vision ? " · ✨ vision" : ""),
-    '<div style="margin-top:4px">' + match + "</div>",
-  ];
-  return parts.join('<br>');
+      (d.vision ? " · ✨ vision" : "") +
+      "</div>",
+    '<div style="margin-top:6px">' + match + "</div>",
+    );
+    return rows.join("");
 }
 
 // Fit-to-data axis bounds (plan 018 A1): computed at render time from ALL
@@ -716,7 +722,9 @@ function chartOption(label, pts, frontier, spreadPts, bounds, xFmt) {
       confine: true,
       formatter: (p) =>
         p.seriesName === "models"
-          ? (frontierSet.has(p.data.d) ? "<b>frontier</b><br>" : "") +
+          ? (frontierSet.has(p.data.d)
+              ? '<div style="font-weight:700;margin-bottom:4px">frontier</div>'
+              : "") +
             tooltipHTML(p.data)
           : p.tooltip,
     },
@@ -1321,7 +1329,9 @@ function render3DScene(id, count, badge) {
         confine: true,
         formatter: (p) =>
           p.seriesName === "models" || p.seriesName === "models-halo"
-            ? (frontierSet.has(p.data.d) ? "<b>frontier</b><br>" : "") +
+            ? (frontierSet.has(p.data.d)
+                ? '<div style="font-weight:700;margin-bottom:4px">frontier</div>'
+                : "") +
               tooltipHTML(p.data)
             : "",
       },
