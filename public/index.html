@@ -206,6 +206,13 @@
   main[data-mode="speed"] #panel-in,
   main[data-mode="speed"] #panel-out { display: none; }
 
+  #panel-3d { display: none; }
+  main[data-3d="on"] #panel-3d { display: flex; }
+  main[data-3d="on"] #panel-blend,
+  main[data-3d="on"] #panel-in,
+  main[data-3d="on"] #panel-out,
+  main[data-3d="on"] #panel-speed { display: none; }
+
   .ratio {
     display: inline-flex;
     align-items: center;
@@ -460,6 +467,7 @@
       aria-label="search models, dims non-matches">
     <span class="search-count hidden" id="search-count"></span>
   </div>
+  <button class="pill" id="tgl-3d" title="3D showcase: price × speed × Elo — drag rotates, wheel zooms, right-drag pans"><span class="diamond">◈</span> 3D</button>
   <button class="pill on" id="tgl-frontier"><span class="diamond">◈</span> Pareto frontier</button>
 </nav>
 
@@ -517,6 +525,18 @@
     <div class="legend-row">
       <span><span class="sw" style="background:#34d399"></span>pareto frontier — nothing beats these on both quality and speed</span>
       <span><span class="sw ov-sw"></span>manual override — identity fixed by owner decision, price final</span>
+    </div>
+  </section>
+  <section class="panel" id="panel-3d">
+    <div class="panel-head">
+      <h2>3D frontier</h2>
+      <span class="badge" id="badge-3d">◈ frontier</span>
+      <button class="pill" id="reset-3d" title="Reset the camera to the default view">⤢ fit</button>
+      <span class="count" id="count-3d"></span>
+    </div>
+    <div class="chart" id="chart-3d"></div>
+    <div class="legend-row">
+      <span><span class="sw" style="background:#34d399"></span>glow — the 3-objective Pareto frontier: nothing beats these on price, speed <em>and</em> quality</span>
     </div>
   </section>
   <aside class="drawer hidden" id="details" aria-label="model details">

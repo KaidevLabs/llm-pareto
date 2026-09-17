@@ -33,6 +33,7 @@ const state = {
   ratio: 3,
   search: "",
   selected: null,
+  three3d: false,
 };
 let DATA = [];
 let META = null;
@@ -305,6 +306,37 @@ function paretoFrontier(pts, highX) {
   return out;
 }
 
+// 3-objective frontier for the 3D showcase (023 D8): a point is dominated
+// iff another is strictly better on at least one of price (lower), speed
+// (higher), Elo (higher) and worse on none. The value array is
+// [log10 price, log10 speed, elo] — log is monotone, so dominance is
+// identical on the transformed values. Unlike the 2-D chain this set is a
+// surface, so it renders as glowing spheres, not a line.
+function paretoFrontier3D(pts) {
+  const out = [];
+  for (const p of pts) {
+    let dominated = false;
+    for (const q of pts) {
+      if (q === p) continue;
+      if (
+        q.value[0] <= p.value[0] &&
+        q.value[1] >= p.value[1] &&
+        q.value[2] >= p.value[2] &&
+        (q.value[0] < p.value[0] ||
+          q.value[1] > p.value[1] ||
+          q.value[2] > p.value[2])
+      ) {
+        dominated = true;
+        break;
+      }
+    }
+    if (!dominated) out.push(p);
+  }
+  // Elo order — stable, reads top-down (D8)
+  out.sort((a, b) => a.value[2] - b.value[2]);
+  return out;
+}
+
 // Frontier badge (owner A/B 2026-09-16): the logo sits on a dark disc with
 // an org-color ring, composited once per org at load. Compositing it into
 // the symbol image means the hover glow (canvas shadow follows the drawn
@@ -391,8 +423,9 @@ function tooltipHTML(p) {
       " · elo " + d.arena_elo.toFixed(1) + ci +
       " · " + fmtVotes(d.arena_votes) + " votes",
     // Speed view (023 D2/D6): the value plus its basis — the median rule
-    // and the 30-min window are shown, not hidden.
-    (state.mode === "speed" && p.spd
+    // and the 30-min window are shown, not hidden. The 3D view plots speed
+    // as its depth axis, so it carries the same lines.
+    ((state.mode === "speed" || state.three3d) && p.spd
       ? '<div style="color:#34d399;font-weight:600">' +
         fmtToks(p.spd.toks) + ' tok/s output p50 <span style="color:#8b98ab;font-weight:400">(30-min window)</span></div>' +
         '<div style="color:#8b98ab;font-size:11px">median of ' + p.spd.n +
@@ -794,7 +827,7 @@ let lastPanEnd = 0;
 // target — so the close-on-empty is bound there.
 function onChartClick(id, p) {
   if (Date.now() - lastPanEnd < 300) return;
-  if (p.seriesName === "models") {
+  if (p.seriesName === "models" || p.seriesName === "models-halo") {
     state.selected = p.data.d;
   } else if (p.seriesName === "Pareto frontier") {
     const fp = (FRONTIERS[id] || [])[p.dataIndex];
@@ -1088,6 +1121,247 @@ function renderSpeedPanel() {
     (noElo ? " · " + noElo + " skipped (no elo)" : "");
 }
 
+// ---- 3D showcase (023 D7–D9) --------------------------------------------
+// A rotatable WebGL scene: x = blended price (log10), depth = output speed
+// (log10), up = arena Elo — the 2D chart's axes plus speed. Values are
+// pre-transformed (log10 on linear 3D axes), so whole-decade ticks read as
+// $1 / $10 / $100. The frontier is the 3-objective non-dominated set,
+// rendered as glowing spheres (a 3D Pareto set is a surface, not a chain —
+// D8); the ribbon is an opt-in Elo-ordered path through it. echarts-gl's
+// viewControl owns the camera (drag rotate / wheel zoom / right-drag pan,
+// slow auto-rotate after idle) — the 2D pan/zoom layer is NOT bound here
+// (D9). Filtered models missing any axis are excluded (D4 semantics).
+const NOTE_3D = "drag: rotate · wheel: zoom · right-drag: pan · rotates slowly when idle · click a sphere: model details · x: price $/M blended at the slider's ratio (log, cheaper → left) · depth: output tok/s (log) · up: LMArena Elo (higher = better) · color: organization · glow = 3-objective Pareto frontier — nothing beats these on price, speed and quality";
+
+// log-axis fit bounds snapped to whole decades (the tick labels then read
+// as $1 / $10 / $100 — 018 A1's fit-to-ALL-data rule, log flavor)
+function fitDecade(vals) {
+  let lo = Infinity, hi = -Infinity;
+  for (const v of vals) {
+    if (v < lo) lo = v;
+    if (v > hi) hi = v;
+  }
+  if (lo === Infinity) return null;
+  const pad = (hi - lo) * 0.06;
+  return { min: Math.floor(lo - pad), max: Math.ceil(hi + pad) };
+}
+
+function render3DPanel() {
+  const id = "chart-3d";
+  const count = document.getElementById("count-3d");
+  const badge = document.getElementById("badge-3d");
+
+  if (!ENDPOINTS_DONE) {
+    count.textContent = "loading speed data…";
+    fetchEndpoints().then(() => {
+      if (state.three3d) render3DPanel();
+    });
+    return;
+  }
+
+  // echarts-gl must register BEFORE the chart instance is created: a chart
+  // initialized before the extension loads crashes on its first GL render
+  // (found 2026-09-17 by headless bisection — setOption throws reading
+  // '0' in the GL view update). The cached promise makes this free after
+  // the first 3D entry.
+  loadEchartsGL().then((glOk) => {
+    if (!state.three3d) return; // the user left while loading
+    if (!glOk) {
+      count.textContent = "3D unavailable (failed to load echarts-gl)";
+      badge.classList.add("hidden");
+      return;
+    }
+    if (!charts[id]) {
+      charts[id] = echarts.init(
+        document.getElementById(id),
+        null,
+        { renderer: "canvas" }
+      );
+      charts[id].on("click", (p) => onChartClick(id, p));
+      bindDrawerClose(charts[id]);
+    }
+    render3DScene(id, count, badge);
+  });
+}
+
+function render3DScene(id, count, badge) {
+  const pts = [];
+  let noAxis = 0;
+  let noSpeed = 0;
+  for (const d of filtered()) {
+    const price = blendedPrice(d);
+    const s = speedOf(d.or_id, ENDPOINTS);
+    if (d.arena_elo == null || price == null || price <= 0) {
+      noAxis++;
+      continue;
+    }
+    if (!s) {
+      noSpeed++;
+      continue;
+    }
+    pts.push({
+      value: [Math.log10(price), Math.log10(s.toks), d.arena_elo],
+      d,
+      spd: s,
+      hit: searchHit(d),
+    });
+  }
+  const frontier = state.frontier ? paretoFrontier3D(pts) : [];
+  const frontierSet = new Set(frontier.map((p) => p.d));
+  FRONTIERS[id] = frontier;
+
+  // Axes fit over ALL joined data, not the filtered set (018 A1/A2).
+  const logPrices = [];
+  const logSpeeds = [];
+  const elos = [];
+  for (const d of DATA) {
+    const price = blendedPrice(d);
+    const s = speedOf(d.or_id, ENDPOINTS);
+    if (d.arena_elo == null || price == null || price <= 0 || !s) continue;
+    logPrices.push(Math.log10(price));
+    logSpeeds.push(Math.log10(s.toks));
+    elos.push(d.arena_elo);
+  }
+  const bounds = {
+    x: fitDecade(logPrices),
+    y: fitDecade(logSpeeds),
+    z: fitLinear(elos),
+  };
+
+  const orgCol = (p) => ORG_COLOR[orgOf(p.d)] || ORG_FALLBACK;
+  const ov = (p) => p.d.match_method === "override";
+  const sphere = (p, isF, alpha) => ({
+    value: p.value,
+    d: p.d,
+    spd: p.spd,
+    itemStyle: {
+      color: withAlpha(orgCol(p), alpha),
+      borderColor: ov(p) ? OVERRIDE : "rgba(0,0,0,0)",
+      borderWidth: ov(p) ? 2 : 0,
+    },
+  });
+  const mat = (p) => sphere(p, false, !p.hit && state.search ? 0.25 : 0.75);
+
+  const series = [];
+  if (frontier.length) {
+    // the glow (D8): a larger, translucent twin sphere behind each
+    // frontier point — WebGL has no shadowBlur, so the halo is geometry
+    series.push({
+      name: "models-halo",
+      type: "scatter3D",
+      data: frontier.map((p) => ({
+        value: p.value,
+        d: p.d,
+        spd: p.spd,
+        itemStyle: { color: orgCol(p), opacity: 0.16 },
+      })),
+      symbolSize: 22,
+    });
+  }
+  series.push({
+    name: "models",
+    type: "scatter3D",
+    data: pts.map((p) =>
+      frontierSet.has(p.d) ? sphere(p, true, 1) : mat(p)
+    ),
+    symbolSize: (val, params) =>
+      frontierSet.has(params.data.d) ? 12 : 7,
+    label: {
+      show: true,
+      // sparse (D9): frontier points only — non-frontier labels format to
+      // nothing; hover identifies the rest via the tooltip
+      formatter: (p) =>
+        frontierSet.has(p.data.d)
+          ? (displayName(p.data.d) || orgOf(p.data.d)) +
+            " (" + Math.round(p.data.d.arena_elo) + ")"
+          : "",
+      distance: 2,
+      textStyle: { color: "#e2e8f0", fontSize: 9, fontWeight: 600 },
+    },
+  });
+
+  charts[id].setOption(
+    {
+      backgroundColor: "transparent",
+      animationDuration: 450,
+      animationDurationUpdate: 0,
+      tooltip: {
+        backgroundColor: "rgba(10,14,23,0.94)",
+        borderColor: "rgba(148,163,184,0.25)",
+        borderWidth: 1,
+        padding: [10, 12],
+        textStyle: { color: "#e2e8f0", fontSize: 12 },
+        confine: true,
+        formatter: (p) =>
+          p.seriesName === "models" || p.seriesName === "models-halo"
+            ? (frontierSet.has(p.data.d) ? "<b>frontier</b><br>" : "") +
+              tooltipHTML(p.data)
+            : "",
+      },
+      grid3D: {
+        boxWidth: 150,
+        boxDepth: 120,
+        boxHeight: 110,
+        viewControl: {
+          // slow auto-rotate only after 4s idle (D9): the scene is alive
+          // while untouched, never fights the user's hand
+          autoRotate: false,
+          autoRotateAfterStill: 4,
+          autoRotateSpeed: 0.5,
+          distance: 230,
+          minDistance: 60,
+          maxDistance: 500,
+        },
+        light: {
+          main: { intensity: 1.4, shadow: false },
+          ambient: { intensity: 0.5 },
+        },
+        axisLine: { lineStyle: { color: "rgba(148,163,184,0.35)" } },
+        splitLine: { lineStyle: { color: "rgba(148,163,184,0.07)" } },
+      },
+      xAxis3D: {
+        type: "value",
+        name: "price $/M (log)",
+        ...(bounds.x || {}),
+        nameTextStyle: { color: "#8b98ab", fontSize: 10 },
+        axisLabel: {
+          color: "#8b98ab",
+          fontSize: 10,
+          formatter: (v) =>
+            v >= 1 ? "$" + Math.round(Math.pow(10, v)) : "$" + Math.pow(10, v).toFixed(2),
+        },
+      },
+      yAxis3D: {
+        type: "value",
+        name: "output tok/s (log)",
+        ...(bounds.y || {}),
+        nameTextStyle: { color: "#8b98ab", fontSize: 10 },
+        axisLabel: {
+          color: "#8b98ab",
+          fontSize: 10,
+          formatter: (v) => String(Math.round(Math.pow(10, v))),
+        },
+      },
+      zAxis3D: {
+        type: "value",
+        name: "Arena Elo",
+        ...(bounds.z || {}),
+        nameTextStyle: { color: "#8b98ab", fontSize: 10 },
+        axisLabel: { color: "#8b98ab", fontSize: 10 },
+      },
+      series,
+    },
+    true
+  );
+
+  badge.classList.toggle("hidden", !state.frontier || frontier.length === 0);
+  count.textContent =
+    pts.length + " models" +
+    (frontier.length ? " · " + frontier.length + " on the frontier" : "") +
+    (noSpeed ? " · " + noSpeed + " without speed data hidden" : "") +
+    (noAxis ? " · " + noAxis + " skipped (no price/elo)" : "");
+}
+
 // "n/N" next to the search box (plan 010 D3): matches over the visible
 // set — the 004 family/vision filters still apply. Rendered from render()
 // so any filter change re-counts; hidden while the query is empty.
@@ -1202,6 +1476,7 @@ function renderDetails() {
 function render() {
   const main = document.getElementById("main");
   main.setAttribute("data-mode", state.mode);
+  main.setAttribute("data-3d", state.three3d ? "on" : "off");
   document.getElementById("ratio-ctl").classList.toggle(
     "hidden",
     state.mode !== "general"
@@ -1210,10 +1485,14 @@ function render() {
     "hidden",
     state.mode !== "general"
   );
-  document.querySelector(".axis-note").textContent =
-    state.mode === "speed" ? NOTE_SPEED : NOTE_PRICE;
+  document.querySelector(".axis-note").textContent = state.three3d
+    ? NOTE_3D
+    : state.mode === "speed"
+      ? NOTE_SPEED
+      : NOTE_PRICE;
   updateSearchCount();
-  if (state.mode === "general") renderPanel("blend");
+  if (state.three3d) render3DPanel();
+  else if (state.mode === "general") renderPanel("blend");
   else if (state.mode === "in") renderPanel("in");
   else if (state.mode === "out") renderPanel("out");
   else renderSpeedPanel();
@@ -1478,7 +1757,19 @@ function bindFilters() {
     segMode.querySelectorAll("button").forEach((x) => x.classList.remove("on"));
     b.classList.add("on");
     state.mode = b.getAttribute("data-mode");
+    // entering any 2D mode leaves the 3D showcase (D7)
+    state.three3d = false;
+    document.getElementById("tgl-3d").classList.remove("on");
     render();
+  });
+  const tgl3d = document.getElementById("tgl-3d");
+  tgl3d.addEventListener("click", () => {
+    state.three3d = !state.three3d;
+    tgl3d.classList.toggle("on", state.three3d);
+    render();
+  });
+  document.getElementById("reset-3d").addEventListener("click", () => {
+    if (state.three3d) render3DPanel();
   });
   const segVision = document.getElementById("seg-vision");
   segVision.addEventListener("click", (e) => {
