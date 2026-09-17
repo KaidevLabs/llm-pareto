@@ -1,6 +1,7 @@
 # 024 — Provider comparison table (per model)
 
-Date: 2026-09-17. **Status: PROPOSED — not reviewed, not executed.**
+Date: 2026-09-17. **Status: EXECUTING (step 1/2). Owner approved by
+execute trigger (2026-09-17).**
 Source: `plans/021-exploration-backlog.md` item B15 + its exploration
 findings. **Depends on 022** (the `endpoints.json` provider layer) and on
 **006 closing** (the details drawer — EXECUTING step 3/3 as of
@@ -41,11 +42,25 @@ is one shared module-level promise either way).
 ## Steps (commit per step; owner stages each diff)
 
 1. `app.js` + `index.html`: the Providers section in the drawer — the
-   section markup in the drawer shell, `renderProviders(model)` wired into
-   `renderDetails()` (re-renders with the drawer, so the 006 D4
+   section markup in the drawer shell, the D9 percentile summary block
+   (transposed — percentiles as columns, speed/latency/price/context as
+   rows; D9 q1 settled at step 1 review), `renderProviders(model)` wired
+   into `renderDetails()` (re-renders with the drawer, so the 006 D4
    filtered-out state carries through), the sort (D3), the chart-price
    marker (D4), the single-provider / no-speed / override notes
-   (D5/D6), the tight-column CSS (7 columns, drawer-width). Not touched:
+   (D5/D6), the tight-column CSS (7 columns, drawer-width). Owner A/B at
+   step 1 review (2026-09-17): drawer 400 px + card-wide breathing pass;
+   color hints — summary block (p50 column = accent, the plotted value;
+   latency label warm; price in/out = the site's blue/amber encoding),
+   same encoding in the hover tooltip (in/out + accent on elo); the
+   chart-price marker became a gold dot + row rail + a legend line under
+   the table (self-explaining: "● chart price — the endpoint the chart
+   point prices on"). The hover card now carries the p50 speed line in
+   every view (value + 023 D2 basis, same wording as the speed view) —
+   and the endpoints file is fetched on load (non-blocking, after first
+   paint) so hover data is never gated on opening a drawer first; the 023
+   D8 shared lazy-fetch mechanism is unchanged, only its trigger moved.
+   Not touched:
    `update.py`, the chart, the other drawer content. Commit:
    `chart: provider table in the details drawer`.
 2. Verify + ship: CDP structural checks (open the drawer on a
@@ -67,43 +82,50 @@ is one shared module-level promise either way).
   latency line stays the only latency in the tooltip; the drawer is the
   detail surface — see D9 below).
 
-## D9 — percentile display (owner note 2026-09-17, recorded not explored)
+## D9 — percentile display (owner note 2026-09-17)
 
 Owner request, verbatim intent: "add all ps p50, p75, p90, p95 and p99 on
 the model card that opens when you click a model. And also evaluate what
 should be the P to put on the little card which i think it should not b[e]
-[p50]". Recorded as a parked entry per the standing rule (#352/#447) — not
-explored, not specced. Scope it here (both halves are drawer/speed-view
-concerns and the data is already in `endpoints.json`: `p50/75/90/95/99_*
-` + `latency_request_count`/`throughput_request_count`, all present on 754
-endpoint stat blocks; verified 2026-09-17) or graduate to its own step at
-review. Questions it should settle:
+[p50]". Recorded as a parked entry at 024's drafting per the standing rule
+(#352/#447). Both halves are drawer/speed-view concerns and the data is
+already in `endpoints.json` (`p50/75/90/95/99_*` +
+`latency_request_count`/`throughput_request_count`, all present on 754
+endpoint stat blocks; verified 2026-09-17) — scoped here at step 1.
 
-1. **Card (drawer) display** — the p50/75/90/95/99 for BOTH throughput and
-   latency, per-model (aggregated with the D2 median rule across rc≥30
-   endpoints) vs per-endpoint rows (024's table already shows per-endpoint
-   speed; percentiles per endpoint may belong in the table columns, not a
-   separate card block). Basis line (n endpoints, requests, window) must
-   stay visible so the p99 tail doesn't read as a promise.
+1. **Card (drawer) display** — SETTLED at step 1 review (2026-09-17, owner
+   "rec" on the proposed layout): a transposed summary block atop the
+   Providers section — percentiles (p50–p99) as columns, metrics as rows.
+   Speed tok/s and latency rows: aggregated per percentile with the 023 D2
+   rule (median across the rc≥30 endpoints) — the p50 column therefore
+   equals the value plotted on the speed axis. Price $/M (the model-level
+   list price) and context rows: single values spanning the p columns
+   (they are not distributions). A basis line under the block (n endpoints
+   (rc≥30) · requests · window) so the p99 tail doesn't read as a promise;
+   no basis line when nothing qualifies. Per-endpoint rows keep the D2
+   p50 speed column — per-endpoint percentile columns stay out of the
+   table. Latency keeps 023 D6's label: what is certain, no TTFT claim.
 2. **The "P" on the little card** (tooltip / speed-view labels / 3D) —
-   p50 is the current plotted value (D2). Owner suspects p50 undersells
-   typical experience (p50 = the median request; but per-user experience
-   sits higher in the distribution). Candidates: stay p50 (consistent with
+   OPEN. p50 is the current plotted value (023 D2). Owner suspects p50
+   undersells typical experience. Candidates: stay p50 (consistent with
    "half of requests were at least this fast"), move to p75 (one line
-   higher, still stable, less tail-dominated), or plot p50 with p75
-   shown alongside. Decision changes the axis label (D6), the tooltip
-   line, and possibly the frontier shape (higher P = higher tok/s values =
+   higher, still stable, less tail-dominated), or plot p50 with p75 shown
+   alongside. Decision changes the axis label (023 D6), the tooltip line,
+   and possibly the frontier shape (higher P = higher tok/s values =
    points move right — same monotone transform, frontier membership can
    shift between models with different spread shapes).
-3. Latency percentiles carry a metric ambiguity already flagged in D6
-   (TTFT vs round-trip) — the card's percentile table should inherit that
-   caveat, not amplify it.
+3. Latency percentiles carry the metric ambiguity flagged in 023 D6 (TTFT
+   vs round-trip) — the block inherits that label rule, not an amplified
+   claim.
 
 ## Definition of done
 
 - [ ] Owner approves this plan (D1–D8) in a review session.
 - [ ] The drawer's Providers section renders the D2 columns for a
       multi-endpoint model, sorted per D3, with the D4 marker. — CDP check.
+- [ ] The D9 summary block renders the percentile columns (p50–p99) with
+      the p50 speed equal to the plotted value, the spanned price/context
+      rows, and the basis line. — CDP check.
 - [ ] Single-endpoint, no-speed, and override models render their notes
       (D5/D6). — CDP check.
 - [ ] The chart and the frontier are byte-identical before/after (D7):
