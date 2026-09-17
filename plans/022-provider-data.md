@@ -1,7 +1,8 @@
 # 022 — Provider data foundation (per-provider layer, all models)
 
-Date: 2026-09-17. **Status: EXECUTING (step 3/5). Owner approved by
-execute trigger (2026-09-17). Step 1: `4b93918`. Step 2: `e4493ca`.**
+Date: 2026-09-17. **Status: EXECUTING (step 4/5). Owner approved by
+execute trigger (2026-09-17). Step 1: `4b93918`. Step 2: `e4493ca`.
+Step 3: `eaedd0e`.**
 Source: `plans/021-exploration-backlog.md` items B14/B15 + their exploration
 findings + plan-decomposition round 2 (owner decision A: this is the shared
 data plan; 023/024/025 consume it).
@@ -96,10 +97,24 @@ validated, and is diff-reviewed in the data commits; 023 (speed axis) and
    providers distinct, stats coverage (models + endpoints), join misses,
    duplicates merged, top providers by endpoint count. A band violation
    exits non-zero before any file is written. Commit:
-   `update: validate + write endpoints.json (provider layer)`. Seams under
-   test: the band functions + the report lines in
-   `tests/test_provider_validate.py`.
-4. `.github/workflows/update-data.yml`: add `endpoints.json` to the D3
+    `update: validate + write endpoints.json (provider layer)`. Seams under
+    test: the band functions + the report lines in
+    `tests/test_provider_validate.py`.
+    ✅ Complete — `eaedd0e` (2026-09-17). As-built: D8 bands run in order
+    (0-API model → <50% models-with-stats hard → <80% warn → join hit <90%
+    → structural floors: percentile monotonicity, throughput > 0, prompt
+    price > 0); floors measured on live data before settling (0/797 zero
+    prices, 0 non-monotonic, 0 zero-throughput). `write_endpoints` =
+    canonical sorted/indent-1/trailing-newline, atomic, only-when-changed
+    (logos.json convention); the unchanged path prints
+    `endpoints.json unchanged` for the D7 gate's no-op runs. Live run: bands
+    pass silently (152/154 models with stats, 100% join, 0 violations);
+    first `endpoints.json` (2.2 MB raw / 155 KB gz — larger than B15's
+    ~455 KB API-only-trim estimate because the committed schema is the full
+    page rich-field superset + 14-key stats whitelist) was staged by the
+    owner into the step commit alongside the code. meta `provider` provenance
+    block verified live. Suite 157 green (15 new).
+ 4. `.github/workflows/update-data.yml`: add `endpoints.json` to the D3
    changed-gate (D7). actionlint + scratch-clone rehearsal (no-op path:
    meta-only → clean; changed path: forced stats drift → commit + push).
    Commit: `ci: gate endpoints.json in the scheduled refresh`.
