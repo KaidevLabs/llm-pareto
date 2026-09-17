@@ -93,13 +93,16 @@ def _decode_chunk(raw):
         return raw.encode("utf-8").decode("unicode_escape", errors="replace")
 
 
-def _extract_json_array(text, key):
-    i = text.find(key)
+def _extract_json_array(text, key, from_i=0, label="arena"):
+    i = text.find(key, from_i)
     if i < 0:
-        die(f"arena: anchor {key!r} not found in page payload (page format changed?)")
+        die(
+            f"{label}: anchor {key!r} not found in page payload "
+            "(page format changed?)"
+        )
     start = text.find("[", i)
     if start < 0:
-        die(f"arena: no array after {key!r} (page format changed?)")
+        die(f"{label}: no array after {key!r} (page format changed?)")
     depth, in_str, esc = 0, False, False
     for j in range(start, len(text)):
         c = text[j]
@@ -121,8 +124,8 @@ def _extract_json_array(text, key):
                     try:
                         return json.loads(text[start : j + 1])
                     except Exception as e:
-                        die(f"arena: failed to parse entries array: {e}")
-    die("arena: unterminated entries array (page format changed?)")
+                        die(f"{label}: failed to parse entries array: {e}")
+    die(f"{label}: unterminated entries array (page format changed?)")
 
 
 def parse_arena(html):
@@ -381,24 +384,275 @@ def fetch_provider_layer(or_ids):
     """Sequential fetch loop over the joined or_ids (plan 022, D9):
     0.5 s spacing between fetches, both sources per model, raw payloads
     to .tmp/provider/ (gitignored — never committed). Prints per-source
-    fetch counts."""
+    fetch counts. Returns [(or_id, endpoints_raw, page_html), ...]."""
     PROVIDER_TMP_DIR.mkdir(parents=True, exist_ok=True)
     total = len(or_ids)
-    n_ep = n_page = 0
+    payloads = []
     for i, or_id in enumerate(or_ids, 1):
         ep = fetch_endpoints(or_id)
-        (PROVIDER_TMP_DIR / f"ep_{or_id.replace('/', '__')}.json").write_text(ep)
-        n_ep += 1
+        ep_path = PROVIDER_TMP_DIR / f"ep_{or_id.replace('/', '__')}.json"
+        ep_path.write_text(ep)
         time.sleep(PROVIDER_FETCH_SPACING)
         page = fetch_model_page(or_id)
-        (PROVIDER_TMP_DIR / f"page_{or_id.replace('/', '__')}.html").write_text(page)
-        n_page += 1
+        page_path = PROVIDER_TMP_DIR / f"page_{or_id.replace('/', '__')}.html"
+        page_path.write_text(page)
+        payloads.append((or_id, ep, page))
         if i < total:
             time.sleep(PROVIDER_FETCH_SPACING)
     print(
-        f"  provider layer: {total} models — fetched {n_ep} endpoint "
-        f"payloads, {n_page} page payloads -> .tmp/provider/"
+        f"  provider layer: {total} models — fetched {len(payloads)} endpoint "
+        f"payloads, {len(payloads)} page payloads -> .tmp/provider/"
     )
+    return payloads
+
+
+EP_STATS_ANCHOR = '"queryKey":["model-page","endpointStats"'
+DEHYDRATED_AT = '"dehydratedAt":'
+
+
+def parse_provider_page(html):
+    """The model page's endpointStats array (plan 022, D1): dehydrated
+    endpoint objects carrying the populated speed stats. Same RSC surface
+    as arena.ai — new anchor (the endpointStats queryKey, then the
+    dehydratedAt data array that follows it)."""
+    chunks = RSC_RE.findall(html)
+    if not chunks:
+        die("provider: no RSC chunks found in page (page format changed?)")
+    text = "".join(_decode_chunk(c) for c in chunks)
+    i = text.find(EP_STATS_ANCHOR)
+    if i < 0:
+        die("provider: endpointStats queryKey not found in page payload "
+            "(page format changed?)")
+    j = text.find(DEHYDRATED_AT, i)
+    if j < 0:
+        die("provider: no dehydratedAt after endpointStats queryKey "
+            "(page format changed?)")
+    eps = _extract_json_array(text, DEHYDRATED_AT, from_i=j, label="provider")
+    if not isinstance(eps, list) or not all(isinstance(e, dict) for e in eps):
+        die("provider: endpointStats array is not a list of objects")
+    return eps
+
+
+def parse_endpoints_api(raw):
+    """The per-model endpoints API response (plan 022, D1): raw endpoint
+    list — provider list, pricing, uptime."""
+    try:
+        data = json.loads(raw)
+    except Exception as e:
+        die(f"provider: bad endpoints JSON: {e}")
+    eps = (data.get("data") or {}).get("endpoints")
+    if not isinstance(eps, list):
+        die("provider: no endpoints list in API response "
+            "(API format changed?)")
+    for e in eps:
+        if not isinstance(e, dict):
+            die(f"provider: non-object endpoint in API list: {e!r}")
+    return eps
+
+
+def _uptime_populated(e):
+    return sum(
+        1
+        for k in ("uptime_last_1d", "uptime_last_5m", "uptime_last_30m")
+        if e.get(k) is not None
+    )
+
+
+def merge_duplicate_endpoints(api_eps):
+    """Exact (provider_name, tag, model_id) duplicates collapse to the
+    entry with the more populated uptime (plan 022, D6); dated variants
+    (same provider + tag, different model_id) stay distinct. Returns
+    (entries, n_merged)."""
+    merged = []
+    seen = {}
+    for e in api_eps:
+        key = (e.get("provider_name"), e.get("tag"), e.get("model_id"))
+        if key not in seen:
+            seen[key] = len(merged)
+            merged.append(e)
+        elif _uptime_populated(e) > _uptime_populated(merged[seen[key]]):
+            merged[seen[key]] = e
+    return merged, len(api_eps) - len(merged)
+
+
+# speed stats kept per endpoint (plan 022, D4): the 30-min rolling window,
+# values as received (the page emits ints / 0.5-granular floats)
+_STATS_KEYS = (
+    "p50_latency",
+    "p75_latency",
+    "p90_latency",
+    "p95_latency",
+    "p99_latency",
+    "p50_throughput",
+    "p75_throughput",
+    "p90_throughput",
+    "p95_throughput",
+    "p99_throughput",
+    "latency_request_count",
+    "throughput_request_count",
+    "request_count",
+    "window_minutes",
+)
+
+
+def round_uptime(value):
+    """uptime_last_1d at 0.1% granularity (plan 022, D5)."""
+    if value is None:
+        return None
+    return round(value, 1)
+
+
+def _page_stats(ep):
+    s = ep.get("stats")
+    if not isinstance(s, dict):
+        return None
+    return {k: s.get(k) for k in _STATS_KEYS}
+
+
+def _entry_from_api(a, p):
+    """One committed entry (plan 022, step 2 schema): the API endpoint's
+    fields + the linked page endpoint's rich fields + whitelisted stats.
+    p is None for API-only endpoints."""
+    return {
+        "provider": a.get("provider_name"),
+        "tag": a.get("tag"),
+        "model_id": a.get("model_id"),
+        "pricing": a.get("pricing"),
+        "context_length": a.get("context_length"),
+        "max_completion_tokens": a.get("max_completion_tokens"),
+        "quantization": a.get("quantization"),
+        "status": a.get("status"),
+        "uptime_last_1d": round_uptime(a.get("uptime_last_1d")),
+        "supported_parameters": a.get("supported_parameters"),
+        "adapter": p.get("adapter_name") if p else None,
+        "data_policy": p.get("data_policy") if p else None,
+        "limit_rpm": p.get("limit_rpm") if p else None,
+        "limit_rpd": p.get("limit_rpd") if p else None,
+        "provider_info": p.get("provider_info") if p else None,
+        "provider_region": p.get("provider_region") if p else None,
+        "is_hipaa_eligible": p.get("is_hipaa_eligible") if p else None,
+        "is_hidden": p.get("is_hidden") if p else None,
+        "is_deranked": p.get("is_deranked") if p else None,
+        "is_free": p.get("is_free") if p else None,
+        "created_at": p.get("created_at") if p else None,
+        "deprecation_date": p.get("deprecation_date") if p else None,
+        "supports_reasoning": p.get("supports_reasoning") if p else None,
+        "pricing_version_id": p.get("pricing_version_id") if p else None,
+        "stats": _page_stats(p) if p else None,
+    }
+
+
+def _entry_from_page(p):
+    """A page endpoint that did not join the API list (plan 022, D3): kept,
+    stats only — the API-only uptime stays null."""
+    return {
+        "provider": p.get("provider_name"),
+        "tag": p.get("provider_slug"),
+        "model_id": p.get("model_variant_permaslug"),
+        "pricing": p.get("pricing"),
+        "context_length": p.get("context_length"),
+        "max_completion_tokens": p.get("max_completion_tokens"),
+        "quantization": p.get("quantization"),
+        "status": p.get("status"),
+        "uptime_last_1d": None,
+        "supported_parameters": p.get("supported_parameters"),
+        "adapter": p.get("adapter_name"),
+        "data_policy": p.get("data_policy"),
+        "limit_rpm": p.get("limit_rpm"),
+        "limit_rpd": p.get("limit_rpd"),
+        "provider_info": p.get("provider_info"),
+        "provider_region": p.get("provider_region"),
+        "is_hipaa_eligible": p.get("is_hipaa_eligible"),
+        "is_hidden": p.get("is_hidden"),
+        "is_deranked": p.get("is_deranked"),
+        "is_free": p.get("is_free"),
+        "created_at": p.get("created_at"),
+        "deprecation_date": p.get("deprecation_date"),
+        "supports_reasoning": p.get("supports_reasoning"),
+        "pricing_version_id": p.get("pricing_version_id"),
+        "stats": _page_stats(p),
+    }
+
+
+def join_provider_layers(api_eps, page_eps):
+    """Join page stats + rich fields onto the authoritative API endpoints
+    (plan 022, D3). Key: (provider_name, tag) — a page endpoint resolves
+    its tag via provider_slug first (exact), then provider_info.slug;
+    only a unique match joins. Returns (entries, unjoined_entries,
+    n_joined); unjoined page endpoints are kept, stats only."""
+    by_name = {}
+    for a in api_eps:
+        by_name.setdefault(
+            (a.get("provider_name") or "").lower(), []
+        ).append(a)
+    matched = {}
+    for idx, p in enumerate(page_eps):
+        cands = by_name.get((p.get("provider_name") or "").lower(), [])
+        slug = p.get("provider_slug")
+        info = p.get("provider_info") or {}
+        exact = [a for a in cands if slug is not None and a.get("tag") == slug]
+        if len(exact) == 1:
+            matched[idx] = exact[0]
+        else:
+            info_slug = info.get("slug")
+            fb = [
+                a for a in cands
+                if info_slug is not None and a.get("tag") == info_slug
+            ]
+            if len(fb) == 1:
+                matched[idx] = fb[0]
+    picked = {}
+    for idx, a in matched.items():
+        p = page_eps[idx]
+        rc = (p.get("stats") or {}).get("request_count") or 0
+        cur = picked.get(id(a))
+        if cur is None or rc > cur[0]:
+            picked[id(a)] = (rc, p)
+    entries = []
+    for a in api_eps:
+        cell = picked.get(id(a))
+        entries.append(_entry_from_api(a, cell[1] if cell else None))
+    unjoined = [
+        _entry_from_page(p)
+        for idx, p in enumerate(page_eps)
+        if idx not in matched
+    ]
+    return entries, unjoined, len(matched)
+
+
+def build_provider_layer(raw_layers):
+    """[(or_id, endpoints_raw, page_html), ...] -> ({or_id: entries},
+    report) for the validation + write (plan 022, steps 2-3). The API list
+    is authoritative; the page contributes stats + rich fields (D3)."""
+    layer = {}
+    rep = {
+        "models": 0,
+        "api_endpoints": 0,
+        "page_endpoints": 0,
+        "joined": 0,
+        "page_unjoined": 0,
+        "duplicates_merged": 0,
+        "entries": 0,
+        "entries_with_stats": 0,
+    }
+    for or_id, ep_raw, page_html in raw_layers:
+        api_eps = parse_endpoints_api(ep_raw)
+        page_eps = parse_provider_page(page_html)
+        merged, n_merged = merge_duplicate_endpoints(api_eps)
+        entries, unjoined, n_joined = join_provider_layers(merged, page_eps)
+        all_entries = entries + unjoined
+        layer[or_id] = all_entries
+        rep["models"] += 1
+        rep["api_endpoints"] += len(api_eps)
+        rep["page_endpoints"] += len(page_eps)
+        rep["joined"] += n_joined
+        rep["page_unjoined"] += len(unjoined)
+        rep["duplicates_merged"] += n_merged
+        rep["entries"] += len(all_entries)
+        rep["entries_with_stats"] += sum(
+            1 for e in all_entries if e["stats"] is not None
+        )
+    return layer, rep
 
 
 # ---------------------------------------------------------------- logos
@@ -940,10 +1194,19 @@ def main():
 
     validate(arena_entries, or_models, combined, unmatched)
 
-    # provider layer (plan 022, step 1): raw per-model fetch to
-    # .tmp/provider/ — after validate() so a failing run fetches nothing
+    # provider layer (plan 022): raw per-model fetch to .tmp/provider/ +
+    # parse/normalize — after validate() so a failing run fetches nothing
     print(f"fetching provider layer for {len(combined)} joined models")
-    fetch_provider_layer([c["or_id"] for c in combined])
+    raw_layers = fetch_provider_layer([c["or_id"] for c in combined])
+    provider_layer, provider_rep = build_provider_layer(raw_layers)
+    print(
+        f"  provider layer: {len(provider_layer)} models — "
+        f"{provider_rep['entries']} endpoint entries "
+        f"({provider_rep['joined']} page stats joined, "
+        f"{provider_rep['page_unjoined']} page-only, "
+        f"{provider_rep['duplicates_merged']} duplicates merged, "
+        f"{provider_rep['entries_with_stats']} with stats)"
+    )
 
     # logos (soft domain: reports, never dies — plan 007 D8); runs before
     # the meta write so the org->file map lands in meta.json
