@@ -163,6 +163,69 @@ function blendedPrice(d) {
   return w * pin + (1 - w) * pout;
 }
 
+// ---- Speed axis (plan 023 D2/D5) ---------------------------------------
+// Speed data comes from 022's endpoints.json — { or_id: [endpoint] }, each
+// endpoint carrying a `stats` block from OpenRouter's live router window
+// (30 minutes). D5: one lazy fetch behind a module-level cached promise, no
+// storage — cookieless-safe. A missing or failed file must never break the
+// other views: ENDPOINTS stays null and the Speed view shows its empty
+// state; ENDPOINTS_ERROR records why for the footer note.
+let ENDPOINTS = null;
+let ENDPOINTS_ERROR = null;
+let endpointsPromise = null;
+
+function fetchEndpoints() {
+  if (!endpointsPromise) {
+    endpointsPromise = fetch("./data/endpoints.json")
+      .then((r) => {
+        // 404 is a tolerated state (data rolled back / 022 not shipped),
+        // not an error — the Speed view just has nothing to plot.
+        if (r.status === 404) return null;
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        return r.json();
+      })
+      .then((j) => {
+        ENDPOINTS = j;
+        return ENDPOINTS;
+      })
+      .catch((err) => {
+        ENDPOINTS_ERROR = err.message;
+        return null;
+      });
+  }
+  return endpointsPromise;
+}
+
+// D2: per-model speed = the median of the endpoints' p50 throughput among
+// endpoints with request_count >= 30 (the rc>=30 floor trims only the thin
+// tails — the rc distribution's p25 is 189); latency = median p50 latency
+// (ms). The basis — n endpoints used, their summed request_count — travels
+// with the value so the tooltip can show the rule instead of hiding it.
+function median(xs) {
+  const v = xs.filter((x) => x != null && isFinite(x)).sort((a, b) => a - b);
+  if (!v.length) return null;
+  const m = v.length >> 1;
+  return v.length % 2 ? v[m] : (v[m - 1] + v[m]) / 2;
+}
+
+function speedOf(modelId, eps) {
+  const use = ((eps && eps[modelId]) || []).filter(
+    (e) =>
+      e.stats &&
+      e.stats.p50_throughput > 0 &&
+      (e.stats.request_count || 0) >= 30
+  );
+  if (!use.length) return null;
+  const toks = median(use.map((e) => e.stats.p50_throughput));
+  if (toks == null) return null;
+  return {
+    toks,
+    latency: median(use.map((e) => e.stats.p50_latency)),
+    n: use.length,
+    rc: use.reduce((s, e) => s + (e.stats.request_count || 0), 0),
+  };
+}
+
 function pointsFor(getPrice, rows) {
   const pts = [];
   let skipped = 0;
