@@ -121,6 +121,14 @@ mode alongside.
    lazy-load seam in `app.js` (promise-cached script injection, D5 pattern;
    on failure the 3D pill reports "3D unavailable" and the 2D views are
    untouched — D7). No 3D rendering yet. Commit: `chart: vendor echarts-gl`.
+   ✅ Complete — `70baf9a` (2026-09-17). As-built: sha256 verified against a
+   fresh unpkg fetch (d6d60f21…); the browser UMD global is
+   `window["echarts-gl"]` (the factory wires the 3D types onto the global
+   echarts) — the seam's success signal; `loadEchartsGL()` in app.js is
+   promise-cached, resolves true/false, injects nothing eagerly. Harness
+   extended (+6 assertions): 0 gl requests before first use, resolves true
+   + global present + fetched once + cached promise, 2D views unaffected;
+   the 404 docroot now lacks the gl file → resolves false without throw.
 5. `app.js` + `index.html`: the 3D showcase — the "◈ 3D" pill (D7) + the
    `grid3D` scene: spheres per plotted model, org colors, log₁₀
    pre-transformed axes, `viewControl` camera + idle `autoRotate`, the
