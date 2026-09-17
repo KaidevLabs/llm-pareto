@@ -357,6 +357,50 @@ def join(arena_entries, or_models, overrides):
     )
 
 
+# --------------------------------------------- provider layer (plan 022)
+
+ENDPOINTS_URL = "https://openrouter.ai/api/v1/models/{or_id}/endpoints"
+MODEL_PAGE_URL = "https://openrouter.ai/{or_id}"
+PROVIDER_TMP_DIR = ROOT / ".tmp" / "provider"
+PROVIDER_FETCH_SPACING = 0.5
+
+
+def fetch_endpoints(or_id):
+    """Per-model provider endpoint list from the public API (plan 022,
+    D1): provider list, pricing, uptime — raw JSON text."""
+    return fetch(ENDPOINTS_URL.format(or_id=or_id))
+
+
+def fetch_model_page(or_id):
+    """The OR model page SSR payload (plan 022, D1): source of the speed
+    percentiles + the page-only rich fields — raw HTML text."""
+    return fetch(MODEL_PAGE_URL.format(or_id=or_id))
+
+
+def fetch_provider_layer(or_ids):
+    """Sequential fetch loop over the joined or_ids (plan 022, D9):
+    0.5 s spacing between fetches, both sources per model, raw payloads
+    to .tmp/provider/ (gitignored — never committed). Prints per-source
+    fetch counts."""
+    PROVIDER_TMP_DIR.mkdir(parents=True, exist_ok=True)
+    total = len(or_ids)
+    n_ep = n_page = 0
+    for i, or_id in enumerate(or_ids, 1):
+        ep = fetch_endpoints(or_id)
+        (PROVIDER_TMP_DIR / f"ep_{or_id.replace('/', '__')}.json").write_text(ep)
+        n_ep += 1
+        time.sleep(PROVIDER_FETCH_SPACING)
+        page = fetch_model_page(or_id)
+        (PROVIDER_TMP_DIR / f"page_{or_id.replace('/', '__')}.html").write_text(page)
+        n_page += 1
+        if i < total:
+            time.sleep(PROVIDER_FETCH_SPACING)
+    print(
+        f"  provider layer: {total} models — fetched {n_ep} endpoint "
+        f"payloads, {n_page} page payloads -> .tmp/provider/"
+    )
+
+
 # ---------------------------------------------------------------- logos
 
 # logo registry (plan 007, D8): logos.json at repo root maps
@@ -895,6 +939,11 @@ def main():
     )
 
     validate(arena_entries, or_models, combined, unmatched)
+
+    # provider layer (plan 022, step 1): raw per-model fetch to
+    # .tmp/provider/ — after validate() so a failing run fetches nothing
+    print(f"fetching provider layer for {len(combined)} joined models")
+    fetch_provider_layer([c["or_id"] for c in combined])
 
     # logos (soft domain: reports, never dies — plan 007 D8); runs before
     # the meta write so the org->file map lands in meta.json
