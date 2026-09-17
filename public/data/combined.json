@@ -13,9 +13,9 @@
   "arena_votes": 30057,
   "arena_org": "Anthropic",
   "arena_license": "Proprietary",
-  "arena_model": "claude-fable-5",
+  "arena_model": "claude-fable-5-high",
   "arena_variants": [
-   "claude-fable-5"
+   "claude-fable-5-high"
   ],
   "arena_context_length": 1000000,
   "arena_model_url": "https://www.anthropic.com/news/claude-fable-5-mythos-5",
@@ -1094,8 +1094,8 @@
  {
   "or_id": "tencent/hy3",
   "or_name": "Tencent: Hy3",
-  "price_in_per_m": 0.132,
-  "price_out_per_m": 0.528,
+  "price_in_per_m": 0.0825,
+  "price_out_per_m": 0.33,
   "vision": false,
   "context_length": 262144,
   "arena_rank": 60,
@@ -1111,8 +1111,8 @@
   ],
   "arena_context_length": 262144,
   "arena_model_url": "https://huggingface.co/tencent/Hy3",
-  "arena_price_in_per_m": 0.132,
-  "arena_price_out_per_m": 0.528,
+  "arena_price_in_per_m": 0.0825,
+  "arena_price_out_per_m": 0.33,
   "match_method": "exact",
   "match_ratio": null
  },
@@ -1554,8 +1554,8 @@
  {
   "or_id": "deepseek/deepseek-v4-flash",
   "or_name": "DeepSeek: DeepSeek V4 Flash 0423",
-  "price_in_per_m": 0.088606,
-  "price_out_per_m": 0.177212,
+  "price_in_per_m": 0.07,
+  "price_out_per_m": 0.14,
   "vision": false,
   "context_length": 1048576,
   "arena_rank": 87,
@@ -1885,8 +1885,8 @@
  {
   "or_id": "z-ai/glm-4.6",
   "or_name": "Z.ai: GLM 4.6",
-  "price_in_per_m": 0.5,
-  "price_out_per_m": 2.0,
+  "price_in_per_m": 0.43,
+  "price_out_per_m": 1.75,
   "vision": false,
   "context_length": 204800,
   "arena_rank": 112,
