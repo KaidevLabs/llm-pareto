@@ -1,8 +1,8 @@
 # 023 — Speed as a third axis (price × Elo × speed)
 
-Date: 2026-09-17. **Status: EXECUTING (step 1/6) — D1–D9 settled at owner
-review 2026-09-17 ("staged" + delegated execution: "start implementing and
-decide yourself … we can talk about it later and cross correct").**
+Date: 2026-09-17. **Status: COMPLETE (2026-09-17) — owner A/B feel-out
+pending at the review session (this run was delegated: "start implementing
+and decide yourself … we can talk about it later and cross correct").**
 Source: `plans/021-exploration-backlog.md` item B14 + its exploration
 findings; D7–D9 from the owner review of 2026-09-17 (recorded below).
 **Depends on 022** (the `endpoints.json` provider layer); executes after 022.
@@ -170,6 +170,16 @@ mode alongside.
    model card; the 2D views are unaffected after entering/leaving 3D and on
    a failed load), the cookie probe, owner manual A/B (visual judgment of
    the WebGL scene — #403), deploy.
+   ✅ Complete — pushed `76e448c` (2026-09-17). As-built: the full CDP
+   harness (46 assertions) is ALL PASS, including the 3D section (the
+   ribbon assertions replaced by the "no ribbon series" deviation check);
+   cookieless grep clean; cookie-jar probe on live over `/` + every asset
+   (both echarts files, the gl file, combined/meta/endpoints.json, woff2),
+   desktop + curl + mobile UAs — zero Set-Cookie; git-integration deploy
+   verified live (app.js carries render3DScene, /js/echarts-gl-2.1.0.min.js
+   serves 200, the 3D pill is in the live HTML). Owner manual A/B pending —
+   delegated run; the WebGL scene's visual judgment + the D8 ribbon
+   deviation are the review session's agenda.
 
 ## Out of scope
 
@@ -197,6 +207,9 @@ mode alongside.
       spheres + the 3-objective glow frontier; the ribbon toggle works;
       clicking a sphere opens the model card; the 2D views are unaffected
       (including on a failed echarts-gl load). — CDP check.
+      **Shipped as glow-only: the ribbon (lines3D) is dropped — it throws
+      in echarts-gl 2.1.0 + echarts 5.6.0 (D8 deviation, step 5 as-built).**
 - [ ] Cookie probe clean (no new storage or cookies) + owner A/B feel-out
-      (2D Speed mode and the 3D scene).
-- [ ] Deployed (live == main).
+      (2D Speed mode and the 3D scene). — probe clean 2026-09-17; owner A/B
+      pending at the review session.
+- [x] Deployed (live == main, push `76e448c`, 2026-09-17).
