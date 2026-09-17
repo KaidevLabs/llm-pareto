@@ -63,6 +63,41 @@ is one shared module-level promise either way).
 - Frontier recomputation from provider prices (D7 — a separate decision).
 - Provider links (the OR provider page is not a stable per-endpoint URL —
   `provider_info.baseUrl` is a candidate; v2).
+- Full latency percentiles in the tooltip (owner note, 2026-09-17: the p50
+  latency line stays the only latency in the tooltip; the drawer is the
+  detail surface — see D9 below).
+
+## D9 — percentile display (owner note 2026-09-17, recorded not explored)
+
+Owner request, verbatim intent: "add all ps p50, p75, p90, p95 and p99 on
+the model card that opens when you click a model. And also evaluate what
+should be the P to put on the little card which i think it should not b[e]
+[p50]". Recorded as a parked entry per the standing rule (#352/#447) — not
+explored, not specced. Scope it here (both halves are drawer/speed-view
+concerns and the data is already in `endpoints.json`: `p50/75/90/95/99_*
+` + `latency_request_count`/`throughput_request_count`, all present on 754
+endpoint stat blocks; verified 2026-09-17) or graduate to its own step at
+review. Questions it should settle:
+
+1. **Card (drawer) display** — the p50/75/90/95/99 for BOTH throughput and
+   latency, per-model (aggregated with the D2 median rule across rc≥30
+   endpoints) vs per-endpoint rows (024's table already shows per-endpoint
+   speed; percentiles per endpoint may belong in the table columns, not a
+   separate card block). Basis line (n endpoints, requests, window) must
+   stay visible so the p99 tail doesn't read as a promise.
+2. **The "P" on the little card** (tooltip / speed-view labels / 3D) —
+   p50 is the current plotted value (D2). Owner suspects p50 undersells
+   typical experience (p50 = the median request; but per-user experience
+   sits higher in the distribution). Candidates: stay p50 (consistent with
+   "half of requests were at least this fast"), move to p75 (one line
+   higher, still stable, less tail-dominated), or plot p50 with p75
+   shown alongside. Decision changes the axis label (D6), the tooltip
+   line, and possibly the frontier shape (higher P = higher tok/s values =
+   points move right — same monotone transform, frontier membership can
+   shift between models with different spread shapes).
+3. Latency percentiles carry a metric ambiguity already flagged in D6
+   (TTFT vs round-trip) — the card's percentile table should inherit that
+   caveat, not amplify it.
 
 ## Definition of done
 

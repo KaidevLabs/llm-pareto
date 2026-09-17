@@ -1,8 +1,9 @@
 # 023 — Speed as a third axis (price × Elo × speed)
 
-Date: 2026-09-17. **Status: COMPLETE (2026-09-17) — owner A/B feel-out
-pending at the review session (this run was delegated: "start implementing
-and decide yourself … we can talk about it later and cross correct").**
+Date: 2026-09-17. **Status: ARCHIVED (2026-09-17) — 20e893e (owner review
+settled, D1–D9) → a6ef77f / 36f5fa7 (step 1) → 2a2899c / 63687a4 (step 2) →
+0be776e (step 3, 2D deployed) → 70baf9a / ba75ed9 (step 4) → 76c0a5a /
+76e448c (step 5, 3D deployed) → 48be85f (step 6, complete).**
 Source: `plans/021-exploration-backlog.md` item B14 + its exploration
 findings; D7–D9 from the owner review of 2026-09-17 (recorded below).
 **Depends on 022** (the `endpoints.json` provider layer); executes after 022.
@@ -197,19 +198,20 @@ mode alongside.
 
 - [x] Owner approves this plan (D1–D9 settled 2026-09-17) in a review
       session; execution delegated for this run.
-- [ ] A fourth Speed mode renders the frontier line over plotted points;
+- [x] A fourth Speed mode renders the frontier line over plotted points;
       the tooltip carries tok/s + basis + latency. — CDP check.
-- [ ] A model without stats is hidden + footnoted; filters/search apply in
+- [x] A model without stats is hidden + footnoted; filters/search apply in
       the Speed view. — CDP check.
-- [ ] `endpoints.json` is fetched lazily, once, and cached (Network panel
+- [x] `endpoints.json` is fetched lazily, once, and cached (Network panel
       / CDP); the other views work if the fetch fails.
-- [ ] 3D: the pill lazy-loads echarts-gl exactly once; the scene renders
+- [x] 3D: the pill lazy-loads echarts-gl exactly once; the scene renders
       spheres + the 3-objective glow frontier; the ribbon toggle works;
       clicking a sphere opens the model card; the 2D views are unaffected
       (including on a failed echarts-gl load). — CDP check.
       **Shipped as glow-only: the ribbon (lines3D) is dropped — it throws
-      in echarts-gl 2.1.0 + echarts 5.6.0 (D8 deviation, step 5 as-built).**
-- [ ] Cookie probe clean (no new storage or cookies) + owner A/B feel-out
-      (2D Speed mode and the 3D scene). — probe clean 2026-09-17; owner A/B
-      pending at the review session.
+      in echarts-gl 2.1.0 + echarts 5.6.0 (D8 deviation, step 5 as-built).
+      Owner reviewed the live scene and accepted glow-only ("perfect").**
+- [x] Cookie probe clean (no new storage or cookies) + owner A/B feel-out
+      (2D Speed mode and the 3D scene). — probe clean 2026-09-17; owner
+      A/B done 2026-09-17 ("Yeahhhh thats great perfect").
 - [x] Deployed (live == main, push `76e448c`, 2026-09-17).
