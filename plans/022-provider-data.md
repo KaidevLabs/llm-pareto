@@ -117,7 +117,19 @@ validated, and is diff-reviewed in the data commits; 023 (speed axis) and
  4. `.github/workflows/update-data.yml`: add `endpoints.json` to the D3
    changed-gate (D7). actionlint + scratch-clone rehearsal (no-op path:
    meta-only → clean; changed path: forced stats drift → commit + push).
-   Commit: `ci: gate endpoints.json in the scheduled refresh`.
+    Commit: `ci: gate endpoints.json in the scheduled refresh`.
+    ✅ Complete — `18306ed` (2026-09-17), committed as
+    `deploy: gate endpoints.json into the data commit (D7)` — the subject
+    stated at the step review (the `deploy` type is in the AGENTS.md commit
+    list; `ci:` was not). As-built: the gate's
+    `git diff --name-only` file list gains `public/data/endpoints.json`
+    (the no-op echo updated to match) — the only change, per the step. A
+    no-op run now requires all four files unchanged; since endpoints.json
+    drifts nearly every run (0.1% uptime + 30-min percentiles), the
+    scheduled commit fires on (almost) every run — the D7 call, message
+    unchanged. `meta.json` stays out of the gate; `git add public/data`
+    already stages endpoints.json, so nothing else moved. No test seam
+    (YAML); verified by the step-5 manual dispatch.
 5. First live run: dispatch the workflow, owner reviews the
    `endpoints.json` diff + the report section end-to-end, verify the deploy
    (live == main). No code commit unless the review changes something.
