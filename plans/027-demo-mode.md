@@ -1,6 +1,7 @@
 # 027 — Demo: view deep-links, guided 3D tour, capture
 
-Date: 2026-09-18. **Status: EXECUTING (step 2/3).** Steps 2–3 greenlit by
+Date: 2026-09-18. **Status: EXECUTING (step 3/3 — tour complete,
+capture pending).** Steps 2–3 greenlit by
 the owner 2026-09-18 ("work is done and good… lets go for the next steps")
 — 028's push/live check waived by the same signal (owner: "no need to
 push… if something fails we will open new plan/issue"); steps 2–3 execute
@@ -89,14 +90,11 @@ The 3D showcase becomes its own demo, no static image involved:
    set, same A5 history model, unit-tested; the burst mechanics refined:
    a continuous burst pushes once and absorbs continuations by
    replacing). Parity + deep-links verified by 028's CDP harness.
-2. **Guided tour** — `src/lib/tour.ts` (new module: the tour engine —
-   waypoints, rAF camera flight, caption chips, cancel-on-interaction,
-   return-to-idle) + `src/components/Panel.svelte` (the tiny 3D-only
-   tour pill next to the fit pill) + the `tour=1` deep-link autostart
-   (read + strip in the boot path before `initHistory` seeds — tour is
-   an entry action, not state, so the URL is cleaned before the first
-   history entry; A5). 2D modes untouched — the tour exists only inside
-   the 3D scene. Commit: `chart: 3D guided tour`.
+2. **Guided tour** — ✅ Complete — `051f99d` (2026-09-18). See
+   `plans/027-demo-mode/02-tour.md` (as-built: choreography per owner A/B —
+   lateral→cheap, top-down→fast, lateral→smart, 45° finale; crowns
+   centering via viewControl.center in GL world units; captions name the
+   crowned models; TDZ regression caught by probe).
 3. **Capture** — a zero-dep `.tmp` script (CDP screencast + ffmpeg):
    loads `?view=3d&tour=1` clean, records the full tour, muxes to webm,
    reports duration/size. The output is committed and embedded in
@@ -134,6 +132,8 @@ None — all branches settled 2026-09-18 (A1–A6).
       clause (the tour never replays via history) verifies at step 2.
 - [ ] `?view=3d&tour=1` autoplays the tour; the tiny button does the
       same; any interaction cancels cleanly back to normal 3D behavior.
+      — CDP probe 13/13 (autostart, strip, flight read-back, hand-cancel,
+      pill start/stop); owner A/B'd the choreography in-session.
 - [ ] The capture produces a webm of the full tour from a clean headless
       run (duration/size reported); it is committed and embedded in
       README.md (A6).

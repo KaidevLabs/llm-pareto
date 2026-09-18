@@ -1,4 +1,4 @@
-# Step 02 — Guided tour — IN PROGRESS (code done, awaiting owner staging)
+# Step 02 — Guided tour — ✅ COMPLETE (committed 051f99d, 2026-09-18)
 
 027 step 2, executing 2026-09-18. Spec: `plans/027-demo-mode.md` step 2
 (its A2/A3/A5 and current-state sections carry the settled decisions).
@@ -104,41 +104,50 @@ no CDP assertion for caption copy (owner edits at review).
   the kept assertions live in tour.test.ts).
 - Cookieless grep unchanged (no storage APIs).
 
-## As-built
+## As-built (final, incl. owner-review round 2026-09-18 ~23:00–00:30Z)
 
 - `src/lib/tour.ts`: the controller as specified — waypoints, per-segment
-  ease-in-out rAF flight over alpha/beta/distance, shortest-arc alpha
-  (never spins the long way round), hold timing, `onCaption(""/text)`,
-  `onDone`, `cancel()` freezing the camera in place. Injectable ticker
-  (`rafTicker()` for the real rAF clock) makes the tests deterministic.
-- `src/lib/charts.ts`: the tour seam grew a small lifecycle —
-  `startTour3D()/stopTour3D()/tourRunning()/registerTourUi()`; the Panel
-  registers caption/state callbacks, the pill click and the `tour=1`
-  autostart take the same path. Cancel-on-interaction binds
-  mousedown/wheel/touchstart on the instance's zr layer per tour start.
-  **DEVIATION from spec (better):** the autotour flag is consumed inside
-  `render3DPanel`'s GL-load `.then` — right after `setOption` — not in
-  the Panel effect: on a fresh deep-link load the Panel effect runs
-  before the async GL load creates the instance, so an early consume
-  raced it and silently dropped the autostart (found by the CDP probe,
-  tour_debug trace: `ReferenceError`→fixed, then the race→restructure).
-- `src/lib/tourflag.svelte.ts`: the one-shot App→Panel handoff module
-  (A3) — App reads/strips `tour=1` at boot and publishes; charts.ts
-  consumes at chart-exists time.
-- `src/components/Panel.svelte`: the tiny 3D-only pill (▶/■, 28px vs the
-  fit pill's 55px — "tiny and hidden" A2) + the caption chip
-  (`.tour-cap`, badge-chrome styling, bottom-center over the scene).
-  **One regression found + fixed by the probe: my first edit dropped
-  Panel's `boot` import — the whole app died with `boot is not
-  defined`; the probe caught it immediately.**
-- `src/lib/charts.ts` TOUR_WAYPOINTS: 5 waypoints (establishing orbit →
-  cheap shelf → fast shelf → Elo ceiling → frontier glow return);
-  targets hand-tuned against the shipped scene's bounds.
-- Verification: `npx vitest run src/lib/tour.test.ts` 6/6 every cycle;
-  full gate `npm test` (72/72) + `npx tsc --noEmit` + `npm run build`
-  clean; CDP probe `.tmp/tour_verify.mjs` 13/13 ALL PASS (autostart,
-  URL strip, camera read-back 20,330 → 25.95,299.38 during flight,
-  cancel-on-interaction, plain-load no-autostart, pill size/behavior);
-  cookieless grep clean (0 storage-API hits in src/). Harness note: 69
-  stray chromium processes from earlier sessions had to be killed before
-  the probe ran clean — port 9226 was answering from a stale instance.
+  ease-in-out rAF flight over alpha/beta/distance **+ `center` (lerped 3-vector,
+  optional per waypoint)**, shortest-arc alpha (never spins the long way round),
+  hold timing, `onCaption(""/text)`, `onDone`, `cancel()` freezing the camera in
+  place. Injectable ticker (`rafTicker()`) makes the tests deterministic.
+- Owner-review round (A/B feel-out, 5 asks applied in this step's window):
+  captions 12→16px semibold; flight 1.6→2.6s; holds 1.4–3.2s (then the
+  choreography rewrite); **choreography per owner spec**: wide start → full
+  lateral (Elo×price, alpha≈2/beta 0) diving to the cheapest → full top-down
+  (speed×price, alpha≈88) diving to the fastest → lateral again diving to the
+  smartest → finish 45° framing the cloud; each stop **centers on its crown
+  bubble** (viewControl.center), finale recenters the box at distance 150.
+- **The crowns** (owner pick "3D crowns + tour naming"): `$ champion` /
+  `speed champion` / `Elo king` — computed per render over the PLOTTED set;
+  chrome = translucent colored sphere (26px, 0.3α) + big gold ♛ glyph label
+  (26px) + small role-name label (11px, distance 40); click → drawer; tooltip
+  carries the crown title. `CROWNS` stash backs click resolution + the tour.
+  **GL lessons encoded (see #499):** mesh symbols ignore borderColor (the
+  "ring" idea died), `opacity: 0` culls labels (carrier points keep opacity
+  1 + transparent color), and a merge setOption appending series no-ops.
+- Tour captions expand `{crown.<kind>}` slots live (tourScript() at
+  startTour time) — "the price floor: {model} — $ champion" etc.; resolved
+  per filter state, so filtering re-targets the tour.
+- `viewControl.center` mapping (the hard-won part): GL world units, origin
+  at box center, depth REVERSED — full formula in charts.ts `toWorld` and
+  memory #499. The first attempt passed raw data values (owner-visible bug:
+  "tiny cloud at the back"), bisected to the coordinate space via 4 CDP
+  screenshots, then confirmed against echarts-gl's grid3DCreator source
+  (fetched from unpkg).
+- `src/lib/tourflag.svelte.ts`: the one-shot App→charts handoff module
+  (A3). `src/components/Panel.svelte`: the tiny 3D-only pill (▶/■, 28px vs
+  fit 55px) + caption chip; `src/App.svelte`: `tour=1` read-once + stripped
+  before history seeding (A5).
+- **Regression found + fixed during the round:** a TDZ crash (crowns block
+  referenced `toWorld` before its declaration) killed the scene at boot —
+  caught by the "no chart instance" probe result, fixed by moving
+  bounds/toWorld above the crowns computation.
+- Verification: `npx vitest run src/lib/tour.test.ts` 6/6 every cycle; full
+  gate `npm test` (72/72) + `npx tsc --noEmit` + `npm run build` clean; CDP
+  probe `.tmp/tour_verify.mjs` 13/13 ALL PASS (re-run after every owner
+  round); stop-2 centering verified by screenshot (crown dead-center under
+  the lateral camera); cookieless grep clean. Probe scripts + bisect
+  artifacts deleted after use (.tmp scratch discipline). Harness note: 34
+  stray `http.server` processes had squatted port 8125 serving a stale
+  dist — killed before the final verification.
