@@ -16,6 +16,10 @@ export const data = $state({
 
 let promise: Promise<void> | null = null;
 
+// Set true once data + logo badges are ready — the chart seam's first
+// render waits for both (live main() awaited buildBadges before render).
+export const boot = $state({ ready: false });
+
 export function loadData(): Promise<void> {
   if (!promise) {
     promise = Promise.all([

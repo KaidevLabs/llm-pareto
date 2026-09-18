@@ -7,6 +7,8 @@
 // the leading word plus a following word ("Claude Opus"). Families follow
 // the source: when OR renames a line, they move on the next data refresh.
 
+import type { Row } from "./types";
+
 const FAMILY_NOISE = new Set(["instruct", "thinking", "preview", "latest", "chat", "beta"]);
 
 export function orgOf(d: Row): string {

@@ -33,8 +33,8 @@ export function fmtMs(v: number | null | undefined): string {
 // template interpolation escapes on its own — this is only for markup built
 // as strings.
 export function esc(s: unknown): string {
-  return String(s).replace(/[&<>"]/g, (c) =>
-    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const MAP: Record<string, string> = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" };
+  return String(s).replace(/[&<>"]/g, (c) => MAP[c]);
 }
 
 export function median(xs: (number | null | undefined)[]): number | null {
