@@ -95,10 +95,11 @@ The 3D showcase becomes its own demo, no static image involved:
    lateral→cheap, top-down→fast, lateral→smart, 45° finale; crowns
    centering via viewControl.center in GL world units; captions name the
    crowned models; TDZ regression caught by probe).
-3. **Capture** — a zero-dep `.tmp` script (CDP screencast + ffmpeg):
-   loads `?view=3d&tour=1` clean, records the full tour, muxes to webm,
-   reports duration/size. The output is committed and embedded in
-   README.md (A6). Commit: `demo: capture the tour`.
+3. **Capture** — ✅ Complete — `a7d8243` (2026-09-19). See
+   `plans/027-demo-mode/03-capture.md` (as-built: panel-cropped capture,
+   two variants — H.264 CRF 14 mp4 embeds the README, webm spare; codec
+   chase VP9 CRF 30→16 → H.264 per owner; viewport-chrome + VFR-pacing
+   findings).
 
 ## Open branches
 
@@ -136,7 +137,8 @@ None — all branches settled 2026-09-18 (A1–A6).
       pill start/stop); owner A/B'd the choreography in-session.
 - [ ] The capture produces a webm of the full tour from a clean headless
       run (duration/size reported); it is committed and embedded in
-      README.md (A6).
+      README.md (A6). — as-built: the embed is an H.264 mp4 (owner codec
+      pick during review) + the webm spare; both committed.
 - [ ] Cookie probe clean (no new storage or cookies) over `/` + assets.
 - [ ] Owner A/B: links + tour feel right; the README capture accepted.
 - [ ] Deployed (live == main), if the site surface changed.

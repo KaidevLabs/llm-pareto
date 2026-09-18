@@ -1,4 +1,4 @@
-# Step 03 — Capture — IN PROGRESS
+# Step 03 — Capture — ✅ COMPLETE (committed a7d8243, 2026-09-19)
 
 027 step 3, executing 2026-09-18. Spec: `plans/027-demo-mode.md` step 3
 (A6 pins the destination: committed + embedded in README). Commit subject:
@@ -40,6 +40,34 @@ only the OUTPUT is committed):
 no tests: capture-only step — the artifact is the deliverable (A6); the
 tour behavior it records is already covered by step 2's suite + probe.
 
-## As-built
+## As-built (final, incl. owner-review round 2026-09-19)
 
-(to be written at close)
+- `.tmp/capture_tour.mjs`: rebuild → serve → headless Chromium (window
+  1400×1100) → navigate `?view=3d&tour=1` → wait for the crowns series +
+  rect-stability loop (font reflow) → CDP screencast (JPEG q100, acked
+  frames) for 34s → ffmpeg. **Owner-review round changes:** (1) "save
+  both" — one capture, TWO encodes; (2) "focus on the graph" — the video
+  is cropped to `#panel-3d`'s live rect (crop=`W:H:X:Y` from the measured
+  bounding box; measured twice until stable to dodge font-reflow shifts);
+  (3) quality chase: VP9 600k/720p → CRF 30 → CRF 22 → CRF 16 — owner
+  still unhappy → **H.264 mp4, CRF 14, `-tune animation`, `-preset slow`**
+  (the winner, 2.8 MB).
+- **Debug findings worth keeping:** headless=new's `--window-size`
+  includes ~143px of window chrome — the real viewport was 817px, the
+  panel bottom (858) overflowed it, and ffmpeg SILENTLY clamped the crop
+  origin upward (the axis-note creeping into the frame). Fixed with
+  window 1400×1100. Also: screencast frame timestamps arrive irregularly
+  (60fps bursts) — the concat-demuxer durations must use RAW gaps
+  (a 33ms floor slow-mo'd the video 1.34×); and per-frame `duration`
+  pacing beats `-framerate` image2 for VFR screencast input.
+- Committed artifacts: `demo-tour-hq.mp4` (1328×636 H.264, 2.8 MB — the
+  README embed), `demo-tour.webm` (1280w VP9 600k, 1.7 MB — light spare).
+  README gains "The 3D tour" section: mp4 embed + the live deep-link
+  `https://llm-pareto.kaidev.io/?view=3d&tour=1`. The README body's
+  pre-028 staleness (no-build-step text, app.js layout) was flagged to
+  the owner and parked — out of this step's scope.
+- Verification: ffprobe on both outputs (codec/dims/duration ≈ tour
+  length); frame spot-checks at multiple timestamps show the scene +
+  crowns + captions (never black frames); zoom crops compared across
+  codecs before the owner picked. The script stays scratch (.tmp/); the
+  OUTPUT is the commit (A6).
