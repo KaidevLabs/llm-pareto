@@ -1,6 +1,6 @@
 # 028 — Svelte 5 rewrite of the explorer front end
 
-Date: 2026-09-18. **Status: EXECUTING (step 2/6).**
+Date: 2026-09-18. **Status: EXECUTING (step 4/6).**
 Source: `plans/021-exploration-backlog.md` B18 (frontend framework?), rounds
 1–2, and the owner's go ("Then lets go", 2026-09-18). The round-2 findings
 are this plan's evidence base — measured, not re-derived here: line budget
@@ -139,6 +139,23 @@ live site never serves a broken state during the window.
    (script-tag, before first GL render — #468); stale-state guards;
    `#badge-3d`/`#reset-3d`/`#count-3d` chrome. Verify: CDP (SwiftShader
    renders the GL scene) + owner A/B. Commit: `chart: 3D scene in svelte`.
+   ✅ COMPLETE (committed, 2026-09-18).
+   **As-built:** `src/lib/gl.ts` (promise-cached script-tag inject,
+   chart-instance-after-registration per #468) + render3DPanel/build3DScene
+   verbatim in charts.ts; PanelKey gained "3d"; Panel handles the 3D reset
+   (camera re-render); App has the 3D pill. **Bug the probe caught:** the
+   scene built inside the loadEchartsGL().then() boundary — its reactive
+   reads were untracked, so frontier/ratio/search changes never
+   re-rendered 3D; fixed by splitting sync prep (tracked) from the
+   GL-await (init+setOption only). Recorded as constraint #468 (6).
+   Verify: vitest 52/52, tsc clean, build clean, python 157 OK, storage
+   grep clean, CDP 19/19 on the dev build (pill toggles panels+axis-note,
+   one canvas + live SwiftShader WebGL, 144 points, halo, axes, count
+   "144 models · 25 on the frontier", frontier off/on round-trip, ratio
+   re-render, search, mode-leave, zero console errors). Note: the GL
+   canvas id is "" here (023's vanilla repro had "gl--10") — one-canvas +
+   webgl context is the invariant, not the id. Owner A/B: "working
+   flawlessly" (2026-09-18).
 4. **Drawer + provider table + of-panel + footer** — seed sketch
    reconciliation; PROV_SORT → component state; endpoints fetch → resource
    lifecycle (loading/empty/error as framework state); footer/meta. Verify:
