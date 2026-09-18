@@ -1,6 +1,6 @@
 # 028 — Svelte 5 rewrite of the explorer front end
 
-Date: 2026-09-18. **Status: PROPOSED — awaiting owner review.**
+Date: 2026-09-18. **Status: EXECUTING (step 1/6).**
 Source: `plans/021-exploration-backlog.md` B18 (frontend framework?), rounds
 1–2, and the owner's go ("Then lets go", 2026-09-18). The round-2 findings
 are this plan's evidence base — measured, not re-derived here: line budget
@@ -81,6 +81,30 @@ live site never serves a broken state during the window.
    deployed in this step). `public/` untouched — live site unchanged.
    Verify: vitest green, build clean, python suite green, storage-API grep
    clean. Commit: `chart: svelte scaffold + drawer seed`.
+   ✅ COMPLETE (committed f9736f1, 2026-09-18).
+   **As-built:** done as specified, plus these port decisions: the state
+   store binding is exported as `ui` — a component cannot import a binding
+   named `state` while also using local `$state` runes (compiler-enforced
+   store_rune_conflict; every future consumer has local runes). Seed
+   reconciled with 4 fixes: `esc()` dropped from all interpolations
+   (svelte escapes on its own; the sketch would double-escape), the
+   sketch's undefined `endpointsError` reference → `store.error`, the
+   per-provider table's missing `ctx` header restored (7 cells under 6
+   headers), TS types for Row/Endpoint/Meta. tsconfig strict on;
+   svelte-check left out (the step's dep list settles it — vitest is the
+   gate). typescript pinned ^5.9.0 (npm latest 7.0.2 is the Go-native
+   rewrite major; the vite/svelte toolchain is validated on 5.x). Root
+   index.html carries only global CSS (Inter @font-face, :root vars,
+   body/#app flex); the drawer's styles moved scoped into Details.svelte;
+   remaining shell CSS migrates with its components in steps 2–4.
+   App.svelte is a throwaway host (renders data.rows[0]'s drawer),
+   replaced in step 2. Verify results: vitest 40/40 (unit values pinned by
+   running the real app.js functions through a scratch harness — which
+   caught blendedPrice/searchHit being module-state readers, not
+   arg-takers), build clean + 6/6 HTTP smoke from dist/, headless render
+   of dist/ paints the drawer with zero console errors, python suite 157
+   OK, storage-API grep clean. vitest excludes `.tmp/` (was collecting
+   the seed demos).
 2. **2D panels + controls** — mode seg (general/in/out/speed), pills,
    search, org-families of-panel, spread/frontier toggles as components;
    chart init/update lifecycle wrappers over the imperative seam (not-Merge
@@ -122,8 +146,8 @@ None — A1–A7 settle the forks; the round-2 findings retire the rest.
 
 ## Not yet specified
 
-- TS strictness + whether `svelte-check` joins the verify loop — settled in
-  step 1 (default: strict on; svelte-check optional, decides by noise).
+- ~~TS strictness + whether `svelte-check` joins the verify loop~~ —
+  settled in step 1: strict on; svelte-check out (vitest is the gate).
 - Port-order micro-details inside steps 2–4 (which panel first) — executor's
   choice; parity bar governs.
 
