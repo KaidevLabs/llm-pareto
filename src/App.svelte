@@ -17,6 +17,7 @@
   import SearchBox from "./components/SearchBox.svelte";
   import OfPanel from "./components/OfPanel.svelte";
   import Details from "./components/Details.svelte";
+  import Footer from "./components/Footer.svelte";
   let echartsFatal = $state(false);
 
   async function bootOnce() {
@@ -163,7 +164,7 @@
   {/if}
 </main>
 
-<footer id="footer"></footer>
+<Footer />
 
 <style>
   header {
