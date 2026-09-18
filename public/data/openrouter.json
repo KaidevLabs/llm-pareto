@@ -1,5 +1,14 @@
 [
  {
+  "id": "prism-ml/ternary-bonsai-2-27b",
+  "name": "PrismML: Ternary Bonsai 2 27B",
+  "org": "prism-ml",
+  "price_in_per_m": 0.075,
+  "price_out_per_m": 0.5,
+  "vision": true,
+  "context_length": 262144
+ },
+ {
   "id": "unbiased/pareto",
   "name": "Pareto",
   "org": "unbiased",
@@ -273,8 +282,8 @@
   "id": "z-ai/glm-5.3",
   "name": "Z.ai: GLM 5.3",
   "org": "z-ai",
-  "price_in_per_m": 1.4,
-  "price_out_per_m": 4.4,
+  "price_in_per_m": 0.91,
+  "price_out_per_m": 2.86,
   "vision": false,
   "context_length": 1310720
  },
@@ -561,8 +570,8 @@
   "id": "moonshotai/kimi-k3",
   "name": "MoonshotAI: Kimi K3",
   "org": "moonshotai",
-  "price_in_per_m": 2.1,
-  "price_out_per_m": 10.95,
+  "price_in_per_m": 1.95,
+  "price_out_per_m": 10.92,
   "vision": true,
   "context_length": 1048576
  },
@@ -1020,8 +1029,8 @@
   "id": "deepseek/deepseek-v4-flash",
   "name": "DeepSeek: DeepSeek V4 Flash 0423",
   "org": "deepseek",
-  "price_in_per_m": 0.04984,
-  "price_out_per_m": 0.09968,
+  "price_in_per_m": 0.04872,
+  "price_out_per_m": 0.09744,
   "vision": false,
   "context_length": 1048576
  },
