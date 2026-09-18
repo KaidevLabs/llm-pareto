@@ -1,6 +1,6 @@
 # 028 — Svelte 5 rewrite of the explorer front end
 
-Date: 2026-09-18. **Status: EXECUTING (step 4/6).**
+Date: 2026-09-18. **Status: EXECUTING (step 5/6).**
 Source: `plans/021-exploration-backlog.md` B18 (frontend framework?), rounds
 1–2, and the owner's go ("Then lets go", 2026-09-18). The round-2 findings
 are this plan's evidence base — measured, not re-derived here: line budget
@@ -161,6 +161,19 @@ live site never serves a broken state during the window.
    lifecycle (loading/empty/error as framework state); footer/meta. Verify:
    seed tests extended + owner A/B. Commit:
    `chart: drawer + provider table in svelte`.
+   ✅ COMPLETE (committed, 2026-09-18).
+   **As-built:** drawer + provider table + of-panel already landed in
+   steps 1–2 (announced at step 2); this step's remaining scope was the
+   footer: `Footer.svelte` (live renderFooter verbatim — spread explainer,
+   source links, timestamp, join count + by-method, ⚑ override disclaimer
+   gated on meta.join.overrides_applied, cookieless note), replacing App's
+   empty footer shell with scoped styles. Verify: vitest 52/52, tsc clean,
+   build clean, python 157 OK, storage grep clean, CDP 12/12 on the dev
+   build (footer content incl. override line matching meta's 1 override,
+   stamp, drawer's 2 provider tables + headers after the footer landed,
+   zero console errors). Probe nuance: the drawer check needed a real CDP
+   mouse click — a synthetic canvas MouseEvent bypasses zrender's hit
+   layer.
 5. **URL state (027 step 1, in-framework)** — the serializer as a pure TS
    module (round-trip unit-tested): `view`/`q`/`vis`/`fam`/`ratio`/
    `spread`/`frontier`, defaults omitted; read-once seed before first
