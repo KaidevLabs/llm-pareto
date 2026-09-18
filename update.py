@@ -54,6 +54,12 @@ def die(msg):
     sys.exit(1)
 
 
+class _PageFormatError(Exception):
+    """parse_provider_page signals 'anchor missing' without exiting, so the
+    fetch seam can treat it as transient and re-fetch (see
+    fetch_parse_model_page)."""
+
+
 def _is_transient(e):
     """True for fetch failures worth retrying: 5xx/429 responses,
     timeouts, and connection-level errors (plan 013, D5)."""
@@ -381,6 +387,33 @@ def fetch_model_page(or_id):
     return fetch(MODEL_PAGE_URL.format(or_id=or_id))
 
 
+# OpenRouter's model page sometimes ships a partial SSR render without the
+# dehydrated endpointStats (observed 2026-09-18: 15/154 pages in one run;
+# the same URL re-fetched immediately carries it). Treat a missing anchor
+# as transient: re-fetch the page, then die if it never appears — a page
+# that NEVER has it is format drift and must fail the run (022 D1).
+PAGE_PARSE_ATTEMPTS = 3
+
+
+def fetch_parse_model_page(or_id):
+    last_err = None
+    for attempt in range(1, PAGE_PARSE_ATTEMPTS + 1):
+        page = fetch_model_page(or_id)
+        try:
+            return parse_provider_page(page), page
+        except SystemExit:
+            raise
+        except _PageFormatError as e:
+            last_err = e
+            if attempt < PAGE_PARSE_ATTEMPTS:
+                print(
+                    f"  provider: {or_id}: page missing endpointStats "
+                    f"(attempt {attempt}/{PAGE_PARSE_ATTEMPTS}); re-fetching"
+                )
+                time.sleep(RETRY_BASE_DELAY * attempt)
+    die(f"provider: {or_id}: {last_err}")
+
+
 def fetch_provider_layer(or_ids):
     """Sequential fetch loop over the joined or_ids (plan 022, D9):
     0.5 s spacing between fetches, both sources per model, raw payloads
@@ -394,10 +427,10 @@ def fetch_provider_layer(or_ids):
         ep_path = PROVIDER_TMP_DIR / f"ep_{or_id.replace('/', '__')}.json"
         ep_path.write_text(ep)
         time.sleep(PROVIDER_FETCH_SPACING)
-        page = fetch_model_page(or_id)
+        page_eps, page = fetch_parse_model_page(or_id)
         page_path = PROVIDER_TMP_DIR / f"page_{or_id.replace('/', '__')}.html"
         page_path.write_text(page)
-        payloads.append((or_id, ep, page))
+        payloads.append((or_id, ep, page, page_eps))
         if i < total:
             time.sleep(PROVIDER_FETCH_SPACING)
     print(
@@ -422,12 +455,16 @@ def parse_provider_page(html):
     text = "".join(_decode_chunk(c) for c in chunks)
     i = text.find(EP_STATS_ANCHOR)
     if i < 0:
-        die("provider: endpointStats queryKey not found in page payload "
-            "(page format changed?)")
+        raise _PageFormatError(
+            "endpointStats queryKey not found in page payload "
+            "(page format changed?)"
+        )
     j = text.find(DEHYDRATED_AT, i)
     if j < 0:
-        die("provider: no dehydratedAt after endpointStats queryKey "
-            "(page format changed?)")
+        raise _PageFormatError(
+            "no dehydratedAt after endpointStats queryKey "
+            "(page format changed?)"
+        )
     eps = _extract_json_array(text, DEHYDRATED_AT, from_i=j, label="provider")
     if not isinstance(eps, list) or not all(isinstance(e, dict) for e in eps):
         die("provider: endpointStats array is not a list of objects")
@@ -641,9 +678,8 @@ def build_provider_layer(raw_layers):
         "top_providers": [],
     }
     provider_counts = {}
-    for or_id, ep_raw, page_html in raw_layers:
+    for or_id, ep_raw, page_html, page_eps in raw_layers:
         api_eps = parse_endpoints_api(ep_raw)
-        page_eps = parse_provider_page(page_html)
         merged, n_merged = merge_duplicate_endpoints(api_eps)
         entries, unjoined, n_joined = join_provider_layers(merged, page_eps)
         all_entries = entries + unjoined

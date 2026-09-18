@@ -134,18 +134,20 @@ class TestParseProviderPage(unittest.TestCase):
     def test_dies_without_rsc_chunks(self):
         assert_dies(self, lambda: update.parse_provider_page("<html>nope</html>"))
 
-    def test_dies_when_anchor_missing(self):
-        assert_dies(
-            self,
-            lambda: update.parse_provider_page(rsc_html('2:{"other":[1]}')),
-        )
+    def test_raises_page_format_error_when_anchor_missing(self):
+        # the anchor-missing signal is an exception the fetch seam can catch
+        # and retry on (transient partial SSR), not a die — see
+        # fetch_parse_model_page (2026-09-18).
+        with self.assertRaises(update._PageFormatError):
+            update.parse_provider_page(rsc_html('2:{"other":[1]}'))
 
-    def test_dies_when_dehydrated_missing(self):
+    def test_raises_page_format_error_when_dehydrated_missing(self):
         html = rsc_html(
             '{"queryKey":["model-page","endpointStats",'
             '{"permaslug":"test/model"}],"queryHash":"h"}'
         )
-        assert_dies(self, lambda: update.parse_provider_page(html))
+        with self.assertRaises(update._PageFormatError):
+            update.parse_provider_page(html)
 
     def test_dies_when_array_not_json(self):
         html = rsc_html(

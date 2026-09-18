@@ -1,6 +1,7 @@
 # 028 — Svelte 5 rewrite of the explorer front end
 
-Date: 2026-09-18. **Status: EXECUTING (step 6/6).**
+Date: 2026-09-18. **Status: EXECUTING (step 6/6 — cutover commit made;
+push + live check pending owner signal).**
 Source: `plans/021-exploration-backlog.md` B18 (frontend framework?), rounds
 1–2, and the owner's go ("Then lets go", 2026-09-18). The round-2 findings
 are this plan's evidence base — measured, not re-derived here: line budget
@@ -221,6 +222,38 @@ live site never serves a broken state during the window.
    updated (dev/build/test/deploy); (d) push and verify live == main
    (deployments API + live meta.json + content hash, #436 recipe). DoD
    audit. Commit: `deploy: cutover to the svelte build`.
+   ✅ COMPLETE (2026-09-18).
+   **As-built:** (a) verification ran first and clean: CDP against a
+   static serve of `dist/` 53/53 (step probes 3+4+5 adapted — the built
+   bundle exports nothing, so state asserts went through the DOM; two
+   dev-probe expectations were wrong, not the app: the seeded search box
+   stays uncontrolled like live — `?q=` seeds state, not the input — and
+   ratio 8.5 clamps to the slider's step domain); cookie probe 020 recipe
+   39 requests × 3 UAs, zero Set-Cookie, jar empty; python 157 OK;
+   `update.py` sanity run. (b) owner flipped the CF dashboard build
+   command to `npm ci && npm run build && npx wrangler deploy`. (c)
+   cutover commit: `public/index.html` + `public/app.js` deleted,
+   `wrangler.jsonc` → `./dist`, AGENTS.md rewritten (commands, testing,
+   verification hierarchy, cookieless grep surface, URL-state convention).
+   **Sanity-run find (real bug, fixed in this commit):** `update.py` was
+   failing standalone — OpenRouter's model pages intermittently ship a
+   partial SSR render with NO dehydrated endpointStats (15/154 pages in
+   one run; the same URL re-fetched carries it). `parse_provider_page` now
+   raises `_PageFormatError` instead of dying, and a new fetch seam
+   (`fetch_parse_model_page`) re-fetches up to 3× with linear backoff, then
+   dies if the anchor never appears — a never-present anchor is format
+   drift and still fails the run. Two characterization tests updated to
+   pin the new signal. Runs after the fix: exit 0, retries self-healed
+   (1-2 attempts per affected model), coverage 152/154 models (99%).
+   **Weight/load comparison (owner request, 2026-09-18):** vanilla
+   `public/` vs built `dist/`, headless chromium, cache off, local
+   http.server — OLD: 30 requests, 3589 KB transfer, DCL 40ms, load 40ms,
+   FCP 28ms, chart paints data ~145ms. NEW: 31 requests, 3610 KB (+21 KB,
+   ~0.6% — the svelte runtime vs app.js; http.server sends raw bytes, CF
+   compresses both), DCL 40ms, load 44ms, FCP 60ms (+32ms — shell CSS now
+   a separate small asset instead of inline), chart paints ~132ms (−13ms).
+   Practical read: parity — the ~3.5 MB both apps pull is dominated by
+   `endpoints.json`, identical for both. (d) push + live check pending.
 
 ## Open branches
 
@@ -244,20 +277,23 @@ None — A1–A7 settle the forks; the round-2 findings retire the rest.
 
 ## Definition of done
 
-- [ ] Feature parity A/B'd by the owner: all 2D panels + speed mode, 3D
+- [x] Feature parity A/B'd by the owner: all 2D panels + speed mode, 3D
       scene, drawer + provider table, of-panel, search, filters,
       spread/frontier, URL deep-links restoring full state (027 A4/A5
-      behaviors).
-- [ ] vitest suite green (pure-logic units + component tests); CDP 46
-      assertions pass against the built `dist/`.
-- [ ] Cookie probe clean (020 recipe) over `/` + every referenced asset;
+      behaviors). (Per-step owner A/Bs, steps 2–5.)
+- [x] vitest suite green (pure-logic units + component tests); CDP 46
+      assertions pass against the built `dist/`. (65 vitest; CDP 53/53
+      against dist/ — the step-3/4/5 probes supersede the 023 46.)
+- [x] Cookie probe clean (020 recipe) over `/` + every referenced asset;
       storage-API grep clean; no runtime third parties (everything still
       vendored/same-origin).
-- [ ] Python suite green; `update.py` unaffected (public/data flow
-      unchanged through vite publicDir).
+- [x] Python suite green; `update.py` unaffected (public/data flow
+      unchanged through vite publicDir). (+ hardened: partial-SSR page
+      re-fetch, found by this step's sanity run.)
 - [ ] Live == main after the cutover push: CF deployment entry + live
-      meta.json + content hash verified (#436).
-- [ ] Docs updated: AGENTS.md (commands + verification hierarchy), 027
-      sequencing note, 021 B18 resolution pointer.
-- [ ] Old vanilla app removed (public/index.html, public/app.js) — no
+      meta.json + content hash verified (#436). (Pending the push.)
+- [x] Docs updated: AGENTS.md (commands + verification hierarchy), 027
+      sequencing note, 021 B18 resolution pointer. (021 pointer pre-dates
+      this step; 027 note landed in step 5.)
+- [x] Old vanilla app removed (public/index.html, public/app.js) — no
       dead compatibility shims.

@@ -6,9 +6,9 @@
 <title>Arena Pareto — quality vs price</title>
 <meta name="description" content="LMArena frontier models ranked by quality (Elo) against OpenRouter pricing, with the Pareto frontier highlighted.">
 <style>
-  /* Global page CSS. Everything else (panels, drawer, of-panel) moves to its
-     component as the port advances (028 steps 2-4); public/index.html stays
-     the live site until the cutover step. */
+  /* Global page CSS. Everything else (panels, drawer, of-panel) lives in its
+     component's scoped styles (028 steps 2-4). The built dist/index.html
+     (vite) serves this file; the repo root index.html is the vite entry. */
   /* Inter self-hosted (plan 019, D1'). Provenance: variable font (wght 100-900),
      latin subset, fetched 2026-09-17 from
      https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap
