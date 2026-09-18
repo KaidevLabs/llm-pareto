@@ -144,12 +144,14 @@ class TestValidateProviderLayer(unittest.TestCase):
         with self.assertRaises(SystemExit):
             update.validate_provider_layer(layer, detail)
 
-    def test_zero_throughput_percentile_dies(self):
+    def test_zero_throughput_percentile_passes(self):
+        # relocated 2026-09-18: a zero t/s percentile is upstream junk on a
+        # single endpoint — build_provider_layer now drops that endpoint's
+        # stats (and counts it) instead of the validator dying the run
         bad = stats(p50_throughput=0)
         detail = [row("a/b", api=1, page=1, joined=1, entries=1, with_stats=1)]
         layer = {"a/b": [entry(stats=bad)]}
-        with self.assertRaises(SystemExit):
-            update.validate_provider_layer(layer, detail)
+        update.validate_provider_layer(layer, detail)
 
     def test_prompt_price_not_positive_dies(self):
         detail = [row("a/b", api=1, page=1, joined=1, entries=1, with_stats=1)]

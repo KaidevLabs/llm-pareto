@@ -672,6 +672,7 @@ def build_provider_layer(raw_layers):
         "duplicates_merged": 0,
         "entries": 0,
         "entries_with_stats": 0,
+        "stats_dropped": 0,
         "models_detail": [],
         "join_misses": [],
         "providers_distinct": 0,
@@ -683,8 +684,23 @@ def build_provider_layer(raw_layers):
         merged, n_merged = merge_duplicate_endpoints(api_eps)
         entries, unjoined, n_joined = join_provider_layers(merged, page_eps)
         all_entries = entries + unjoined
+        n_stats = 0
+        for e in all_entries:
+            s = e.get("stats")
+            if isinstance(s, dict) and any(
+                s.get(f"p{q}_throughput") == 0 for q in (50, 75, 90, 95, 99)
+            ):
+                # a 0 t/s percentile is upstream junk (a zero-throughput
+                # request batch in the provider's stats window — observed
+                # on DeepInfra/llama-3.1-70b, 2026-09-18): drop the
+                # endpoint's stats, keep the entry, count the drop. The
+                # coverage floors below stay the systemic-drift tripwire;
+                # the front end's speedOf already ignores such endpoints.
+                e["stats"] = None
+                rep["stats_dropped"] += 1
+            if e.get("stats") is not None:
+                n_stats += 1
         layer[or_id] = all_entries
-        n_stats = sum(1 for e in all_entries if e["stats"] is not None)
         rep["models"] += 1
         rep["api_endpoints"] += len(api_eps)
         rep["page_endpoints"] += len(page_eps)
@@ -772,11 +788,6 @@ def validate_provider_layer(layer, detail):
                             f"provider: {or_id}: {e.get('provider')}: "
                             f"{metric} percentiles not monotonic: {present}"
                         )
-                    if metric == "throughput" and any(v == 0 for v in present):
-                        die(
-                            f"provider: {or_id}: {e.get('provider')}: "
-                            f"throughput percentile is 0: {present}"
-                        )
             price = (e.get("pricing") or {}).get("prompt")
             if price is not None and float(price) <= 0:
                 die(
@@ -809,6 +820,11 @@ def provider_report_lines(rep):
     if len(rep["join_misses"]) > 10:
         lines.append(f"    … and {len(rep['join_misses']) - 10} more")
     lines.append(f"  duplicates merged: {rep['duplicates_merged']}")
+    if rep.get("stats_dropped"):
+        lines.append(
+            f"  stats dropped (zero t/s percentile): {rep['stats_dropped']} "
+            "endpoints"
+        )
     lines.append(
         "  top providers by endpoints: "
         + ", ".join(f"{name} ({c})" for name, c in rep["top_providers"])

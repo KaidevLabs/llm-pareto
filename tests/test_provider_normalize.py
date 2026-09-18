@@ -207,6 +207,35 @@ class TestMergeDuplicateEndpoints(unittest.TestCase):
         self.assertEqual(n, 0)
 
 
+class TestBuildProviderLayer(unittest.TestCase):
+    def _raw(self, eps):
+        return json.dumps({"data": {"endpoints": eps}})
+
+    def test_zero_throughput_stats_dropped_and_counted(self):
+        # a 0 t/s percentile is upstream junk (DeepInfra llama-3.1-70b,
+        # 2026-09-18): the endpoint's stats are dropped, the entry stays —
+        # the run does NOT die (validator check removed same day)
+        raw = self._raw([api_ep("DeepInfra", "deepinfra")])
+        page = [
+            page_ep("DeepInfra", "deepinfra", "deepinfra",
+                    stats=stats(p50_throughput=0))
+        ]
+        layer, rep = update.build_provider_layer([("t/m", raw, "", page)])
+        self.assertIsNone(layer["t/m"][0]["stats"])
+        self.assertEqual(rep["stats_dropped"], 1)
+        self.assertEqual(rep["entries_with_stats"], 0)
+
+    def test_healthy_stats_survive_build(self):
+        raw = self._raw([api_ep("DeepInfra", "deepinfra")])
+        page = [
+            page_ep("DeepInfra", "deepinfra", "deepinfra", stats=stats())
+        ]
+        layer, rep = update.build_provider_layer([("t/m", raw, "", page)])
+        self.assertIsNotNone(layer["t/m"][0]["stats"])
+        self.assertEqual(rep["stats_dropped"], 0)
+        self.assertEqual(rep["entries_with_stats"], 1)
+
+
 class TestJoinProviderLayers(unittest.TestCase):
     def test_joins_via_info_slug_when_provider_slug_differs(self):
         api = [api_ep("StreamLake", "streamlake")]
