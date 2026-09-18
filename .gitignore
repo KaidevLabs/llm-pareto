@@ -4,3 +4,5 @@ __pycache__/
 .cortexkit/
 .tmp/
 .wrangler/
+node_modules/
+dist/
