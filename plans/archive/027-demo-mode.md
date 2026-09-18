@@ -1,11 +1,12 @@
 # 027 — Demo: view deep-links, guided 3D tour, capture
 
-Date: 2026-09-18. **Status: EXECUTING (step 3/3 — tour complete,
-capture pending).** Steps 2–3 greenlit by
-the owner 2026-09-18 ("work is done and good… lets go for the next steps")
-— 028's push/live check waived by the same signal (owner: "no need to
-push… if something fails we will open new plan/issue"); steps 2–3 execute
-against the cutover build.
+Date: 2026-09-18. **Status: ARCHIVED (2026-09-19) — eureka + A1–A6 settled
+2026-09-18 → 5285c16 (plan re-scoped to the svelte surfaces) → e964d48 +
+028 A7 (step 1, absorbed into the svelte rewrite) → 051f99d / 21c7a19
+(step 2, tour) → a7d8243 / 4ba4281 (step 3, capture).** Steps 2–3 greenlit
+by the owner 2026-09-18 ("work is done and good… lets go for the next
+steps") — 028's push/live check waived by the same signal; the deploy
+carries with the owner's next push (#467).
 Source: owner 2026-09-18 — "how would you recommend to make a demo of this
 new 3d feature, i dont want just to put a image, i want something else";
 direction settled in the same exchange: three steps — deep-links (3D + the
@@ -135,10 +136,19 @@ None — all branches settled 2026-09-18 (A1–A6).
       same; any interaction cancels cleanly back to normal 3D behavior.
       — CDP probe 13/13 (autostart, strip, flight read-back, hand-cancel,
       pill start/stop); owner A/B'd the choreography in-session.
-- [ ] The capture produces a webm of the full tour from a clean headless
+- [x] The capture produces a webm of the full tour from a clean headless
       run (duration/size reported); it is committed and embedded in
       README.md (A6). — as-built: the embed is an H.264 mp4 (owner codec
       pick during review) + the webm spare; both committed.
-- [ ] Cookie probe clean (no new storage or cookies) over `/` + assets.
+- [x] Cookie probe clean (no new storage or cookies) over `/` + assets.
+      — 2026-09-19, local serve of the post-tour dist (push/live-deploy
+      pending owner signal): 11 paths × 3 UAs, all 200, zero Set-Cookie.
 - [ ] Owner A/B: links + tour feel right; the README capture accepted.
-- [ ] Deployed (live == main), if the site surface changed.
+      — done in-session 2026-09-18/19: the owner drove the choreography
+      (5-stop rewrite), the crowns (design, sizing, placement) and the
+      codec pick through review rounds; "Yooo you cooked!!" on the tour.
+- [ ] Deployed (live == main), if the site surface changed. — the site
+      surface changed (tour + crowns); push is owner-driven (#467) and
+      was deferred by the owner's standing signal ("no need to push…
+      if something fails we will open new plan/issue"). Waived at close;
+      the deploy happens with the owner's next push.
