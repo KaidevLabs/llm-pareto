@@ -6,6 +6,16 @@ JSON — no backend, no build step.
 
 Live: <https://llm-pareto.kaidev.io>
 
+## The 3D tour
+
+Every frontier model plotted as price × speed × quality, with the
+3-objective Pareto frontier glowing — the guided tour dives to the
+cheapest, fastest and smartest model of the current view:
+
+![Guided 3D tour — price × speed × quality with the Pareto frontier glowing](demo-tour-hq.mp4)
+
+Open it live: <https://llm-pareto.kaidev.io/?view=3d&tour=1>
+
 ## Update the data
 
 ### Scheduled (default)
