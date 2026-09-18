@@ -6,6 +6,7 @@
     ensureChart2D,
     renderPanel,
     renderSpeedPanel,
+    render3DPanel,
     resetChart,
   } from "../lib/charts";
   import { boot } from "../lib/data.svelte";
@@ -31,16 +32,23 @@
   // Hidden panels never render — same as live render()'s active-panel rule.
   $effect(() => {
     if (!boot.ready || !el || hidden) return;
-    if (key === "speed") renderSpeedPanel(el);
+    if (key === "3d") render3DPanel(el);
+    else if (key === "speed") renderSpeedPanel(el);
     else renderPanel(el, key);
   });
+
+  const resetTitle = $derived(
+    key === "3d"
+      ? "Reset the camera to the default view"
+      : "Reset both axes to fit"
+  );
 </script>
 
 <section class="panel" id="panel-{key}" class:hidden aria-label={title}>
   <div class="panel-head">
     <h2>{title}</h2>
     <span class="badge" class:hidden={panelStatus[key].badgeHidden}>◈ frontier</span>
-    <Pill title="Reset both axes to fit" onclick={() => resetChart("chart-" + key)}>
+    <Pill title={resetTitle} onclick={() => (key === "3d" ? render3DPanel(el!) : resetChart("chart-" + key))}>
       ⤢ fit
     </Pill>
     <span class="count">{panelStatus[key].count}</span>

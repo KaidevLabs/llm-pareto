@@ -7,11 +7,12 @@ export interface PanelStatus {
   badgeHidden: boolean;
 }
 
-export type PanelKey = "blend" | "in" | "out" | "speed";
+export type PanelKey = "blend" | "in" | "out" | "speed" | "3d";
 
 export const panelStatus = $state<Record<PanelKey, PanelStatus>>({
   blend: { count: "", badgeHidden: false },
   in: { count: "", badgeHidden: false },
   out: { count: "", badgeHidden: false },
   speed: { count: "", badgeHidden: false },
+  "3d": { count: "", badgeHidden: false },
 });

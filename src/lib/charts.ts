@@ -13,9 +13,10 @@ import { withAlpha, FRONTIER, OVERRIDE } from "./colors";
 import { orgOf, displayName } from "./family";
 import { fmtPrice, fmtVotes, fmtToks } from "./format";
 import { filterRows, searchHit, blendedPrice } from "./filters";
-import { paretoFrontier, fitLog, fitLinear } from "./pareto";
+import { paretoFrontier, paretoFrontier3D, fitLog, fitLinear, fitDecade } from "./pareto";
 import { speedOf } from "./speed";
 import type { Speed } from "./speed";
+import { loadEchartsGL } from "./gl";
 import { ui } from "./state.svelte";
 import { data, logoFor } from "./data.svelte";
 import { store } from "./endpoints.svelte";
@@ -638,7 +639,7 @@ export function resetChart(id: string) {
   if (c) resetZoom(c, id);
 }
 
-export function renderPanel(el: HTMLElement, panelKey: Exclude<PanelKey, "speed">) {
+export function renderPanel(el: HTMLElement, panelKey: Exclude<PanelKey, "speed" | "3d">) {
   const id = "chart-" + panelKey;
   const isBlend = panelKey === "blend";
   const priceKey = panelKey === "in" ? "price_in_per_m" : "price_out_per_m";
@@ -772,4 +773,225 @@ export function resizeVisibleCharts() {
   for (const id of Object.keys(charts)) {
     if (charts[id].getDom().offsetParent !== null) charts[id].resize();
   }
+}
+
+// ---- 3D showcase (023 D7–D9) --------------------------------------------
+// A rotatable WebGL scene: x = blended price (log10), depth = output speed
+// (log10), up = arena Elo — the 2D chart's axes plus speed. Values are
+// pre-transformed (log10 on linear 3D axes), so whole-decade ticks read as
+// $1 / $10 / $100. The frontier is the 3-objective non-dominated set,
+// rendered as glowing spheres (a 3D Pareto set is a surface, not a chain —
+// D8). echarts-gl's viewControl owns the camera (drag rotate / wheel zoom /
+// right-drag pan, slow auto-rotate after idle) — the 2D pan/zoom layer is
+// NOT bound here (D9). Filtered models missing any axis are excluded
+// (D4 semantics). Panel chrome (badge/count) travels through panelStatus;
+// the stale-state guard (`if (!ui.three3d) return`) covers leaving while
+// the lazy GL script loads.
+
+export function render3DPanel(el: HTMLElement) {
+  const id = "chart-3d";
+  const status = panelStatus["3d"];
+
+  if (!store.done) {
+    status.count = "loading speed data…";
+    // the calling effect reads store.done and re-runs on settle
+    return;
+  }
+
+  // Scene prep runs SYNCHRONOUSLY so every reactive read (frontier, ratio,
+  // search, families, endpoints, rows) is tracked by the calling effect —
+  // reads inside the GL-load callback would be invisible to it.
+  const scene = build3DScene(id, status);
+  loadEchartsGL().then((glOk) => {
+    if (!ui.three3d) return; // the user left while loading
+    if (!glOk) {
+      status.count = "3D unavailable (failed to load echarts-gl)";
+      status.badgeHidden = true;
+      return;
+    }
+    if (!charts[id]) {
+      // echarts-gl must register BEFORE the chart instance is created
+      // (#468); the cached promise makes this free after the first entry.
+      charts[id] = echarts.init(el, null, { renderer: "canvas" });
+      charts[id].on("click", (p: any) => onChartClick(id, p));
+      bindDrawerClose(charts[id]);
+    }
+    charts[id].setOption(scene.option, true);
+  });
+}
+
+function build3DScene(id: string, status: { count: string; badgeHidden: boolean }): { option: any } {
+  const pts: Pt[] = [];
+  let noAxis = 0;
+  let noSpeed = 0;
+  for (const d of filterRows(data.rows, ui)) {
+    const price = blendedPrice(d, ui.ratio);
+    const s = speedOf(d.or_id, store.data);
+    if (d.arena_elo == null || price == null || price <= 0) {
+      noAxis++;
+      continue;
+    }
+    if (!s) {
+      noSpeed++;
+      continue;
+    }
+    pts.push({
+      value: [Math.log10(price), Math.log10(s.toks), d.arena_elo!],
+      d,
+      spd: s,
+    });
+  }
+  const frontier = ui.frontier ? paretoFrontier3D(pts) : [];
+  const frontierSet = new Set(frontier.map((p) => p.d));
+  FRONTIERS[id] = frontier;
+
+  // Axes fit over ALL joined data, not the filtered set (018 A1/A2).
+  const logPrices: number[] = [];
+  const logSpeeds: number[] = [];
+  const elos: number[] = [];
+  for (const d of data.rows) {
+    const price = blendedPrice(d, ui.ratio);
+    const s = speedOf(d.or_id, store.data);
+    if (d.arena_elo == null || price == null || price <= 0 || !s) continue;
+    logPrices.push(Math.log10(price));
+    logSpeeds.push(Math.log10(s.toks));
+    elos.push(d.arena_elo!);
+  }
+  const bounds = {
+    x: fitDecade(logPrices) || undefined,
+    y: fitDecade(logSpeeds) || undefined,
+    z: fitLinear(elos) || undefined,
+  };
+
+  const orgCol = (p: Pt) => data.orgColor[orgOf(p.d)] || "#64748b";
+  const ov = (p: Pt) => p.d.match_method === "override";
+  const sphere = (p: Pt, alpha: number) => ({
+    value: p.value,
+    d: p.d,
+    spd: p.spd,
+    itemStyle: {
+      color: withAlpha(orgCol(p), alpha),
+      borderColor: ov(p) ? OVERRIDE : "rgba(0,0,0,0)",
+      borderWidth: ov(p) ? 2 : 0,
+    },
+  });
+  const mat = (p: Pt) => sphere(p, !searchHit(p.d, ui.search) && ui.search ? 0.25 : 0.75);
+
+  const series = [];
+  if (frontier.length) {
+    // the glow (D8): a larger, translucent twin sphere behind each
+    // frontier point — WebGL has no shadowBlur, so the halo is geometry
+    series.push({
+      name: "models-halo",
+      type: "scatter3D",
+      data: frontier.map((p) => ({
+        value: p.value,
+        d: p.d,
+        spd: p.spd,
+        itemStyle: { color: orgCol(p), opacity: 0.16 },
+      })),
+      symbolSize: 22,
+    });
+  }
+  series.push({
+    name: "models",
+    type: "scatter3D",
+    data: pts.map((p) => (frontierSet.has(p.d) ? sphere(p, 1) : mat(p))),
+    symbolSize: (val: any, params: any) =>
+      frontierSet.has(params.data.d) ? 12 : 7,
+    label: {
+      show: true,
+      // sparse (D9): frontier points only — non-frontier labels format to
+      // nothing; hover identifies the rest via the tooltip
+      formatter: (p: any) =>
+        frontierSet.has(p.data.d)
+          ? (displayName(p.data.d) || orgOf(p.data.d)) +
+            " (" + Math.round(p.data.d.arena_elo) + ")"
+          : "",
+      distance: 2,
+      textStyle: { color: "#e2e8f0", fontSize: 9, fontWeight: 600 },
+    },
+  });
+
+  const option = {
+      backgroundColor: "transparent",
+      animationDuration: 450,
+      animationDurationUpdate: 0,
+      tooltip: {
+        backgroundColor: "rgba(10,14,23,0.94)",
+        borderColor: "rgba(148,163,184,0.25)",
+        borderWidth: 1,
+        padding: [10, 12],
+        textStyle: { color: "#e2e8f0", fontSize: 12 },
+        confine: true,
+        formatter: (p: any) =>
+          p.seriesName === "models" || p.seriesName === "models-halo"
+            ? (frontierSet.has(p.data.d)
+                ? '<div style="font-weight:700;margin-bottom:4px">frontier</div>'
+                : "") +
+              tooltipHTML(p.data)
+            : "",
+      },
+      grid3D: {
+        boxWidth: 150,
+        boxDepth: 120,
+        boxHeight: 110,
+        viewControl: {
+          // slow auto-rotate only after 4s idle (D9): the scene is alive
+          // while untouched, never fights the user's hand
+          autoRotate: false,
+          autoRotateAfterStill: 4,
+          autoRotateSpeed: 0.5,
+          distance: 230,
+          minDistance: 60,
+          maxDistance: 500,
+        },
+        light: {
+          main: { intensity: 1.4, shadow: false },
+          ambient: { intensity: 0.5 },
+        },
+        axisLine: { lineStyle: { color: "rgba(148,163,184,0.35)" } },
+        splitLine: { lineStyle: { color: "rgba(148,163,184,0.07)" } },
+      },
+      xAxis3D: {
+        type: "value",
+        name: "price $/M (log)",
+        ...(bounds.x || {}),
+        nameTextStyle: { color: "#8b98ab", fontSize: 10 },
+        axisLabel: {
+          color: "#8b98ab",
+          fontSize: 10,
+          formatter: (v: number) =>
+            v >= 1 ? "$" + Math.round(Math.pow(10, v)) : "$" + Math.pow(10, v).toFixed(2),
+        },
+      },
+      yAxis3D: {
+        type: "value",
+        name: "output tok/s (log)",
+        ...(bounds.y || {}),
+        nameTextStyle: { color: "#8b98ab", fontSize: 10 },
+        axisLabel: {
+          color: "#8b98ab",
+          fontSize: 10,
+          formatter: (v: number) => String(Math.round(Math.pow(10, v))),
+        },
+      },
+      zAxis3D: {
+        type: "value",
+        name: "Arena Elo",
+        ...(bounds.z || {}),
+        nameTextStyle: { color: "#8b98ab", fontSize: 10 },
+        axisLabel: { color: "#8b98ab", fontSize: 10 },
+      },
+      series,
+  };
+
+  status.badgeHidden = !ui.frontier || frontier.length === 0;
+  status.count =
+    pts.length + " models" +
+    (frontier.length ? " · " + frontier.length + " on the frontier" : "") +
+    (noSpeed ? " · " + noSpeed + " without speed data hidden" : "") +
+    (noAxis ? " · " + noAxis + " skipped (no price/elo)" : "");
+
+  return { option };
 }

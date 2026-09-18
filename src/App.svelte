@@ -17,7 +17,6 @@
   import SearchBox from "./components/SearchBox.svelte";
   import OfPanel from "./components/OfPanel.svelte";
   import Details from "./components/Details.svelte";
-
   let echartsFatal = $state(false);
 
   async function bootOnce() {
@@ -87,6 +86,13 @@
   />
   <OfPanel />
   <SearchBox />
+  <Pill
+    on={ui.three3d}
+    title="3D showcase: price × speed × Elo — drag rotates, wheel zooms, right-drag pans"
+    onclick={() => (ui.three3d = !ui.three3d)}
+  >
+    <span class="diamond">◈</span> 3D
+  </Pill>
   <Pill on={ui.frontier} title="Pareto frontier on/off"
     onclick={() => (ui.frontier = !ui.frontier)}>
     <span class="diamond">◈</span> Pareto frontier
@@ -135,6 +141,13 @@
         <div class="legend-row">
           <span><span class="sw" style="background:#34d399"></span>pareto frontier — nothing beats these on both quality and speed</span>
           <span><span class="sw ov-sw"></span>manual override — identity fixed by owner decision, price final</span>
+        </div>
+      {/snippet}
+    </Panel>
+    <Panel key="3d" title="3D frontier" hidden={!ui.three3d}>
+      {#snippet legend()}
+        <div class="legend-row">
+          <span><span class="sw" style="background:#34d399"></span>glow — the 3-objective Pareto frontier: nothing beats these on price, speed <em>and</em> quality</span>
         </div>
       {/snippet}
     </Panel>
