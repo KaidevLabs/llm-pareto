@@ -1,6 +1,6 @@
 # 028 — Svelte 5 rewrite of the explorer front end
 
-Date: 2026-09-18. **Status: EXECUTING (step 5/6).**
+Date: 2026-09-18. **Status: EXECUTING (step 6/6).**
 Source: `plans/021-exploration-backlog.md` B18 (frontend framework?), rounds
 1–2, and the owner's go ("Then lets go", 2026-09-18). The round-2 findings
 are this plan's evidence base — measured, not re-derived here: line budget
@@ -181,6 +181,29 @@ live site never serves a broken state during the window.
    A5. 027 doc gains its sequencing note (step 1 executed here, steps 2–3
    follow in-framework). Verify: serializer unit tests + owner A/B links.
    Commit: `chart: state deep-links (027 step 1)`.
+   ✅ COMPLETE (committed, 2026-09-18).
+   **As-built:** `src/lib/urlstate.ts` — pure serializer, `read(search)` →
+   partial patch / `write(ui)` → query, defaults omitted (bare URL
+   canonical), unknown values dropped, fam keeps only "org|family" leaves,
+   ratio rounded to 1dp — round-trip unit-tested (13 tests). Wired via
+   `src/lib/history.svelte.ts`: seedFromURL before first render;
+   replaceState on every change; pushState one-entry-per-settled-change
+   (discrete toggles push immediately; continuous inputs push at burst
+   open and replace within the burst, trailing debounce 600ms); popstate
+   applies symmetrically with the apply-guard + pending-burst discard.
+   **Bug the probe caught:** the first cut did replace+push on EVERY
+   change — each toggle created a duplicate pair and the replace mangled
+   the previous settled entry, so back() landed on a duplicate (diag:
+   popstate fired, URL unchanged). Restructured to push-at-burst-open /
+   replace-mid-burst. 027 doc gained its sequencing note (A7).
+   Verify: vitest 65/65, tsc clean, build clean, python 157 OK, storage
+   grep clean, CDP 23/23 on the dev build (deep-link restores full screen
+   incl. 3D + chart + counts + badge; address bar tracks a mode click;
+   3-keystroke burst = one entry `q=gpt+5`; popstate walks
+   frontier-restore and back-to-bare; zero console errors). Probe notes:
+   the search count is matches over the VISIBLE set (fam+q intersecting to
+   0 shows 0/0 — correct), and module state reads in CDP go through a
+   dynamic import promise (bindings aren't window globals).
 6. **Cutover + close** — (a) verification first: CDP 46 assertions against
    a static serve of `dist/`; cookie probe per the 020 recipe (cookie-jar
    curl over `/` + every asset the HTML references, desktop + curl + mobile

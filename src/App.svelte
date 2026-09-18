@@ -9,6 +9,7 @@
   import { buildBadges } from "./lib/badges";
   import { ensureEndpoints } from "./lib/endpoints.svelte";
   import { ui, type Mode } from "./lib/state.svelte";
+  import { seedFromURL, initHistory, notifyChanged } from "./lib/history.svelte";
   import { NOTE_PRICE, NOTE_SPEED, NOTE_3D, resizeVisibleCharts } from "./lib/charts";
   import Panel from "./components/Panel.svelte";
   import Seg from "./components/Seg.svelte";
@@ -37,6 +38,25 @@
   // boot once on mount (no reactive reads in bootOnce's sync path)
   $effect(() => {
     void bootOnce();
+  });
+
+  // URL state (027 step 1): seed before the first render, then track every
+  // change — replaceState immediately, pushState on settled changes
+  // (discrete toggles push at once; continuous inputs debounced in the
+  // history module). The reactive reads happen in the effect's synchronous
+  // phase (028 step 3's lesson).
+  seedFromURL();
+  initHistory();
+  $effect(() => {
+    void ui.mode;
+    void ui.three3d;
+    void ui.vision;
+    void ui.spread;
+    void ui.frontier;
+    void ui.search;
+    void ui.ratio;
+    void [...ui.families];
+    notifyChanged();
   });
 
   // live render()'s post-render resize loop: visible charts follow the DOM
