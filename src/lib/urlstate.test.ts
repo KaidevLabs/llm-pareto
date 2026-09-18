@@ -24,6 +24,10 @@ describe("read", () => {
     expect(read("?nonsense=1")).toEqual({});
   });
 
+  it("tour is not state: read drops it (entry action, App's boot concern)", () => {
+    expect(read("?view=3d&tour=1")).toEqual({ three3d: true });
+  });
+
   it("ratio must be a finite number in [0,10]", () => {
     expect(read("?ratio=7").ratio).toBe(7);
     expect(read("?ratio=-1").ratio).toBeUndefined();

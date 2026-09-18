@@ -11,6 +11,7 @@
   import { ui, type Mode } from "./lib/state.svelte";
   import { seedFromURL, initHistory, notifyChanged } from "./lib/history.svelte";
   import { NOTE_PRICE, NOTE_SPEED, NOTE_3D, resizeVisibleCharts } from "./lib/charts";
+  import { setAutotour } from "./lib/tourflag.svelte";
   import Panel from "./components/Panel.svelte";
   import Seg from "./components/Seg.svelte";
   import Pill from "./components/Pill.svelte";
@@ -39,6 +40,21 @@
   $effect(() => {
     void bootOnce();
   });
+
+  // `tour=1` deep-link (027 A3): an entry ACTION, not state — read once,
+  // stripped from the URL immediately (before initHistory's seed below, so
+  // the first history entry is clean and popstate never replays the tour,
+  // A5). The autostart flag is consumed by the 3D Panel once its chart
+  // exists; entering 3D happens through ui so the URL/view machinery owns it.
+  let autotour = false;
+  if (new URLSearchParams(location.search).get("tour")) {
+    autotour = true;
+    ui.three3d = true;
+    const clean = new URL(location.href);
+    clean.searchParams.delete("tour");
+    history.replaceState(null, "", clean.pathname + clean.search);
+  }
+  setAutotour(autotour);
 
   // URL state (027 step 1): seed before the first render, then track every
   // change — replaceState immediately, pushState on settled changes

@@ -1,12 +1,10 @@
 # 027 — Demo: view deep-links, guided 3D tour, capture
 
-Date: 2026-09-18. **Status: PROPOSED — eureka complete (A1–A6 settled);
-step 1 executed via 028 (A7), steps 2–3 awaiting owner review and 028's
-close.** Sequencing resolved per the owner's pick (option 2, 2026-09-18):
-the B18 framework exploration ran first — and concluded: **adopt Svelte 5**
-(021 B18 SETTLED; plan 028 EXECUTING 6/6, cutover commit made, push/live
-check pending owner signal) — with 027 step 1 absorbed into the rewrite
-(028 A7) rather than the plan waiting.
+Date: 2026-09-18. **Status: EXECUTING (step 2/3).** Steps 2–3 greenlit by
+the owner 2026-09-18 ("work is done and good… lets go for the next steps")
+— 028's push/live check waived by the same signal (owner: "no need to
+push… if something fails we will open new plan/issue"); steps 2–3 execute
+against the cutover build.
 Source: owner 2026-09-18 — "how would you recommend to make a demo of this
 new 3d feature, i dont want just to put a image, i want something else";
 direction settled in the same exchange: three steps — deep-links (3D + the

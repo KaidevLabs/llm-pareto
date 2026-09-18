@@ -17,6 +17,8 @@ import { paretoFrontier, paretoFrontier3D, fitLog, fitLinear, fitDecade } from "
 import { speedOf } from "./speed";
 import type { Speed } from "./speed";
 import { loadEchartsGL } from "./gl";
+import { startTour, rafTicker, type Waypoint } from "./tour";
+import { takeAutotour } from "./tourflag.svelte";
 import { ui } from "./state.svelte";
 import { data, logoFor } from "./data.svelte";
 import { store } from "./endpoints.svelte";
@@ -38,6 +40,9 @@ const ZOOM: Record<string, { x?: { start: number; end: number }; y?: { start: nu
 // no row references, so line clicks resolve through this stash — refreshed
 // on every render, same lifetime as the chart instances themselves.
 const FRONTIERS: Record<string, Pt[]> = {};
+// Per-panel crown points (027 step 2): the crowns series carries the row
+// refs, this stash backs click resolution + the tour's naming.
+const CROWNS: Record<string, Array<{ kind: "cheap" | "fast" | "elo"; label: string; p: Pt; center: [number, number, number] }>> = {};
 
 export const X_SPEED = "output tok/s (p50, 30-min window, log)";
 export const NOTE_PRICE = "wheel: zoom price + Elo (anchored at cursor) · drag: pan (both axes) · double-click or ⤢ fit: reset to full view · click a bubble or the frontier: model details · x: price $/M tokens, log scale (cheaper → left) — General blends in/out at the slider's ratio · y: LMArena Elo (higher = better) · color: organization · bar behind a point: its real price spread (blue = input → amber = output) · top-left = best of both";
@@ -493,6 +498,8 @@ function onChartClick(id: string, p: any) {
     const fp = (FRONTIERS[id] || [])[p.dataIndex];
     if (!fp) return;
     ui.selected = fp.d;
+  } else if (p.seriesName === "crowns" || p.seriesName === "crowns-glyph" || p.seriesName === "crowns-name") {
+    ui.selected = p.data.d;
   } else {
     if (!ui.selected) return;
     ui.selected = null;
@@ -791,7 +798,6 @@ export function resizeVisibleCharts() {
 export function render3DPanel(el: HTMLElement) {
   const id = "chart-3d";
   const status = panelStatus["3d"];
-
   if (!store.done) {
     status.count = "loading speed data…";
     // the calling effect reads store.done and re-runs on settle
@@ -817,7 +823,126 @@ export function render3DPanel(el: HTMLElement) {
       bindDrawerClose(charts[id]);
     }
     charts[id].setOption(scene.option, true);
+    // `tour=1` autostart (027 A3): the flag is consumed HERE — the first
+    // moment the chart instance actually exists (the Panel's effect runs
+    // before the async GL load, so an earlier consume would race it).
+    if (takeAutotour()) startTour3D();
   });
+}
+
+// ---- guided tour (027 step 2) ---------------------------------------------
+// The tour drives the camera through chart.setOption merge pushes (tour.ts);
+// the scene's own render path is untouched. Any real pointer/wheel gesture
+// on the chart host cancels the flight (A2's "the hand wins" rule) — bound
+// once per tour start on the instance's zr layer, which also sees the 3D
+// rotate drags. While the flight runs it pushes viewControl every frame,
+// which keeps resetting echarts-gl's autoRotate still-timer — the idle
+// rotation never fights the tour (verified by probe 2026-09-18).
+//
+// The Panel registers caption/state callbacks (registerTourUi); the tour's
+// lifecycle lives here so the pill click and the `tour=1` autostart take
+// the exact same path.
+
+let tourStop: (() => void) | null = null;
+let tourUi: { onCaption(s: string): void; onState(running: boolean): void } | null = null;
+
+export function registerTourUi(h: { onCaption(s: string): void; onState(running: boolean): void }) {
+  tourUi = h;
+}
+
+export function tourRunning(): boolean {
+  return tourStop !== null;
+}
+
+// Start the guided tour on the chart-3d instance. Returns false when the
+// 3D chart isn't ready (GL still loading / already touring).
+export function startTour3D(): boolean {
+  const chart = charts["chart-3d"];
+  if (!chart || tourStop) return false;
+  const tour = startTour(chart, {
+    waypoints: tourScript(),
+    ticker: rafTicker(),
+    segmentMs: 2600, // slower glide, longer holds (owner A/B)
+    onCaption: (s) => tourUi?.onCaption(s),
+    onDone: () => teardown(),
+  });
+  const teardown = () => {
+    if (!tourStop) return;
+    tourStop = null;
+    zrOff(chart, cancel);
+    tour.cancel();
+    tourUi?.onState(false);
+    tourUi?.onCaption("");
+  };
+  const cancel = () => teardown();
+  chart.getZr().on("mousedown", cancel);
+  chart.getZr().on("wheel", cancel);
+  chart.getZr().on("touchstart", cancel);
+  tourStop = teardown;
+  tourUi?.onState(true);
+  return true;
+}
+
+function zrOff(chart: any, fn: () => void) {
+  chart.getZr().off("mousedown", fn);
+  chart.getZr().off("wheel", fn);
+  chart.getZr().off("touchstart", fn);
+}
+
+export function stopTour3D() {
+  if (tourStop) tourStop();
+}
+
+// The tour script (A2: owner edits the copy at review). Camera choreography
+// per the owner's 2026-09-18 A/B: start wide → full lateral (Elo vs price
+// plane, alpha ~0) diving to the cheapest → full top-down (speed vs price
+// plane, alpha ~90) diving to the fastest → lateral again diving to the
+// smartest → finish at a 45° angle framing the whole cloud. Each stop's
+// camera CENTER rides on the crown's actual point (viewControl.center,
+// verified in the echarts-gl 2.1.0 minified source: merge setOption
+// handles center); the finale recenters on the box midpoint. Fine-tuned
+// by owner A/B. Captions name the crowned models live (the `{crown}`
+// slot expands at startTour time from the scene's CROWNS).
+type CenterSlot = "cheap" | "fast" | "elo" | "mid";
+interface TourStop extends Omit<Waypoint, "center"> {
+  centerSlot: CenterSlot;
+}
+const TOUR_WAYPOINTS: TourStop[] = [
+  { alpha: 20, beta: 25, distance: 330, centerSlot: "mid", caption: "every frontier model — price, speed and quality at once", hold: 3200 },
+  { alpha: 2, beta: 0, distance: 85, centerSlot: "cheap", caption: "the price floor: {crown.cheap}", hold: 3600 },
+  { alpha: 88, beta: 0, distance: 85, centerSlot: "fast", caption: "the speed ceiling: {crown.fast}", hold: 3600 },
+  { alpha: 2, beta: 0, distance: 85, centerSlot: "elo", caption: "the intelligence peak: {crown.elo}", hold: 3600 },
+  { alpha: 35, beta: 45, distance: 150, centerSlot: "mid", caption: "the glow — the 3-objective Pareto frontier", hold: 4000 },
+];
+
+// The box center in world units is the origin — the default camera target;
+// the finale returns to it.
+const SCENE_MID: [number, number, number] = [0, 0, 0];
+
+// Resolve the waypoints' symbolic center slots + {crown} caption slots
+// against the live scene (called at tour start; CROWNS is populated).
+function tourScript(): Waypoint[] {
+  const resolve = (slot: CenterSlot): [number, number, number] => {
+    if (slot === "mid") return SCENE_MID;
+    const rec = (CROWNS["chart-3d"] || []).find((c) => c.kind === slot);
+    return rec ? rec.center : SCENE_MID;
+  };
+  const crownName = (kind: "cheap" | "fast" | "elo"): string => {
+    const rec = (CROWNS["chart-3d"] || []).find((c) => c.kind === kind);
+    if (!rec) return "";
+    return (displayName(rec.p.d) || orgOf(rec.p.d)) + " — " + rec.label;
+  };
+  return TOUR_WAYPOINTS.map((w) => ({
+    alpha: w.alpha,
+    beta: w.beta,
+    distance: w.distance,
+    center: resolve(w.centerSlot),
+    caption: w.caption
+      .replace("{crown.cheap}", crownName("cheap"))
+      .replace("{crown.fast}", crownName("fast"))
+      .replace("{crown.elo}", crownName("elo")),
+    hold: w.hold,
+  }));
 }
 
 function build3DScene(id: string, status: { count: string; badgeHidden: boolean }): { option: any } {
@@ -845,6 +970,31 @@ function build3DScene(id: string, status: { count: string; badgeHidden: boolean 
   const frontierSet = new Set(frontier.map((p) => p.d));
   FRONTIERS[id] = frontier;
 
+  // The crowns (027 step 2, owner pick "3D crowns + tour naming"): the
+  // cheapest / fastest / highest-Elo model of the PLOTTED set. One model
+  // may hold several crowns — one crown marker per CROWN, not per model.
+  const crownSpec: Array<{ kind: "cheap" | "fast" | "elo"; label: string; color: string }> = [
+    { kind: "cheap", label: "$ champion", color: "#f59e0b" },
+    { kind: "fast", label: "speed champion", color: "#60a5fa" },
+    { kind: "elo", label: "Elo king", color: "#34d399" },
+  ];
+  const best = (k: "cheap" | "fast" | "elo"): Pt | null => {
+    let b: Pt | null = null;
+    for (const p of pts) {
+      if (
+        !b ||
+        (k === "cheap" && p.value[0] < b.value[0]) ||
+        (k === "fast" && p.value[1] > b.value[1]) ||
+        (k === "elo" && p.value[2] > b.value[2])
+      )
+        b = p;
+    }
+    return b;
+  };
+  const crowns = crownSpec
+    .map((c) => ({ ...c, p: best(c.kind) }))
+    .filter((c) => c.p !== null) as Array<{ kind: "cheap" | "fast" | "elo"; label: string; color: string; p: Pt }>;
+
   // Axes fit over ALL joined data, not the filtered set (018 A1/A2).
   const logPrices: number[] = [];
   const logSpeeds: number[] = [];
@@ -862,6 +1012,27 @@ function build3DScene(id: string, status: { count: string; badgeHidden: boolean 
     y: fitDecade(logSpeeds) || undefined,
     z: fitLinear(elos) || undefined,
   };
+  // viewControl.center is in GL WORLD units, origin at the box center —
+  // grid3DCreator sets the axis coord extents to x [-W/2,+W/2], depth
+  // y [+D/2,-D/2] (REVERSED — faster models sit at negative depth),
+  // height z [-H/2,+H/2]; dataToCoord maps normalized data linearly into
+  // the extent. Box: 150 × 120 × 110 (the grid3D block below).
+  const toWorld = (dx: number, dy: number, dz: number): [number, number, number] => {
+    const bx = bounds.x!;
+    const by = bounds.y!;
+    const bz = bounds.z!;
+    return [
+      ((dx - bx.min) / (bx.max - bx.min)) * 150 - 75,
+      ((dz - bz.min) / (bz.max - bz.min)) * 110 - 55,
+      60 - ((dy - by.min) / (by.max - by.min)) * 120,
+    ];
+  };
+  CROWNS[id] = crowns.map(({ kind, label, p }) => ({
+    kind,
+    label,
+    p,
+    center: toWorld(p.value[0], p.value[1], p.value[2]),
+  }));
 
   const orgCol = (p: Pt) => data.orgColor[orgOf(p.d)] || "#64748b";
   const ov = (p: Pt) => p.d.match_method === "override";
@@ -913,6 +1084,63 @@ function build3DScene(id: string, status: { count: string; badgeHidden: boolean 
     },
   });
 
+  if (crowns.length) {
+    // Crown chrome per crowned point, three plain-label series (GL labels
+    // are plain text only). GL lessons (found 2026-09-18): symbols are
+    // sphere MESHES — borderColor/borderWidth don't render, so the marker
+    // is a translucent solid sphere (the #468 halo pattern); and
+    // `opacity: 0` culls the point's LABEL too — label carriers must keep
+    // default opacity with a transparent color.
+    series.push({
+      name: "crowns",
+      type: "scatter3D",
+      data: crowns.map((c) => ({
+        value: c.p.value,
+        d: c.p.d,
+        spd: c.p.spd,
+        crown: c.label,
+        itemStyle: { color: withAlpha(c.color, 0.3) },
+      })),
+      symbolSize: 26,
+    });
+    series.push({
+      name: "crowns-glyph",
+      type: "scatter3D",
+      data: crowns.map((c) => ({
+        value: c.p.value,
+        d: c.p.d,
+        spd: c.p.spd,
+        crown: c.label,
+        itemStyle: { color: "rgba(0,0,0,0)" },
+      })),
+      symbolSize: 0.1,
+      label: {
+        show: true,
+        formatter: () => "♛",
+        distance: 14,
+        textStyle: { color: "#ffd166", fontSize: 26, fontWeight: 700 },
+      },
+    });
+    series.push({
+      name: "crowns-name",
+      type: "scatter3D",
+      data: crowns.map((c) => ({
+        value: c.p.value,
+        d: c.p.d,
+        spd: c.p.spd,
+        crown: c.label,
+        itemStyle: { color: "rgba(0,0,0,0)" },
+      })),
+      symbolSize: 0.1,
+      label: {
+        show: true,
+        formatter: (p: any) => p.data.crown,
+        distance: 40,
+        textStyle: { color: "#e2e8f0", fontSize: 11, fontWeight: 700 },
+      },
+    });
+  }
+
   const option = {
       backgroundColor: "transparent",
       animationDuration: 450,
@@ -930,6 +1158,8 @@ function build3DScene(id: string, status: { count: string; badgeHidden: boolean 
                 ? '<div style="font-weight:700;margin-bottom:4px">frontier</div>'
                 : "") +
               tooltipHTML(p.data)
+            : p.seriesName.startsWith("crowns")
+            ? '<div style="font-weight:700;margin-bottom:4px">♛ ' + p.data.crown + "</div>" + tooltipHTML(p.data)
             : "",
       },
       grid3D: {
