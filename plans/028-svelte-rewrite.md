@@ -1,6 +1,6 @@
 # 028 — Svelte 5 rewrite of the explorer front end
 
-Date: 2026-09-18. **Status: EXECUTING (step 1/6).**
+Date: 2026-09-18. **Status: EXECUTING (step 2/6).**
 Source: `plans/021-exploration-backlog.md` B18 (frontend framework?), rounds
 1–2, and the owner's go ("Then lets go", 2026-09-18). The round-2 findings
 are this plan's evidence base — measured, not re-derived here: line budget
@@ -111,6 +111,30 @@ live site never serves a broken state during the window.
    `setOption`, captureZoom/restoreZoom port, logo badges). 2D parity.
    Verify: vitest + CDP probes on the dev build + owner A/B. Commit:
    `chart: 2D panels + controls in svelte`.
+   ✅ COMPLETE (committed 74116aa, 2026-09-18).
+   **As-built:** done as specified, with these port decisions: shared
+   `Seg`/`Pill` controls (options-data driven, aria via rest spread);
+   ModeSeg/VisionSeg are Seg instances in App's nav; OfPanel's DOM-builder
+   (buildOfPanel/toggleOf*/applyOfSearch/updateOfPanel) became derived
+   data + class bindings with identical semantics (SvelteSet expansion,
+   escape-clears-then-closes, union org toggles); provSort moved to a
+   module store so provider sort survives drawer open/close (live D3);
+   the drawer overlay is wired here (click→drawer must work for the A/B),
+   shrinking step 4's drawer scope to footer/meta; the tgl-3d pill + 3D
+   scene and footer content stay in steps 3/4 (owner confirmed both in
+   the step-2 review); boot gates only the charts (data + badges), the
+   static shell renders immediately like live. Verify results: vitest
+   52/52 (OfPanel/SearchBox/RatioCtl component tests), tsc clean, CDP
+   probe on the dev build 29/29 (modes, per-panel scatter, speed
+   settle 144, ratio→axis label, spread series, frontier toggle,
+   click→drawer, wheel/dblclick/pan-guard, search 15/154, vision 93,
+   of-panel tree), python 157 OK, storage grep clean, zero console
+   errors. CDP note: Input.dispatchMouseEvent(mouseWheel) never reaches
+   the DOM in this headless build (document capture listener sees
+   nothing) — wheel validated via a synthetic WheelEvent on the chart
+   div; real-gesture parity stays the owner's A/B. Also: tsc joined the
+   verify loop this step (it caught a missing type import step 1's
+   vite-only pipeline missed).
 3. **3D scene** — the 3D panel component; gl lazy-inject preserved
    (script-tag, before first GL render — #468); stale-state guards;
    `#badge-3d`/`#reset-3d`/`#count-3d` chrome. Verify: CDP (SwiftShader
@@ -131,7 +155,10 @@ live site never serves a broken state during the window.
    a static serve of `dist/`; cookie probe per the 020 recipe (cookie-jar
    curl over `/` + every asset the HTML references, desktop + curl + mobile
    UAs); full python suite + a `python3 update.py` sanity run (data files
-   unchanged modulo natural churn); (b) the owner flips the CF dashboard
+   unchanged modulo natural churn); an old-vs-new comparison for curiosity
+   (owner request, 2026-09-18 step-2 review): page weight (network
+   transfer) and load timing of the vanilla `public/` app vs the built
+   `dist/` app, reported at close; (b) the owner flips the CF dashboard
    build command to `npm ci && npm run build && npx wrangler deploy` (safe
    since step 1: it still deploys `public/`); (c) the cutover commit:
    delete `public/index.html` + `public/app.js` (no dead shims),
