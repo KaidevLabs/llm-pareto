@@ -181,6 +181,8 @@ live site never serves a broken state during the window.
    A5. 027 doc gains its sequencing note (step 1 executed here, steps 2–3
    follow in-framework). Verify: serializer unit tests + owner A/B links.
    Commit: `chart: state deep-links (027 step 1)`.
+   ✅ COMPLETE (committed e964d48, 2026-09-18 — plan record rode along in
+   the step commit).
    ✅ COMPLETE (committed, 2026-09-18).
    **As-built:** `src/lib/urlstate.ts` — pure serializer, `read(search)` →
    partial patch / `write(ui)` → query, defaults omitted (bare URL
