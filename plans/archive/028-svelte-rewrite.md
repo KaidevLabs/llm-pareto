@@ -1,7 +1,10 @@
 # 028 — Svelte 5 rewrite of the explorer front end
 
-Date: 2026-09-18. **Status: EXECUTING (step 6/6 — cutover commit made;
-push + live check pending owner signal).**
+Date: 2026-09-18. **ARCHIVED 2026-09-18 — COMPLETE (owner-verified live).
+Commits: plan f9736f1 · s1 f9736f1+1 f460772 · s2 74116aa+ad4a38d ·
+s3 01a6920+6be3cff · s4 26dc37a+94ba177 · s5 e964d48+a860ada ·
+s6 e858d24+e9ce3f7 (+ merge 91b3513, owner 027 commit 5285c16,
+provider-zero-throughput fix 190228d, data e4e9723) · close: this commit.**
 Source: `plans/021-exploration-backlog.md` B18 (frontend framework?), rounds
 1–2, and the owner's go ("Then lets go", 2026-09-18). The round-2 findings
 are this plan's evidence base — measured, not re-derived here: line budget
@@ -253,7 +256,16 @@ live site never serves a broken state during the window.
    compresses both), DCL 40ms, load 44ms, FCP 60ms (+32ms — shell CSS now
    a separate small asset instead of inline), chart paints ~132ms (−13ms).
    Practical read: parity — the ~3.5 MB both apps pull is dominated by
-   `endpoints.json`, identical for both. (d) push + live check pending.
+   `endpoints.json`, identical for both. (d) Owner pushed (their merge
+   91b3513 had already absorbed the data-refresh bot + their own 027 plan
+   commit 5285c16; conflicts resolved keeping our side — verified: only
+   `public/data` took the bot's version, then superseded by the fresh
+   run). Deploy verified live: llm-pareto.kaidev.io serves the svelte
+   bundle (`assets/index-Bt-u2_1L.js`, no `app.js`) and live meta.json
+   `fetched_at` 2026-09-18T20:00:27Z == local main. Owner A/B'd the live
+   site. Mid-flight data fixes this step owns: provider page partial-SSR
+   re-fetch seam + zero-throughput stats drop (both found by this step's
+   verification runs, both pinned by tests).
 
 ## Open branches
 
@@ -290,8 +302,9 @@ None — A1–A7 settle the forks; the round-2 findings retire the rest.
 - [x] Python suite green; `update.py` unaffected (public/data flow
       unchanged through vite publicDir). (+ hardened: partial-SSR page
       re-fetch, found by this step's sanity run.)
-- [ ] Live == main after the cutover push: CF deployment entry + live
-      meta.json + content hash verified (#436). (Pending the push.)
+- [x] Live == main after the cutover push: CF deployment entry + live
+      meta.json + content hash verified (#436). (Live bundle hash +
+      fetched_at == main, 2026-09-18; owner-confirmed visually.)
 - [x] Docs updated: AGENTS.md (commands + verification hierarchy), 027
       sequencing note, 021 B18 resolution pointer. (021 pointer pre-dates
       this step; 027 note landed in step 5.)
