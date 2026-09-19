@@ -1,7 +1,7 @@
 # 032 — Threshold filters (price / Elo / speed)
 
-Date: 2026-09-19. **Status: APPROVED (D1–D7, owner "recomended" 2026-09-19) —
-awaiting `Execute @plans/032-threshold-filters.md` (step-granular).** D4 = Option
+Date: 2026-09-19. **Status: EXECUTING (step 2/4).** Approved D1–D7 (owner
+"recomended" 2026-09-19). D4 = Option
 A (keep-alive + opacity merge). D5 = unify (search/family/vision also fade).
 Source: owner
 directive (2026-09-19) — "add some thresholds like a price (min & max), an Elo
@@ -53,6 +53,16 @@ out** (opacity tween), never blink them away.
    into `filterRows`. `urlstate.ts`: `thr` in/out of `read`/`write` (rounded,
    defaults omitted); `App.svelte:67` track `ui.thr.*`. No UI, no chart change
    yet. Commit: `chart: threshold predicate + url state`.
+   ✅ **As-built (2026-09-19, committed 397b6e1):** as specced. Additions:
+   `viewPrice(d, mode, ratio)` helper in filters.ts (blended/in/out switch,
+   reused by step 2's slider bounds + step 3's builders); `ThrCtx.speed` typed
+   structurally as `(orId) => { toks } | null` so tests need no full `Speed`;
+   urlstate `thr` reads per-bound (invalid bound → null; no valid bound → no
+   `thr` key on the URL), writes 2dp-rounded `pmin/pmax/emin/smin`; history
+   `contSnap` includes `ui.thr` (continuous burst); `read` returns a complete
+   `Thr` patch (absent bounds = null) so popstate apply is total. Tree was
+   dirty at resume (staged 031 close + tools/refactor-bench) — owner chose to
+   proceed anyway; those changes remain staged, unrelated to this step.
 2. **Controls.** `ThresholdCtl.svelte` (price-min, price-max, elo-min, speed-min
    ranges + readouts + reset), bounds from data extents, mounted in
    `nav.filters` (`App.svelte`). Wired to `ui.thr` (history debounce reuses the
