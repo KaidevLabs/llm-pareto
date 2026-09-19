@@ -16,6 +16,7 @@
   import Seg from "./components/Seg.svelte";
   import Pill from "./components/Pill.svelte";
   import RatioCtl from "./components/RatioCtl.svelte";
+  import ThresholdCtl from "./components/ThresholdCtl.svelte";
   import SearchBox from "./components/SearchBox.svelte";
   import OfPanel from "./components/OfPanel.svelte";
   import Details from "./components/Details.svelte";
@@ -118,6 +119,7 @@
     }}
   />
   <RatioCtl />
+  <ThresholdCtl />
   <Seg
     aria="vision filter"
     options={[
