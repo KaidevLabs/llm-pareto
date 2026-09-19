@@ -38,7 +38,7 @@ afterEach(() => {
   ui.families.clear();
   ui.search = "";
   ui.selected = null;
-  ui.cmps = [];
+  ui.cmps = null;
   data.rows = [];
   vi.unstubAllGlobals();
 });

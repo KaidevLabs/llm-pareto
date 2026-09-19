@@ -11,8 +11,9 @@
   labels — the comparator's shared title rail owns them, so the card shows
   values only, at fixed row heights (--row-h etc.) that match the rail.
   Missing values render "--"; the variants/match join diagnostics stay
-  drawer-only (plan 025 D2). The optional remove fast-access (the card's
-  ×) takes the model out of the comparator.
+  drawer-only (plan 025 D2). Optional fast-accesses: the × takes the model
+  out of the comparator; the expand chip opens the full model card (the
+  drawer) for the rest of the info — providers, variants, match.
 -->
 <script lang="ts">
   import { fmtPrice, fmtVotes, fmtToks } from "../lib/format";
@@ -25,6 +26,7 @@
     d,
     oncompare,
     onremove,
+    onopen,
     marks,
     speed,
     aligned,
@@ -32,6 +34,7 @@
     d: Row;
     oncompare?: () => void;
     onremove?: () => void;
+    onopen?: () => void;
     marks?: Marks;
     speed?: { toks: number } | null;
     aligned?: boolean;
@@ -104,12 +107,23 @@
     {#if d.arena_model_url}<a href={d.arena_model_url} target="_blank" rel="noopener">arena model page ↗</a>{/if}
   </div>
 
-  {#if onremove}
-    <button class="x" aria-label={"remove " + d.or_name} title={"remove " + d.or_name} onclick={onremove}>
-      <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
-        <path d="M1.5 1.5 L8.5 8.5 M8.5 1.5 L1.5 8.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none" />
-      </svg>
-    </button>
+  {#if onopen || onremove}
+    <div class="acts">
+      {#if onopen}
+        <button class="info" aria-label={"full model card: " + d.or_name} title="full model card — providers, variants, links" onclick={onopen}>
+          <svg width="11" height="11" viewBox="0 0 10 10" aria-hidden="true">
+            <path d="M6 1 h3 v3 M9 1 L5.8 4.2 M4 9 H1 V6 M1 9 L4.2 5.8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+          </svg>
+        </button>
+      {/if}
+      {#if onremove}
+        <button class="x" aria-label={"remove " + d.or_name} title={"remove " + d.or_name} onclick={onremove}>
+          <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
+            <path d="M1.5 1.5 L8.5 8.5 M8.5 1.5 L1.5 8.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none" />
+          </svg>
+        </button>
+      {/if}
+    </div>
   {/if}
   {#if oncompare}
     <button class="cmpbtn" onclick={oncompare}>◈ compare</button>
@@ -163,7 +177,7 @@
   .card.aligned .dhead {
     height: var(--head-block);
     margin-bottom: 0;
-    padding-right: 30px;
+    padding-right: 64px;
   }
   .card.aligned .dhead .dname,
   .card.aligned .dhead .did {
@@ -189,11 +203,15 @@
     padding-top: 12px;
     white-space: nowrap;
   }
-  .x {
+  .acts {
     position: absolute;
     top: 8px;
     right: 8px;
     z-index: 2;
+    display: flex;
+    gap: 6px;
+  }
+  .acts button {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -207,4 +225,5 @@
     transition: color 0.15s, border-color 0.15s, background 0.15s;
   }
   .x:hover { color: var(--lose); border-color: rgba(251, 146, 60, 0.4); background: rgba(251, 146, 60, 0.1); }
+  .info:hover { color: var(--accent); border-color: rgba(52, 211, 153, 0.4); background: rgba(52, 211, 153, 0.1); }
 </style>

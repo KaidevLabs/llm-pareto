@@ -64,7 +64,7 @@ beforeEach(() => {
 });
 afterEach(() => {
   cleanup();
-  ui.cmps = [];
+  ui.cmps = null;
   data.rows = [];
 });
 
@@ -162,7 +162,7 @@ describe("Comparator", () => {
     expect(document.querySelectorAll(".ms li button").length).toBe(1);
   });
 
-    it("the card × removes; backspace removes the last pick; empty restores the pre-seed", async () => {
+    it("the card × removes; backspace removes the last pick; an emptied roster stands", async () => {
     ui.cmps = ["orga/alpha", "orgb/beta", "orgc/gamma"];
     render(Comparator);
     await fireEvent.click(screen.getByRole("button", { name: "remove OrgC: Gamma" }));
@@ -171,6 +171,9 @@ describe("Comparator", () => {
     expect(ui.cmps).toEqual(["orga/alpha"]);
     await fireEvent.keyDown(screen.getByLabelText("search models to compare"), { key: "Backspace" });
     expect(ui.cmps).toEqual([]);
+    // the empty roster renders just the add slot — no pre-seed resurrection
+    expect(document.querySelectorAll(".is-card").length).toBe(0);
+    expect(screen.getByLabelText("search models to compare")).toBeTruthy();
   });
 
   it("at the cap there is no add slot — removing one reveals it again", async () => {
@@ -182,5 +185,14 @@ describe("Comparator", () => {
     await fireEvent.click(screen.getByRole("button", { name: "remove OrgD: Dup" }));
     expect(ui.cmps).toEqual(["orga/alpha", "orgb/beta", "orgc/gamma"]);
     expect(screen.getByLabelText("search models to compare")).toBeTruthy();
+  });
+});
+
+describe("Comparator", () => {
+  it("a card chip opens the full model card drawer", async () => {
+    ui.cmps = null;
+    render(Comparator);
+    await fireEvent.click(screen.getByRole("button", { name: "full model card: OrgA: Alpha" }));
+    expect(ui.selected?.or_id).toBe("orga/alpha");
   });
 });

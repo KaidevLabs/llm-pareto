@@ -5,6 +5,7 @@ export default defineConfig({
   plugins: [svelte()],
   test: {
     environment: "jsdom",
+    setupFiles: ["src/test-setup.ts"],
     // .tmp/ is gitignored scratch (seed demos etc) — not part of the suite.
     exclude: ["**/node_modules/**", ".tmp/**"],
   },

@@ -28,14 +28,17 @@ export type Marks = Partial<Record<MetricKey, Mark>>;
 
 const EPS = 1e-9;
 
-// The picks as displayed: non-empty as-is (capped), else the D5 pre-seed —
-// top-2 by arena rank.
-export function resolvedCmps(cmps: string[], rows: Row[]): string[] {
-  if (cmps.length) return cmps.slice(0, CMP_MAX);
-  return [...rows]
-    .sort((a, b) => a.arena_rank - b.arena_rank)
-    .slice(0, 2)
-    .map((r) => r.or_id);
+// The picks as displayed: null = untouched → the D5 pre-seed (top-2 by
+// arena rank); [] = the user emptied their roster and it stands; a list
+// is taken as-is, capped.
+export function resolvedCmps(cmps: string[] | null, rows: Row[]): string[] {
+  if (cmps === null) {
+    return [...rows]
+      .sort((a, b) => a.arena_rank - b.arena_rank)
+      .slice(0, 2)
+      .map((r) => r.or_id);
+  }
+  return cmps.slice(0, CMP_MAX);
 }
 
 interface NumItem {

@@ -57,6 +57,18 @@ Client-side only, no data changes, no new libraries.
    replaced by the full card on pick; slots animate (`animate:flip`:
    the add pair slides right on pick, cards close the gap on removal;
    `in:fly` rise for new slots, `out:fade` for removed ones).
+10. **Final geometry (owner corrections)** — the rail returns to the
+   LEFT (titles right-aligned toward the cards); the green focus state
+   moves to the input title (the skeleton card drops its border/highlight
+   — bare shimmer bars like the other cards); an emptied roster STANDS
+   (no pre-seed resurrection: `ui.cmps` null = untouched pre-seed vs
+   [] = the user's empty roster, empty renders rail + add slot only).
+   Motion reworked to survive jsdom: `animate:flip` (add pair slides
+   right on pick, cards close the gap) + a pure-CSS `slot-in` keyframe
+   for entry — svelte's `in:/out:` transitions broke keyed-each updates
+   under vitest (getAnimations/animate stubs in `src/test-setup.ts`).
+   A "full model card" chip on each comparator card opens the drawer for
+   the rest of the info (scrolls up a frame after the state flush).
 
 The steps' vanilla surfaces (`index.html` + `app.js`) are the 028 svelte
 equivalents: `index.html` (vars) + `src/components/` / `src/lib/`.

@@ -19,7 +19,6 @@
   import ModelCard from "./ModelCard.svelte";
   import ModelSearch from "./ModelSearch.svelte";
   import { flip } from "svelte/animate";
-  import { fade, fly } from "svelte/transition";
   import { cubicOut } from "svelte/easing";
   import type { Row } from "../lib/types";
 
@@ -35,11 +34,25 @@
   );
 
   const add = (r: Row) => {
-    if (ui.cmps.includes(r.or_id) || ids.length >= CMP_MAX) return;
-    ui.cmps = [...ids, r.or_id];
+    const base = ui.cmps ?? resolvedCmps(null, data.rows);
+    if (base.includes(r.or_id) || base.length >= CMP_MAX) return;
+    ui.cmps = [...base, r.or_id];
   };
   const remove = (id: string) => {
-    ui.cmps = ids.filter((x) => x !== id);
+    // removing the last pick leaves [] — the user's emptied roster stands
+    // (no pre-seed resurrection, 2026-09-19 owner directive)
+    ui.cmps = (ui.cmps ?? resolvedCmps(null, data.rows)).filter((x) => x !== id);
+  };
+
+  // The full model card (the drawer) for the rest of the info — the drawer
+  // overlays the chart's top edge, so the click scrolls up to it too. The
+  // scroll waits a frame: the drawer mounts with the state flush (the
+  // selector would miss inside the click handler).
+  const openFull = (r: Row) => {
+    ui.selected = r;
+    requestAnimationFrame(() =>
+      document.querySelector(".drawer")?.scrollIntoView({ behavior: "smooth", block: "start" })
+    );
   };
 
   // Slot matrix: the picked cards plus one add slot (null) until the cap.
@@ -60,8 +73,7 @@
 
 <svelte:window bind:innerWidth={vw} />
 
-{#if picked.length}
-  <section class="cmp" id="compare" aria-label="model comparator">
+<section class="cmp" id="compare" aria-label="model comparator">
     <div class="cmp-head">
       <h2>Compare</h2>
       <span class="hint">up to {CMP_MAX} — search in the dashed slot, × removes</span>
@@ -87,8 +99,6 @@
             <div
               class="slot {c ? "is-card" : "is-add"}"
               animate:flip={{ duration: 240, easing: cubicOut }}
-              in:fly={{ y: 14, duration: 240, easing: cubicOut }}
-              out:fade={{ duration: 160 }}
             >
               {#if c}
                 <ModelCard
@@ -97,6 +107,7 @@
                   speed={speeds[c.i]}
                   aligned
                   onremove={() => remove(c.r.or_id)}
+                  onopen={() => openFull(c.r)}
                 />
               {:else}
                 <div class="sk-title"><ModelSearch {ids} onadd={add} onremove={remove} /></div>
@@ -116,7 +127,6 @@
       {/each}
     </div>
   </section>
-{/if}
 
 <style>
   .cmp {
@@ -183,6 +193,16 @@
     width: var(--card-w);
     min-width: 0;
     position: relative;
+    animation: slot-in 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  @keyframes slot-in {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .slot { animation: none; }
   }
   .is-card {
     max-height: var(--chart-h);

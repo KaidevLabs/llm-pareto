@@ -59,10 +59,11 @@ const gamma: Row = {
 const spd = (toks: number): Speed => ({ toks, latency: null, n: 1, rc: 100 });
 
 describe("resolvedCmps", () => {
-  it("empty resolves to the top-2 pre-seed by rank", () => {
-    expect(resolvedCmps([], [beta, base])).toEqual(["orga/alpha", "orgb/beta"]);
+  it("null resolves to the top-2 pre-seed by rank", () => {
+    expect(resolvedCmps(null, [beta, base])).toEqual(["orga/alpha", "orgb/beta"]);
   });
-  it("non-empty is taken as-is, capped at CMP_MAX", () => {
+  it("an emptied roster stays empty; a list is as-is, capped at CMP_MAX", () => {
+    expect(resolvedCmps([], [beta, base])).toEqual([]);
     expect(resolvedCmps(["x", "y"], [base])).toEqual(["x", "y"]);
     expect(resolvedCmps(["1", "2", "3", "4", "5"], []).length).toBe(CMP_MAX);
   });
