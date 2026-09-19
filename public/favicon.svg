@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#101827"/>
+      <stop offset="1" stop-color="#06080d"/>
+    </linearGradient>
+    <radialGradient id="tint" cx="0.15" cy="0.1" r="0.9">
+      <stop offset="0" stop-color="#34d399" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#34d399" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="1.4"/>
+    </filter>
+  </defs>
+
+  <!-- page canvas: #06080d + the emerald radial from index.html -->
+  <rect width="32" height="32" rx="7" fill="url(#bg)"/>
+  <rect width="32" height="32" rx="7" fill="url(#tint)"/>
+
+  <!-- dominated scatter dots (org colors), below-right of the frontier -->
+  <circle cx="10.5" cy="24" r="2.1" fill="#58a6ff" opacity="0.8"/>
+  <circle cx="15.5" cy="26.5" r="1.8" fill="#f78166" opacity="0.75"/>
+  <circle cx="20.5" cy="28" r="1.8" fill="#d2a8ff" opacity="0.75"/>
+  <circle cx="16.5" cy="22.5" r="1.5" fill="#ffa657" opacity="0.55"/>
+  <circle cx="27.5" cy="17" r="1.5" fill="#58a6ff" opacity="0.55"/>
+
+  <!-- the glowing Pareto frontier: descending chain, top-left = best of both -->
+  <polyline points="5.5,5.5 11,13.5 16.5,18 25.5,23.5"
+            fill="none" stroke="#34d399" stroke-width="4.6"
+            stroke-linecap="round" stroke-linejoin="round"
+            opacity="0.28" filter="url(#glow)"/>
+  <polyline points="5.5,5.5 11,13.5 16.5,18 25.5,23.5"
+            fill="none" stroke="#34d399" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- frontier vertices -->
+  <circle cx="16.5" cy="18" r="2.1" fill="#34d399"/>
+  <circle cx="25.5" cy="23.5" r="2.1" fill="#34d399"/>
+  <circle cx="11" cy="13.5" r="2.1" fill="#34d399"/>
+
+  <!-- the king: best of both, brighter + glow halo -->
+  <circle cx="5.5" cy="5.5" r="3.4" fill="#34d399" opacity="0.35" filter="url(#glow)"/>
+  <circle cx="5.5" cy="5.5" r="2.6" fill="#a7f3d0"/>
+</svg>
