@@ -1,0 +1,17 @@
+# LLM Pareto
+
+> Frontier LLMs ranked by quality against price (USD per million tokens), with the Pareto frontier highlighted — models no other model beats on both axes. Fully static: no cookies, no tracking, no third-party runtime requests.
+
+LLM Pareto aggregates quality and pricing data for large language models from multiple upstream sources and highlights the Pareto frontier. The aggregated source set grows over time (leaderboards, providers, benchmarks). Explorer: https://llm-pareto.kaidev.io/
+
+## Data (JSON, refreshed every 6 hours)
+
+- [combined.json](https://llm-pareto.kaidev.io/data/combined.json): one row per model — quality score with confidence bounds, rank, votes, org, license, context length, vision flag, USD price per million input/output tokens
+- [meta.json](https://llm-pareto.kaidev.io/data/meta.json): run metadata — fetch timestamps, source counts, join statistics
+- [arena.json](https://llm-pareto.kaidev.io/data/arena.json): raw leaderboard snapshot (current quality source)
+- [openrouter.json](https://llm-pareto.kaidev.io/data/openrouter.json): raw provider catalog snapshot (current pricing source)
+- [endpoints.json](https://llm-pareto.kaidev.io/data/endpoints.json): per-model endpoint details (providers, context windows, latency and throughput stats)
+
+## Source
+
+- Pipeline and front end: https://github.com/KaidevLabs/llm-pareto

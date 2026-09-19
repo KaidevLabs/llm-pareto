@@ -1,0 +1,6 @@
+# LLM Pareto — allow everything: SEO crawlers (Googlebot, Bingbot) and
+# GEO crawlers (GPTBot, ClaudeBot, PerplexityBot, ...) are all welcome.
+# No Sitemap line on purpose: the site is a single page and there is no
+# sitemap.xml — referencing one would just add a 404.
+User-agent: *
+Allow: /
