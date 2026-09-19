@@ -87,15 +87,15 @@ no code.
 ## Not yet specified
 
 - Exactly which svelte patterns apply where — discovered in step 02.
-- Whether to promote/commit the refactor-bench harness before execution (see Open
-  branches) — the executor can use the `.tmp/` copy in the meantime.
+- SSR vs prerender trade-off specifics (see backlog P2 "evaluate SSR/prerender") —
+  architectural, needs its own sub-analysis before becoming a plan.
 
 ## Open branches
 
 | Branch | Hangs on | Parked because | Forces revisit when |
 |--------|----------|----------------|---------------------|
-| Promote refactor-bench harness from `.tmp/` into the repo (`tools/refactor-bench/`) + add the board-HTML generator (owner liked both) | Owner approval of placement/commit | Owner asked "could we add them to the project and commit them" 2026-09-19; logically a precursor to executing 030 (the oracle) | Owner green-lights → becomes plan 031, done before/with step 01 |
-| Ship the board infographic to the live CF site as a `/aftermath` route | Promotion above + a publish decision | Owner floated "presented to the world"; not yet a deploy decision | Owner wants it public |
+| Measurement oracle availability | Plan **031** (harness promotion) | 030 needs the harness to verify before/after of any fix; 031 promotes it from `.tmp/` into `tools/refactor-bench/` + adds the page generator | 031 lands → 030 step 01 uses the promoted copy (or the `.tmp/` copy meanwhile) |
+| Ship the board infographic to the live CF site as a `/aftermath` route | Plan **031** Open branch + owner publish decision | Owner floated "presented to the world"; deploy is a separate decision (#349, #436) | Owner wants it public — handled in 031, not here |
 
 ## Out of scope
 
