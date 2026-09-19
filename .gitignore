@@ -6,3 +6,6 @@ __pycache__/
 .wrangler/
 node_modules/
 dist/
+tools/refactor-bench/.run/
+benchmarks/
+coverage/

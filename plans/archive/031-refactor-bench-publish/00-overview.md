@@ -1,6 +1,6 @@
 # 031 — refactor-bench harness: promote, report, publish — OWNER REVIEW
 
-> **Status:** OWNER REVIEW (created 2026-09-19; execution deferred to owner go).
+> **Status:** ARCHIVED (2026-09-19; all five steps executed and committed).
 
 Date: 2026-09-19.
 
@@ -61,20 +61,22 @@ lives in `tools/refactor-bench/`. "Publishing" here means producing the portable
 
 | Step | File | Depends on | Status | Commit |
 |------|------|------------|--------|--------|
-| 1 | 01-promote.md | — | OPEN | plan: 031 — step 01 |
-| 2 | 02-cyclomatic.md | 1 | OPEN | plan: 031 — step 02 |
-| 3 | 03-coverage.md | 1 | OPEN | plan: 031 — step 03 |
-| 4 | 04-pagegen.md | 1, 2, 3 | OPEN | plan: 031 — step 04 |
-| 5 | 05-close.md | 4 | OPEN | plan: 031 — step 05 (`plan: 031-refactor-bench-publish`) |
+| 1 | 01-promote.md | — | DONE | plan: 031 — step 01 |
+| 2 | 02-cyclomatic.md | 1 | DONE | plan: 031 — step 02 |
+| 3 | 03-coverage.md | 1 | DONE | plan: 031 — step 03 |
+| 4 | 04-pagegen.md | 1, 2, 3 | DONE | plan: 031 — step 04 |
+| 5 | 05-close.md | 4 | DONE | plan: 031 — step 05 (plan: 031-refactor-bench-publish) |
 
 ## Definition of done
 
-- [ ] Harness committed under `tools/refactor-bench/`; default `run.mjs` exits 0 and
+- [x] Harness committed under `tools/refactor-bench/`; default `run.mjs` exits 0 and
       writes to `benchmarks/`; `.gitignore` covers `.run/` + generated outputs.
-- [ ] Per-function cyclomatic top-N present in `static.json`, `report.md`, and the HTML.
-- [ ] Coverage dimension present: new side shows %; old side `null`/"no tests" gracefully.
-- [ ] `report.html` is generated from data (not hand-written), self-contained, no network.
-- [ ] Plan files committed; no app source (`src/`, `update.py`, `public/`) touched.
+- [x] Per-function cyclomatic top-N present in `static.json` (`complexity.topFunctions`),
+      `report.md` ("Cyclomatic offenders"), and the HTML.
+- [x] Coverage dimension present: new side shows % (lines/branches/functions/statements +
+      file count); old side `null`/"no tests at ref" gracefully.
+- [x] `report.html` is generated from data (not hand-written), self-contained, no network.
+- [x] Plan files committed; no app source (`src/`, `update.py`, `public/`) touched.
 
 ## Not yet specified
 

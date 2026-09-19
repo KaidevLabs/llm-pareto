@@ -1,4 +1,4 @@
-# Step 04 — Page generator — OPEN
+# Step 04 — Page generator — DONE (2026-09-19)
 
 ## Spec
 

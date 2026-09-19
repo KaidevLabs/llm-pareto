@@ -1,4 +1,4 @@
-# Step 02 — Cyclomatic per-function report — OPEN
+# Step 02 — Cyclomatic per-function report — DONE (2026-09-19)
 
 ## Spec
 

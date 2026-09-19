@@ -1,4 +1,4 @@
-# Step 03 — Test-coverage dimension — OPEN
+# Step 03 — Test-coverage dimension — DONE (2026-09-19)
 
 ## Spec
 

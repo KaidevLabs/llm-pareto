@@ -1,4 +1,4 @@
-# Step 01 — Promote & parameterize — OPEN
+# Step 01 — Promote & parameterize — DONE (2026-09-19)
 
 ## Spec
 

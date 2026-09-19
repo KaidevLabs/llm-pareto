@@ -107,6 +107,69 @@ python3 -m unittest tests.test_normalize    # one module
 The tests document current behavior as-is: a red test after a logic change
 is a review signal, not a failure — decide before changing either side.
 
+## Code quality & benchmarking
+
+Three commands, three depths (node ≥ 22, `npm ci` first).
+
+### `npm run coverage` — test coverage (current tree)
+
+Runs the JS suite (`src/**/*.test.ts`) under the v8 coverage provider and
+prints the per-file table (statements / branches / functions / lines). Also
+writes `coverage/coverage-summary.json` (gitignored) for machine reads.
+
+```sh
+npm run coverage
+```
+
+### `npm run cyc` — cyclomatic complexity (current tree)
+
+Standalone AST pass (the repo's own TypeScript compiler) over app code in
+`src/` — tests excluded, `.svelte` `<script>` bodies included, no network,
+no external tools. Prints the totals (Σ cyclomatic, worst function, nesting
+depth, `any` count, charts.ts share), the worst functions, and the heaviest
+files. The quick "where is the complexity" check.
+
+```sh
+npm run cyc
+```
+
+### `npm run bench` — two-ref refactor benchmark
+
+The full comparison harness (`tools/refactor-bench/run.mjs`). It checks out
+two git refs into throwaway worktrees, gives them identical
+data/assets/fonts, then measures five dimensions: **static** (cloc lines,
+per-function cyclomatic top-15, jscpd duplication, `any` count), **test
+coverage** per ref, **load timing** (headless Chromium; cold/warm ×
+throttled/unthrottled, median + p90), **interactions** (CDP probes: zoom,
+drawer, 3D scene, jank, heap), and a merged **report**. Chromium required;
+worktrees live under `tools/refactor-bench/.run/` and are cleaned up on
+every exit. Exits non-zero on any failure.
+
+```sh
+npm run bench -- --runs 7 7957602 e858d24   # old ref → new ref, 7 runs/side
+npm run bench -- --single --runs 1          # current tree only (no old ref)
+```
+
+Defaults: refs `7957602` (vanilla `app.js`) → `e858d24` (pure svelte
+cutover), 7 runs. Everything lands in `benchmarks/run-<stamp>/` (gitignored):
+one JSON per dimension, `provenance.json`, `report.md`, and a self-contained
+`report.html` (no network requests, no cookies).
+
+Phases (`static`, `coverage`, `load`, `interact`, `report`) can be generated
+one at a time into the same `--out` dir and merged later — artifacts already
+present are reused, `--force` re-runs:
+
+```sh
+npm run bench -- --only static --out benchmarks/foo          # ~2 s, no build
+npm run bench -- --only coverage --out benchmarks/foo
+npm run bench -- --only load,interact --out benchmarks/foo   # builds + chromium
+npm run bench -- --only report --out benchmarks/foo          # merge only, <1 s
+npm run bench -- --only report --force --out benchmarks/foo  # redo the reports
+```
+
+A ref without test infrastructure (the vanilla one) reports coverage as
+`null` with an explanatory note instead of failing the run.
+
 ## Data provenance
 
 | File | Source | Notes |
