@@ -37,6 +37,8 @@ afterEach(() => {
   cleanup();
   ui.families.clear();
   ui.search = "";
+  ui.selected = null;
+  ui.cmps = [];
   data.rows = [];
   vi.unstubAllGlobals();
 });
@@ -120,5 +122,30 @@ describe("Details", () => {
     store.done = true;
     render(Details, { props: { d: DEMO } });
     await screen.findByText("provider data unavailable (HTTP 500)");
+  });
+
+  it("the compare fast-access appends the model and closes the drawer", async () => {
+    const r1 = { ...DEMO, or_id: "orga/alpha", or_name: "Alpha", arena_rank: 1 } as Row;
+    const r2 = { ...DEMO, or_id: "orgb/beta", or_name: "Beta", arena_rank: 2 } as Row;
+    data.rows = [DEMO, r1, r2]; // DEMO (rank 12) is not in the top-2 pre-seed
+    ui.selected = DEMO;
+    render(Details, { props: { d: DEMO } });
+    await fireEvent.click(screen.getByRole("button", { name: "◈ compare" }));
+    expect(ui.cmps).toEqual(["orga/alpha", "orgb/beta", "z-ai/glm-5"]);
+    expect(ui.selected).toBe(null);
+  });
+
+  it("compare is a no-op for a model already picked", async () => {
+    ui.cmps = ["z-ai/glm-5"];
+    render(Details, { props: { d: DEMO } });
+    await fireEvent.click(screen.getByRole("button", { name: "◈ compare" }));
+    expect(ui.cmps).toEqual(["z-ai/glm-5"]);
+  });
+
+  it("compare is a no-op when the section is full", async () => {
+    ui.cmps = ["a", "b", "c", "d"];
+    render(Details, { props: { d: DEMO } });
+    await fireEvent.click(screen.getByRole("button", { name: "◈ compare" }));
+    expect(ui.cmps).toEqual(["a", "b", "c", "d"]);
   });
 });

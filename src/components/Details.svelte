@@ -1,25 +1,17 @@
 <!--
-  Details drawer body (006/024) as a Svelte 5 component — the 021 B18
-  round-2 sketch, reconciled against app.js detailsHTML + providersHTML +
-  renderDetails:
-  - esc() dropped from all interpolations: Svelte escapes text on its own
-    (the sketch's esc() would double-escape).
-  - the sketch's undefined `endpointsError` reference is the live
-    ENDPOINTS_ERROR display.
-  - the per-provider table's `ctx` column header is restored (the sketch
-    rendered 7 cells under 6 headers).
-  - the four bespoke vanilla conventions (PROV_SORT module state, delegated
-    sort headers, the ENDPOINTS quadruple, the .then(renderDetails) settle
-    guard) dissolve into component state, {onclick}, the shared endpoints
-    store, and rune reactivity.
+  Details drawer body (006/024) as a Svelte 5 component: the shared model
+  card (ModelCard) plus this file's own Providers section (plan 024) and
+  the filtered-out banner. The compare fast-access on the card sends the
+  model to the comparator section (plan 025, owner directive 2026-09-19).
 -->
 <script lang="ts">
   import { fmtPrice, fmtVotes, fmtToks, fmtMs, median } from "../lib/format";
-  import { orgOf } from "../lib/family";
   import { filterRows } from "../lib/filters";
-  import { data, logoFor } from "../lib/data.svelte";
+  import { data } from "../lib/data.svelte";
   import { ui } from "../lib/state.svelte";
   import { store, ensureEndpoints } from "../lib/endpoints.svelte";
+  import { resolvedCmps, CMP_MAX } from "../lib/comparator";
+  import ModelCard from "./ModelCard.svelte";
   import type { Endpoint, Pct, Row } from "../lib/types";
 
   let { d }: { d: Row } = $props();
@@ -30,6 +22,16 @@
     ensureEndpoints();
   });
 
+  // Compare fast-access: appends the model to the comparator (a model
+  // already picked, or a full section, is a no-op); the drawer closes and
+  // the section scrolls into view.
+  function sendToCompare() {
+    const base = resolvedCmps(ui.cmps, data.rows);
+    if (!base.includes(d.or_id) && base.length < CMP_MAX) ui.cmps = [...base, d.or_id];
+    ui.selected = null;
+    document.getElementById("compare")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
   let provSort = $state<{ key: "in" | "out" | "up" | "spd"; dir: number }>({
     key: "in",
     dir: 1,
@@ -39,17 +41,6 @@
     filterRows(data.rows, ui).some((r) => r.or_id === d.or_id)
   );
   const eps: Endpoint[] = $derived(store.data?.[d.or_id] || []);
-  const ci = $derived(
-    d.arena_elo_upper != null && d.arena_elo != null
-      ? " (±" + Math.round(d.arena_elo_upper - d.arena_elo) + ")"
-      : ""
-  );
-  const match = $derived(
-    d.match_method === "override"
-      ? "⚑ manual override — identity fixed by owner decision, price final"
-      : d.match_method +
-        (d.match_ratio ? " (similarity " + d.match_ratio + ")" : "")
-  );
 
   const perM = (s: string | null | undefined) =>
     s == null ? null : parseFloat(s) * 1e6;
@@ -130,34 +121,7 @@
   <div class="dfilter">⚠ filtered out — hidden by the current filters</div>
 {/if}
 
-<div class="dhead">
-  {#if logoFor(orgOf(d))}<img src={logoFor(orgOf(d))!} width="20" height="20" alt="">{/if}
-  <span class="dname">{d.or_name}</span>
-  <div class="did">{d.or_id}</div>
-</div>
-
-<div class="drow"><span class="k">arena</span>
-  <span class="v">#{d.arena_rank} · elo {d.arena_elo.toFixed(1)}{ci} · {fmtVotes(d.arena_votes)} votes</span></div>
-<div class="drow"><span class="k">openrouter $/m</span>
-  <span class="v">{fmtPrice(d.price_in_per_m)} in · {fmtPrice(d.price_out_per_m)} out</span></div>
-{#if d.arena_price_in_per_m != null || d.arena_price_out_per_m != null}
-  <div class="drow"><span class="k">arena $/m (reported)</span>
-    <span class="v dim">{fmtPrice(d.arena_price_in_per_m)} in · {fmtPrice(d.arena_price_out_per_m)} out</span></div>
-{/if}
-<div class="drow"><span class="k">context</span>
-  <span class="v">{fmtVotes(d.context_length)}{d.arena_context_length != null && d.arena_context_length !== d.context_length ? " · arena: " + fmtVotes(d.arena_context_length) : ""}</span></div>
-<div class="drow"><span class="k">org</span>
-  <span class="v">{orgOf(d)}{d.arena_license ? " · " + d.arena_license : ""}{d.vision ? " · ✨ vision" : ""}</span></div>
-{#if d.arena_variants && d.arena_variants.length}
-  <div class="drow"><span class="k">variants</span><span class="v">{d.arena_variants.join(" · ")}</span></div>
-{/if}
-<div class="drow"><span class="k">match</span>
-  <span class="v{d.match_method === 'override' ? ' gold' : ''}">{match}</span></div>
-
-<div class="dlinks">
-  <a href="https://openrouter.ai/{d.or_id}" target="_blank" rel="noopener">OpenRouter page ↗</a>
-  {#if d.arena_model_url}<a href={d.arena_model_url} target="_blank" rel="noopener">arena model page ↗</a>{/if}
-</div>
+<ModelCard {d} oncompare={sendToCompare} />
 
 <div class="dsec">Providers</div>
 {#if !store.done}
@@ -208,13 +172,6 @@
 {/if}
 
 <style>
-  /* Drawer styles ported verbatim from public/index.html (they belong to
-     this component since 028 step 1; the shell .drawer box stays with the
-     app shell until step 4). */
-  .dhead { padding-right: 26px; margin-bottom: 12px; }
-  .dhead img { vertical-align: -4px; margin-right: 6px; border-radius: 3px; }
-  .dname { font-weight: 600; font-size: 14px; }
-  .did { color: var(--muted); font-size: 11px; margin-top: 3px; }
   .dfilter {
     color: #f59e0b;
     font-size: 11px;
@@ -224,30 +181,6 @@
     border-radius: 8px;
     padding: 4px 8px;
   }
-  .drow {
-    display: flex;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 8px 0;
-    border-top: 1px solid rgba(148, 163, 184, 0.08);
-    font-size: 12px;
-  }
-  .drow .k { color: var(--muted); flex-shrink: 0; }
-  .drow .v { text-align: right; font-variant-numeric: tabular-nums; }
-  .drow .v.dim { color: var(--muted); }
-  .drow .v.gold { color: var(--gold); }
-  .dlinks {
-    display: flex;
-    gap: 14px;
-    margin-top: 14px;
-    font-size: 12px;
-  }
-  .dlinks a {
-    color: var(--text);
-    text-decoration: none;
-    border-bottom: 1px solid var(--border);
-  }
-  .dlinks a:hover { border-bottom-color: var(--accent); }
   /* Providers section (plan 024): the model's OpenRouter endpoints as a
      tight table — provider (+ tag), quantization, $/M in, $/M out, context,
      uptime 1 d, speed p50 tok/s. */

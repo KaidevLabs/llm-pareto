@@ -1,6 +1,8 @@
 # 025 — Two-model comparator
 
-Date: 2026-09-17. **Status: PROPOSED — not reviewed, not executed.**
+Date: 2026-09-17. **Status: EXECUTED on the 028 svelte surfaces (2026-09-19,
+owner-approved via `Execute`); D4/D5 superseded by owner amendments — see
+below.**
 Source: `plans/021-exploration-backlog.md` item B16 + its exploration
 findings. **No dependency on 022** — builds now on `combined.json`; the
 future rows (speed, provider count, benchmarks) slot in afterward.
@@ -8,6 +10,56 @@ future rows (speed, provider count, benchmarks) slot in afterward.
 A hardware-comparator-style two-model view: pick model A and model B, see
 every attribute side by side, winners highlighted, delta bars quantified.
 Client-side only, no data changes, no new libraries.
+
+## Owner amendments (2026-09-19, during execution)
+
+1. **D5 superseded** — the two selects became one tag input; picks render
+   as removable chips (X / backspace). The picked models render as the
+   bubble-click model card minus the Providers section (Details was split
+   into `ModelCard` + `Details` to share the body). The drawer's card
+   carries a solid "◈ compare" button that appends the model to the
+   comparator (slot B in the two-slot phase; appends + dedup + cap now).
+2. **Multi-comparator** — up to 4 models at once (`ui.cmps` list, D6
+   semantics unchanged): arrow-key + click selection in the dropdown,
+   N-way winner logic (co-leaders tie, one big input, "max 4" note at the
+   cap). Cards: 4-per-row desktop / 2 tablet / 1 mobile (grid).
+3. **D4 superseded twice** — the delta bars became colored %/× verdict
+   lines, then (same day) died entirely: the win/lose/tie colors land
+   directly on the cards' own attribute rows (winner green `--accent`,
+   loser orange `--lose`, tie blue `--tie`; speed row via the 022
+   endpoints p50), replacing the separate verdict table.
+4. **Cards capped at the chart height** via a shared `--chart-h` (drawer
+   bottom realigns with the chart; the comparator columns scroll).
+5. **Section uncapped** (supersedes the interim 960px max-width) and the
+   whole shell capped at one centered 1440px column (`#app > *`); wide
+   viewports get symmetric breathing room outside the column.
+6. **Aligned rows** — comparator cards render a fixed canonical row set
+   (`arena`, `openrouter $/m`, `arena $/m (reported)`, `speed`, `context`,
+   `org`) with `--` placeholders where a model lacks data, so side-by-side
+   columns line up row-for-row; variants/match stay drawer-only (the
+   original D2 exclusion, now enforced).
+7. **Slot matrix** — the tag input dissolves: picked cards + one dashed
+   add slot (holding the bare search input) until 4 slots are filled; a
+   × on each card removes (mid-removals close the gap); chips are gone.
+   One shared left title rail (right-aligned toward the values) labels
+   each band of slots — 4-up desktop / 2-up tablet / 1-up mobile — with
+   fixed row heights (`--row-h`/`--head-block`/`--links-block`) syncing
+   rail and cards; in-card labels are gone.
+8. **Skeleton add slot + fixed slot width** — the empty slot is a
+   skeleton screen (shimmering bars aligned with the rail rows, the search
+   input in the model-name position); every slot is a fixed
+   `--card-w: 280px` and the rail+cards block right-aligns in the
+   full-width section (surplus space falls on the left).
+9. **Rail on the far right + split add slot + motion** — the title rail
+   sits at the band's right end (titles left-aligned, hugging the cards);
+   the empty slot is two separated elements — the input as its title
+   (14px/600, card-title size) above a bordered skeleton card, both
+   replaced by the full card on pick; slots animate (`animate:flip`:
+   the add pair slides right on pick, cards close the gap on removal;
+   `in:fly` rise for new slots, `out:fade` for removed ones).
+
+The steps' vanilla surfaces (`index.html` + `app.js`) are the 028 svelte
+equivalents: `index.html` (vars) + `src/components/` / `src/lib/`.
 
 ## Proposed decisions (settled at owner review)
 

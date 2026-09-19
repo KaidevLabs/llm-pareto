@@ -32,8 +32,25 @@
     --accent: #34d399;
     --accent-dim: rgba(52, 211, 153, 0.14);
     --gold: #ffd166;
+    --lose: #fb923c;
+    --tie: #60a5fa;
+    --chart-h: 620px;
+    /* comparator card row heights — the shared title rail matches them */
+    --row-h: 34px;
+    --head-block: 52px;
+    --links-block: 30px;
+    --card-w: 280px;
   }
   * { box-sizing: border-box; }
+  /* visible scroll rail for the height-capped overlays (drawer body,
+     comparator card columns) */
+  ::-webkit-scrollbar { width: 10px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(148, 163, 184, 0.22);
+    border-radius: 6px;
+  }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(148, 163, 184, 0.38); }
   html, body { margin: 0; }
   body {
     font-family: "Inter", system-ui, -apple-system, sans-serif;
@@ -49,6 +66,15 @@
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+  }
+  /* page-level cap (owner directive 2026-09-19): one centered 1440px
+     column — shell blocks (header, nav, note, main, footer) keep their
+     28px inner paddings and center as a unit; wide viewports get the
+     symmetric outside breathing room instead of edge-to-edge stretch */
+  #app > * {
+    width: 100%;
+    max-width: 1440px;
+    margin-inline: auto;
   }
   /* shared utilities (were global in the vanilla app) */
   .hidden { display: none !important; }

@@ -19,6 +19,7 @@
   import SearchBox from "./components/SearchBox.svelte";
   import OfPanel from "./components/OfPanel.svelte";
   import Details from "./components/Details.svelte";
+  import Comparator from "./components/Comparator.svelte";
   import Footer from "./components/Footer.svelte";
   let echartsFatal = $state(false);
 
@@ -190,12 +191,20 @@
     </Panel>
   {/if}
 
+  {#if data.loaded}
+    <!-- Two-model comparator (plan 025 D1): panel section below the chart. -->
+    <Comparator />
+  {/if}
+
   {#if ui.selected}
     <!-- Details drawer (plan 006 D1): overlays the chart's right edge — no
-         layout change, no reflow. -->
+         layout change, no reflow. Capped at the chart's height (brother
+         panels); the body scrolls when the card runs long. -->
     <aside class="drawer" aria-label="model details">
       <button class="drawer-x" aria-label="close details" onclick={() => (ui.selected = null)}>×</button>
-      <Details d={ui.selected} />
+      <div class="drawer-body">
+        <Details d={ui.selected} />
+      </div>
     </aside>
   {/if}
 </main>
@@ -281,18 +290,24 @@
     height: 4px !important;
   }
 
-  /* Details drawer shell (plan 006 D1); the body styles live in Details. */
+  /* Details drawer shell (plan 006 D1); the body styles live in Details.
+     Capped at the chart's height (owner directive 2026-09-19) — the body
+     scrolls when the card runs long, the × stays fixed. */
   .drawer {
     position: absolute;
     top: 0;
     right: 28px;
-    bottom: 0;
+    height: var(--chart-h);
     width: 400px;
     z-index: 20;
     background: #0a0e16;
     border: 1px solid var(--border);
     border-radius: 14px;
     box-shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+  }
+  .drawer-body {
+    height: 100%;
     overflow-y: auto;
     padding: 18px;
   }
@@ -300,6 +315,7 @@
     position: absolute;
     top: 10px;
     right: 10px;
+    z-index: 2;
     border: 0;
     background: transparent;
     color: var(--muted);

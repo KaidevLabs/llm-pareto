@@ -97,7 +97,7 @@
     border-radius: 14px;
     display: flex;
     flex-direction: column;
-    min-height: 620px;
+    min-height: var(--chart-h);
     overflow: hidden;
   }
   .panel-head {

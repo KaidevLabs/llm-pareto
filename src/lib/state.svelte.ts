@@ -23,5 +23,10 @@ export const ui = $state({
   search: "",
   selected: null as Row | null,
   three3d: false,
+  // 025 D6 (owner-amended 2026-09-19 to the multi-comparator): the picked
+  // models, or_id-keyed, in-memory only (no URL hash, no storage — reset
+  // on reload). Empty = the D5 pre-seed (top-2 by arena rank, resolved by
+  // the component); capped at 4 picks.
+  cmps: [] as string[],
 });
 
