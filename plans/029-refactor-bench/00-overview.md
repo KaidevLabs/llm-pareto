@@ -1,6 +1,6 @@
 # 029 — Refactor benchmark suite (app.js → svelte cutover, reusable)
 
-> **Status:** EXECUTING (step 1/5).
+> **Status:** EXECUTING (step 2/5).
 
 Date: 2026-09-19.
 
@@ -23,6 +23,7 @@ and for every future big refactor.
 | A4 | Old worktree gets current `public/data`, `public/assets`, `public/fonts` copied over before serving | Fairness: both sides serve the identical data snapshot — only app code differs | 2026-09-19 |
 | A5 | Serving via a small node zero-dep static server with gzip + brotli | `python3 http.server` sends no compression — transfer numbers would mislead vs real CF behavior | 2026-09-19 |
 | A6 | The report is durable: recorded in this plan's close step (05) as-built, mirrored to `.tmp/refactor-bench/report.md` | Solves the actual "forgotten writeup" failure mode permanently | 2026-09-19 |
+| A7 | `refB` (the new/post side) defaults to `e858d24` (the 028 cutover-complete commit — `public/app.js` + `public/index.html` deleted, svelte live), **not** HEAD | HEAD carries the 027 guided-tour feature (`051f99d`) and 025 comparator feature (`f231435`, `20a87b0`) that landed after the cutover; comparing old `7957602` vs HEAD would conflate the refactor with later features. Owner-directed 2026-09-19 — overrides A1's "current tree" wording. | 2026-09-19 |
 
 ## Current state
 
@@ -84,7 +85,7 @@ the plan commit carrying the as-built record.
 | Step | File | Depends on | Status | Commit |
 |------|------|------------|--------|--------|
 | 1 | 01-harness-static.md | — | ✅ COMPLETE (committed 5c119bc, 2026-09-19) | plan: 029 — step 01 |
-| 2 | 02-load-timing.md | 1 | OPEN | plan commit only |
+| 2 | 02-load-timing.md | 1 | ✅ COMPLETE (committed 2a69a1e, 2026-09-19) | plan: 029 — step 02 |
 | 3 | 03-interactions.md | 1, 2 | OPEN | plan commit only |
 | 4 | 04-report.md | 1–3 | OPEN | plan commit only |
 | 5 | 05-close.md | 4 | OPEN | closing plan commit (`plan: 029-refactor-bench`) |

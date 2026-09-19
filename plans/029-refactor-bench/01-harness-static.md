@@ -91,3 +91,11 @@ First-run static numbers (results/static.json): old 1 file / 2,093 ln / 184
 fns / cyclomatic Σ598 / max fn 34 / max nesting 40 / dup 1.62% / `any` 0; new
 32 app files / 2,948 ln / 258 fns / Σ728 / max fn 34 (charts.ts, also the only
 `any` carrier — 27, the echarts seam rule holds) / max nesting 23 / dup 2.35%.
+
+> **Superseded by A7:** the figures above were captured with `new = HEAD`.
+> The owner redirected the baseline to the pure-cutover commit `e858d24` (A7);
+> the canonical new-side numbers are therefore **26 app files / 2,198 ln /
+> 173 fns / Σ553 / max fn 34 (charts.ts `any` 25) / max nesting 23 / dup 2.0%
+> (5 clones) / tests 12 files·28 describes·66 cases**. The 32→26 / 2,948→2,198
+> / 258→173 / 728→553 delta is exactly the 027 tour + 025 comparator features
+> that HEAD carried past the cutover.
