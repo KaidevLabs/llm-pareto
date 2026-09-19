@@ -41,6 +41,23 @@ describe("read", () => {
     ]);
   });
 
+  it("thr reads pmin/pmax/emin/smin, absent keys fall to null", () => {
+    expect(read("?pmin=5&pmax=20&emin=1300&smin=40").thr).toEqual({
+      priceMin: 5, priceMax: 20, eloMin: 1300, speedMin: 40,
+    });
+    expect(read("?pmin=5").thr).toEqual({
+      priceMin: 5, priceMax: null, eloMin: null, speedMin: null,
+    });
+  });
+
+  it("invalid threshold values drop; no valid ones -> no thr key", () => {
+    expect(read("?pmin=abc&pmax=-1")).toEqual({});
+    expect(read("?smin=NaN")).toEqual({});
+    expect(read("?emin=x&smin=40").thr).toEqual({
+      priceMin: null, priceMax: null, eloMin: null, speedMin: 40,
+    });
+  });
+
   it("full combo", () => {
     expect(read("?view=3d&q=claude&vis=vision&ratio=8.5&spread=1&frontier=0&fam=OpenAI|GPT")).toEqual({
       three3d: true,
@@ -64,6 +81,7 @@ describe("write", () => {
     frontier: true,
     search: "",
     families: [] as string[],
+    thr: { priceMin: null, priceMax: null, eloMin: null, speedMin: null } as const,
   };
 
   it("defaults -> empty string (bare URL stays canonical)", () => {
@@ -82,6 +100,12 @@ describe("write", () => {
 
   it("ratio is rounded to 1dp", () => {
     expect(write({ ...base, ratio: 3.333333 })).toBe("ratio=3.3");
+  });
+
+  it("thr bounds serialize rounded to 2dp, nulls omitted", () => {
+    expect(write({ ...base, thr: { priceMin: 3.14159, priceMax: null, eloMin: 1300.5, speedMin: null } })).toBe(
+      "pmin=3.14&emin=1300.5",
+    );
   });
 
   it("families join with commas", () => {
@@ -107,6 +131,7 @@ describe("round-trip", () => {
       frontier: false,
       search: "gemini",
       families: ["a|b", "c|d"],
+      thr: { priceMin: 0.5, priceMax: 99.9, eloMin: 1200, speedMin: 25.5 },
     };
     const back = read("?" + write(s));
     expect(back).toEqual({
@@ -117,6 +142,7 @@ describe("round-trip", () => {
       frontier: false,
       search: "gemini",
       families: ["a|b", "c|d"],
+      thr: { priceMin: 0.5, priceMax: 99.9, eloMin: 1200, speedMin: 25.5 },
     });
   });
 

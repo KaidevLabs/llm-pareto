@@ -7,6 +7,7 @@
 
 import { SvelteSet } from "svelte/reactivity";
 import type { Row } from "./types";
+import type { Thr } from "./filters";
 
 export type Mode = "general" | "in" | "out" | "speed";
 
@@ -30,5 +31,13 @@ export const ui = $state({
   // empty state stands until they pick (2026-09-19 owner directive).
   // Capped at 4 picks.
   cmps: null as string[] | null,
+  // Numeric threshold filters (plan 032 D3): null = unbounded. Serialized
+  // via urlstate (pmin/pmax/emin/smin), continuous for history-burst.
+  thr: {
+    priceMin: null,
+    priceMax: null,
+    eloMin: null,
+    speedMin: null,
+  } as Thr,
 });
 

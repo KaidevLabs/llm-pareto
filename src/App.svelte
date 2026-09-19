@@ -72,6 +72,10 @@
     void ui.frontier;
     void ui.search;
     void ui.ratio;
+    void ui.thr.priceMin;
+    void ui.thr.priceMax;
+    void ui.thr.eloMin;
+    void ui.thr.speedMin;
     void [...ui.families];
     notifyChanged();
   });

@@ -16,7 +16,7 @@ let applying = false;
 let lastCont = "";
 
 function contSnap(): string {
-  return JSON.stringify([ui.search, ui.ratio]);
+  return JSON.stringify([ui.search, ui.ratio, ui.thr]);
 }
 
 function discSnap(): string {
@@ -39,6 +39,7 @@ export function seedFromURL() {
   if (patch.frontier !== undefined) ui.frontier = patch.frontier;
   if (patch.search !== undefined) ui.search = patch.search;
   if (patch.families) for (const f of patch.families) ui.families.add(f);
+  if (patch.thr) ui.thr = patch.thr;
   lastCont = contSnap();
   history.replaceState(null, "", location.pathname + location.search);
 }
@@ -100,6 +101,7 @@ export function applyFromURL(): void {
     ui.search = patch.search ?? "";
     ui.families.clear();
     if (patch.families) for (const f of patch.families) ui.families.add(f);
+    ui.thr = patch.thr ?? { priceMin: null, priceMax: null, eloMin: null, speedMin: null };
     lastCont = contSnap();
   } finally {
     applying = false;

@@ -1,4 +1,5 @@
 import type { Row } from "./types";
+import type { Mode } from "./state.svelte";
 import { orgOf, familyOf } from "./family";
 
 // Structural view of the live filter state (state.svelte.ts) — pure modules
@@ -6,6 +7,54 @@ import { orgOf, familyOf } from "./family";
 export interface Filters {
   families: { has(key: string): boolean; size: number };
   vision: "all" | "vision";
+  thr?: Thr;
+  thrCtx?: ThrCtx;
+}
+
+// Numeric threshold filters (plan 032 D1/D3). null = unbounded. The price
+// bound measures the active view's x-axis price (D2): blended at `ratio`
+// for general (and the 3D showcase's x), input price in `in`, output price
+// in `out`; in the speed view there is no price axis, so the price bound is
+// inactive there.
+export interface Thr {
+  priceMin: number | null;
+  priceMax: number | null;
+  eloMin: number | null;
+  speedMin: number | null;
+}
+
+// Context the pure predicate needs per render: the mix ratio, the active
+// view, and a speed lookup (speedOf is O(endpoints) — callers precompute a
+// map once per render). Speed is structurally { toks } so tests don't need
+// the full Speed shape.
+export interface ThrCtx {
+  ratio: number;
+  mode: Mode | "3d";
+  speed(orId: string): { toks: number } | null;
+}
+
+export function viewPrice(d: Row, mode: Mode | "3d", ratio: number): number | null {
+  if (mode === "in") return d.price_in_per_m;
+  if (mode === "out") return d.price_out_per_m;
+  return blendedPrice(d, ratio);
+}
+
+export function passThresholds(d: Row, thr: Thr, ctx: ThrCtx): boolean {
+  if (thr.priceMin != null || thr.priceMax != null) {
+    if (ctx.mode !== "speed") {
+      const p = viewPrice(d, ctx.mode, ctx.ratio);
+      if (p == null) return false;
+      if (thr.priceMin != null && p < thr.priceMin) return false;
+      if (thr.priceMax != null && p > thr.priceMax) return false;
+    }
+  }
+  if (thr.eloMin != null && (d.arena_elo == null || d.arena_elo < thr.eloMin))
+    return false;
+  if (thr.speedMin != null) {
+    const s = ctx.speed(d.or_id);
+    if (!s || s.toks < thr.speedMin) return false;
+  }
+  return true;
 }
 
 export function filterRows(rows: Row[], f: Filters): Row[] {
@@ -13,6 +62,7 @@ export function filterRows(rows: Row[], f: Filters): Row[] {
   if (f.families.size)
     out = out.filter((d) => f.families.has(orgOf(d) + "|" + familyOf(d)));
   if (f.vision === "vision") out = out.filter((d) => !!d.vision);
+  if (f.thr && f.thrCtx) out = out.filter((d) => passThresholds(d, f.thr!, f.thrCtx!));
   return out;
 }
 

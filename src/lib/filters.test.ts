@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { filterRows, searchHit, blendedPrice } from "./filters";
+import { filterRows, searchHit, blendedPrice, passThresholds } from "./filters";
+import type { Thr } from "./filters";
 import type { Row } from "./types";
 
 const row = (over: Partial<Row>): Row =>
@@ -41,6 +42,80 @@ describe("filterRows", () => {
     expect(ids(filterRows(rows, { ...none, vision: "vision" }))).toEqual([
       "a/foo-baz", "b/foo-bar",
     ]);
+  });
+});
+
+describe("passThresholds", () => {
+  // worked example: in 10, out 30, ratio 3 → blended = 0.75*10 + 0.25*30 = 15
+  const d = row({ or_id: "a/x", price_in_per_m: 10, price_out_per_m: 30, arena_elo: 1400 });
+  const ctx = (over: Partial<{ ratio: number; mode: "general" | "in" | "out" | "speed" | "3d"; speed: (id: string) => { toks: number } | null }> = {}) => ({
+    ratio: 3,
+    mode: "general" as const,
+    speed: (_id: string): { toks: number } | null => ({ toks: 100 }),
+    ...over,
+  });
+  const noThr: Thr = { priceMin: null, priceMax: null, eloMin: null, speedMin: null };
+
+  it("passes everything with no thresholds", () => {
+    expect(passThresholds(d, noThr, ctx())).toBe(true);
+  });
+  it("price min/max measure the blended price in general mode", () => {
+    expect(passThresholds(d, { ...noThr, priceMin: 15 }, ctx())).toBe(true);
+    expect(passThresholds(d, { ...noThr, priceMin: 15.01 }, ctx())).toBe(false);
+    expect(passThresholds(d, { ...noThr, priceMax: 15 }, ctx())).toBe(true);
+    expect(passThresholds(d, { ...noThr, priceMax: 14.99 }, ctx())).toBe(false);
+  });
+  it("in/out modes measure the view's own price", () => {
+    expect(passThresholds(d, { ...noThr, priceMin: 10 }, ctx({ mode: "in" }))).toBe(true);
+    expect(passThresholds(d, { ...noThr, priceMin: 10.5 }, ctx({ mode: "in" }))).toBe(false);
+    expect(passThresholds(d, { ...noThr, priceMax: 30 }, ctx({ mode: "out" }))).toBe(true);
+    expect(passThresholds(d, { ...noThr, priceMax: 25 }, ctx({ mode: "out" }))).toBe(false);
+  });
+  it("speed mode leaves the price threshold inactive (D2)", () => {
+    expect(passThresholds(d, { ...noThr, priceMin: 1000 }, ctx({ mode: "speed" }))).toBe(true);
+  });
+  it("a price-less row fails an active price bound", () => {
+    expect(passThresholds(row({ or_id: "b/y" }), { ...noThr, priceMin: 0.01 }, ctx())).toBe(false);
+  });
+  it("elo min culls below and missing Elo", () => {
+    expect(passThresholds(d, { ...noThr, eloMin: 1400 }, ctx())).toBe(true);
+    expect(passThresholds(d, { ...noThr, eloMin: 1400.5 }, ctx())).toBe(false);
+    expect(passThresholds(row({ or_id: "b/y" }), { ...noThr, eloMin: 100 }, ctx())).toBe(false);
+  });
+  it("speed min culls below and missing speed (D2 ctx speed fn)", () => {
+    expect(passThresholds(d, { ...noThr, speedMin: 100 }, ctx())).toBe(true);
+    expect(passThresholds(d, { ...noThr, speedMin: 100.5 }, ctx())).toBe(false);
+    expect(passThresholds(d, { ...noThr, speedMin: 1 }, ctx({ speed: () => null }))).toBe(false);
+  });
+  it("bounds compose additively", () => {
+    expect(passThresholds(d, { ...noThr, priceMin: 15, eloMin: 1400, speedMin: 100 }, ctx())).toBe(true);
+    expect(passThresholds(d, { ...noThr, priceMin: 15, eloMin: 1400.5 }, ctx())).toBe(false);
+  });
+});
+
+describe("filterRows + thresholds", () => {
+  const rows = [
+    row({ or_id: "cheap", price_in_per_m: 1, price_out_per_m: 3, arena_elo: 1200 }),
+    row({ or_id: "dear", price_in_per_m: 10, price_out_per_m: 30, arena_elo: 1400 }),
+  ];
+  const none = { families: { has: () => false, size: 0 }, vision: "all" as const };
+  const thrCtx = {
+    ratio: 3,
+    mode: "general" as const,
+    speed: (): { toks: number } | null => null,
+  };
+  it("thresholds cull additively with families/vision", () => {
+    expect(filterRows(rows, { ...none, thr: { priceMin: 5, priceMax: null, eloMin: null, speedMin: null }, thrCtx })).toEqual([
+      rows[1],
+    ]);
+    expect(
+      filterRows(rows, {
+        ...none,
+        vision: "vision",
+        thr: { priceMin: 5, priceMax: null, eloMin: null, speedMin: null },
+        thrCtx,
+      }),
+    ).toEqual([]);
   });
 });
 

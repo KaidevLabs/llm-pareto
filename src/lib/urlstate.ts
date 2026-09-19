@@ -6,11 +6,14 @@
 // out-of-scope). Cookieless: URL params are the only state surface here.
 
 import type { Mode } from "./state.svelte";
+import type { Thr } from "./filters";
 
 export type View = Mode | "3d";
 
 const VIEWS: View[] = ["general", "in", "out", "speed", "3d"];
 const VISIONS = ["all", "vision"];
+
+const NO_THR: Thr = { priceMin: null, priceMax: null, eloMin: null, speedMin: null };
 
 const DEFAULTS = {
   mode: "general" as Mode,
@@ -41,6 +44,7 @@ export function read(search: string): {
   frontier?: boolean;
   search?: string;
   families?: string[];
+  thr?: Thr;
 } {
   const q = parseQuery(search);
   const out: ReturnType<typeof read> = {};
@@ -63,6 +67,25 @@ export function read(search: string): {
       .filter((s) => s.includes("|"));
     if (fams.length) out.families = fams;
   }
+  // Thresholds (032 step 1): each bound is independent; a bound absent or
+  // unreadable from the URL falls to null (unbounded). A patch with no
+  // valid bound at all is not emitted — the key stays off the bare URL.
+  const bounds: [keyof Thr, string | undefined][] = [
+    ["priceMin", q.pmin],
+    ["priceMax", q.pmax],
+    ["eloMin", q.emin],
+    ["speedMin", q.smin],
+  ];
+  let thr: Thr | null = null;
+  for (const [key, raw] of bounds) {
+    let v: number | null = null;
+    if (raw !== undefined) {
+      const n = Number(raw);
+      if (Number.isFinite(n) && n >= 0) v = n;
+    }
+    if (v !== null) (thr ??= { ...NO_THR })[key] = v;
+  }
+  if (thr) out.thr = thr;
   return out;
 }
 
@@ -78,6 +101,7 @@ export function write(s: {
   frontier: boolean;
   search: string;
   families: Iterable<string>;
+  thr?: Thr;
 }): string {
   const p = new URLSearchParams();
   const view: View = s.three3d ? "3d" : s.mode;
@@ -89,5 +113,13 @@ export function write(s: {
   if (!s.frontier) p.set("frontier", "0");
   const fams = [...s.families];
   if (fams.length) p.set("fam", fams.join(","));
+  // Threshold bounds (032 step 1): null = default (unbounded) — omitted.
+  // Values round to 2dp so slider noise never churns the URL.
+  const r2 = (v: number) => String(Math.round(v * 100) / 100);
+  const thr = s.thr ?? NO_THR;
+  if (thr.priceMin != null) p.set("pmin", r2(thr.priceMin));
+  if (thr.priceMax != null) p.set("pmax", r2(thr.priceMax));
+  if (thr.eloMin != null) p.set("emin", r2(thr.eloMin));
+  if (thr.speedMin != null) p.set("smin", r2(thr.speedMin));
   return p.toString();
 }
