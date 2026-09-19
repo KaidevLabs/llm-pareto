@@ -1,8 +1,10 @@
 # 022 — Provider data foundation (per-provider layer, all models)
 
-Date: 2026-09-17. **Status: EXECUTING (step 4/5). Owner approved by
-execute trigger (2026-09-17). Step 1: `4b93918`. Step 2: `e4493ca`.
-Step 3: `eaedd0e`.**
+Date: 2026-09-17. **Status: ARCHIVED (2026-09-19) — owner approved by
+execute trigger (2026-09-17) → 4b93918 (step 1, fetch layer) → e4493ca
+(step 2, parse + normalize) → eaedd0e (step 3, validate + write) →
+18306ed (step 4, D7 gate) → step 5 (no code; first live run
+2026-09-17).**
 Source: `plans/021-exploration-backlog.md` items B14/B15 + their exploration
 findings + plan-decomposition round 2 (owner decision A: this is the shared
 data plan; 023/024/025 consume it).
@@ -133,6 +135,35 @@ validated, and is diff-reviewed in the data commits; 023 (speed axis) and
 5. First live run: dispatch the workflow, owner reviews the
    `endpoints.json` diff + the report section end-to-end, verify the deploy
    (live == main). No code commit unless the review changes something.
+    ✅ Complete — (2026-09-19, no code changes). As-built: first live run =
+    the 2026-09-17T11:14Z workflow_dispatch (→ bot commit `e27e7c0`);
+    scheduled runs since exercise the D7 gate's changed path on every
+    drift (`39541df`, `6902c50`) — the no-op path stays rehearsal-only
+    (step 4's scratch clone), as D7 predicted: endpoints.json drifts
+    ~every run. Live == main verified via meta.json's provenance block +
+    fetched_at (2026-09-18T20:00Z, `e4e9723`-era data) on the live site.
+    Two post-plan hardenings landed against this plan's seams under
+    normal data maintenance (Amendments below) — the D8/D9 semantics
+    they change are recorded there, not re-litigated here.
+
+## Amendments (post-plan, owner-validated)
+
+- **D8 floor: zero-throughput stats are dropped, not fatal** — `190228d`
+  (2026-09-18). A 0 t/s percentile is upstream junk (observed:
+  DeepInfra/llama-3.1-70b — a zero-throughput request batch in the
+  provider's stats window); the endpoint's stats sub-object is dropped
+  (entry kept, `stats_dropped` counted in the report) instead of dying
+  the run. The remaining floors stay the systemic-drift tripwire; the
+  front end's speed aggregation already ignores such endpoints (023).
+- **D9 fetch: page-parse transients retry** — `e858d24` (2026-09-18).
+  OpenRouter's model page sometimes ships a partial SSR render without
+  the dehydrated endpointStats (15/154 pages in one run; the same URL
+  re-fetched immediately carries it) — the anchor-miss became
+  `_PageFormatError`, re-fetched up to 3 attempts with backoff; a page
+  that never carries the anchor still dies the run (real format drift
+  keeps D1 fail-fast semantics). Root cause of the 4 failed scheduled
+  runs on 2026-09-17/18; first scheduled run on the fixed code fires
+  2026-09-19T00:15Z.
 
 ## Out of scope
 
@@ -158,12 +189,23 @@ validated, and is diff-reviewed in the data commits; 023 (speed axis) and
 
 - [x] Owner approves this plan (D1–D9) in a review session — execute
       trigger + staged step 1 (2026-09-17).
-- [ ] `python3 update.py` green with the new provider report section
+- [x] `python3 update.py` green with the new provider report section
       (endpoint counts, stats coverage, join misses, merged duplicates);
-      full suite green incl. the three new seams.
-- [ ] `endpoints.json` committed + owner-reviewed diff; `meta.json`
+      full suite green incl. the three new seams. (2026-09-17: step-3 live
+      run — 152/154 models with stats, 100% join, 0 violations; suite 157
+      green. Post-plan fixes keep both green: e858d24 adjusts
+      tests/test_provider_normalize.py, e4e9723 runs clean.)
+- [x] `endpoints.json` committed + owner-reviewed diff; `meta.json`
       provenance block present; the file is the joined-154 only.
-- [ ] A scheduled run exercises the D7 gate: a green commit when the
+      (2026-09-17: owner staged the first endpoints.json into eaedd0e;
+      provenance block live-verified 2026-09-19.)
+- [x] A scheduled run exercises the D7 gate: a green commit when the
       provider layer changed, a green no-op when only `meta.json` moved.
-- [ ] The live site is unchanged by this plan (same HTML/JS; no new client
+      (Changed path: 39541df + 6902c50 scheduled commits. No-op path:
+      step-4 scratch-clone rehearsal only — in the wild the layer drifts
+      nearly every run, the D7-accepted consequence.)
+- [x] The live site is unchanged by this plan (same HTML/JS; no new client
       fetch — `app.js` still loads only `combined.json` + `meta.json`).
+      (022's four code commits touch no client surface; the client's lazy
+      endpoints.json fetch arrived later under 023 — separate plan,
+      archived.)
