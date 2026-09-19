@@ -1,4 +1,4 @@
-# Step 01 — Harness skeleton + static analysis — OPEN
+# Step 01 — Harness skeleton + static analysis — ✅ COMPLETE (committed 5c119bc, 2026-09-19)
 
 ## Spec
 
@@ -53,4 +53,41 @@ Load/interaction/report modules (stubbed calls ok), `src/`, `update.py`,
 
 ## As-built
 
-(to be written at close)
+Implemented 2026-09-19. All modules under `.tmp/refactor-bench/` (gitignored):
+`run.mjs` (CLI: refA/refB/`--single`/`--live`/`--runs N`/`--port-base`; worktree
+lifecycle via `git worktree add/remove --force` + prune + `rmSync` fallback in
+`finally`), `lib/serve.mjs` (A5 zero-dep server: gzip/brotli by Accept-Encoding,
+on-the-fly with per-key memo cache, Content-Encoding/Last-Modified/Cache-Control
+headers, 404s + traversal guard), `lib/fair.mjs` (A4 copy of data/assets/fonts),
+`lib/build.mjs` (fresh `npm run build` + node_modules symlink for worktree-B
+builds; HEAD sha/dirty flag), `lib/static.mjs` (analysis).
+
+Verification: `run.mjs --runs 1` exit 0; `results/static.json` populated both
+sides; `git worktree list` shows only main after the run; spot-check cloc old
+JS 1,745 code + 250 comment + 98 blank = 2,093 = `wc -l` of `app.js` exactly.
+`serve.mjs` smoke-tested separately: br on the 1.7 MB echarts min.js →
+311,597 B with `Content-Encoding: br`; gzip on combined.json → 16.3 KB; 404 +
+path-traversal blocked.
+
+Substitutions and findings (A3 escape hatch):
+
+- escomplex (npx) rejected: `escomplex`, `typhonjs-escomplex`,
+  `typhonjs-escomplex-project` all ship no CLI (npx: "could not determine
+  executable") and their 2015-era parsers cannot read TypeScript. Substituted
+  an in-module cyclomatic/nesting/`any` pass over ASTs from the repo's own
+  TypeScript 5.9 — same method both sides. cloc + jscpd via npx as planned
+  (cloc natively recognizes Svelte — no force-lang needed; jscpd v4's report
+  shape is `statistics.total`, not the v3 `statistics.clone`).
+- The cutover ref carries **no JS tests** — the plan's "old node:test seam"
+  was already superseded by 028 A7's vitest *before* the cutover commit; the
+  old side's only suite is the Python one (9 files, unchanged count on both
+  sides). Recorded as a data correction, not a deviation.
+- `index.html` at the ref carries no inline JS (scripts are external), so the
+  complexity/duplication corpus is `app.js` only; `index.html` counts toward
+  cloc only. New-side corpora (cloc + complexity + jscpd) exclude tests for
+  parity; tests reported separately (new: 16 files / 36 describes / 100 cases).
+
+First-run static numbers (results/static.json): old 1 file / 2,093 ln / 184
+fns / cyclomatic Σ598 / max fn 34 / max nesting 40 / dup 1.62% / `any` 0; new
+32 app files / 2,948 ln / 258 fns / Σ728 / max fn 34 (charts.ts, also the only
+`any` carrier — 27, the echarts seam rule holds) / max nesting 23 / dup 2.35%.

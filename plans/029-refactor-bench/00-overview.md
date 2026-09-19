@@ -1,6 +1,6 @@
 # 029 — Refactor benchmark suite (app.js → svelte cutover, reusable)
 
-> **Status:** OWNER REVIEW — design approved in-session 2026-09-19 ("dream big", nothing struck; A1–A6 settled). Planning commit on the owner's `staged` signal. Execution starts on the owner's explicit go (separate session per standing rule).
+> **Status:** EXECUTING (step 1/5).
 
 Date: 2026-09-19.
 
@@ -83,7 +83,7 @@ the plan commit carrying the as-built record.
 
 | Step | File | Depends on | Status | Commit |
 |------|------|------------|--------|--------|
-| 1 | 01-harness-static.md | — | OPEN | plan commit only |
+| 1 | 01-harness-static.md | — | ✅ COMPLETE (committed 5c119bc, 2026-09-19) | plan: 029 — step 01 |
 | 2 | 02-load-timing.md | 1 | OPEN | plan commit only |
 | 3 | 03-interactions.md | 1, 2 | OPEN | plan commit only |
 | 4 | 04-report.md | 1–3 | OPEN | plan commit only |
@@ -107,6 +107,7 @@ the plan commit carrying the as-built record.
 | Branch | Hangs on | Parked because | Forces revisit when |
 |--------|----------|----------------|---------------------|
 | Promote the harness from `.tmp/` scratch to a committed `tools/` entry | Harness surviving 2+ real uses | Owner asked for scratch; repo-hygiene call is theirs | Owner finds it durable/valuable after this run or a future refactor |
+| Exec-grade results dashboard — owner, 2026-09-19, mid-execution: "make a really good page that shows this data to me, like a dashboard and some insights on the numbers this vs that, in a really cool way, like if we like to show this on a bunch of C level seniors" | The step-4 report + `results/*.json` existing to visualize | Floated mid-execution; 029's settled scope is the markdown report — a presentable page is its own plan | Owner green-lights a follow-up plan after reviewing 029's report |
 
 ## Out of scope
 
