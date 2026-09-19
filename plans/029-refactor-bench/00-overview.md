@@ -1,6 +1,6 @@
 # 029 — Refactor benchmark suite (app.js → svelte cutover, reusable)
 
-> **Status:** EXECUTING (step 3/5).
+> **Status:** EXECUTING (step 4/5).
 
 Date: 2026-09-19.
 
@@ -87,7 +87,7 @@ the plan commit carrying the as-built record.
 | 1 | 01-harness-static.md | — | ✅ COMPLETE (committed 5c119bc, 2026-09-19) | plan: 029 — step 01 |
 | 2 | 02-load-timing.md | 1 | ✅ COMPLETE (committed 2a69a1e, 2026-09-19) | plan: 029 — step 02 |
 | 3 | 03-interactions.md | 1, 2 | ✅ COMPLETE (committed 86a20ad, 2026-09-19) | plan: 029 — step 03 |
-| 4 | 04-report.md | 1–3 | OPEN | plan commit only |
+| 4 | 04-report.md | 1–3 | ✅ COMPLETE (committed 5aaac30, 2026-09-19) | plan: 029 — step 04 |
 | 5 | 05-close.md | 4 | OPEN | closing plan commit (`plan: 029-refactor-bench`) |
 
 ## Definition of done
