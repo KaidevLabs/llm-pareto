@@ -1,6 +1,6 @@
 # 029 — Refactor benchmark suite (app.js → svelte cutover, reusable)
 
-> **Status:** EXECUTING (step 4/5).
+> **Status:** ARCHIVED (2026-09-19).
 
 Date: 2026-09-19.
 
@@ -88,20 +88,28 @@ the plan commit carrying the as-built record.
 | 2 | 02-load-timing.md | 1 | ✅ COMPLETE (committed 2a69a1e, 2026-09-19) | plan: 029 — step 02 |
 | 3 | 03-interactions.md | 1, 2 | ✅ COMPLETE (committed 86a20ad, 2026-09-19) | plan: 029 — step 03 |
 | 4 | 04-report.md | 1–3 | ✅ COMPLETE (committed 5aaac30, 2026-09-19) | plan: 029 — step 04 |
-| 5 | 05-close.md | 4 | OPEN | closing plan commit (`plan: 029-refactor-bench`) |
+| 5 | 05-close.md | 4 | ✅ COMPLETE (committed 04d7baf, 2026-09-19) | plan: 029 — step 05 (`plan: 029-refactor-bench`) |
 
 ## Definition of done
 
-- [ ] `node .tmp/refactor-bench/run.mjs` (no args) reproduces the full
-      old-vs-new comparison end to end, exit 0.
-- [ ] `run.mjs <refA> <refB>` works on an arbitrary pair (spot-check);
-      `--single` measures the current tree only.
-- [ ] Load results include throttled (CPU 4× + Fast 3G) and unthrottled runs,
-      cold + warm cache, median/p90.
-- [ ] Report markdown has all four dimension tables + caveats + provenance,
-      and is recorded in 05-close's as-built (A6).
-- [ ] Raw per-run JSON lives in `.tmp/refactor-bench/results/` (traceability).
-- [ ] Plan archived per the closing procedure.
+- [x] `node .tmp/refactor-bench/run.mjs` (no args) reproduces the full
+      old-vs-new comparison end to end, exit 0. — **evidence:** clean-slate rerun
+      (§329) exits 0 in ~334 s; `report.md` regenerated.
+- [x] `run.mjs <refA> <refB>` works on an arbitrary pair (spot-check);
+      `--single` measures the current tree only. — **evidence:** `--single --runs 1`
+      (§317) exits 0 and emits a single-side `report.md`; the two-ref path is the
+      same parameterized code exercised by every default run.
+- [x] Load results include throttled (CPU 4× + Fast 3G) and unthrottled runs,
+      cold + warm cache, median/p90. — **evidence:** `report.md` §2 has all four
+      conditions, each with median + p90.
+- [x] Report markdown has all four dimension tables + caveats + provenance,
+      and is recorded in 05-close's as-built (A6). — **evidence:** this step's
+      as-built carries the full A6 writeup; mirror at `results/report.md`.
+- [x] Raw per-run JSON lives in `.tmp/refactor-bench/results/` (traceability). —
+      **evidence:** `static.json` / `load.json` / `interact.json` / `provenance.json`
+      / `report.md` present.
+- [x] Plan archived per the closing procedure. — **evidence:** moved to
+      `plans/archive/029-refactor-bench/`; single closing commit below.
 
 ## Open branches
 
