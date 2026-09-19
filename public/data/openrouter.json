@@ -9,6 +9,15 @@
   "context_length": 262144
  },
  {
+  "id": "z-ai/glm-5.3-flashx",
+  "name": "Z.ai: GLM 5.3 FlashX",
+  "org": "z-ai",
+  "price_in_per_m": 0.37,
+  "price_out_per_m": 1.25,
+  "vision": true,
+  "context_length": 1048576
+ },
+ {
   "id": "unbiased/pareto",
   "name": "Pareto",
   "org": "unbiased",
@@ -381,7 +390,7 @@
   "id": "nvidia/nemotron-3.5-lightning",
   "name": "NVIDIA: Nemotron 3.5 Lightning",
   "org": "nvidia",
-  "price_in_per_m": 0.08,
+  "price_in_per_m": 0.07,
   "price_out_per_m": 0.2,
   "vision": false,
   "context_length": 262144
@@ -435,8 +444,8 @@
   "id": "deepseek/deepseek-v4-flash-0731",
   "name": "DeepSeek: DeepSeek V4 Flash 0731",
   "org": "deepseek",
-  "price_in_per_m": 0.06,
-  "price_out_per_m": 0.12,
+  "price_in_per_m": 0.065,
+  "price_out_per_m": 0.18,
   "vision": false,
   "context_length": 1310720
  },
@@ -570,8 +579,8 @@
   "id": "moonshotai/kimi-k3",
   "name": "MoonshotAI: Kimi K3",
   "org": "moonshotai",
-  "price_in_per_m": 1.95,
-  "price_out_per_m": 10.92,
+  "price_in_per_m": 1.875,
+  "price_out_per_m": 10.5,
   "vision": true,
   "context_length": 1048576
  },
@@ -678,8 +687,8 @@
   "id": "tencent/hy3",
   "name": "Tencent: Hy3",
   "org": "tencent",
-  "price_in_per_m": 0.0825,
-  "price_out_per_m": 0.33,
+  "price_in_per_m": 0.132,
+  "price_out_per_m": 0.528,
   "vision": false,
   "context_length": 262144
  },
@@ -822,8 +831,8 @@
   "id": "nvidia/nemotron-3-ultra-550b-a55b",
   "name": "NVIDIA: Nemotron 3 Ultra",
   "org": "nvidia",
-  "price_in_per_m": 0.625,
-  "price_out_per_m": 3.125,
+  "price_in_per_m": 0.6,
+  "price_out_per_m": 2.4,
   "vision": false,
   "context_length": 262144
  },
@@ -1020,8 +1029,8 @@
   "id": "deepseek/deepseek-v4-pro",
   "name": "DeepSeek: DeepSeek V4 Pro 0423",
   "org": "deepseek",
-  "price_in_per_m": 1.6,
-  "price_out_per_m": 3.2,
+  "price_in_per_m": 0.564282,
+  "price_out_per_m": 1.128564,
   "vision": false,
   "context_length": 1048576
  },
@@ -1029,8 +1038,8 @@
   "id": "deepseek/deepseek-v4-flash",
   "name": "DeepSeek: DeepSeek V4 Flash 0423",
   "org": "deepseek",
-  "price_in_per_m": 0.04872,
-  "price_out_per_m": 0.09744,
+  "price_in_per_m": 0.04732,
+  "price_out_per_m": 0.09464,
   "vision": false,
   "context_length": 1048576
  },
@@ -1947,8 +1956,8 @@
   "id": "qwen/qwen3-vl-30b-a3b-instruct",
   "name": "Qwen: Qwen3 VL 30B A3B Instruct",
   "org": "qwen",
-  "price_in_per_m": 0.13,
-  "price_out_per_m": 0.52,
+  "price_in_per_m": 0.2,
+  "price_out_per_m": 0.7,
   "vision": true,
   "context_length": 262144
  },
