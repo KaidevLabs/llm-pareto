@@ -1,6 +1,8 @@
 # 030 — Svelte port performance & adherence exploration — OWNER REVIEW
 
-> **Status:** OWNER REVIEW (created 2026-09-19; execution deferred — owner: "we will work to it in the future").
+> **Status:** EXECUTING (step 1/4) — owner go 2026-09-20; tree carried 032
+> step-3 WIP at resume (owner authorized proceeding — recorded in step 01).
+> (created 2026-09-19.)
 
 Date: 2026-09-19.
 
@@ -69,15 +71,16 @@ no code.
 
 | Step | File | Depends on | Status | Commit |
 |------|------|------------|--------|--------|
-| 1 | 01-deep-profile.md | — | OPEN | plan: 030 — step 01 |
+| 1 | 01-deep-profile.md | — | ✅ COMPLETE (2026-09-20, no code changes) | plan: 030 — step 01 |
 | 2 | 02-svelte-audit.md | 1 | OPEN | plan: 030 — step 02 |
 | 3 | 03-backlog.md | 1, 2 | OPEN | plan: 030 — step 03 |
 | 4 | 04-close.md | 3 | OPEN | plan: 030 — step 04 (`plan: 030-svelte-port-perf`) |
 
 ## Definition of done
 
-- [ ] Deep profile names the **top 3** perf costs with evidence (bundle sizes, trace
-      spans, or a micro-bench) — not just the plan-029 deltas.
+- [x] Deep profile names the **top 3** perf costs with evidence (bundle sizes, trace
+      spans, or a micro-bench) — not just the plan-029 deltas. *(step 01: FCP static-shell
+      loss; badge-logo RTT chain; zoom per-tick +30–40% probe-amplified.)*
 - [ ] Svelte-adherence audit lists concrete anti-patterns **per file** with the
       svelte-idiomatic alternative and the harness metric each would move.
 - [ ] Backlog is prioritized P0/P1/P2; every item maps to an expected harness-metric
