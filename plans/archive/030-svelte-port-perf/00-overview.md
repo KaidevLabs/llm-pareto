@@ -1,8 +1,10 @@
 # 030 — Svelte port performance & adherence exploration — OWNER REVIEW
 
-> **Status:** EXECUTING (step 1/4) — owner go 2026-09-20; tree carried 032
-> step-3 WIP at resume (owner authorized proceeding — recorded in step 01).
-> (created 2026-09-19.)
+> **Status:** ARCHIVED (2026-09-20). Commits: 311a344 + b87db77 (plan) ·
+> 87177ff (step 01) · 70cae70 (step 02) · 62ae95d (step 03) · close
+> (this commit, no code). Owner go 2026-09-20; tree carried 032 step-3 WIP at
+> resume (owner authorized proceeding — recorded in step 01). Exploration
+> only: no `src/` file changed in any plan commit (verified at close).
 
 Date: 2026-09-19.
 
@@ -71,10 +73,10 @@ no code.
 
 | Step | File | Depends on | Status | Commit |
 |------|------|------------|--------|--------|
-| 1 | 01-deep-profile.md | — | ✅ COMPLETE (2026-09-20, no code changes) | plan: 030 — step 01 |
-| 2 | 02-svelte-audit.md | 1 | ✅ COMPLETE (2026-09-20, no code changes) | plan: 030 — step 02 |
-| 3 | 03-backlog.md | 1, 2 | ✅ COMPLETE (2026-09-20, no code changes) | plan: 030 — step 03 |
-| 4 | 04-close.md | 3 | OPEN | plan: 030 — step 04 (`plan: 030-svelte-port-perf`) |
+| 1 | 01-deep-profile.md | — | ✅ COMPLETE (2026-09-20, no code changes) | 87177ff |
+| 2 | 02-svelte-audit.md | 1 | ✅ COMPLETE (2026-09-20, no code changes) | 70cae70 |
+| 3 | 03-backlog.md | 1, 2 | ✅ COMPLETE (2026-09-20, no code changes) | 62ae95d |
+| 4 | 04-close.md | 3 | ✅ COMPLETE (2026-09-20, no code changes) | this commit |
 
 ## Definition of done
 
@@ -87,7 +89,8 @@ no code.
 - [x] Backlog is prioritized P0/P1/P2; every item maps to an expected harness-metric
       impact + effort + a one-line future-plan spec. *(step 03: B1–B9 + dismissed
       list; owner recs 1/2 re-aimed into B1 with evidence.)*
-- [ ] No `src/` file changed in this plan (exploration only).
+- [x] No `src/` file changed in this plan (exploration only). *(verified at close:
+      87177ff/70cae70/62ae95d touch only plans/030-svelte-port-perf/.)*
 
 ## Not yet specified
 
@@ -97,10 +100,10 @@ no code.
 
 ## Open branches
 
-| Branch | Hangs on | Parked because | Forces revisit when |
-|--------|----------|----------------|---------------------|
-| Measurement oracle availability | Plan **031** (harness promotion) | 030 needs the harness to verify before/after of any fix; 031 promotes it from `.tmp/` into `tools/refactor-bench/` + adds the page generator | 031 lands → 030 step 01 uses the promoted copy (or the `.tmp/` copy meanwhile) |
-| Ship the board infographic to the live CF site as a `/aftermath` route | Plan **031** Open branch + owner publish decision | Owner floated "presented to the world"; deploy is a separate decision (#349, #436) | Owner wants it public — handled in 031, not here |
+| Branch | Hangs on | Parked because | Disposition at close |
+|--------|----------|----------------|----------------------|
+| Measurement oracle availability | Plan **031** (harness promotion) | 030 needs the harness to verify before/after of any fix; 031 promotes it from `.tmp/` into `tools/refactor-bench/` + adds the page generator | **Resolved** — 031 closed (61e4d92); step 01 used the promoted `tools/refactor-bench/lib/serve.mjs` + its probe patterns; future fixes (backlog B1/B2/B4) verify with `tools/refactor-bench/run.mjs`. |
+| Ship the board infographic to the live CF site as a `/aftermath` route | Plan **031** Open branch + owner publish decision | Owner floated "presented to the world"; deploy is a separate decision (#349, #436) | **Still open** — lives with 031's open branch + owner publish decision; not 030's scope. |
 
 ## Out of scope
 

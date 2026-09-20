@@ -1,4 +1,4 @@
-# Step 04 — Close — OPEN
+# Step 04 — Close — ✅ COMPLETE (2026-09-20, no code changes)
 
 ## Spec
 
