@@ -73,7 +73,7 @@ no code.
 |------|------|------------|--------|--------|
 | 1 | 01-deep-profile.md | — | ✅ COMPLETE (2026-09-20, no code changes) | plan: 030 — step 01 |
 | 2 | 02-svelte-audit.md | 1 | ✅ COMPLETE (2026-09-20, no code changes) | plan: 030 — step 02 |
-| 3 | 03-backlog.md | 1, 2 | OPEN | plan: 030 — step 03 |
+| 3 | 03-backlog.md | 1, 2 | ✅ COMPLETE (2026-09-20, no code changes) | plan: 030 — step 03 |
 | 4 | 04-close.md | 3 | OPEN | plan: 030 — step 04 (`plan: 030-svelte-port-perf`) |
 
 ## Definition of done
@@ -84,8 +84,9 @@ no code.
 - [x] Svelte-adherence audit lists concrete anti-patterns **per file** with the
       svelte-idiomatic alternative and the harness metric each would move. *(step 02:
       F1–F12 + confirmed-correct list; F9 is the top actionable.)*
-- [ ] Backlog is prioritized P0/P1/P2; every item maps to an expected harness-metric
-      impact + effort + a one-line future-plan spec.
+- [x] Backlog is prioritized P0/P1/P2; every item maps to an expected harness-metric
+      impact + effort + a one-line future-plan spec. *(step 03: B1–B9 + dismissed
+      list; owner recs 1/2 re-aimed into B1 with evidence.)*
 - [ ] No `src/` file changed in this plan (exploration only).
 
 ## Not yet specified
