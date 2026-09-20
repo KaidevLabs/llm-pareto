@@ -72,7 +72,7 @@ no code.
 | Step | File | Depends on | Status | Commit |
 |------|------|------------|--------|--------|
 | 1 | 01-deep-profile.md | — | ✅ COMPLETE (2026-09-20, no code changes) | plan: 030 — step 01 |
-| 2 | 02-svelte-audit.md | 1 | OPEN | plan: 030 — step 02 |
+| 2 | 02-svelte-audit.md | 1 | ✅ COMPLETE (2026-09-20, no code changes) | plan: 030 — step 02 |
 | 3 | 03-backlog.md | 1, 2 | OPEN | plan: 030 — step 03 |
 | 4 | 04-close.md | 3 | OPEN | plan: 030 — step 04 (`plan: 030-svelte-port-perf`) |
 
@@ -81,8 +81,9 @@ no code.
 - [x] Deep profile names the **top 3** perf costs with evidence (bundle sizes, trace
       spans, or a micro-bench) — not just the plan-029 deltas. *(step 01: FCP static-shell
       loss; badge-logo RTT chain; zoom per-tick +30–40% probe-amplified.)*
-- [ ] Svelte-adherence audit lists concrete anti-patterns **per file** with the
-      svelte-idiomatic alternative and the harness metric each would move.
+- [x] Svelte-adherence audit lists concrete anti-patterns **per file** with the
+      svelte-idiomatic alternative and the harness metric each would move. *(step 02:
+      F1–F12 + confirmed-correct list; F9 is the top actionable.)*
 - [ ] Backlog is prioritized P0/P1/P2; every item maps to an expected harness-metric
       impact + effort + a one-line future-plan spec.
 - [ ] No `src/` file changed in this plan (exploration only).
