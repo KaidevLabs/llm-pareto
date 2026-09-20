@@ -1,6 +1,8 @@
 # 032 — Threshold filters (price / Elo / speed)
 
-Date: 2026-09-19. **Status: EXECUTING (step 4/4).** Approved D1–D7 (owner
+Date: 2026-09-19. **Status: ARCHIVED (2026-09-19).** Commits: f7b9b93 (plan) ·
+397b6e1/f9dc98e (step 1) · f51cbeb/5641db3 (step 2) · d530313/1bc7d2e
+(step 3) · close (no code). Approved D1–D7 (owner
 "recomended" 2026-09-19); D1/D6 revised double-sided mid-step 2, 3D
 keep-alive added mid-step 3 (2026-09-19). D4 = Option
 A (keep-alive + opacity merge). D5 = unify (search/family/vision also fade).
@@ -115,6 +117,19 @@ out** (opacity tween), never blink them away.
    confirms bubbles **fade** (not blink) as a slider crosses them and the
    frontier/counts track the visible set; cookie probe clean (no new storage);
    owner A/B feel-out; deploy (live == main).
+   ✅ **As-built (2026-09-19, no code changes):** full JS suite 120 green
+   (filters + urlstate included), tsc + build clean. CDP probes on `dist/`:
+   `.tmp/probe_thr_fade.mjs` 11/11 (2D) and `.tmp/probe_thr_fade3d.mjs`
+   11/11 (3D) — keep-alive dataset constant, hidden counts, 2D merge path
+   350ms, axis refit to visible, counts follow, restore on clear, zero
+   console errors. Cookie probe clean: zero cookies in the jar across
+   desktop/curl/mobile UAs over `/` + every referenced asset; no
+   cookie/localStorage/sessionStorage/IndexedDB anywhere in `src/` or
+   `index.html`. Zoom/pan trailing unchanged (wheel/pan never re-set
+   options; ratio slider asserted back on the instant path). Owner A/B
+   approved ("great", 2026-09-19). Deploy NOT done at close — the push
+   (and its CF auto-deploy) is owner-driven (Push policy); the live==main
+   check happens on the owner's push.
 
 ## Out of scope
 
@@ -126,10 +141,21 @@ out** (opacity tween), never blink them away.
 
 ## Definition of done
 
-- [ ] Owner approves D1–D7 (esp. D4 fade approach + D5 unify-or-not).
-- [ ] Dragging a threshold slider fades out the now-disqualified bubbles
-      (opacity tween), frontier + counts follow the visible subset. — CDP check.
-- [ ] `thr` round-trips through the URL (deep-linkable, defaults omitted).
-- [ ] `filters.test.ts` + `urlstate.test.ts` green; cookie probe clean.
-- [ ] Zoom/pan trailing unchanged from 018 A2 (no regression). Owner A/B;
-      deployed (live == main).
+- [x] Owner approves D1–D7 (esp. D4 fade approach + D5 unify).
+- [x] Dragging a threshold slider fades out the now-disqualified bubbles
+      (opacity tween), frontier + counts follow the visible subset. — CDP
+      probes 11/11 on 2D and 3D.
+- [x] `thr` round-trips through the URL (deep-linkable, defaults omitted).
+- [x] `filters.test.ts` + `urlstate.test.ts` green; cookie probe clean.
+- [x] Zoom/pan trailing unchanged from 018 A2 (no regression). Owner A/B
+      approved. Deploy: owner-driven push pending at archive time.
+
+## Mid-execution owner revisions
+
+- Step 2 (2026-09-19): every threshold double-sided (Elo/speed gained max
+  bounds; `emax`/`smax` joined the URL serializer); sliders enlarged; each
+  bound directly editable via a numeric field; min/max handles clamp on one
+  line, never crossing.
+- Step 3 (2026-09-19): the keep-alive fade extended to the 3D scene (owner
+  report "Not working on the 3d version"); the 3D fade is instant —
+  echarts-gl has no opacity update tween.
