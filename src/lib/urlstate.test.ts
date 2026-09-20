@@ -41,12 +41,12 @@ describe("read", () => {
     ]);
   });
 
-  it("thr reads pmin/pmax/emin/smin, absent keys fall to null", () => {
-    expect(read("?pmin=5&pmax=20&emin=1300&smin=40").thr).toEqual({
-      priceMin: 5, priceMax: 20, eloMin: 1300, speedMin: 40,
+  it("thr reads pmin/pmax/emin/emax/smin/smax, absent keys fall to null", () => {
+    expect(read("?pmin=5&pmax=20&emin=1300&emax=1500&smin=40&smax=200").thr).toEqual({
+      priceMin: 5, priceMax: 20, eloMin: 1300, eloMax: 1500, speedMin: 40, speedMax: 200,
     });
     expect(read("?pmin=5").thr).toEqual({
-      priceMin: 5, priceMax: null, eloMin: null, speedMin: null,
+      priceMin: 5, priceMax: null, eloMin: null, eloMax: null, speedMin: null, speedMax: null,
     });
   });
 
@@ -54,7 +54,7 @@ describe("read", () => {
     expect(read("?pmin=abc&pmax=-1")).toEqual({});
     expect(read("?smin=NaN")).toEqual({});
     expect(read("?emin=x&smin=40").thr).toEqual({
-      priceMin: null, priceMax: null, eloMin: null, speedMin: 40,
+      priceMin: null, priceMax: null, eloMin: null, eloMax: null, speedMin: 40, speedMax: null,
     });
   });
 
@@ -81,7 +81,7 @@ describe("write", () => {
     frontier: true,
     search: "",
     families: [] as string[],
-    thr: { priceMin: null, priceMax: null, eloMin: null, speedMin: null } as const,
+    thr: { priceMin: null, priceMax: null, eloMin: null, eloMax: null, speedMin: null, speedMax: null } as const,
   };
 
   it("defaults -> empty string (bare URL stays canonical)", () => {
@@ -103,8 +103,8 @@ describe("write", () => {
   });
 
   it("thr bounds serialize rounded to 2dp, nulls omitted", () => {
-    expect(write({ ...base, thr: { priceMin: 3.14159, priceMax: null, eloMin: 1300.5, speedMin: null } })).toBe(
-      "pmin=3.14&emin=1300.5",
+    expect(write({ ...base, thr: { priceMin: 3.14159, priceMax: null, eloMin: 1300.5, eloMax: 1500.25, speedMin: null, speedMax: 88.125 } })).toBe(
+      "pmin=3.14&emin=1300.5&emax=1500.25&smax=88.13",
     );
   });
 
@@ -131,7 +131,7 @@ describe("round-trip", () => {
       frontier: false,
       search: "gemini",
       families: ["a|b", "c|d"],
-      thr: { priceMin: 0.5, priceMax: 99.9, eloMin: 1200, speedMin: 25.5 },
+      thr: { priceMin: 0.5, priceMax: 99.9, eloMin: 1200, eloMax: 1500, speedMin: 25.5, speedMax: 180 },
     };
     const back = read("?" + write(s));
     expect(back).toEqual({
@@ -142,7 +142,7 @@ describe("round-trip", () => {
       frontier: false,
       search: "gemini",
       families: ["a|b", "c|d"],
-      thr: { priceMin: 0.5, priceMax: 99.9, eloMin: 1200, speedMin: 25.5 },
+      thr: { priceMin: 0.5, priceMax: 99.9, eloMin: 1200, eloMax: 1500, speedMin: 25.5, speedMax: 180 },
     });
   });
 

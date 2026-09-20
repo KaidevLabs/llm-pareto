@@ -54,7 +54,7 @@ describe("passThresholds", () => {
     speed: (_id: string): { toks: number } | null => ({ toks: 100 }),
     ...over,
   });
-  const noThr: Thr = { priceMin: null, priceMax: null, eloMin: null, speedMin: null };
+  const noThr: Thr = { priceMin: null, priceMax: null, eloMin: null, eloMax: null, speedMin: null, speedMax: null };
 
   it("passes everything with no thresholds", () => {
     expect(passThresholds(d, noThr, ctx())).toBe(true);
@@ -77,15 +77,21 @@ describe("passThresholds", () => {
   it("a price-less row fails an active price bound", () => {
     expect(passThresholds(row({ or_id: "b/y" }), { ...noThr, priceMin: 0.01 }, ctx())).toBe(false);
   });
-  it("elo min culls below and missing Elo", () => {
+  it("elo min/max cull outside the band and missing Elo", () => {
     expect(passThresholds(d, { ...noThr, eloMin: 1400 }, ctx())).toBe(true);
     expect(passThresholds(d, { ...noThr, eloMin: 1400.5 }, ctx())).toBe(false);
+    expect(passThresholds(d, { ...noThr, eloMax: 1400 }, ctx())).toBe(true);
+    expect(passThresholds(d, { ...noThr, eloMax: 1399.5 }, ctx())).toBe(false);
     expect(passThresholds(row({ or_id: "b/y" }), { ...noThr, eloMin: 100 }, ctx())).toBe(false);
+    expect(passThresholds(row({ or_id: "b/y" }), { ...noThr, eloMax: 2000 }, ctx())).toBe(false);
   });
-  it("speed min culls below and missing speed (D2 ctx speed fn)", () => {
+  it("speed min/max cull outside the band and missing speed (D2 ctx speed fn)", () => {
     expect(passThresholds(d, { ...noThr, speedMin: 100 }, ctx())).toBe(true);
     expect(passThresholds(d, { ...noThr, speedMin: 100.5 }, ctx())).toBe(false);
+    expect(passThresholds(d, { ...noThr, speedMax: 100 }, ctx())).toBe(true);
+    expect(passThresholds(d, { ...noThr, speedMax: 99.5 }, ctx())).toBe(false);
     expect(passThresholds(d, { ...noThr, speedMin: 1 }, ctx({ speed: () => null }))).toBe(false);
+    expect(passThresholds(d, { ...noThr, speedMax: 500 }, ctx({ speed: () => null }))).toBe(false);
   });
   it("bounds compose additively", () => {
     expect(passThresholds(d, { ...noThr, priceMin: 15, eloMin: 1400, speedMin: 100 }, ctx())).toBe(true);
@@ -105,14 +111,14 @@ describe("filterRows + thresholds", () => {
     speed: (): { toks: number } | null => null,
   };
   it("thresholds cull additively with families/vision", () => {
-    expect(filterRows(rows, { ...none, thr: { priceMin: 5, priceMax: null, eloMin: null, speedMin: null }, thrCtx })).toEqual([
+    expect(filterRows(rows, { ...none, thr: { priceMin: 5, priceMax: null, eloMin: null, eloMax: null, speedMin: null, speedMax: null }, thrCtx })).toEqual([
       rows[1],
     ]);
     expect(
       filterRows(rows, {
         ...none,
         vision: "vision",
-        thr: { priceMin: 5, priceMax: null, eloMin: null, speedMin: null },
+        thr: { priceMin: 5, priceMax: null, eloMin: null, eloMax: null, speedMin: null, speedMax: null },
         thrCtx,
       }),
     ).toEqual([]);

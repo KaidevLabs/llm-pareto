@@ -20,7 +20,9 @@ export interface Thr {
   priceMin: number | null;
   priceMax: number | null;
   eloMin: number | null;
+  eloMax: number | null;
   speedMin: number | null;
+  speedMax: number | null;
 }
 
 // Context the pure predicate needs per render: the mix ratio, the active
@@ -50,9 +52,13 @@ export function passThresholds(d: Row, thr: Thr, ctx: ThrCtx): boolean {
   }
   if (thr.eloMin != null && (d.arena_elo == null || d.arena_elo < thr.eloMin))
     return false;
-  if (thr.speedMin != null) {
+  if (thr.eloMax != null && (d.arena_elo == null || d.arena_elo > thr.eloMax))
+    return false;
+  if (thr.speedMin != null || thr.speedMax != null) {
     const s = ctx.speed(d.or_id);
-    if (!s || s.toks < thr.speedMin) return false;
+    if (!s) return false;
+    if (thr.speedMin != null && s.toks < thr.speedMin) return false;
+    if (thr.speedMax != null && s.toks > thr.speedMax) return false;
   }
   return true;
 }

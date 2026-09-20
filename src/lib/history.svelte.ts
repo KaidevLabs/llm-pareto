@@ -101,7 +101,7 @@ export function applyFromURL(): void {
     ui.search = patch.search ?? "";
     ui.families.clear();
     if (patch.families) for (const f of patch.families) ui.families.add(f);
-    ui.thr = patch.thr ?? { priceMin: null, priceMax: null, eloMin: null, speedMin: null };
+    ui.thr = patch.thr ?? { priceMin: null, priceMax: null, eloMin: null, eloMax: null, speedMin: null, speedMax: null };
     lastCont = contSnap();
   } finally {
     applying = false;

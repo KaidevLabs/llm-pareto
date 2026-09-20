@@ -31,13 +31,16 @@ export const ui = $state({
   // empty state stands until they pick (2026-09-19 owner directive).
   // Capped at 4 picks.
   cmps: null as string[] | null,
-  // Numeric threshold filters (plan 032 D3): null = unbounded. Serialized
-  // via urlstate (pmin/pmax/emin/smin), continuous for history-burst.
+  // Numeric threshold filters (plan 032 D3, all six bounds double-sided per
+  // owner 2026-09-19): null = unbounded. Serialized
+  // via urlstate (pmin/pmax/emin/emax/smin/smax), continuous for history-burst.
   thr: {
     priceMin: null,
     priceMax: null,
     eloMin: null,
+    eloMax: null,
     speedMin: null,
+    speedMax: null,
   } as Thr,
 });
 

@@ -76,7 +76,9 @@
     void ui.thr.priceMin;
     void ui.thr.priceMax;
     void ui.thr.eloMin;
+    void ui.thr.eloMax;
     void ui.thr.speedMin;
+    void ui.thr.speedMax;
     void [...ui.families];
     notifyChanged();
   });

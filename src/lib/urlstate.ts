@@ -13,7 +13,7 @@ export type View = Mode | "3d";
 const VIEWS: View[] = ["general", "in", "out", "speed", "3d"];
 const VISIONS = ["all", "vision"];
 
-const NO_THR: Thr = { priceMin: null, priceMax: null, eloMin: null, speedMin: null };
+const NO_THR: Thr = { priceMin: null, priceMax: null, eloMin: null, eloMax: null, speedMin: null, speedMax: null };
 
 const DEFAULTS = {
   mode: "general" as Mode,
@@ -74,7 +74,9 @@ export function read(search: string): {
     ["priceMin", q.pmin],
     ["priceMax", q.pmax],
     ["eloMin", q.emin],
+    ["eloMax", q.emax],
     ["speedMin", q.smin],
+    ["speedMax", q.smax],
   ];
   let thr: Thr | null = null;
   for (const [key, raw] of bounds) {
@@ -120,6 +122,8 @@ export function write(s: {
   if (thr.priceMin != null) p.set("pmin", r2(thr.priceMin));
   if (thr.priceMax != null) p.set("pmax", r2(thr.priceMax));
   if (thr.eloMin != null) p.set("emin", r2(thr.eloMin));
+  if (thr.eloMax != null) p.set("emax", r2(thr.eloMax));
   if (thr.speedMin != null) p.set("smin", r2(thr.speedMin));
+  if (thr.speedMax != null) p.set("smax", r2(thr.speedMax));
   return p.toString();
 }
