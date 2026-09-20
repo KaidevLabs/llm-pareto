@@ -1,7 +1,8 @@
 # 032 — Threshold filters (price / Elo / speed)
 
-Date: 2026-09-19. **Status: EXECUTING (step 2/4).** Approved D1–D7 (owner
-"recomended" 2026-09-19). D4 = Option
+Date: 2026-09-19. **Status: EXECUTING (step 3/4).** Approved D1–D7 (owner
+"recomended" 2026-09-19); D1/D6 revised double-sided mid-step 2
+(2026-09-19). D4 = Option
 A (keep-alive + opacity merge). D5 = unify (search/family/vision also fade).
 Source: owner
 directive (2026-09-19) — "add some thresholds like a price (min & max), an Elo
@@ -65,8 +66,24 @@ out** (opacity tween), never blink them away.
    proceed anyway; those changes remain staged, unrelated to this step.
 2. **Controls.** `ThresholdCtl.svelte` (price-min, price-max, elo-min, speed-min
    ranges + readouts + reset), bounds from data extents, mounted in
-   `nav.filters` (`App.svelte`). Wired to `ui.thr` (history debounce reuses the
+   `nav.filters` (`App.svelte`).    Wired to `ui.thr` (history debounce reuses the
    027 continuous-input path). Commit: `chart: threshold controls`.
+   ✅ **As-built (2026-09-19, committed f51cbeb):** owner revised D6/D1
+   mid-step: every bound is **double-sided** (Elo and speed gained max
+   bounds; D1 expands to price min/max + Elo min/max + speed min/max, six
+   bounds serialized as `pmin/pmax/emin/emax/smin/smax`), sliders are larger
+   (170px), and every bound is directly editable via a numeric field
+   (commit on change/Enter; empty/garbage → unbounded). Price min/max are
+   two handles on one log line (fill between them); Elo/speed pairs are
+   linear. Handles clamp at each other's position — the pair never crosses,
+   by drag or by typed value; parking a handle at its unbounded end (min→0,
+   max→T) clears that bound. Rows derive bounds reactively from data
+   extents (price = active view's `viewPrice`, padded [lo/2, hi*2]; Elo
+   linear; speed from endpoints, row disabled until the fetch settles);
+   price row disables in the speed view (D2). A shared `dualRow` snippet
+   renders all three rows. Tests: ThresholdCtl.test.ts (10, pinned from the
+   extent math incl. cross-clamping), filters/urlstate extended for the
+   max bounds. Suite 120 green, tsc + build clean.
 3. **The fade (D4).** In the 2D builders, keep the full plottable point set;
    tag each with `visible`; render visible=false points at `opacity:0`/
    baseline `symbolSize`; on a threshold/filter change push a **merge**
