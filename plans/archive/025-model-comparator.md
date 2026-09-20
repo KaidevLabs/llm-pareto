@@ -1,8 +1,9 @@
 # 025 — Two-model comparator
 
-Date: 2026-09-17. **Status: EXECUTED on the 028 svelte surfaces (2026-09-19,
-owner-approved via `Execute`); D4/D5 superseded by owner amendments — see
-below.**
+Date: 2026-09-17. **Status: ARCHIVED (2026-09-20) — owner approved by
+execute trigger (2026-09-19) → f231435 (multi-model comparator, executed
+on the 028 svelte surfaces; owner amendments 1–10) → 20a87b0 (comparator
+polish) → close (no code).**
 Source: `plans/021-exploration-backlog.md` item B16 + its exploration
 findings. **No dependency on 022** — builds now on `combined.json`; the
 future rows (speed, provider count, benchmarks) slot in afterward.
@@ -73,6 +74,20 @@ Client-side only, no data changes, no new libraries.
 The steps' vanilla surfaces (`index.html` + `app.js`) are the 028 svelte
 equivalents: `index.html` (vars) + `src/components/` / `src/lib/`.
 
+## As-built (2026-09-20)
+
+The three steps as written (separate shell → logic → verify commits on the
+vanilla surfaces) never ran: execution happened in one owner-driven pass
+on the 028 svelte surfaces, as two commits — `f231435` (the comparator:
+`Comparator.svelte` + `comparator.ts` marks + `ModelCard`/`ModelSearch`
+split out of `Details`, the drawer "◈ compare" fast-access, amendments
+recorded) and `20a87b0` (polish: full-card chip, rail left, own-roster
+`ui.cmps` semantics). No data files touched. Verification stack: the
+vitest seams (`comparator.test.ts`, `Comparator.test.ts`,
+`ModelSearch.test.ts`, `Details.test.ts`), the CDP probes
+(`.tmp/probe_cmp_step1.mjs`, `.tmp/probe_cmp_step2.mjs`, load check
+`compare_load.mjs`), and the owner's live A/B — the amendments themselves.
+
 ## Proposed decisions (settled at owner review)
 
 | # | decision | rationale |
@@ -98,6 +113,8 @@ equivalents: `index.html` (vars) + `src/components/` / `src/lib/`.
   verification is CDP-driven headless Chromium + the owner's manual A/B.
 
 ## Steps (commit per step; owner stages each diff)
+
+Superseded by the As-built pass — kept as the original intent record.
 
 1. `index.html` + CSS: the comparator section — the two selects (D5
    pre-seed), the table shell, the winner-highlight + delta-bar CSS (D4,
@@ -126,12 +143,26 @@ equivalents: `index.html` (vars) + `src/components/` / `src/lib/`.
 
 ## Definition of done
 
-- [ ] Owner approves this plan (D1–D6) in a review session.
-- [ ] The section renders the D2 rows for the pre-seeded top-2 on load;
-      selecting A/B re-renders with winners per D3. — CDP check.
-- [ ] A CI-overlapping Elo pair renders as a tie; delta bars render on the
-      price rows (D4). — CDP check.
-- [ ] The chart, the frontier, and `combined.json` are byte-identical
-      before/after.
-- [ ] Cookie probe clean (no new storage) + owner A/B feel-out; deployed
-      (live == main).
+- [x] Owner approves this plan (D1–D6) in a review session. — execute
+      trigger (2026-09-19); D4/D5 were amended live during execution
+      (amendments 1–10), so the D-table records the v1 intent and the
+      amendments the as-run state.
+- [x] The section renders the D2 rows for the pre-seeded top-2 on load;
+      selecting A/B re-renders with winners per D3. — as amended: the
+      slot matrix (no selects), `resolvedCmps` pre-seeding top-2 by
+      arena rank; the D3 winner/tie logic is `buildMarks`
+      (`src/lib/comparator.ts`), vitest-covered (comparator /
+      Comparator / ModelSearch / Details suites), CDP probes + owner
+      A/B on top.
+- [x] A CI-overlapping Elo pair renders as a tie; delta bars render on
+      the price rows (D4). — the CI-overlap tie is in (the elo chain:
+      the top cluster ties, a strict leader wins); the delta bars were
+      superseded twice and dropped (amendment 3) — the win/lose/tie
+      colors land directly on the cards' own attribute rows.
+- [x] The chart, the frontier, and `combined.json` are byte-identical
+      before/after. — both commits touch only `src/` + `index.html` +
+      this plan; the data commits since are scheduled bot refreshes.
+- [x] Cookie probe clean (no new storage) + owner A/B feel-out; deployed
+      (live == main). — probe re-run 2026-09-20: 0 Set-Cookie on `/` +
+      the bundle, desktop/curl/mobile UAs; live bundle hash == local
+      dist build (`assets/index-EQ3sqAiT.js`).
