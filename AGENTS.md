@@ -45,6 +45,10 @@ LMArena frontier models ranked by quality (Elo) against OpenRouter pricing, Pare
   echarts seam).
 - Commit style: `<type>: <message>` — data, chart, docs, deploy, init.
 - Scratch and throwaway files go in `.tmp/`, never the repo root or source dirs.
+- Exploration reports (complete findings to read and discuss) go in
+  `docs/reports/`, named after the plan that produced them; `plans/` holds
+  only actionable plan docs. A report's open items open with a short
+  item → plan → what-it-fixes table.
 - Cookieless (plan 020, settled 2026-09-17): the site sets no cookies, so
   no GDPR consent mechanism is required — and must stay that way. Rules:
   no runtime third parties (019 vendored echarts + self-hosted Inter);
