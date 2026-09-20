@@ -12,14 +12,14 @@
 import { withAlpha, FRONTIER, OVERRIDE } from "./colors";
 import { orgOf, displayName } from "./family";
 import { fmtPrice, fmtVotes, fmtToks } from "./format";
-import { filterRows, searchHit, blendedPrice } from "./filters";
+import { isVisible, searchHit, blendedPrice } from "./filters";
 import { paretoFrontier, paretoFrontier3D, fitLog, fitLinear, fitDecade } from "./pareto";
 import { speedOf } from "./speed";
 import type { Speed } from "./speed";
 import { loadEchartsGL } from "./gl";
 import { startTour, rafTicker, type Waypoint } from "./tour";
 import { takeAutotour } from "./tourflag.svelte";
-import { ui } from "./state.svelte";
+import { ui, type Mode } from "./state.svelte";
 import { data, logoFor } from "./data.svelte";
 import { store } from "./endpoints.svelte";
 import { panelStatus, type PanelKey } from "./panels.svelte";
@@ -28,7 +28,7 @@ import type { Row } from "./types";
 
 declare const echarts: any;
 
-export type Pt = { value: number[]; d: Row; spd: Speed | null };
+export type Pt = { value: number[]; d: Row; spd: Speed | null; vis?: boolean };
 export type Bounds = { x?: object; y?: object };
 
 // Chart grid insets (single source: axis geometry the y-strip wheel handler
@@ -143,7 +143,8 @@ function chartOption(
   frontier: Pt[],
   spreadPts: (number | null)[][] | null,
   bounds: Bounds,
-  xFmt?: (v: number) => string
+  xFmt?: (v: number) => string,
+  fade = false
 ) {
   // Per-panel frontier set (plan 007 D7): the "frontier" tag lives in the
   // scatter tooltip — the marker-less line has nothing to hover.
@@ -248,6 +249,10 @@ function chartOption(
           : "circle",
         symbolSize: isFrontier ? [24, 24] : 10,
         itemStyle: {
+          // 032 step 3 keep-alive: disqualified points stay in the dataset
+          // at opacity 0 (the merge path tweens 1→0); they are never in the
+          // frontier set, so they always render as the 10px circle baseline.
+          opacity: p.vis === false ? 0 : 1,
           color: isFrontier ? "rgba(0,0,0,0)" : withAlpha(color, dim ? 0.25 : hot ? 1 : 0.78),
           borderColor: ov ? OVERRIDE : isFrontier ? "rgba(0,0,0,0)" : hot ? "#e2e8f0" : dim ? withAlpha(color, 0.4) : withAlpha(color, 1),
           borderWidth: ov ? 2 : isFrontier ? 0 : hot ? 1.5 : 0.6,
@@ -295,6 +300,7 @@ function chartOption(
           // Numeric scale = final-size ratio for scatter symbols (10→16, 24→32).
           scale: isFrontier ? 32 / 24 : 16 / 10,
           itemStyle: {
+            opacity: p.vis === false ? 0 : 1,
             color: isFrontier ? "rgba(0,0,0,0)" : withAlpha(color, 0.95),
             borderColor: ov ? OVERRIDE : hot ? "#e2e8f0" : withAlpha(color, 1),
             // the badge bakes its ring into the image — a square itemStyle
@@ -315,7 +321,9 @@ function chartOption(
     animationDuration: 450,
     // Gesture updates (wheel/drag/ratio slider) must be instant — the default
     // 300ms update animation makes continuous zoom/pan trail the cursor (D9).
-    animationDurationUpdate: 0,
+    // A filter-only change rides the 032 fade path instead: a merge push
+    // tweens the disqualified bubbles' opacity out (350ms).
+    animationDurationUpdate: fade ? 350 : 0,
     grid: GRID,
     // Manual gesture model (D9, 018 A3/A4): native inside-dataZoom gestures
     // are off (the x/y mutex makes a native drag pan x only); wheel = 2D
@@ -351,10 +359,12 @@ function chartOption(
       confine: true,
       formatter: (p: any) =>
         p.seriesName === "models"
-          ? (frontierSet.has(p.data.d)
-              ? '<div style="font-weight:700;margin-bottom:4px">frontier</div>'
-              : "") +
-            tooltipHTML(p.data)
+          ? p.data.vis === false
+            ? "" // keep-alive ghost: invisible bubbles carry no tooltip
+            : (frontierSet.has(p.data.d)
+                ? '<div style="font-weight:700;margin-bottom:4px">frontier</div>'
+                : "") +
+              tooltipHTML(p.data)
           : p.tooltip,
     },
     xAxis: {
@@ -493,6 +503,7 @@ let lastPanEnd = 0;
 function onChartClick(id: string, p: any) {
   if (Date.now() - lastPanEnd < 300) return;
   if (p.seriesName === "models" || p.seriesName === "models-halo") {
+    if (p.data.vis === false) return; // keep-alive ghost: not selectable
     ui.selected = p.data.d;
   } else if (p.seriesName === "Pareto frontier") {
     const fp = (FRONTIERS[id] || [])[p.dataIndex];
@@ -626,6 +637,29 @@ export function ensureChart2D(el: HTMLElement, id: string): any {
   return charts[id];
 }
 
+// Per-panel geometry signature (032 step 3): ratio/spread/data define what
+// MOVES points; everything else (families, vision, search, thresholds) only
+// re-tags visibility. Same signature → the render is a filter-only change →
+// merge setOption with a fade; signature change → instant notMerge (018 A2's
+// gesture rule — the ratio slider and spread bars move geometry).
+const GEOM: Record<string, string> = {};
+function geomSig(extra = ""): string {
+  return ui.ratio + "|" + ui.spread + "|" + (data.meta?.fetched_at || "") + "|" + extra;
+}
+function chartPush(
+  id: string,
+  el: HTMLElement,
+  opt: ReturnType<typeof chartOption>,
+  sig: string
+) {
+  const animate = GEOM[id] === sig;
+  GEOM[id] = sig;
+  const chart = ensureChart2D(el, id);
+  chart.setOption(opt, !animate);
+  // The zoom window survives the not-Merge setOption (018 A2).
+  restoreZoom(id);
+}
+
 function restoreZoom(id: string) {
   const z = ZOOM[id];
   if (!z) return;
@@ -657,46 +691,59 @@ export function renderPanel(el: HTMLElement, panelKey: Exclude<PanelKey, "speed"
     ? "$/M tokens · " + ui.ratio + ":1 in:out blend (log)"
     : "$/M " + (panelKey === "in" ? "input" : "output") + " tokens (log)";
 
-  const rows = filterRows(data.rows, ui);
-  const { pts, skipped } = pointsFor(getPrice, rows);
-  const frontier = paretoFrontier(pts);
+  // Keep-alive point set (032 step 3): every plottable row is in the chart
+  // dataset once; the visibility predicate only re-tags. Thresholds ride the
+  // same ui object — the ctx supplies this panel's view semantics (D2).
+  const f = {
+    ...ui,
+    thrCtx: {
+      ratio: ui.ratio,
+      mode: panelKey as Mode,
+      speed: (orId: string) => speedOf(orId, store.data),
+    },
+  };
+  const { pts, skipped } = pointsFor(getPrice, data.rows);
+  for (const p of pts) p.vis = isVisible(p.d, f);
+  const vis = pts.filter((p) => p.vis !== false);
+  const frontier = paretoFrontier(vis);
   const spreadPts: (number | null)[][] | null =
     isBlend && ui.spread
-      ? pts.map((p) => [
+      ? vis.map((p) => [
           p.d.price_in_per_m,
           p.d.price_out_per_m,
           p.value[1],
         ])
       : null;
 
-  // Axes are fitted to ALL joined data, not the filtered set (018 A1/A2):
-  // they never move when a filter changes. With spread bars on, the blend
-  // panel's x range also covers the real in/out prices the bars span.
-  let xvals = pointsFor(getPrice, data.rows).pts.map((p) => p.value[0]);
+  // Axes are fitted to the VISIBLE set (032 step 3, D4): the window follows
+  // what's actually shown instead of hugging faded data. With spread bars
+  // on, the blend panel's x range also covers the real in/out prices the
+  // bars span. (Supersedes 018 A1/A2's fit-to-all for the filter dimension;
+  // geometry changes still notMerge — the ratio slider keeps its instant rule.)
+  const xvals = vis.map((p) => p.value[0]);
   if (isBlend && ui.spread) {
-    for (const d of data.rows) {
-      if (d.price_in_per_m != null && d.price_in_per_m > 0) xvals.push(d.price_in_per_m);
-      if (d.price_out_per_m != null && d.price_out_per_m > 0) xvals.push(d.price_out_per_m);
+    for (const p of vis) {
+      if (p.d.price_in_per_m != null && p.d.price_in_per_m > 0) xvals.push(p.d.price_in_per_m);
+      if (p.d.price_out_per_m != null && p.d.price_out_per_m > 0) xvals.push(p.d.price_out_per_m);
     }
   }
   const bounds = {
     x: fitLog(xvals) || undefined,
-    y: fitLinear(data.rows.map((d) => d.arena_elo).filter((v): v is number => v != null)) || undefined,
+    y: fitLinear(vis.map((p) => p.d.arena_elo).filter((v): v is number => v != null)) || undefined,
   };
 
   FRONTIERS[id] = frontier;
-  const chart = ensureChart2D(el, id);
-  chart.setOption(
-    chartOption(axisLabel, pts, frontier, spreadPts, bounds),
-    true
+  const sig = geomSig();
+  chartPush(
+    id,
+    el,
+    chartOption(axisLabel, pts, frontier, spreadPts, bounds, undefined, GEOM[id] === sig),
+    sig
   );
-
-  // The zoom window survives the not-Merge setOption (018 A2).
-  restoreZoom(id);
 
   panelStatus[panelKey].badgeHidden = !ui.frontier || frontier.length === 0;
   panelStatus[panelKey].count =
-    pts.length + " models" + (skipped ? " · " + skipped + " skipped (no price)" : "");
+    vis.length + " models" + (skipped ? " · " + skipped + " skipped (no price)" : "");
 }
 
 // Speed view (023 step 2): x = per-model output speed (D2's median across
@@ -725,10 +772,21 @@ export function renderSpeedPanel(el: HTMLElement) {
     return;
   }
 
+  // Keep-alive set (032 step 3): all rows with elo+speed stay in the
+  // dataset; the visibility predicate only re-tags (D5: families/vision/
+  // thresholds fade, search dims inside the option).
+  const f = {
+    ...ui,
+    thrCtx: {
+      ratio: ui.ratio,
+      mode: "speed" as const,
+      speed: (orId: string) => speedOf(orId, store.data),
+    },
+  };
   const pts: Pt[] = [];
   let noElo = 0;
   let noSpeed = 0;
-  for (const d of filterRows(data.rows, ui)) {
+  for (const d of data.rows) {
     if (d.arena_elo == null) {
       noElo++;
       continue;
@@ -738,39 +796,37 @@ export function renderSpeedPanel(el: HTMLElement) {
       noSpeed++;
       continue;
     }
-    pts.push({ value: [s.toks, d.arena_elo!], d, spd: s });
+    pts.push({ value: [s.toks, d.arena_elo!], d, spd: s, vis: isVisible(d, f) });
   }
-  const frontier = paretoFrontier(pts, true);
+  const vis = pts.filter((p) => p.vis !== false);
+  const frontier = paretoFrontier(vis, true);
 
-  // Axes fitted over ALL joined data, not the filtered set (018 A1/A2).
-  const xvals: number[] = [];
-  for (const d of data.rows) {
-    const s = speedOf(d.or_id, store.data);
-    if (s) xvals.push(s.toks);
-  }
+  // Axes fitted over the VISIBLE set (032 step 3, D4).
   const bounds = {
-    x: fitLog(xvals) || undefined,
-    y: fitLinear(data.rows.map((d) => d.arena_elo).filter((v): v is number => v != null)) || undefined,
+    x: fitLog(vis.map((p) => p.value[0])) || undefined,
+    y: fitLinear(vis.map((p) => p.d.arena_elo).filter((v): v is number => v != null)) || undefined,
   };
 
   FRONTIERS[id] = frontier;
-  const chart = ensureChart2D(el, id);
-  chart.setOption(
+  const sig = geomSig();
+  chartPush(
+    id,
+    el,
     chartOption(
       X_SPEED,
       pts,
       frontier,
       null,
       bounds,
-      (v) => (v >= 10 ? String(Math.round(v)) : String(Math.round(v * 10) / 10))
+      (v) => (v >= 10 ? String(Math.round(v)) : String(Math.round(v * 10) / 10)),
+      GEOM[id] === sig
     ),
-    true
+    sig
   );
-  restoreZoom(id);
 
   status.badgeHidden = !ui.frontier || frontier.length === 0;
   status.count =
-    pts.length + " models" +
+    vis.length + " models" +
     (noSpeed ? " · " + noSpeed + " without speed data hidden" : "") +
     (noElo ? " · " + noElo + " skipped (no elo)" : "");
 }
@@ -946,10 +1002,22 @@ function tourScript(): Waypoint[] {
 }
 
 function build3DScene(id: string, status: { count: string; badgeHidden: boolean }): { option: any } {
+  // Keep-alive set (032 step 3, extended to 3D per owner 2026-09-19): every
+  // plottable row stays in the scene; the visibility predicate re-tags and
+  // hidden spheres render at opacity 0. The GL update has no tween — the
+  // 3D fade is instant (D4's stretch note), the 2D panels keep the tween.
+  const f = {
+    ...ui,
+    thrCtx: {
+      ratio: ui.ratio,
+      mode: "3d" as const,
+      speed: (orId: string) => speedOf(orId, store.data),
+    },
+  };
   const pts: Pt[] = [];
   let noAxis = 0;
   let noSpeed = 0;
-  for (const d of filterRows(data.rows, ui)) {
+  for (const d of data.rows) {
     const price = blendedPrice(d, ui.ratio);
     const s = speedOf(d.or_id, store.data);
     if (d.arena_elo == null || price == null || price <= 0) {
@@ -964,9 +1032,11 @@ function build3DScene(id: string, status: { count: string; badgeHidden: boolean 
       value: [Math.log10(price), Math.log10(s.toks), d.arena_elo!],
       d,
       spd: s,
+      vis: isVisible(d, f),
     });
   }
-  const frontier = ui.frontier ? paretoFrontier3D(pts) : [];
+  const vis = pts.filter((p) => p.vis !== false);
+  const frontier = ui.frontier ? paretoFrontier3D(vis) : [];
   const frontierSet = new Set(frontier.map((p) => p.d));
   FRONTIERS[id] = frontier;
 
@@ -980,7 +1050,7 @@ function build3DScene(id: string, status: { count: string; badgeHidden: boolean 
   ];
   const best = (k: "cheap" | "fast" | "elo"): Pt | null => {
     let b: Pt | null = null;
-    for (const p of pts) {
+    for (const p of vis) {
       if (
         !b ||
         (k === "cheap" && p.value[0] < b.value[0]) ||
@@ -995,18 +1065,11 @@ function build3DScene(id: string, status: { count: string; badgeHidden: boolean 
     .map((c) => ({ ...c, p: best(c.kind) }))
     .filter((c) => c.p !== null) as Array<{ kind: "cheap" | "fast" | "elo"; label: string; color: string; p: Pt }>;
 
-  // Axes fit over ALL joined data, not the filtered set (018 A1/A2).
-  const logPrices: number[] = [];
-  const logSpeeds: number[] = [];
-  const elos: number[] = [];
-  for (const d of data.rows) {
-    const price = blendedPrice(d, ui.ratio);
-    const s = speedOf(d.or_id, store.data);
-    if (d.arena_elo == null || price == null || price <= 0 || !s) continue;
-    logPrices.push(Math.log10(price));
-    logSpeeds.push(Math.log10(s.toks));
-    elos.push(d.arena_elo!);
-  }
+  // Axes fit over the VISIBLE set (032 step 3, D4) — the window follows
+  // what's shown; toWorld's crown placement derives from the same bounds.
+  const logPrices = vis.map((p) => p.value[0]);
+  const logSpeeds = vis.map((p) => p.value[1]);
+  const elos = vis.map((p) => p.d.arena_elo!);
   const bounds = {
     x: fitDecade(logPrices) || undefined,
     y: fitDecade(logSpeeds) || undefined,
@@ -1041,6 +1104,7 @@ function build3DScene(id: string, status: { count: string; badgeHidden: boolean 
     d: p.d,
     spd: p.spd,
     itemStyle: {
+      opacity: p.vis === false ? 0 : 1,
       color: withAlpha(orgCol(p), alpha),
       borderColor: ov(p) ? OVERRIDE : "rgba(0,0,0,0)",
       borderWidth: ov(p) ? 2 : 0,
@@ -1153,7 +1217,9 @@ function build3DScene(id: string, status: { count: string; badgeHidden: boolean 
         textStyle: { color: "#e2e8f0", fontSize: 12 },
         confine: true,
         formatter: (p: any) =>
-          p.seriesName === "models" || p.seriesName === "models-halo"
+          p.data.vis === false
+            ? "" // keep-alive ghost
+            : p.seriesName === "models" || p.seriesName === "models-halo"
             ? (frontierSet.has(p.data.d)
                 ? '<div style="font-weight:700;margin-bottom:4px">frontier</div>'
                 : "") +
@@ -1218,7 +1284,7 @@ function build3DScene(id: string, status: { count: string; badgeHidden: boolean 
 
   status.badgeHidden = !ui.frontier || frontier.length === 0;
   status.count =
-    pts.length + " models" +
+    vis.length + " models" +
     (frontier.length ? " · " + frontier.length + " on the frontier" : "") +
     (noSpeed ? " · " + noSpeed + " without speed data hidden" : "") +
     (noAxis ? " · " + noAxis + " skipped (no price/elo)" : "");

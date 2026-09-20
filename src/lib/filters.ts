@@ -63,13 +63,20 @@ export function passThresholds(d: Row, thr: Thr, ctx: ThrCtx): boolean {
   return true;
 }
 
+// Per-row visibility (plan 032 D5): the single predicate behind both the
+// instant removal path (filterRows, list views) and the chart's fade path
+// (charts.ts tags kept-alive points with it). Search is NOT a visibility
+// predicate — it dims non-matching points in place (010 D1/D5).
+export function isVisible(d: Row, f: Filters): boolean {
+  if (f.families.size && !f.families.has(orgOf(d) + "|" + familyOf(d)))
+    return false;
+  if (f.vision === "vision" && !d.vision) return false;
+  if (f.thr && f.thrCtx && !passThresholds(d, f.thr, f.thrCtx)) return false;
+  return true;
+}
+
 export function filterRows(rows: Row[], f: Filters): Row[] {
-  let out = rows;
-  if (f.families.size)
-    out = out.filter((d) => f.families.has(orgOf(d) + "|" + familyOf(d)));
-  if (f.vision === "vision") out = out.filter((d) => !!d.vision);
-  if (f.thr && f.thrCtx) out = out.filter((d) => passThresholds(d, f.thr!, f.thrCtx!));
-  return out;
+  return rows.filter((d) => isVisible(d, f));
 }
 
 // Search match (plan 010 D2): case-insensitive substring over the
