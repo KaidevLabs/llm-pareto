@@ -1,8 +1,8 @@
 # 032 — Threshold filters (price / Elo / speed)
 
-Date: 2026-09-19. **Status: EXECUTING (step 3/4).** Approved D1–D7 (owner
-"recomended" 2026-09-19); D1/D6 revised double-sided mid-step 2
-(2026-09-19). D4 = Option
+Date: 2026-09-19. **Status: EXECUTING (step 4/4).** Approved D1–D7 (owner
+"recomended" 2026-09-19); D1/D6 revised double-sided mid-step 2, 3D
+keep-alive added mid-step 3 (2026-09-19). D4 = Option
 A (keep-alive + opacity merge). D5 = unify (search/family/vision also fade).
 Source: owner
 directive (2026-09-19) — "add some thresholds like a price (min & max), an Elo
@@ -90,8 +90,27 @@ out** (opacity tween), never blink them away.
    `setOption(opt, false)` with a short `animationDurationUpdate` so opacity
    tweens; recompute frontier/spread/bounds from the visible subset; wheel/pan
    keeps instant notMerge. (D5 unify: also drive search/family/vision via the
-   same opacity flag if owner chose unify.) Commit: `chart: threshold fade-out
-   animation`.
+   same opacity flag if owner chose unify.) Commit: `chart: threshold
+   fade-out animation`.
+   ✅ **As-built (2026-09-19, committed d530313):** as specced for 2D +
+   owner-directed 3D extension mid-review ("Not working on the 3d version").
+   `filters.ts` gained `isVisible(d, f)` as the single visibility predicate
+   (families + vision + thresholds; search stays a dim, 010); `filterRows`
+   is now `rows.filter(isVisible)`. Both 2D builders (and, per the owner's
+   live report, `build3DScene`) build a keep-alive point set tagged with
+   `Pt.vis`; `chartPush` classifies renders by a per-panel geometry
+   signature (ratio + spread + fetched_at): filter-only change → merge
+   `setOption` with `animationDurationUpdate: 350` (the fade); geometry
+   change → instant notMerge (018 A2 intact — wheel/pan never re-set
+   options). Frontier/spread/bounds/count rebuild from the visible subset
+   (supersedes 018 A1/A2's fit-to-all for the filter dimension). Ghost
+   hygiene: hidden points render opacity 0 at rest AND emphasis, no
+   tooltip, not clickable. 3D fade is INSTANT (echarts-gl has no opacity
+   update tween; D4's tween was scoped to the 2D bubbles — noted to owner,
+   not contested). CDP probes: `.tmp/probe_thr_fade.mjs` (2D, 11/11) and
+   `.tmp/probe_thr_fade3d.mjs` (3D, 11/11) — keep-alive dataset constant,
+   hidden counts, merge-path 350ms on 2D, axis refit, count, restore on
+   clear, no console errors. Suite 120 green, tsc + build clean.
 4. **Verify + ship.** `filters.test.ts` + `urlstate.test.ts` green; CDP probe
    confirms bubbles **fade** (not blink) as a slider crosses them and the
    frontier/counts track the visible set; cookie probe clean (no new storage);
