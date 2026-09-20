@@ -58,9 +58,22 @@ const gamma: Row = {
   context_length: 200000,
   arena_org: "OrgC",
 };
+// the cheap crown: nowhere near the elo leaders, but $0.50/$1 blended
+const cheapo: Row = {
+  ...base,
+  or_id: "orgd/cheapo",
+  or_name: "OrgD: Cheapo",
+  arena_rank: 4,
+  price_in_per_m: 0.5,
+  price_out_per_m: 1,
+  arena_elo: 1400,
+  arena_elo_upper: 1402,
+  arena_elo_lower: 1398,
+  arena_org: "OrgD",
+};
 
 beforeEach(() => {
-  data.rows = [base, beta, gamma];
+  data.rows = [base, beta, gamma, cheapo];
 });
 afterEach(() => {
   cleanup();
@@ -76,10 +89,13 @@ const colOf = (text: string): string | null => {
 };
 
 describe("Comparator", () => {
-  it("renders the top-2 pre-seed as cards, the rail, the add slot, and marks on the rows", () => {
+  it("renders the crown pre-seed, the rail, the CTA add slot and the skeleton", () => {
     render(Comparator);
-    expect(screen.getByText("OrgA: Alpha")).toBeTruthy();
+    // crowns: cheapest (Cheapo) + elo king (Beta); the speed crown joins
+    // lazily with the endpoints fetch, absent here
+    expect(screen.getByText("OrgD: Cheapo")).toBeTruthy();
     expect(screen.getByText("OrgB: Beta")).toBeTruthy();
+    expect(screen.queryByText("OrgA: Alpha")).toBe(null);
     expect(document.querySelector(".verdicts")).toBe(null);
     // one shared rail labels the band; the cards carry no in-card labels
     expect([...document.querySelectorAll(".rail .rt")].map((t) => t.textContent)).toEqual([
@@ -91,20 +107,32 @@ describe("Comparator", () => {
       "org",
     ]);
     expect(document.querySelectorAll(".is-card .drow .k").length).toBe(0);
-    // the dashed add slot holds the search input; the rail sits last
+    // the add slot: search input as title, the CTA button, the skeleton
+    // "filling" card below; the rail sits last
     expect(document.querySelectorAll(".is-add").length).toBe(1);
     expect(screen.getByLabelText("search models to compare")).toBeTruthy();
+    // the input is the call to action: a green + beside the placeholder
+    expect(document.querySelector(".is-add .ms .plus")).toBeTruthy();
+    expect(document.querySelector(".is-add .sk-card")).toBeTruthy();
     expect(
       [...document.querySelectorAll(".band > *")].at(0)!.classList.contains("rail")
     ).toBe(true);
     expect(
       [...document.querySelectorAll(".band > *")].at(-1)!.classList.contains("is-add")
     ).toBe(true);
-    // the skeleton slot is two separated elements: the input as its title,
-    // the shimmering card below
-    expect(document.querySelector(".is-add .sk-title input")).toBeTruthy();
-    expect(document.querySelector(".is-add .sk-card")).toBeTruthy();
-    expect(document.querySelector(".is-add .sk-title .sk-card")).toBe(null);
+  });
+
+  it("the CTA input opens the typeahead dropdown on focus + typing", async () => {
+    render(Comparator);
+    const input = screen.getByLabelText("search models to compare");
+    fireEvent.focus(input);
+    fireEvent.input(input, { target: { value: "gamma" } });
+    await screen.findByRole("button", { name: /OrgC: Gamma/ });
+  });
+
+  it("marks land on the cards' own rows for an explicit pair", () => {
+    ui.cmps = ["orga/alpha", "orgb/beta"];
+    render(Comparator);
     // price in: Beta wins (green), Alpha loses (orange)
     expect(colOf("$5.00")).toBe("var(--accent)");
     expect(colOf("$10")).toBe("var(--lose)");
@@ -150,14 +178,14 @@ describe("Comparator", () => {
     fireEvent.focus(input);
     fireEvent.input(input, { target: { value: "gamma" } });
     await fireEvent.click(await screen.findByRole("button", { name: /OrgC: Gamma/ }));
-    expect(ui.cmps).toEqual(["orga/alpha", "orgb/beta", "orgc/gamma"]);
+    expect(ui.cmps).toEqual(["orgd/cheapo", "orgb/beta", "orgc/gamma"]);
   });
 
   it("already-picked models are excluded from the suggestions", async () => {
     render(Comparator);
     const input = screen.getByLabelText("search models to compare");
     fireEvent.focus(input);
-    fireEvent.input(input, { target: { value: "a" } });
+    fireEvent.input(input, { target: { value: "gamma" } });
     await screen.findByRole("button", { name: /OrgC: Gamma/ });
     expect(document.querySelectorAll(".ms li button").length).toBe(1);
   });
@@ -192,7 +220,7 @@ describe("Comparator", () => {
   it("a card chip opens the full model card drawer", async () => {
     ui.cmps = null;
     render(Comparator);
-    await fireEvent.click(screen.getByRole("button", { name: "full model card: OrgA: Alpha" }));
-    expect(ui.selected?.or_id).toBe("orga/alpha");
+    await fireEvent.click(screen.getByRole("button", { name: "full model card: OrgB: Beta" }));
+    expect(ui.selected?.or_id).toBe("orgb/beta");
   });
 });

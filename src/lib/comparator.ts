@@ -11,6 +11,7 @@
 
 import type { Row } from "./types";
 import type { Speed } from "./speed";
+import { blendedPrice } from "./filters";
 
 export const CMP_MAX = 4;
 
@@ -28,16 +29,48 @@ export type Marks = Partial<Record<MetricKey, Mark>>;
 
 const EPS = 1e-9;
 
-// The picks as displayed: null = untouched → the D5 pre-seed (top-2 by
-// arena rank); [] = the user emptied their roster and it stands; a list
-// is taken as-is, capped.
-export function resolvedCmps(cmps: string[] | null, rows: Row[]): string[] {
-  if (cmps === null) {
-    return [...rows]
-      .sort((a, b) => a.arena_rank - b.arena_rank)
-      .slice(0, 2)
-      .map((r) => r.or_id);
-  }
+// The crowns (027's ♛ cheap / fast / elo kings, owner pick 2026-09-20)
+// as the D5 pre-seed: cheapest (ratio-blended price), fastest (endpoints
+// p50 — absent until the lazy fetch settles), highest Elo, over the full
+// joined set. One model may hold several crowns; the seed dedupes in
+// cheap → fast → elo order (ties → the earlier row, i.e. better rank).
+export function crownSeeds(
+  rows: Row[],
+  speeds: (Speed | null)[],
+  ratio: number
+): string[] {
+  const best = (get: (r: Row, i: number) => number | null, lower: boolean): string | null => {
+    let bi = -1;
+    let bv = Infinity;
+    rows.forEach((r, i) => {
+      const v = get(r, i);
+      if (v == null) return;
+      const k = lower ? v : -v;
+      if (bi < 0 || k < bv) {
+        bv = k;
+        bi = i;
+      }
+    });
+    return bi < 0 ? null : rows[bi].or_id;
+  };
+  return [
+    ...new Set([
+      best((r) => blendedPrice(r, ratio), true),
+      best((_r, i) => speeds[i]?.toks ?? null, false),
+      best((r) => r.arena_elo, false),
+    ]),
+  ].filter((x): x is string => x != null);
+}
+
+// The picks as displayed: null = untouched → the crown pre-seed; [] = the
+// user emptied their roster and it stands; a list is taken as-is, capped.
+export function resolvedCmps(
+  cmps: string[] | null,
+  rows: Row[],
+  speeds: (Speed | null)[] = [],
+  ratio = 3
+): string[] {
+  if (cmps === null) return crownSeeds(rows, speeds, ratio);
   return cmps.slice(0, CMP_MAX);
 }
 

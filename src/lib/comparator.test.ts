@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { buildMarks, resolvedCmps, band, CMP_MAX } from "./comparator";
+import { buildMarks, crownSeeds, resolvedCmps, band, CMP_MAX } from "./comparator";
 import type { Row } from "./types";
 import type { Speed } from "./speed";
 
@@ -59,13 +59,38 @@ const gamma: Row = {
 const spd = (toks: number): Speed => ({ toks, latency: null, n: 1, rc: 100 });
 
 describe("resolvedCmps", () => {
-  it("null resolves to the top-2 pre-seed by rank", () => {
-    expect(resolvedCmps(null, [beta, base])).toEqual(["orga/alpha", "orgb/beta"]);
+  it("null resolves to the crown pre-seed", () => {
+    // cheapest (blended at ratio 3) = Beta, elo king = Beta → one card
+    expect(resolvedCmps(null, [beta, base], [], 3)).toEqual(["orgb/beta"]);
   });
   it("an emptied roster stays empty; a list is as-is, capped at CMP_MAX", () => {
     expect(resolvedCmps([], [beta, base])).toEqual([]);
     expect(resolvedCmps(["x", "y"], [base])).toEqual(["x", "y"]);
     expect(resolvedCmps(["1", "2", "3", "4", "5"], []).length).toBe(CMP_MAX);
+  });
+});
+
+describe("crownSeeds", () => {
+  it("picks cheap, fast and elo, deduped in that order", () => {
+    // base: elo king (1500) + cheaper than gamma; gamma: fast (only toks)
+    const speeds = [null, spd(99)];
+    expect(crownSeeds([base, gamma], speeds, 3)).toEqual(["orga/alpha", "orgc/gamma"]);
+  });
+  it("one model holding all three crowns seeds once", () => {
+    expect(crownSeeds([base], [spd(50)], 3)).toEqual(["orga/alpha"]);
+  });
+  it("the ratio moves the cheap crown", () => {
+    // flipIn: $1 in / $100 out vs Beta: $5 in / $25 out — output-heavy
+    // mixes crown Beta, input-heavy mixes crown flipIn
+    // ratio 0 → Beta; a 100:1 input-heavy mix crowns flipIn (the elo
+    // crown still rides on Beta)
+    const flipIn: Row = { ...gamma, or_id: "orgf/fin", price_in_per_m: 1, price_out_per_m: 100 };
+    expect(crownSeeds([flipIn, beta], [null, null], 0)).toEqual(["orgb/beta"]);
+    expect(crownSeeds([flipIn, beta], [null, null], 100)).toEqual(["orgf/fin", "orgb/beta"]);
+  });
+  it("rows without usable values seed nothing", () => {
+    const ghost: Row = { ...base, or_id: "orgg/ghost", price_in_per_m: null, price_out_per_m: null, arena_elo: null };
+    expect(crownSeeds([ghost], [null], 3)).toEqual([]);
   });
 });
 

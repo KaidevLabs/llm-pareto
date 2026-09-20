@@ -125,13 +125,14 @@ describe("Details", () => {
   });
 
   it("the compare fast-access appends the model and closes the drawer", async () => {
-    const r1 = { ...DEMO, or_id: "orga/alpha", or_name: "Alpha", arena_rank: 1 } as Row;
-    const r2 = { ...DEMO, or_id: "orgb/beta", or_name: "Beta", arena_rank: 2 } as Row;
-    data.rows = [DEMO, r1, r2]; // DEMO (rank 12) is not in the top-2 pre-seed
+    // the crown pre-seed needs models that out-crown DEMO on price and elo
+    const r1 = { ...DEMO, or_id: "orga/alpha", or_name: "Alpha", arena_rank: 1, arena_elo: 1600, price_in_per_m: 10, price_out_per_m: 50 } as Row;
+    const r2 = { ...DEMO, or_id: "orgb/beta", or_name: "Beta", arena_rank: 2, arena_elo: 1550, price_in_per_m: 0.3, price_out_per_m: 0.5 } as Row;
+    data.rows = [DEMO, r1, r2]; // seed = the crowns: r2 (cheap) + r1 (elo)
     ui.selected = DEMO;
     render(Details, { props: { d: DEMO } });
     await fireEvent.click(screen.getByRole("button", { name: "◈ compare" }));
-    expect(ui.cmps).toEqual(["orga/alpha", "orgb/beta", "z-ai/glm-5"]);
+    expect(ui.cmps).toEqual(["orgb/beta", "orga/alpha", "z-ai/glm-5"]);
     expect(ui.selected).toBe(null);
   });
 

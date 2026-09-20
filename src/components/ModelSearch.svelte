@@ -66,9 +66,10 @@
 </script>
 
 <div class="ms">
+  <span class="plus" aria-hidden="true">+</span>
   <input
     type="text"
-    placeholder="add model…"
+    placeholder="add a model to compare"
     aria-label="search models to compare"
     autocomplete="off"
     spellcheck="false"
@@ -103,7 +104,30 @@
   .ms {
     position: relative;
     display: flex;
+    align-items: center;
+    gap: 8px;
     width: 100%;
+    padding: 0 12px;
+    /* the call-to-action shell: the input itself is the button */
+    border: 1.5px dashed rgba(148, 163, 184, 0.35);
+    border-radius: 12px;
+    background: transparent;
+    color: var(--muted);
+    transition: border-color 0.15s, color 0.15s, background 0.15s;
+    cursor: text;
+  }
+  .ms:hover,
+  .ms:focus-within {
+    border-color: var(--accent);
+    color: var(--text);
+    background: rgba(52, 211, 153, 0.06);
+  }
+  .ms .plus {
+    font-size: 20px;
+    line-height: 1;
+    font-weight: 600;
+    color: var(--accent);
+    flex: 0 0 auto;
   }
   .ms input {
     flex: 1;
@@ -114,10 +138,9 @@
     /* the slot's title — the same size/weight as the card names */
     font: 600 14px "Inter", system-ui, sans-serif;
     outline: none;
-    padding: 2px 0;
+    padding: 12px 0;
   }
-  .ms:focus-within input { color: var(--accent); }
-  .ms input::placeholder { color: var(--muted); }
+  .ms input::placeholder { color: var(--muted); font-weight: 500; }
   .ms ul {
     position: absolute;
     top: calc(100% + 6px);

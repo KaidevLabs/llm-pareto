@@ -1,14 +1,15 @@
 <!--
   Model comparator (plan 025): a panel section below the chart (D1).
   A slot matrix (owner-amended 2026-09-19): up to CMP_MAX picked models as
-  shared model cards (providers section off, D2 join diagnostics out) plus
-  one dashed add slot holding the search input — gone when 4 slots are
-  filled. Each card carries a × (removals close the gap); the shared title
-  rail labels every band (4-up desktop / 2-up tablet / 1-up mobile), with
-  the comparison marks colored on the cards' own value rows (winner green
-  / loser orange / tie blue). Speed joins via the 022 endpoints p50.
-  In-memory only (D6 — no URL, no storage); the empty list resolves to the
-  top-2 pre-seed by arena rank.
+  shared model cards plus one add slot — the search input as its title, a
+  dashed call-to-action button (the + focuses the input) and the shimmering
+  skeleton card below, gone when 4 slots are filled. Each card carries a
+  × (removals close the gap); the shared title rail labels every band
+  (4-up desktop / 2-up tablet / 1-up mobile), with the comparison marks
+  colored on the cards' own value rows (winner green / loser orange / tie
+  blue). Speed joins via the 022 endpoints p50. In-memory only (D6 — no
+  URL, no storage); the empty list resolves to the three-crowns pre-seed
+  (cheap / fast / elo, 2026-09-20 owner pick).
 -->
 <script lang="ts">
   import { data } from "../lib/data.svelte";
@@ -23,10 +24,13 @@
   import type { Row } from "../lib/types";
 
   // D5: the picker searches the full joined set — the current filters
-  // don't scope the comparator. The empty list resolves to the top-2
-  // pre-seed (data loads async, so the store starts empty); the first
-  // add/remove materializes the picks.
-  const ids = $derived(resolvedCmps(ui.cmps, data.rows));
+  // don't scope the comparator. The empty list resolves to the three
+  // crowns pre-seed (data loads async, so the store starts empty); the
+  // first add/remove materializes the picks.
+  const allSpeeds = $derived(
+    data.rows.map((r) => (store.done ? speedOf(r.or_id, store.data) : null))
+  );
+  const ids = $derived(resolvedCmps(ui.cmps, data.rows, allSpeeds, ui.ratio));
   const picked = $derived(
     ids
       .map((id) => data.rows.find((r) => r.or_id === id))
@@ -34,14 +38,16 @@
   );
 
   const add = (r: Row) => {
-    const base = ui.cmps ?? resolvedCmps(null, data.rows);
+    const base = ui.cmps ?? resolvedCmps(null, data.rows, allSpeeds, ui.ratio);
     if (base.includes(r.or_id) || base.length >= CMP_MAX) return;
     ui.cmps = [...base, r.or_id];
   };
   const remove = (id: string) => {
     // removing the last pick leaves [] — the user's emptied roster stands
     // (no pre-seed resurrection, 2026-09-19 owner directive)
-    ui.cmps = (ui.cmps ?? resolvedCmps(null, data.rows)).filter((x) => x !== id);
+    ui.cmps = (ui.cmps ?? resolvedCmps(null, data.rows, allSpeeds, ui.ratio)).filter(
+      (x) => x !== id
+    );
   };
 
   // The full model card (the drawer) for the rest of the info — the drawer
@@ -76,7 +82,7 @@
 <section class="cmp" id="compare" aria-label="model comparator">
     <div class="cmp-head">
       <h2>Compare</h2>
-      <span class="hint">up to {CMP_MAX} — search in the dashed slot, × removes</span>
+      <span class="hint">up to {CMP_MAX} — hit + to search a model, × removes</span>
     </div>
 
     <div class="stack">
@@ -209,9 +215,9 @@
     overflow-y: auto;
   }
   .is-add { display: flex; flex-direction: column; }
-  /* the empty slot: two separated elements — the input as the slot's
-     title (normal title size) and the skeleton card below it; picking a
-     model replaces both with the full card (flip-animated rightward) */
+  /* the empty slot: the CTA-styled search input as the slot's title and
+     the shimmering skeleton card below it; picking a model replaces both
+     with the full card (flip-animated rightward) */
   .sk-title {
     height: var(--head-block);
     display: flex;
