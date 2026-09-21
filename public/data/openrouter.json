@@ -84,8 +84,8 @@
   "id": "deepseek/deepseek-v4.1-flash",
   "name": "DeepSeek: DeepSeek V4.1 Flash",
   "org": "deepseek",
-  "price_in_per_m": 0.15,
-  "price_out_per_m": 0.6,
+  "price_in_per_m": 0.3,
+  "price_out_per_m": 1.2,
   "vision": true,
   "context_length": 1048576
  },
@@ -301,7 +301,7 @@
   "name": "Qwen: Qwen3.8 27B",
   "org": "qwen",
   "price_in_per_m": 0.2,
-  "price_out_per_m": 2.55,
+  "price_out_per_m": 2.5,
   "vision": true,
   "context_length": 1000000
  },
@@ -363,8 +363,8 @@
   "id": "deepseek/deepseek-v4-pro-0813",
   "name": "DeepSeek: DeepSeek V4 Pro 0813",
   "org": "deepseek",
-  "price_in_per_m": 0.66,
-  "price_out_per_m": 1.98,
+  "price_in_per_m": 1.32,
+  "price_out_per_m": 3.96,
   "vision": false,
   "context_length": 1048576
  },
@@ -1020,8 +1020,8 @@
   "id": "deepseek/deepseek-v4-pro",
   "name": "DeepSeek: DeepSeek V4 Pro 0423",
   "org": "deepseek",
-  "price_in_per_m": 0.9483,
-  "price_out_per_m": 1.8966,
+  "price_in_per_m": 0.95526,
+  "price_out_per_m": 1.91052,
   "vision": false,
   "context_length": 1048576
  },
@@ -1029,8 +1029,8 @@
   "id": "deepseek/deepseek-v4-flash",
   "name": "DeepSeek: DeepSeek V4 Flash 0423",
   "org": "deepseek",
-  "price_in_per_m": 0.089866,
-  "price_out_per_m": 0.179732,
+  "price_in_per_m": 0.088606,
+  "price_out_per_m": 0.177212,
   "vision": false,
   "context_length": 1048576
  },
