@@ -120,8 +120,8 @@
   "id": "deepseek/deepseek-v4.1-flash",
   "name": "DeepSeek: DeepSeek V4.1 Flash",
   "org": "deepseek",
-  "price_in_per_m": 0.15,
-  "price_out_per_m": 0.6,
+  "price_in_per_m": 0.3,
+  "price_out_per_m": 1.2,
   "vision": true,
   "context_length": 1048576
  },
@@ -135,11 +135,29 @@
   "context_length": 260000
  },
  {
+  "id": "nex-agi/nex-n2.5-mini",
+  "name": "Nex AGI: Nex-N2.5-Mini",
+  "org": "nex-agi",
+  "price_in_per_m": 0.025,
+  "price_out_per_m": 0.1,
+  "vision": true,
+  "context_length": 262144
+ },
+ {
   "id": "nex-agi/nex-n2.5-mini:free",
   "name": "Nex AGI: Nex-N2.5-Mini (free)",
   "org": "nex-agi",
   "price_in_per_m": 0.0,
   "price_out_per_m": 0.0,
+  "vision": true,
+  "context_length": 262144
+ },
+ {
+  "id": "nex-agi/nex-n2.5-pro",
+  "name": "Nex AGI: Nex-N2.5-Pro",
+  "org": "nex-agi",
+  "price_in_per_m": 0.075,
+  "price_out_per_m": 0.25,
   "vision": true,
   "context_length": 262144
  },
@@ -327,8 +345,8 @@
   "id": "z-ai/glm-5.3",
   "name": "Z.ai: GLM 5.3",
   "org": "z-ai",
-  "price_in_per_m": 0.784,
-  "price_out_per_m": 2.464,
+  "price_in_per_m": 0.84,
+  "price_out_per_m": 2.64,
   "vision": false,
   "context_length": 1310720
  },
@@ -399,8 +417,8 @@
   "id": "deepseek/deepseek-v4-pro-0813",
   "name": "DeepSeek: DeepSeek V4 Pro 0813",
   "org": "deepseek",
-  "price_in_per_m": 0.66,
-  "price_out_per_m": 1.98,
+  "price_in_per_m": 1.32,
+  "price_out_per_m": 3.96,
   "vision": false,
   "context_length": 1048576
  },

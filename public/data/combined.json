@@ -356,8 +356,8 @@
  {
   "or_id": "z-ai/glm-5.3",
   "or_name": "Z.ai: GLM 5.3",
-  "price_in_per_m": 0.784,
-  "price_out_per_m": 2.464,
+  "price_in_per_m": 0.84,
+  "price_out_per_m": 2.64,
   "vision": false,
   "context_length": 1310720,
   "arena_rank": 19,
@@ -1111,8 +1111,8 @@
   ],
   "arena_context_length": 262144,
   "arena_model_url": "https://huggingface.co/tencent/Hy3",
-  "arena_price_in_per_m": 0.0825,
-  "arena_price_out_per_m": 0.33,
+  "arena_price_in_per_m": 0.132,
+  "arena_price_out_per_m": 0.528,
   "match_method": "exact",
   "match_ratio": null
  },

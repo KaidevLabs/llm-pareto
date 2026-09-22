@@ -1,5 +1,5 @@
 {
- "fetched_at": "2026-09-22T01:00:48Z",
+ "fetched_at": "2026-09-22T06:42:04Z",
  "sources": {
   "arena": {
    "url": "https://lmarena.ai/leaderboard/text",
@@ -7,13 +7,13 @@
   },
   "openrouter": {
    "url": "https://openrouter.ai/api/v1/models",
-   "models": 357
+   "models": 359
   }
  },
  "join": {
   "combined": 153,
   "unmatched_arena": 194,
-  "unmatched_openrouter": 204,
+  "unmatched_openrouter": 206,
   "by_method": {
    "exact": 161,
    "override": 1,
@@ -24,6 +24,8 @@
   "variants_collapsed": 40,
   "collisions": [
    "ling-3-0-flash-vl: inclusionai/ling-3.0-flash-vl vs inclusionai/ling-3.0-flash-vl:free",
+   "nex-n2-5-mini: nex-agi/nex-n2.5-mini vs nex-agi/nex-n2.5-mini:free",
+   "nex-n2-5-pro: nex-agi/nex-n2.5-pro vs nex-agi/nex-n2.5-pro:free",
    "ling-3-0-flash-fin: inclusionai/ling-3.0-flash-fin vs inclusionai/ling-3.0-flash-fin:free",
    "qwen3-8-27b: qwen/qwen3.8-27b vs qwen/qwen3.8-27b:free",
    "nemotron-3-5-lightning: nvidia/nemotron-3.5-lightning vs nvidia/nemotron-3.5-lightning:free",
@@ -103,7 +105,7 @@
   "endpoints": 795,
   "stats": {
    "models_with_stats": 152,
-   "endpoints_with_stats": 733
+   "endpoints_with_stats": 741
   },
   "joined_page_endpoints": 804,
   "page_endpoints_unjoined": 0,
