@@ -109,7 +109,7 @@ is a review signal, not a failure — decide before changing either side.
 
 ## Code quality & benchmarking
 
-Four commands, three depths (node ≥ 22, `npm ci` first).
+Six commands, three depths (node ≥ 22, `npm ci` first).
 
 ### `npm run coverage` — test coverage (current tree)
 
@@ -191,6 +191,22 @@ npm run bench:publish                                  # latest run-* in benchma
 Each published entry records the run's measured tree; `/bench/compare.html`
 compares the last two published entries by default and loads any older pair
 via `?a=<id>&b=<id>`.
+
+### `npm run bench:ls` / `npm run bench:rm` — manage the published registry
+
+The registry is managed in place (plan 042); removal is file surgery only —
+the owner reviews and commits the deletion like a publish.
+
+```sh
+npm run bench:ls                    # list published entries (id/date/label/KB)
+npm run bench:rm -- run-20260921-0252  # remove that entry: dir + index.json row
+```
+
+`bench:ls` lists in registry order and names the default compare pair (the
+last two); an empty registry prints `0 published entries` and exits 0.
+`bench:rm` refuses an unknown id (non-zero exit, nothing touched); removing
+the last entry is allowed — the compare page renders its "two are needed"
+state. Local `benchmarks/` run dirs are neither listed nor deleted.
 
 ## Data provenance
 

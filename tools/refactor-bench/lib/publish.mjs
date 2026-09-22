@@ -1,7 +1,10 @@
 // 033 step 1: publish logic — validate a bench run, derive its registry
 // entry, copy its artifacts verbatim into public/bench/ (A6/A7/A10).
-import { existsSync, mkdirSync, copyFileSync, readFileSync, writeFileSync } from "node:fs";
+// The index.json read/write lives in registry.mjs (042 D1) — publish, ls
+// and rm share one owner of the registry contract.
+import { existsSync, mkdirSync, copyFileSync, readFileSync } from "node:fs";
 import path from "node:path";
+import { readRegistry, writeRegistry } from "./registry.mjs";
 
 // Artifacts an entry carries, verbatim from the run dir (A10). meta.json and
 // report.md stay run-local — the registry entry and report.html carry what
@@ -36,13 +39,12 @@ export function publishRun(runDir, benchRoot) {
   if (!check.ok) throw new Error(check.error);
   const prov = JSON.parse(readFileSync(path.join(runDir, "provenance.json"), "utf8"));
   const entry = entryFrom(runDir, prov);
-  const regPath = path.join(benchRoot, "index.json");
-  const registry = existsSync(regPath) ? JSON.parse(readFileSync(regPath, "utf8")) : [];
+  const registry = readRegistry(benchRoot);
   if (registry.some((e) => e.id === entry.id)) throw new Error(`duplicate entry id: ${entry.id}`);
   const entryDir = path.join(benchRoot, entry.id);
   mkdirSync(entryDir, { recursive: true });
   for (const f of entry.files) copyFileSync(path.join(runDir, f), path.join(entryDir, f));
-  writeFileSync(regPath, JSON.stringify([...registry, entry], null, 2) + "\n");
+  writeRegistry(benchRoot, [...registry, entry]);
   return entry;
 }
 // The no-junk gate (033 overview): a publishable run has at least its static

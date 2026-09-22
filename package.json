@@ -10,6 +10,8 @@
     "test": "vitest run",
     "bench": "node tools/refactor-bench/run.mjs",
     "bench:publish": "node tools/refactor-bench/publish.mjs",
+    "bench:ls": "node tools/refactor-bench/ls.mjs",
+    "bench:rm": "node tools/refactor-bench/rm.mjs",
     "coverage": "vitest run --coverage --coverage.reporter=text --coverage.reporter=json-summary",
     "cyc": "node tools/refactor-bench/cyc.mjs"
   },
