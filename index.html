@@ -80,14 +80,429 @@
   /* shared utilities (were global in the vanilla app) */
   .hidden { display: none !important; }
   .diamond { color: var(--accent); }
+
+  /* ===== static shell (plan 034) =====
+     Pre-mount copy of the app's first render — the pre-data state Svelte
+     paints first (no stamp, empty counts, thresholds disabled, footer
+     "data unknown"). #app is cleared on mount (main.ts), so these rules
+     style the placeholder until then; after mount the component-scoped
+     styles (same declarations, higher specificity) take over. Mirrors the
+     current component styles for a visually silent swap — keep in sync if
+     the chrome changes (D1a's accepted drift cost). */
+  header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 22px 28px 14px;
+    flex-wrap: wrap;
+  }
+  h1 { margin: 0; font-size: 24px; font-weight: 700; letter-spacing: -0.02em; }
+  h1 .x { color: var(--accent); }
+  .subtitle { margin-top: 4px; color: var(--muted); font-size: 13px; letter-spacing: 0.01em; }
+  nav.filters { display: flex; align-items: center; gap: 10px; padding: 0 28px 14px; flex-wrap: wrap; }
+  .seg {
+    display: inline-flex;
+    background: rgba(148, 163, 184, 0.08);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 3px;
+    gap: 2px;
+  }
+  .seg button {
+    border: 0;
+    background: transparent;
+    color: var(--muted);
+    font: 500 13px "Inter", system-ui, sans-serif;
+    padding: 7px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    letter-spacing: 0.02em;
+    transition: color 0.15s, background 0.15s, box-shadow 0.15s;
+  }
+  .seg button:hover { color: var(--text); }
+  .seg button.on {
+    background: var(--accent-dim);
+    color: #d1fae5;
+    box-shadow: inset 0 0 0 1px rgba(52, 211, 153, 0.35), 0 0 18px rgba(52, 211, 153, 0.12);
+  }
+  .pill {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 8px 14px;
+    background: transparent;
+    color: var(--muted);
+    font: 500 13px "Inter", system-ui, sans-serif;
+    cursor: pointer;
+    letter-spacing: 0.02em;
+    transition: color 0.15s, background 0.15s, box-shadow 0.15s;
+  }
+  .pill:hover { color: var(--text); }
+  .pill.on {
+    background: var(--accent-dim);
+    color: #d1fae5;
+    box-shadow: inset 0 0 0 1px rgba(52, 211, 153, 0.35), 0 0 18px rgba(52, 211, 153, 0.12);
+  }
+  .ratio {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid var(--border);
+    background: rgba(148, 163, 184, 0.08);
+    border-radius: 10px;
+    padding: 0 12px;
+    height: 38px;
+  }
+  .ratio input[type="range"] { width: 140px; accent-color: var(--accent); cursor: pointer; }
+  .ratio-val {
+    color: #d1fae5;
+    font-weight: 600;
+    font-size: 13px;
+    min-width: 30px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  .ratio-cap { color: var(--muted); font-size: 11px; white-space: nowrap; }
+  .ratio .pill { padding: 5px 10px; font-size: 12px; margin-left: 4px; }
+  .thr {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 4px;
+    border: 1px solid var(--border);
+    background: rgba(148, 163, 184, 0.08);
+    border-radius: 10px;
+    padding: 8px 12px;
+  }
+  .thr .row { display: flex; align-items: center; gap: 8px; height: 26px; }
+  .thr .row.off { opacity: 0.4; }
+  .thr .cap { color: var(--muted); font-size: 11px; width: 42px; white-space: nowrap; }
+  .thr .dual { position: relative; width: 170px; height: 22px; }
+  .thr .track {
+    position: absolute; left: 0; right: 0; top: 9px;
+    height: 4px; border-radius: 2px; background: rgba(148, 163, 184, 0.25);
+  }
+  .thr .fill { position: absolute; top: 0; height: 4px; border-radius: 2px; background: var(--accent); opacity: 0.55; }
+  .thr .dual input[type="range"] {
+    position: absolute; left: 0; width: 170px; margin: 0;
+    background: none; pointer-events: none;
+    -webkit-appearance: none; appearance: none;
+  }
+  .thr .dual input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none; pointer-events: auto;
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--accent); border: 2px solid #0a0e16; cursor: pointer;
+  }
+  .thr .dual input[type="range"]::-moz-range-thumb {
+    pointer-events: auto; width: 12px; height: 12px; border-radius: 50%;
+    background: var(--accent); border: 2px solid #0a0e16; cursor: pointer;
+  }
+  .thr .num {
+    width: 56px; background: transparent;
+    border: 1px solid transparent; border-radius: 6px;
+    color: #d1fae5; font-size: 12px; font-weight: 600;
+    font-variant-numeric: tabular-nums; text-align: right; padding: 2px 4px;
+  }
+  .thr .num:disabled { color: var(--muted); font-weight: 400; }
+  .thr .dash { color: var(--muted); font-size: 11px; }
+  .thr .reset {
+    align-self: flex-end;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .thr .reset:disabled { opacity: 0.35; cursor: default; }
+  .ofwrap { position: relative; }
+  .search {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--border);
+    background: rgba(148, 163, 184, 0.08);
+    border-radius: 10px;
+    padding: 0 12px;
+    height: 38px;
+  }
+  .search:focus-within { border-color: rgba(52, 211, 153, 0.45); }
+  .search input[type="search"] {
+    border: 0;
+    background: transparent;
+    color: var(--text);
+    font: 500 13px "Inter", system-ui, sans-serif;
+    width: 150px;
+    outline: none;
+  }
+  .search input[type="search"]::placeholder { color: var(--muted); }
+  .axis-note { color: var(--muted); font-size: 11px; padding: 0 28px 8px; }
+  main {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 0 28px;
+    min-height: 0;
+    position: relative;
+  }
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    min-height: var(--chart-h);
+    overflow: hidden;
+  }
+  .panel-head { display: flex; align-items: center; gap: 10px; padding: 12px 16px 4px; }
+  .panel-head h2 {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .badge {
+    font-size: 11px;
+    color: var(--accent);
+    border: 1px solid rgba(52, 211, 153, 0.35);
+    background: var(--accent-dim);
+    padding: 2px 8px;
+    border-radius: 999px;
+    letter-spacing: 0.03em;
+  }
+  .count { margin-left: auto; font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .chart-wrap { flex: 1; min-height: 560px; position: relative; display: flex; }
+  .chart { flex: 1; min-height: 560px; }
+  .tour-pill { padding: 2px 8px !important; font-size: 10px !important; border-radius: 8px !important; opacity: 0.65; }
+  .legend-row {
+    display: flex;
+    gap: 16px;
+    padding: 0 16px 10px;
+    font-size: 11px;
+    color: var(--muted);
+    flex-wrap: wrap;
+  }
+  .legend-row .sw {
+    display: inline-block;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    margin-right: 5px;
+    vertical-align: -1px;
+  }
+  .legend-row .ov-sw { border: 2px dashed var(--gold); background: transparent; border-radius: 50%; }
+  .ink { color: #60a5fa; }
+  .outk { color: #f59e0b; }
+  .grad-sw {
+    background: linear-gradient(90deg, #60a5fa, #f59e0b) !important;
+    border-radius: 2px !important;
+    width: 16px !important;
+    height: 4px !important;
+  }
+  footer {
+    margin-top: 18px;
+    padding: 16px 28px 26px;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.7;
+  }
+  footer a { color: var(--text); text-decoration: none; border-bottom: 1px solid var(--border); }
+  footer a:hover { border-bottom-color: var(--accent); }
+  .swatch {
+    display: inline-block;
+    width: 30px; height: 4px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, #60a5fa, #f59e0b);
+    vertical-align: middle;
+    margin-right: 6px;
+  }
 </style>
+<!-- echarts 5.6.0 (vendored, plan 019 byte-pin audit), deferred in <head> on
+     purpose (034 D2): vite hoists the entry module into <head> AFTER the
+     original head content, so this tag stays ahead of it in document order —
+     deferred scripts execute in document order, so window.echarts exists
+     when any chart code runs. defer also frees the body-end parse (the
+     blocking position) and lets the download run in parallel with it.
+     echarts-gl stays lazy (injected on 3D entry, 023 D5). -->
+<script src="./js/echarts-5.6.0.min.js" defer></script>
 </head>
 <body>
-<div id="app"></div>
-<!-- echarts 5.6.0 (vendored, plan 019 byte-pin audit) loads as a classic
-     script BEFORE the module bundle — window.echarts must exist when any
-     chart code runs. echarts-gl stays lazy (injected on 3D entry, 023 D5). -->
-<script src="./js/echarts-5.6.0.min.js"></script>
+<!-- Static shell (034 D1a/D3): a copy of the app's first render in its
+     pre-data state, so first paint is contentful before the ~1 MB echarts
+     download + module mount chain completes. Data-dependent bits are the
+     same placeholders Svelte itself renders first (no stamp, empty counts,
+     disabled thresholds, "data unknown") — no fake numbers. Cleared on
+     mount (main.ts); these nodes live until then only. Markup mirrors
+     App.svelte's first render (header, nav incl. ThresholdCtl, the five
+     panel chromes, axis note, footer skeleton); styles: the "static shell"
+     section of the head style block. -->
+<div id="app">
+  <header>
+    <div>
+      <h1>Arena <span class="x">×</span> OpenRouter</h1>
+      <div class="subtitle">Frontier models · LMArena quality vs OpenRouter price · Pareto frontier</div>
+    </div>
+  </header>
+
+  <nav class="filters">
+    <div class="seg" role="tablist" aria-label="price mode">
+      <button class="on" role="tab" aria-selected="true">General</button>
+      <button role="tab" aria-selected="false">Input $/M</button>
+      <button role="tab" aria-selected="false">Output $/M</button>
+      <button role="tab" aria-selected="false">Speed tok/s</button>
+    </div>
+    <div class="ratio">
+      <span class="ratio-val">3:1</span>
+      <input type="range" min="1" max="10" step="1" value="3"
+        aria-label="input to output token ratio for the blended price">
+      <span class="ratio-cap">input:output mix</span>
+      <button class="pill" title="Show/hide the real $in→$out spread bars"><span class="diamond">▭</span>spread</button>
+    </div>
+    <div class="thr" aria-label="threshold filters">
+      <div class="row off">
+        <span class="cap">$ / M</span>
+        <div class="dual">
+          <div class="track"><div class="fill" style="left:0%;width:100%"></div></div>
+          <input type="range" min="0" max="1000" step="1" value="0" disabled aria-label="minimum price">
+          <input type="range" min="0" max="1000" step="1" value="1000" disabled aria-label="maximum price">
+        </div>
+        <input class="num" type="text" inputmode="decimal" disabled value="" aria-label="minimum price value" placeholder="—">
+        <span class="dash">–</span>
+        <input class="num" type="text" inputmode="decimal" disabled value="" aria-label="maximum price value" placeholder="—">
+      </div>
+      <div class="row off">
+        <span class="cap">Elo</span>
+        <div class="dual">
+          <div class="track"><div class="fill" style="left:0%;width:100%"></div></div>
+          <input type="range" min="0" max="1000" step="1" value="0" disabled aria-label="minimum arena elo">
+          <input type="range" min="0" max="1000" step="1" value="1000" disabled aria-label="maximum arena elo">
+        </div>
+        <input class="num" type="text" inputmode="decimal" disabled value="" aria-label="minimum arena elo value" placeholder="—">
+        <span class="dash">–</span>
+        <input class="num" type="text" inputmode="decimal" disabled value="" aria-label="maximum arena elo value" placeholder="—">
+      </div>
+      <div class="row off">
+        <span class="cap">tok/s</span>
+        <div class="dual">
+          <div class="track"><div class="fill" style="left:0%;width:100%"></div></div>
+          <input type="range" min="0" max="1000" step="1" value="0" disabled aria-label="minimum output speed">
+          <input type="range" min="0" max="1000" step="1" value="1000" disabled aria-label="maximum output speed">
+        </div>
+        <input class="num" type="text" inputmode="decimal" disabled value="" aria-label="minimum output speed value" placeholder="—">
+        <span class="dash">–</span>
+        <input class="num" type="text" inputmode="decimal" disabled value="" aria-label="maximum output speed value" placeholder="—">
+      </div>
+      <button class="reset" disabled aria-label="clear all thresholds">reset</button>
+    </div>
+    <div class="seg" role="tablist" aria-label="vision filter">
+      <button class="on" role="tab" aria-selected="true">All models</button>
+      <button role="tab" aria-selected="false">✨ Vision-capable</button>
+    </div>
+    <div class="ofwrap">
+      <button class="pill" title="Filter by organization and model family" aria-expanded="false" aria-controls="of-panel"><span class="diamond">◆</span> orgs &amp; families</button>
+    </div>
+    <div class="search">
+      <input type="search" placeholder="Search models…"
+        aria-label="search models, dims non-matches">
+    </div>
+    <button class="pill" title="3D showcase: price × speed × Elo — drag rotates, wheel zooms, right-drag pans"><span class="diamond">◈</span> 3D</button>
+    <button class="pill on" title="Pareto frontier on/off"><span class="diamond">◈</span> Pareto frontier</button>
+  </nav>
+
+  <div class="axis-note">wheel: zoom price + Elo (anchored at cursor) · drag: pan (both axes) · double-click or ⤢ fit: reset to full view · click a bubble or the frontier: model details · x: price $/M tokens, log scale (cheaper → left) — General blends in/out at the slider's ratio · y: LMArena Elo (higher = better) · color: organization · bar behind a point: its real price spread (blue = input → amber = output) · top-left = best of both</div>
+
+  <main>
+    <section class="panel" id="panel-blend" aria-label="Blended price">
+      <div class="panel-head">
+        <h2>Blended price</h2>
+        <span class="badge">◈ frontier</span>
+        <button class="pill" title="Reset both axes to fit">⤢ fit</button>
+        <span class="count"></span>
+      </div>
+      <div class="chart-wrap"><div class="chart" id="chart-blend"></div></div>
+      <div class="legend-row">
+        <span><span class="sw" style="background:#34d399"></span>pareto frontier — nothing beats these on both quality and price</span>
+        <span><span class="sw ov-sw"></span>manual override — identity fixed by owner decision, price final</span>
+        <span><span class="sw grad-sw"></span>real price spread of the model — <span class="ink">blue = input</span>, <span class="outk">amber = output</span> $/M</span>
+      </div>
+    </section>
+    <section class="panel hidden" id="panel-in" aria-label="Input price">
+      <div class="panel-head">
+        <h2>Input price</h2>
+        <span class="badge">◈ frontier</span>
+        <button class="pill" title="Reset both axes to fit">⤢ fit</button>
+        <span class="count"></span>
+      </div>
+      <div class="chart-wrap"><div class="chart" id="chart-in"></div></div>
+      <div class="legend-row">
+        <span><span class="sw" style="background:#34d399"></span>pareto frontier — nothing beats these on both quality and price</span>
+        <span><span class="sw ov-sw"></span>manual override — identity fixed by owner decision, price final</span>
+      </div>
+    </section>
+    <section class="panel hidden" id="panel-out" aria-label="Output price">
+      <div class="panel-head">
+        <h2>Output price</h2>
+        <span class="badge">◈ frontier</span>
+        <button class="pill" title="Reset both axes to fit">⤢ fit</button>
+        <span class="count"></span>
+      </div>
+      <div class="chart-wrap"><div class="chart" id="chart-out"></div></div>
+      <div class="legend-row">
+        <span><span class="sw" style="background:#34d399"></span>pareto frontier — nothing beats these on both quality and price</span>
+        <span><span class="sw ov-sw"></span>manual override — identity fixed by owner decision, price final</span>
+      </div>
+    </section>
+    <section class="panel hidden" id="panel-speed" aria-label="Output speed">
+      <div class="panel-head">
+        <h2>Output speed</h2>
+        <span class="badge">◈ frontier</span>
+        <button class="pill" title="Reset both axes to fit">⤢ fit</button>
+        <span class="count"></span>
+      </div>
+      <div class="chart-wrap"><div class="chart" id="chart-speed"></div></div>
+      <div class="legend-row">
+        <span><span class="sw" style="background:#34d399"></span>pareto frontier — nothing beats these on both quality and speed</span>
+        <span><span class="sw ov-sw"></span>manual override — identity fixed by owner decision, price final</span>
+      </div>
+    </section>
+    <section class="panel hidden" id="panel-3d" aria-label="3D frontier">
+      <div class="panel-head">
+        <h2>3D frontier</h2>
+        <span class="badge">◈ frontier</span>
+        <button class="pill tour-pill" title="Play the guided tour">▶</button>
+        <button class="pill" title="Reset the camera to the default view">⤢ fit</button>
+        <span class="count"></span>
+      </div>
+      <div class="chart-wrap"><div class="chart" id="chart-3d"></div></div>
+      <div class="legend-row">
+        <span><span class="sw" style="background:#34d399"></span>glow — the 3-objective Pareto frontier: nothing beats these on price, speed <em>and</em> quality</span>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer">
+    <div id="legend-spread">
+      <span class="swatch"></span>Spread bar: each model's real price range on
+      the log axis — <span class="ink">blue end = input</span>,
+      <span class="outk">amber end = output</span> $/M. The point is the
+      blended price at the slider's input:output ratio; a long bar means
+      output tokens cost disproportionately more than input.
+    </div>
+    <div class="sources">
+      Sources:
+      <a href="https://lmarena.ai/leaderboard/text" target="_blank" rel="noopener">LMArena text leaderboard</a>
+      ·
+      <a href="https://openrouter.ai/models" target="_blank" rel="noopener">OpenRouter models</a>
+      ·
+      <a href="/bench/compare.html">refactor bench</a>
+      · data unknown
+    </div>
+    <div class="cookieless">Cookieless by design — no cookies. Just content.</div>
+  </footer>
+</div>
 <script type="module" src="/src/main.ts"></script>
 </body>
 </html>
