@@ -1,6 +1,8 @@
-# 035 — Static shell + deferred echarts script
+# 034 — Static shell + deferred echarts script
 
-Date: 2026-09-20. **Status: EXECUTING (step 1/2, code committed 2026-09-23).**
+Date: 2026-09-20. **Status: ARCHIVED (2026-09-23).** Commits: `942e118`
+`chart: static shell + defer echarts` (step 1) · `a9443c6` `plan: 034 —
+step 1` · close step below (no code changes).
 Source: `docs/reports/030-port-perf-findings.md` B19 (full evidence there; origin:
 plan 030 step 01). Re-aims the owner's recs 1+2 (code-split / preload) —
 both refuted in literal form, goal preserved.
@@ -23,10 +25,10 @@ chrome at 608 ms while echarts was still in flight.
 
 ## Steps (commit per step; owner stages each diff)
 
-1. Shell + defer in `index.html`; mount-semantics verification (D4).
-   Harness load A/B. Commit: `chart: static shell + defer echarts`.
-2. Owner A/B (flash, feel); cookie probe; DoD audit. Commit:
-   `chart: static shell verification` (or fold into 1 if clean).
+| step | file | depends on | status | commit |
+|---|---|---|---|---|
+| 01 | (shell + defer, this file's as-built) | — | ✅ COMPLETE (2026-09-23) | `942e118` |
+| 02 | `034-02-close.md` | 01 | ✅ COMPLETE (2026-09-23, no code changes) | — |
 
 ## As-built — step 1 (2026-09-23, code `942e118`)
 
@@ -78,10 +80,24 @@ chrome at 608 ms while echarts was still in flight.
 - Prerender machinery (D1 option b) unless the shell proves hard to keep.
 - Data-dependent shell content (SSR — parked as B26).
 - Bundle changes (the bundle stays 42.8 KB gz; no code-splitting).
+  — actual outcome: +1.55 KB gz net eager (CSS rides the bundle), accepted
+  at owner review as the price of the single-document first paint.
 
 ## Definition of done
 
-- [ ] Owner approves D1–D5 in a review session.
-- [ ] Throttled FCP ≈ 0.6 s in the harness A/B (from ~3.3 s); LCP likewise.
-- [ ] No visual regression at mount (owner A/B); zoom/pan unaffected.
-- [ ] Cookie probe clean; suites green; deployed (live == main) per owner.
+- [x] Owner approves D1–D5 in a review session. — plan executed on the
+      owner's `Execute @plans/034-static-shell.md` signal; the mid-step
+      `css: "injected"` amendment (replacing the rejected vite plugin) was
+      reviewed and staged by the owner.
+- [x] Throttled FCP ≈ 0.6 s in the harness A/B (from ~3.3 s) — 696 ms.
+      ~~LCP likewise~~ → waived by the owner at close: the ~3.5 s throttled
+      LCP is the mount swap's repaint artifact (same pixels, B26 owns the
+      DOM-preserving cure).
+- [x] No visual regression at mount; zoom/pan unaffected. — owner waived
+      the live A/B ("I do not need to AB, I'm going to make a bench and
+      stage it"); structural audit + screenshots + zero console errors in
+      the harness stand as evidence.
+- [x] Cookie probe clean (120 requests / 3 UAs, zero Set-Cookie); suites
+      green (tsc + 170 vitest + build); deploy is owner-driven (#467) — the
+      owner stages and pushes deliberately, then live == main is verified by
+      content (bundle hash + meta fetched_at).
