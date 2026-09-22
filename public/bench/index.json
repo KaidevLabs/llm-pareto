@@ -1,16 +1,1 @@
-[
-  {
-    "id": "run-20260922-2142",
-    "date": "2026-09-22T19:44:46.627Z",
-    "label": "013e1c8",
-    "side": "new",
-    "files": [
-      "static.json",
-      "coverage.json",
-      "load.json",
-      "interact.json",
-      "provenance.json",
-      "report.html"
-    ]
-  }
-]
+[]
