@@ -1,6 +1,6 @@
 # 035 — Static shell + deferred echarts script
 
-Date: 2026-09-20. **Status: PROPOSED — not reviewed, not executed.**
+Date: 2026-09-20. **Status: EXECUTING (step 1/2, code committed 2026-09-23).**
 Source: `docs/reports/030-port-perf-findings.md` B19 (full evidence there; origin:
 plan 030 step 01). Re-aims the owner's recs 1+2 (code-split / preload) —
 both refuted in literal form, goal preserved.
@@ -27,6 +27,51 @@ chrome at 608 ms while echarts was still in flight.
    Harness load A/B. Commit: `chart: static shell + defer echarts`.
 2. Owner A/B (flash, feel); cookie probe; DoD audit. Commit:
    `chart: static shell verification` (or fold into 1 if clean).
+
+## As-built — step 1 (2026-09-23, code `942e118`)
+
+- **D1a** as planned: the shell is a copy of the app's first render in its
+  pre-data state (header, nav with the 032 threshold rows disabled, five
+  panel chromes, axis note, footer with "data unknown") inside `#app`;
+  data-dependent bits are the same placeholders Svelte itself renders first
+  (no stamp, empty counts) — nothing lies. Chrome styles live in a
+  "static shell" section of index.html's global `<style>`, commented as a
+  mirror of the component styles.
+- **D2** — with a deviation the plan didn't foresee: the echarts script
+  moved to `<head>` with `defer`, not deferred at body-end. Vite 8 hoists
+  the entry module tag into `<head>` right after the original head content,
+  so a body-end deferred classic script would execute *after* the module
+  (deferred + module scripts run in document order). Head placement keeps
+  echarts ahead of the module in document order — guarantee preserved.
+- **D4** verified against the installed source: Svelte 5.57 `_mount`
+  (node_modules/svelte/src/internal/client/render.js:173) does
+  `target.appendChild(create_text())` — **append, no clear**. `main.ts`
+  therefore calls `target.replaceChildren()` before `mount()`; the A/B's
+  post-mount audit confirms exactly one header/nav/main/footer, 5 panels.
+- **Owner-directed amendment (mid-step, 2026-09-23):** an agent-proposed
+  custom vite `generateBundle` plugin to inline the built CSS asset was
+  rejected — not idiomatic, machinery. The Svelte-native dial is
+  `svelte.config.js → compilerOptions.css: "injected"`: component CSS
+  compiles into the JS bundle (dev's existing behavior; build now agrees).
+  Consequence: the built HTML has no render-blocking CSS `<link>` — the
+  single-HTML-document first-paint architecture of the pre-port app is
+  restored. Bundle: JS 42.97 → 48.40 KB gz gross, CSS asset (3.88 KB gz)
+  gone → net eager +1.55 KB, one fewer request.
+- **Harness** (`.tmp/034/fcp-ab.mjs`, scratch): three roots interleaved —
+  old (`7957602` worktree, public/), base (pre-change dist), new — 5×
+  throttled (FAST3G + 4× CPU, cache off, 030's conditions) + 1× unthrottled
+  sanity, CDP, post-mount structural audit + console-error capture.
+- **Numbers** (medians, throttled): FCP old 668 / base 3232 / **new 696 ms**
+  (DoD ≈0.6 s ✓, from ~3.3 s; intermediate shell-only build measured 1300 —
+  the residual was exactly the CSS link RTT). Chart-ready parity (7.0–7.3 s
+  all sides). Unthrottled FCP 40–56 ms all sides. Zero console errors.
+- **Known residual, flagged to owner:** throttled LCP ~3.5 s (DoD said
+  "likewise"). Mechanism: the mount swap (`replaceChildren`) removes the
+  shell's text nodes and Chromium promotes the re-painted mounted chrome
+  (~3.5 s) to the LCP candidate — same pixels, metric sees a repaint. The
+  in-place-DOM cure is hydration/prerender (B26, out of scope). FCP — the
+  "page is here" metric — is on target; owner A/B (step 2) decides whether
+  the mount frame is visibly silent.
 
 ## Out of scope
 
