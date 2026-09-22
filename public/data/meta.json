@@ -1,5 +1,5 @@
 {
- "fetched_at": "2026-09-20T06:38:02Z",
+ "fetched_at": "2026-09-22T21:09:00Z",
  "sources": {
   "arena": {
    "url": "https://lmarena.ai/leaderboard/text",
@@ -7,23 +7,25 @@
   },
   "openrouter": {
    "url": "https://openrouter.ai/api/v1/models",
-   "models": 354
+   "models": 364
   }
  },
  "join": {
-  "combined": 154,
-  "unmatched_arena": 192,
-  "unmatched_openrouter": 200,
+  "combined": 153,
+  "unmatched_arena": 194,
+  "unmatched_openrouter": 211,
   "by_method": {
-   "exact": 162,
+   "exact": 161,
    "override": 1,
    "prefix-variant": 10,
-   "prefix-base": 31,
+   "prefix-base": 30,
    "fuzzy": 6
   },
-  "variants_collapsed": 41,
+  "variants_collapsed": 40,
   "collisions": [
    "ling-3-0-flash-vl: inclusionai/ling-3.0-flash-vl vs inclusionai/ling-3.0-flash-vl:free",
+   "nex-n2-5-mini: nex-agi/nex-n2.5-mini vs nex-agi/nex-n2.5-mini:free",
+   "nex-n2-5-pro: nex-agi/nex-n2.5-pro vs nex-agi/nex-n2.5-pro:free",
    "ling-3-0-flash-fin: inclusionai/ling-3.0-flash-fin vs inclusionai/ling-3.0-flash-fin:free",
    "qwen3-8-27b: qwen/qwen3.8-27b vs qwen/qwen3.8-27b:free",
    "nemotron-3-5-lightning: nvidia/nemotron-3.5-lightning vs nvidia/nemotron-3.5-lightning:free",
@@ -99,13 +101,13 @@
    "endpoints_api": "https://openrouter.ai/api/v1/models/{or_id}/endpoints",
    "model_page": "https://openrouter.ai/{or_id}"
   },
-  "models": 154,
-  "endpoints": 797,
+  "models": 153,
+  "endpoints": 793,
   "stats": {
    "models_with_stats": 152,
-   "endpoints_with_stats": 738
+   "endpoints_with_stats": 748
   },
-  "joined_page_endpoints": 806,
+  "joined_page_endpoints": 802,
   "page_endpoints_unjoined": 0,
   "duplicates_merged": 9
  }
