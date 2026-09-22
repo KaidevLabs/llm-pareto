@@ -1,4 +1,4 @@
-# Step 02 — Harness: one tree per run — OPEN
+# Step 02 — Harness: one tree per run — ✅ COMPLETE (committed 013e1c8 + f26fe70, 2026-09-22)
 
 Settled **A11** (owner pick B, 2026-09-21): a run measures exactly ONE tree —
 bare `npm run bench` measures the current tree; a positional `<ref>` measures
@@ -73,3 +73,39 @@ shapes + old label) is replaced by the fresh run's entry — the registry must
 hold a uniform single-tree shape so the compare page (step 03) can diff two
 entries without shape branches. The 2341 run dir keeps its two-ref JSONs and
 becomes unpublishable by design.
+
+## As-built
+
+The A11 rework shipped in `013e1c8` (bundled with step 01's publish command —
+both steps' code shared that commit; step 01's plan commit `8387d6a` precedes
+it). The close session found the tree clean at that commit and audited every
+touched file against the spec — no `--single`, no refA/refB/oldRoot/headShort
+anywhere; one side object/port; provenance `{ref, dirty, buildAt, nodeVersion,
+chromiumVersion, runs, runDate}`; `meta.json` one `ref`, no `single`; analysis
+libs + report/page single-tree; publish label/refusal — so no code changes
+were needed at close; the close commit is the published run itself.
+
+Close verification (2026-09-22, HEAD `013e1c8`):
+
+- `node --check` ×10 touched/adjacent `.mjs` → ok; `publish.test.ts` 11/11;
+  `npm test` 137/137 (18 files).
+- smoke bare → `.tmp/smoke-bare`: `ref: 013e1c8`, `dirty: false`.
+- smoke `--ref e858d24` → `.tmp/smoke-ref`: worktree + fairCopy, `ref:
+  e858d24`, `dirty: false`, worktree removed after (`git worktree list` clean).
+- full bare run `benchmarks/run-20260922-2142` (`--runs 1`, 108 s): flattened
+  JSONs (`load {label, conditions, waterfall}`, `interact {label, config, …}`),
+  `report.md`/`report.html` name the one tree (pill `013e1c8`), no Δ columns /
+  verdict pill / old-new / 031 caveats; the caveat points to the compare page.
+- publish → `f26fe70`: `public/bench/run-20260922-2142/` (44 KB, 6 artifacts
+  verbatim) + registry entry. The registry now holds two uniform single-tree
+  entries — `run-20260921-0252` (`4d908ab (dirty)`) and `run-20260922-2142`
+  (`013e1c8`) — the pair step 03's compare page loads by default.
+- refusals live: `run-20260919-2341` (old schema) exit 1, duplicate id exit 1,
+  partial run (missing `static.json`) exit 1 — registry byte-identical after
+  each.
+
+Notes: the pre-rework `2341` run never entered the committed registry — `0252`
+seeded it in `013e1c8`, superseding the step-01 probe plan. Cosmetic leftover
+shown at owner review: bare runs still log "done in Ns — worktree cleaned"
+although cleanup is a no-op there (behavior is correct — removal is
+`--ref`-guarded); left as reviewed.

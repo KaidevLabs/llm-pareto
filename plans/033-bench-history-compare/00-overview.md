@@ -1,7 +1,7 @@
 # 033 — Bench history & run comparison
 
-Date: 2026-09-19. **Status: EXECUTING (step 02/05)** — eureka settled
-(A1–A11); step 01 closed 2026-09-22.
+Date: 2026-09-19. **Status: EXECUTING (step 03/05)** — eureka settled
+(A1–A11); steps 01–02 closed 2026-09-22.
 
 Source: owner idea-dump (2026-09-19, preserved verbatim):
 
@@ -97,18 +97,18 @@ None — all eureka questions settled (A1–A10) or absorbed into design:
 
 | Step | File | Depends on | Status | Commit |
 |------|------|------------|--------|--------|
-| 1 | 01-publish.md | — | DONE | |
-| 2 | 02-harness-single-tree.md | 1 | OPEN | |
+| 1 | 01-publish.md | — | DONE | 013e1c8 |
+| 2 | 02-harness-single-tree.md | 1 | DONE | 013e1c8 + f26fe70 |
 | 3 | 03-compare-page.md | 2 | OPEN | |
 | 4 | 04-footer-link.md | 3 | OPEN | |
 | 5 | 05-close.md | 4 | OPEN | |
 
 ## Definition of done
 
-- [ ] `npm run bench:publish -- <run-dir>` copies a run into
+- [x] `npm run bench:publish -- <run-dir>` copies a run into
       `public/bench/<id>/` and updates `index.json`; duplicate id and partial
       run fail with non-zero exit.
-- [ ] `npm run bench` measures exactly one tree per run (bare = current
+- [x] `npm run bench` measures exactly one tree per run (bare = current
       tree, positional `<ref>` = worktree); the two-ref mode and the in-run
       diff are gone (A11); provenance is `{ref, dirty, …}`.
 - [ ] `/bench/compare.html` shows the last two published entries by default;
