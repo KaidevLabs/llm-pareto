@@ -12,5 +12,19 @@
       "provenance.json",
       "report.html"
     ]
+  },
+  {
+    "id": "run-20260923-0130",
+    "date": "2026-09-22T23:42:38.784Z",
+    "label": "a9443c6",
+    "side": "new",
+    "files": [
+      "static.json",
+      "coverage.json",
+      "load.json",
+      "interact.json",
+      "provenance.json",
+      "report.html"
+    ]
   }
 ]
