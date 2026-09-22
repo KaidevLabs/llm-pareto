@@ -1,8 +1,9 @@
 # 042 — Bench registry management: `bench:ls` / `bench:rm`
 
-Date: 2026-09-22. **Status: EXECUTING (step 2/2).** Owner directive
-`Execute @plans/042-bench-registry-ls-rm.md` (2026-09-22); step 1 closed
-2026-09-23 (fd74bb3).
+Date: 2026-09-22. **Status: ARCHIVED (2026-09-23).** Commits: b9f6b23
+(plan) · fd74bb3/38d977d (step 1) · 0e75af2 + this commit (close). Owner
+directive `Execute @plans/042-bench-registry-ls-rm.md` (2026-09-22); step 1
+closed 2026-09-23 (fd74bb3).
 Source: owner request, verbatim:
 
 > "I want to add a bench:ls to list and a bench:rm <bench id> to remove a nech"
@@ -107,6 +108,20 @@ handling (A1).
    --noEmit`, `npm run build`; `python3 update.py` run reviewed — its data
    output stays out of the commit), README audit, DoD, archive.
    Commit: `plan: 042 — close (plan: 042-bench-registry-ls-rm)`.
+   ✅ **As-built (2026-09-23, committed 0e75af2):** full hierarchy green —
+   python suite 159 OK, `npm test` 170 passed, `tsc --noEmit` clean,
+   `npm run build` clean. `python3 update.py` exit 0 with a sane match
+   report (153 joined, top-20 20/20, overall 208/402 arena entries matched
+   = 52% ≥ 40%, 0 provider join misses, 23/23 logos); its data output —
+   `fetched_at`, one OpenRouter price tick (deepseek-v4-pro), endpoints
+   stats churn — reviewed and left uncommitted in the working tree per the
+   step spec. README audit: the `bench:rm` example pointed at
+   `run-20260921-0252`, which the step-1 smoke removed from the registry —
+   re-pointed at the live `run-20260922-2351` (0e75af2, the close's only
+   code change); the section's command-count wording ("Six commands")
+   verified against the documented scripts. `bench:ls` re-verified live on
+   the 1-entry registry (footer: no default compare pair). DoD complete;
+   plan archived in this commit.
 
 ## Consequences
 
@@ -139,4 +154,6 @@ handling (A1).
       owner's own `bench:publish run-20260922-2351` round-tripped the new
       read/write path, final index.json byte-canonical)
 - [x] README documents `bench:ls` / `bench:rm`. (committed fd74bb3)
-- [ ] Full verification hierarchy green; plan archived with the as-built.
+- [x] Full verification hierarchy green; plan archived with the as-built.
+      (2026-09-23: python 159 OK, vitest 170, tsc, build, `update.py` exit
+      0 sane report; close commit)
