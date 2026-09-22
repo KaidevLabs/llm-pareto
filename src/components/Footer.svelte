@@ -29,6 +29,8 @@
     <a href="https://lmarena.ai/leaderboard/text" target="_blank" rel="noopener">LMArena text leaderboard</a>
     ·
     <a href="https://openrouter.ai/models" target="_blank" rel="noopener">OpenRouter models</a>
+    ·
+    <a href="/bench/compare.html">refactor bench</a>
     · data {data.meta?.fetched_at || "unknown"}
   </div>
   <div class="joinline">
