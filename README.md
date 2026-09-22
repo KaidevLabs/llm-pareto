@@ -199,7 +199,7 @@ the owner reviews and commits the deletion like a publish.
 
 ```sh
 npm run bench:ls                    # list published entries (id/date/label/KB)
-npm run bench:rm -- run-20260921-0252  # remove that entry: dir + index.json row
+npm run bench:rm -- run-20260922-2351  # remove that entry: dir + index.json row
 ```
 
 `bench:ls` lists in registry order and names the default compare pair (the
