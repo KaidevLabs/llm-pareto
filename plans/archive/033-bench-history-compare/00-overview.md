@@ -1,7 +1,9 @@
 # 033 — Bench history & run comparison
 
-Date: 2026-09-19. **Status: EXECUTING (step 05/05)** — eureka settled
-(A1–A11); steps 01–04 closed 2026-09-22.
+Date: 2026-09-19. **Status: ARCHIVED (2026-09-22)** — eureka settled
+(A1–A11); steps 01–04 closed 2026-09-22; step 05 verification-only.
+Commits: 013e1c8 (steps 01–02), f26fe70 (registry seed), e6052b9 (step 03),
+f2fc89d (step 04), close commit (this one, plan files + archive).
 
 Source: owner idea-dump (2026-09-19, preserved verbatim):
 
@@ -101,7 +103,7 @@ None — all eureka questions settled (A1–A10) or absorbed into design:
 | 2 | 02-harness-single-tree.md | 1 | DONE | 013e1c8 + f26fe70 |
 | 3 | 03-compare-page.md | 2 | DONE | e6052b9 |
 | 4 | 04-footer-link.md | 3 | DONE | f2fc89d |
-| 5 | 05-close.md | 4 | OPEN | |
+| 5 | 05-close.md | 4 | ✅ COMPLETE (2026-09-22, no code changes) | this commit |
 
 ## Definition of done
 
@@ -116,8 +118,9 @@ None — all eureka questions settled (A1–A10) or absorbed into design:
       clean.
 - [x] Footer link live; `npm test`, `npx tsc --noEmit`, `npm run build` green.
 - [x] README documents publish + the compare page.
-- [ ] Full verification hierarchy green (python suite, JS suite, tsc, build,
-      `update.py` sane) and the archived plan records the as-built.
+- [x] Full verification hierarchy green (python suite 159 OK, JS suite
+      162/162, tsc clean, build clean, `update.py` exit 0 — top-20 20/20,
+      overall 44.1 %) and the archived plan records the as-built.
 
 ## Out of scope
 
