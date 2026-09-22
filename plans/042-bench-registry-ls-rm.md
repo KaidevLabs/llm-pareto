@@ -1,6 +1,8 @@
 # 042 — Bench registry management: `bench:ls` / `bench:rm`
 
-Date: 2026-09-22. **Status: PROPOSED — not reviewed, not executed.**
+Date: 2026-09-22. **Status: EXECUTING (step 2/2).** Owner directive
+`Execute @plans/042-bench-registry-ls-rm.md` (2026-09-22); step 1 closed
+2026-09-23 (fd74bb3).
 Source: owner request, verbatim:
 
 > "I want to add a bench:ls to list and a bench:rm <bench id> to remove a nech"
@@ -92,6 +94,15 @@ handling (A1).
    nope` → exit 1, and a real `bench:rm <id>` whose diff the owner reviews
    (the removed entry is recoverable from git until committed).
    Commit: `bench: registry ls/rm`.
+   ✅ **As-built (2026-09-23, committed fd74bb3):** as specced — registry.mjs
+   built red→green at the four declared seams (8 tests), publishRun delegates
+   to read/writeRegistry (its 11 tests green), CLIs + package scripts +
+   README. The live smoke ran against the real registry and doubled as its
+   first real mutations: this step's smoke removed run-20260921-0252
+   (c58ea40); the owner then removed run-20260922-2142 (aee28ed) and
+   published run-20260922-2351 (7b9d7ae) through the new code path — each
+   mutation its own `bench: rm` / `bench: publish` commit (033 A6 pattern;
+   owner staged all and directed "use it").
 2. Close: full verification hierarchy (python suite, `npm test`, `npx tsc
    --noEmit`, `npm run build`; `python3 update.py` run reviewed — its data
    output stays out of the commit), README audit, DoD, archive.
@@ -117,11 +128,15 @@ handling (A1).
 
 ## Definition of done
 
-- [ ] `npm run bench:ls` lists the published entries in registry order; empty
-      registry prints `0 published entries` and exits 0.
-- [ ] `npm run bench:rm <id>` removes the entry dir + `index.json` row and
-      prints the removal; unknown/missing id → exit 1, nothing touched.
-- [ ] `publish` behavior unchanged (its tests green); `index.json` stays valid
-      for the compare page after both commands.
-- [ ] README documents `bench:ls` / `bench:rm`.
+- [x] `npm run bench:ls` lists the published entries in registry order; empty
+      registry prints `0 published entries` and exits 0. (live: 2-entry, 1-entry
+      and scratch-empty registries, 2026-09-22)
+- [x] `npm run bench:rm <id>` removes the entry dir + `index.json` row and
+      prints the removal; unknown/missing id → exit 1, nothing touched. (live:
+      two real rms + `nope` + no-arg refusals, 2026-09-22/23)
+- [x] `publish` behavior unchanged (its tests green); `index.json` stays valid
+      for the compare page after both commands. (11 publish tests green; the
+      owner's own `bench:publish run-20260922-2351` round-tripped the new
+      read/write path, final index.json byte-canonical)
+- [x] README documents `bench:ls` / `bench:rm`. (committed fd74bb3)
 - [ ] Full verification hierarchy green; plan archived with the as-built.
