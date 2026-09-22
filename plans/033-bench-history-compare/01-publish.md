@@ -1,4 +1,4 @@
-# Step 01 — Publish command + registry — OPEN
+# Step 01 — Publish command + registry — DONE
 
 ## Spec
 

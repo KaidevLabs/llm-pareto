@@ -1,8 +1,7 @@
 # 033 — Bench history & run comparison
 
-Date: 2026-09-19. **Status: OWNER REVIEW** — eureka settled (A1–A10),
-plan committed for review; execution starts only on the owner's go, in a
-separate session.
+Date: 2026-09-19. **Status: EXECUTING (step 02/05)** — eureka settled
+(A1–A11); step 01 closed 2026-09-22.
 
 Source: owner idea-dump (2026-09-19, preserved verbatim):
 
@@ -39,6 +38,7 @@ generator of self-contained HTML — no in-app re-implementation.
 | A8 | **One compare page**: `public/bench/compare.html` — defaults to the last two published entries; `?a=<id>&b=<id>` loads any pair; an in-page entry list for arbitrary pairs. Footer links to it. No second index page | minimal surface: one artifact satisfies A1+A2; static-site pattern (query params, no cookies) | 2026-09-19 |
 | A9 | **Retention = keep all published entries**; no auto-prune | publishing is owner-paced, so growth is owner-paced; entries are small (full run dir ≈ 40–80 KB); a prune step can be added later if weight ever matters | 2026-09-19 |
 | A10 | **Entries reuse the run's own artifacts** — publish copies the run's JSONs + `report.html` verbatim into `public/bench/<id>/`; `index.json` names the entry's tree side. No new normalized schema | the run already produces exactly the per-side records; re-shaping would duplicate schemas for no consumer | 2026-09-19 |
+| A11 | **Single-tree runs (owner pick B)**: bare `npm run bench` measures the current tree; a positional `<ref>` measures that ref in a throwaway worktree (fairCopy keeps its data identical to the live tree's). The two-ref mode and the in-run old/new diff are removed — the compare page is the only comparison surface; run JSONs are single-tree shaped and pre-rework runs become unpublishable | A7's one-tree entries made the two-ref old side unpublishable dead measurement; one comparison UI to maintain; a uniform entry shape for the compare page. Tight A/B stays possible as two back-to-back runs | 2026-09-21 |
 
 ## Current state (evidenced, measured 2026-09-19)
 
@@ -79,30 +79,38 @@ None — all eureka questions settled (A1–A10) or absorbed into design:
    copy artifacts verbatim → append `public/bench/index.json`; fail-fast on
    partial runs and duplicate ids). npm script `bench:publish`. README gains
    the publish paragraph.
-2. **Compare page** — `public/bench/compare.html` + `compare-view.mjs`
+2. **Harness: one tree per run** — `run.mjs` drops the two-ref mode
+   (A11): bare run = current tree, positional `<ref>` = throwaway worktree;
+   provenance collapses to `{ref, dirty, …}`; analysis libs + report/page
+   render single-tree (no Δ columns); publish labels follow the new schema.
+3. **Compare page** — `public/bench/compare.html` + `compare-view.mjs`
    (shipped module: pair-picking + per-dimension diff logic). Fetches
    `index.json` + the two entries' JSONs (same-origin), renders diff tables
    (static / coverage / load / interactions). Self-contained chrome: no
    third parties, no cookies.
-3. **Footer link** — `Footer.svelte` sources line gains a link to
+4. **Footer link** — `Footer.svelte` sources line gains a link to
    `/bench/compare.html`.
-4. **Close** — full verification hierarchy + 020 cookie probe over the new
+5. **Close** — full verification hierarchy + 020 cookie probe over the new
    page + DoD audit + archive.
 
 ## Execution order
 
 | Step | File | Depends on | Status | Commit |
 |------|------|------------|--------|--------|
-| 1 | 01-publish.md | — | OPEN | |
-| 2 | 02-compare-page.md | 1 | OPEN | |
-| 3 | 03-footer-link.md | 2 | OPEN | |
-| 4 | 04-close.md | 3 | OPEN | |
+| 1 | 01-publish.md | — | DONE | |
+| 2 | 02-harness-single-tree.md | 1 | OPEN | |
+| 3 | 03-compare-page.md | 2 | OPEN | |
+| 4 | 04-footer-link.md | 3 | OPEN | |
+| 5 | 05-close.md | 4 | OPEN | |
 
 ## Definition of done
 
 - [ ] `npm run bench:publish -- <run-dir>` copies a run into
       `public/bench/<id>/` and updates `index.json`; duplicate id and partial
       run fail with non-zero exit.
+- [ ] `npm run bench` measures exactly one tree per run (bare = current
+      tree, positional `<ref>` = worktree); the two-ref mode and the in-run
+      diff are gone (A11); provenance is `{ref, dirty, …}`.
 - [ ] `/bench/compare.html` shows the last two published entries by default;
       any pair loadable via `?a=&b=`; same-origin fetches only; cookie probe
       clean.
