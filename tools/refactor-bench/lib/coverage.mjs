@@ -1,7 +1,7 @@
-// 031 A4/coverage: per-ref vitest coverage via `coverage-summary.json`.
-// A ref without test infra (e.g. the old vanilla ref) yields null + note and
-// never aborts the harness — that absence is itself a finding ("refactor added a
-// test suite").
+// 031 A4/coverage: vitest coverage via `coverage-summary.json` for the one
+// measured tree (033 A11). A tree without test infra (e.g. the vanilla ref)
+// yields null + note and never aborts the harness — that absence is itself a
+// finding ("refactor added a test suite").
 import { spawnSync } from "node:child_process";
 import { existsSync, readFileSync, rmSync } from "node:fs";
 import path from "node:path";
@@ -40,25 +40,22 @@ function runCoverage(root) {
   }
 }
 
-export function coverageAnalysis(sides) {
-  const out = {};
-  for (const side of sides) {
-    try {
-      const res = runCoverage(side.root);
-      out[side.key] = res.ok
-        ? { label: side.label, head: side.head, lines: res.lines, branches: res.branches, functions: res.functions, statements: res.statements, files: res.files }
-        : { label: side.label, head: side.head, null: true, note: res.note };
-    } catch (e) {
-      out[side.key] = { label: side.label, head: side.head, null: true, note: `coverage crashed: ${e.message}` };
-    }
+export function coverageAnalysis(side) {
+  try {
+    const res = runCoverage(side.root);
+    return res.ok
+      ? { label: side.label, head: side.head, lines: res.lines, branches: res.branches, functions: res.functions, statements: res.statements, files: res.files }
+      : { label: side.label, head: side.head, null: true, note: res.note };
+  } catch (e) {
+    return { label: side.label, head: side.head, null: true, note: `coverage crashed: ${e.message}` };
+  } finally {
+    // Vitest, when run inside a worktree whose node_modules resolves to the
+    // harness root, can also emit a coverage/ at the harness cwd (the dev
+    // tree, not the ref). That artifact is never the intended output (the
+    // measured tree's summary lives in <side.root>/coverage) — drop it unless
+    // the run targets the cwd itself (a bare run against the current tree).
+    const legit = path.resolve(side.root, "coverage");
+    const stray = path.resolve(process.cwd(), "coverage");
+    if (existsSync(stray) && path.resolve(stray) !== legit) rmSync(stray, { recursive: true, force: true });
   }
-  // Vitest, when run inside a worktree whose node_modules is a symlink to the
-  // harness root, can also emit a coverage/ at the harness cwd (the dev tree,
-  // not the ref). That artifact is never the intended output (each side's
-  // summary lives in <side.root>/coverage) — drop it unless a side legitimately
-  // targets the cwd (e.g. `--single` against the current tree).
-  const legit = new Set(sides.map((s) => path.resolve(s.root, "coverage")));
-  const stray = path.resolve(process.cwd(), "coverage");
-  if (existsSync(stray) && !legit.has(stray)) rmSync(stray, { recursive: true, force: true });
-  return out;
 }

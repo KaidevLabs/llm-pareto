@@ -1,4 +1,5 @@
-// 029 A4: fairness copy — both sides serve the identical data snapshot.
+// 029 A4: fairness copy — the measured worktree serves the identical data
+// snapshot as the live tree (033 A11: only `--ref` runs measure a worktree).
 import { cp, rm } from "node:fs/promises";
 import path from "node:path";
 

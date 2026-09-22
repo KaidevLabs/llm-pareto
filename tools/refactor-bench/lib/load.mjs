@@ -170,28 +170,19 @@ async function measureLive(send, runs) {
 }
 
 export async function loadAnalysis(ctx) {
-  const { ports, oldRoot, newRoot, refA, newLabel, live, runs } = ctx;
-  const servers = [];
-  if (oldRoot) servers.push(await serve(oldRoot, ports.old));
-  if (newRoot) servers.push(await serve(newRoot, ports.neu));
+  const { port, cdpPort, root, label, live, runs } = ctx;
+  const server = await serve(root, port);
   const log = (...a) => console.log("[bench]  load:", ...a);
   try {
-    return await withChrome(ports.cdp, async (send) => {
-      const out = {};
-      if (oldRoot) {
-        log(`old @ ${refA} (${runs} runs × 4 conditions)…`);
-        out.old = { label: `old @ ${refA}`, ...(await measureSide(send, ports.old, runs)) };
-      }
-      if (newRoot) {
-        log(`${newLabel} (${runs} runs × 4 conditions)…`);
-        out.new = { label: newLabel, ...(await measureSide(send, ports.neu, runs)) };
-      }
+    return await withChrome(cdpPort, async (send) => {
+      log(`${label} (${runs} runs × 4 conditions)…`);
+      const out = { label, ...(await measureSide(send, port, runs)) };
       if (live) {
         const reachable = await fetch("https://llm-pareto.kaidev.io/", { method: "HEAD", signal: AbortSignal.timeout(5000) })
           .then((r) => r.ok)
           .catch(() => false);
         if (!reachable) {
-          log("--live skipped: prod not reachable from this environment (no egress) — old+new still measured");
+          log("--live skipped: prod not reachable from this environment (no egress)");
         } else {
           log(`--live prod (${runs} runs × 2 conditions)…`);
           out.live = { label: "prod llm-pareto.kaidev.io", ...(await measureLive(send, runs)) };
@@ -200,6 +191,6 @@ export async function loadAnalysis(ctx) {
       return out;
     });
   } finally {
-    for (const s of servers) s.close();
+    server.close();
   }
 }

@@ -1,7 +1,7 @@
-// 029 A2/interactions: per-side CDP interaction benchmarks — chart init→paint,
+// 029 A2/interactions: CDP interaction benchmarks — chart init→paint,
 // zoom wheel burst, drawer open/close, 2D→3D (GL cold + steady), longtask jank, memory.
-// Instance-free: both apps (old global-echarts, new bundled-echarts) are probed via
-// DOM + canvas signals only, so the comparison is fair across the refactor.
+// Instance-free: vanilla and svelte trees alike are probed via DOM + canvas
+// signals only, so numbers are comparable across the refactor.
 import { spawn } from "node:child_process";
 import { serve } from "./serve.mjs";
 
@@ -32,9 +32,11 @@ function aggregate(runs) {
   return out;
 }
 
+// DOM hooks differ by app shape (vanilla app.js vs svelte bundle), not by
+// anything the run chooses — a measured tree gets the config matching what it ships.
 const SIDE_CFG = {
-  old: { drawerVerify: `!!document.getElementById('details') && !document.getElementById('details').classList.contains('hidden') && (document.getElementById('details').innerText || '').length > 0`, drawerClose: `#details-x`, tgl3d: `#tgl-3d`, tglBack: `#tgl-3d` },
-  new: { drawerVerify: `(() => { const d = document.querySelector('.drawer'); return !!d && (d.innerText || '').length > 0; })()`, drawerClose: `.drawer-x`, tgl3d: { cls: "button.pill", text: "3D" }, tglBack: { cls: "button.pill", text: "3D" } },
+  vanilla: { drawerVerify: `!!document.getElementById('details') && !document.getElementById('details').classList.contains('hidden') && (document.getElementById('details').innerText || '').length > 0`, drawerClose: `#details-x`, tgl3d: `#tgl-3d`, tglBack: `#tgl-3d` },
+  svelte: { drawerVerify: `(() => { const d = document.querySelector('.drawer'); return !!d && (d.innerText || '').length > 0; })()`, drawerClose: `.drawer-x`, tgl3d: { cls: "button.pill", text: "3D" }, tglBack: { cls: "button.pill", text: "3D" } },
 };
 
 async function withChrome(cdpPort, fn) {
@@ -160,19 +162,15 @@ async function measureSide(send, port, cfg, repeats) {
 }
 
 export async function interactAnalysis(ctx) {
-  const { ports, oldRoot, newRoot, refA, newLabel, repeats = 5 } = ctx;
-  const servers = [];
-  if (oldRoot) servers.push(await serve(oldRoot, ports.old));
-  if (newRoot) servers.push(await serve(newRoot, ports.neu));
+  const { port, cdpPort, root, label, hasSvelte, repeats = 5 } = ctx;
+  const server = await serve(root, port);
   const log = (...a) => console.log("[bench]  interact:", ...a);
   try {
-    return await withChrome(ports.cdp, async (send) => {
-      const out = {};
-      if (oldRoot) { log(`old @ ${refA} (${repeats} repeats)…`); out.old = { label: `old @ ${refA}`, ...(await measureSide(send, ports.old, SIDE_CFG.old, repeats)) }; }
-      if (newRoot) { log(`${newLabel} (${repeats} repeats)…`); out.new = { label: newLabel, ...(await measureSide(send, ports.neu, SIDE_CFG.new, repeats)) }; }
-      return out;
+    return await withChrome(cdpPort, async (send) => {
+      log(`${label} (${repeats} repeats)…`);
+      return { label, ...(await measureSide(send, port, SIDE_CFG[hasSvelte ? "svelte" : "vanilla"], repeats)) };
     });
   } finally {
-    for (const s of servers) s.close();
+    server.close();
   }
 }

@@ -1,0 +1,88 @@
+{
+  "label": "4d908ab (dirty)",
+  "config": {
+    "drawerVerify": "(() => { const d = document.querySelector('.drawer'); return !!d && (d.innerText || '').length > 0; })()",
+    "drawerClose": ".drawer-x",
+    "tgl3d": {
+      "cls": "button.pill",
+      "text": "3D"
+    },
+    "tglBack": {
+      "cls": "button.pill",
+      "text": "3D"
+    }
+  },
+  "runs": 1,
+  "initPaintMs": {
+    "median": 440,
+    "p90": 440,
+    "min": 440,
+    "max": 440
+  },
+  "zoomSettleMs": {
+    "median": 751,
+    "p90": 751,
+    "min": 751,
+    "max": 751
+  },
+  "zoomEvents": {
+    "median": 10,
+    "p90": 10,
+    "min": 10,
+    "max": 10
+  },
+  "drawerOpenMs": {
+    "median": null,
+    "p90": null,
+    "min": null,
+    "max": null
+  },
+  "drawerCloseMs": {
+    "median": 0,
+    "p90": 0,
+    "min": 0,
+    "max": 0
+  },
+  "cold3DMs": {
+    "median": 228,
+    "p90": 228,
+    "min": 228,
+    "max": 228
+  },
+  "steady3DMs": {
+    "median": 225,
+    "p90": 225,
+    "min": 225,
+    "max": 225
+  },
+  "jankCount": {
+    "median": 4,
+    "p90": 4,
+    "min": 4,
+    "max": 4
+  },
+  "jankTBTms": {
+    "median": 98,
+    "p90": 98,
+    "min": 98,
+    "max": 98
+  },
+  "memLoadKB": {
+    "median": 25525,
+    "p90": 25525,
+    "min": 25525,
+    "max": 25525
+  },
+  "memBurstKB": {
+    "median": 19430,
+    "p90": 19430,
+    "min": 19430,
+    "max": 19430
+  },
+  "memDeltaKB": {
+    "median": -6095,
+    "p90": -6095,
+    "min": -6095,
+    "max": -6095
+  }
+}

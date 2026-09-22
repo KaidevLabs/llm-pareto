@@ -1,4 +1,4 @@
-# Step 04 — Close — OPEN
+# Step 05 — Close — OPEN
 
 ## Spec
 

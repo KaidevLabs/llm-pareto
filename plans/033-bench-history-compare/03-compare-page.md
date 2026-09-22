@@ -1,4 +1,4 @@
-# Step 02 — Compare page — OPEN
+# Step 03 — Compare page — OPEN
 
 ## Spec
 

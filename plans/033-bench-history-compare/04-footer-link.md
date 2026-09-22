@@ -1,4 +1,4 @@
-# Step 03 — Footer link — OPEN
+# Step 04 — Footer link — OPEN
 
 ## Spec
 

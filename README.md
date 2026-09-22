@@ -109,7 +109,7 @@ is a review signal, not a failure — decide before changing either side.
 
 ## Code quality & benchmarking
 
-Three commands, three depths (node ≥ 22, `npm ci` first).
+Four commands, three depths (node ≥ 22, `npm ci` first).
 
 ### `npm run coverage` — test coverage (current tree)
 
@@ -133,27 +133,29 @@ files. The quick "where is the complexity" check.
 npm run cyc
 ```
 
-### `npm run bench` — two-ref refactor benchmark
+### `npm run bench` — refactor benchmark (one tree per run)
 
-The full comparison harness (`tools/refactor-bench/run.mjs`). It checks out
-two git refs into throwaway worktrees, gives them identical
-data/assets/fonts, then measures five dimensions: **static** (cloc lines,
-per-function cyclomatic top-15, jscpd duplication, `any` count), **test
-coverage** per ref, **load timing** (headless Chromium; cold/warm ×
-throttled/unthrottled, median + p90), **interactions** (CDP probes: zoom,
-drawer, 3D scene, jank, heap), and a merged **report**. Chromium required;
-worktrees live under `tools/refactor-bench/.run/` and are cleaned up on
-every exit. Exits non-zero on any failure.
+The measurement harness (`tools/refactor-bench/run.mjs`). Each run measures
+exactly **one tree**: bare, the current working tree; with a positional ref,
+that ref checked out into a throwaway worktree whose `public/` data/assets/
+fonts are replaced by the live tree's, so only the code differs. Five
+dimensions: **static** (cloc lines, per-function cyclomatic top-15, jscpd
+duplication, `any` count), **test coverage**, **load timing** (headless
+Chromium; cold/warm × throttled/unthrottled, median + p90), **interactions**
+(CDP probes: zoom, drawer, 3D scene, jank, heap), and a merged **report**.
+Chromium required; worktrees live under `tools/refactor-bench/.run/` and are
+cleaned up on every exit. Exits non-zero on any failure.
 
 ```sh
-npm run bench -- --runs 7 7957602 e858d24   # old ref → new ref, 7 runs/side
-npm run bench -- --single --runs 1          # current tree only (no old ref)
+npm run bench -- --runs 7          # current tree, 7 runs per condition
+npm run bench -- --runs 7 e858d24  # that ref, in a throwaway worktree
 ```
 
-Defaults: refs `7957602` (vanilla `app.js`) → `e858d24` (pure svelte
-cutover), 7 runs. Everything lands in `benchmarks/run-<stamp>/` (gitignored):
-one JSON per dimension, `provenance.json`, `report.md`, and a self-contained
-`report.html` (no network requests, no cookies).
+Defaults: 7 runs. Everything lands in `benchmarks/run-<stamp>/`
+(gitignored): one JSON per dimension, `provenance.json` (`ref`, `dirty`,
+build/tool facts), `report.md`, and a self-contained `report.html` — a
+profile of the one measured tree (no network requests, no cookies). Runs
+are compared through the published registry, not inside a run.
 
 Phases (`static`, `coverage`, `load`, `interact`, `report`) can be generated
 one at a time into the same `--out` dir and merged later — artifacts already
@@ -167,8 +169,28 @@ npm run bench -- --only report --out benchmarks/foo          # merge only, <1 s
 npm run bench -- --only report --force --out benchmarks/foo  # redo the reports
 ```
 
-A ref without test infrastructure (the vanilla one) reports coverage as
+A tree without test infrastructure (the vanilla ref) reports coverage as
 `null` with an explanatory note instead of failing the run.
+
+### `npm run bench:publish` — publish a run to the compare registry
+
+Run history lives in gitignored `benchmarks/` (per-machine); the app's bench
+comparison reads a **committed** registry instead. Publishing copies a run's
+artifacts verbatim into `public/bench/<run-id>/` and appends the entry to
+`public/bench/index.json` — one explicit, reviewable commit per publish
+(plan 033). A run dir needs at least `static.json` + `provenance.json`
+(nothing is normalized — artifacts ship as the harness wrote them); a
+duplicate id, an incomplete run, or a pre-rework two-ref run is refused with
+a non-zero exit.
+
+```sh
+npm run bench:publish -- benchmarks/run-20260919-2247  # publish that run
+npm run bench:publish                                  # latest run-* in benchmarks/
+```
+
+Each published entry records the run's measured tree; `/bench/compare.html`
+compares the last two published entries by default and loads any older pair
+via `?a=<id>&b=<id>`.
 
 ## Data provenance
 

@@ -201,7 +201,7 @@ export async function staticAnalysis(side) {
     clocSubs.push("svelte not recognized by cloc — forced to JavaScript (template+style counted as JS lines)");
   }
 
-  const tmpCorpus = path.join(side.scratch, `jscpd-corpus-${side.key}`);
+  const tmpCorpus = path.join(side.scratch, "jscpd-corpus");
   let entries, fileLines;
   if (side.srcDir && existsSync(side.srcDir)) {
     ({ entries, fileLines } = await appCorpus(side.srcDir, tmpCorpus));
@@ -219,7 +219,7 @@ export async function staticAnalysis(side) {
   }
 
   const complexity = complexityPass(entries);
-  const dupRaw = await jscpdDir([tmpCorpus], path.join(side.scratch, `jscpd-${side.key}`));
+  const dupRaw = await jscpdDir([tmpCorpus], path.join(side.scratch, "jscpd"));
   const tot = dupRaw?.statistics?.total ?? {};
   const tests = await testCounts(side.root);
 
