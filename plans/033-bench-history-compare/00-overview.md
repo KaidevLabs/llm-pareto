@@ -1,7 +1,7 @@
 # 033 — Bench history & run comparison
 
-Date: 2026-09-19. **Status: EXECUTING (step 03/05)** — eureka settled
-(A1–A11); steps 01–02 closed 2026-09-22.
+Date: 2026-09-19. **Status: EXECUTING (step 04/05)** — eureka settled
+(A1–A11); steps 01–03 closed 2026-09-22.
 
 Source: owner idea-dump (2026-09-19, preserved verbatim):
 
@@ -99,7 +99,7 @@ None — all eureka questions settled (A1–A10) or absorbed into design:
 |------|------|------------|--------|--------|
 | 1 | 01-publish.md | — | DONE | 013e1c8 |
 | 2 | 02-harness-single-tree.md | 1 | DONE | 013e1c8 + f26fe70 |
-| 3 | 03-compare-page.md | 2 | OPEN | |
+| 3 | 03-compare-page.md | 2 | DONE | e6052b9 |
 | 4 | 04-footer-link.md | 3 | OPEN | |
 | 5 | 05-close.md | 4 | OPEN | |
 
@@ -111,11 +111,11 @@ None — all eureka questions settled (A1–A10) or absorbed into design:
 - [x] `npm run bench` measures exactly one tree per run (bare = current
       tree, positional `<ref>` = worktree); the two-ref mode and the in-run
       diff are gone (A11); provenance is `{ref, dirty, …}`.
-- [ ] `/bench/compare.html` shows the last two published entries by default;
+- [x] `/bench/compare.html` shows the last two published entries by default;
       any pair loadable via `?a=&b=`; same-origin fetches only; cookie probe
       clean.
 - [ ] Footer link live; `npm test`, `npx tsc --noEmit`, `npm run build` green.
-- [ ] README documents publish + the compare page.
+- [x] README documents publish + the compare page.
 - [ ] Full verification hierarchy green (python suite, JS suite, tsc, build,
       `update.py` sane) and the archived plan records the as-built.
 
