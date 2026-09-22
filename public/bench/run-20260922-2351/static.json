@@ -1,0 +1,315 @@
+{
+  "label": "b9f6b23 (dirty)",
+  "head": "b9f6b23",
+  "cloc": {
+    "languages": {
+      "TypeScript": {
+        "files": 20,
+        "code": 1965,
+        "comment": 438,
+        "blank": 176
+      },
+      "Svelte": {
+        "files": 13,
+        "code": 1959,
+        "comment": 169,
+        "blank": 104
+      }
+    },
+    "total": {
+      "files": 33,
+      "code": 3924,
+      "comment": 607,
+      "blank": 280
+    },
+    "substitutions": []
+  },
+  "complexity": {
+    "fileCount": 33,
+    "lines": 3295,
+    "functions": 292,
+    "cyclomatic": 857,
+    "maxFunction": 36,
+    "maxNesting": 23,
+    "anyCount": 27,
+    "cyclomaticAvg": 2.9,
+    "files": [
+      {
+        "name": "src/lib/charts.ts",
+        "lines": 1294,
+        "functions": 97,
+        "cyclomatic": 293,
+        "maxFunction": 36,
+        "maxNesting": 23,
+        "anyCount": 27
+      },
+      {
+        "name": "src/lib/comparator.ts",
+        "lines": 163,
+        "functions": 31,
+        "cyclomatic": 59,
+        "maxFunction": 9,
+        "maxNesting": 17,
+        "anyCount": 0
+      },
+      {
+        "name": "src/components/ThresholdCtl.svelte#script",
+        "lines": 123,
+        "functions": 13,
+        "cyclomatic": 56,
+        "maxFunction": 10,
+        "maxNesting": 16,
+        "anyCount": 0
+      },
+      {
+        "name": "src/components/Details.svelte#script",
+        "lines": 112,
+        "functions": 18,
+        "cyclomatic": 50,
+        "maxFunction": 8,
+        "maxNesting": 19,
+        "anyCount": 0
+      },
+      {
+        "name": "src/lib/filters.ts",
+        "lines": 106,
+        "functions": 7,
+        "cyclomatic": 50,
+        "maxFunction": 22,
+        "maxNesting": 16,
+        "anyCount": 0
+      },
+      {
+        "name": "src/lib/urlstate.ts",
+        "lines": 130,
+        "functions": 6,
+        "cyclomatic": 42,
+        "maxFunction": 21,
+        "maxNesting": 15,
+        "anyCount": 0
+      },
+      {
+        "name": "src/lib/history.svelte.ts",
+        "lines": 115,
+        "functions": 11,
+        "cyclomatic": 41,
+        "maxFunction": 13,
+        "maxNesting": 13,
+        "anyCount": 0
+      },
+      {
+        "name": "src/lib/pareto.ts",
+        "lines": 109,
+        "functions": 8,
+        "cyclomatic": 40,
+        "maxFunction": 11,
+        "maxNesting": 15,
+        "anyCount": 0
+      },
+      {
+        "name": "src/lib/tour.ts",
+        "lines": 152,
+        "functions": 11,
+        "cyclomatic": 31,
+        "maxFunction": 15,
+        "maxNesting": 20,
+        "anyCount": 0
+      },
+      {
+        "name": "src/lib/family.ts",
+        "lines": 50,
+        "functions": 8,
+        "cyclomatic": 25,
+        "maxFunction": 10,
+        "maxNesting": 15,
+        "anyCount": 0
+      },
+      {
+        "name": "src/components/OfPanel.svelte#script",
+        "lines": 70,
+        "functions": 10,
+        "cyclomatic": 23,
+        "maxFunction": 4,
+        "maxNesting": 16,
+        "anyCount": 0
+      },
+      {
+        "name": "src/lib/format.ts",
+        "lines": 48,
+        "functions": 9,
+        "cyclomatic": 23,
+        "maxFunction": 6,
+        "maxNesting": 12,
+        "anyCount": 0
+      },
+      {
+        "name": "src/components/Comparator.svelte#script",
+        "lines": 65,
+        "functions": 11,
+        "cyclomatic": 17,
+        "maxFunction": 4,
+        "maxNesting": 14,
+        "anyCount": 0
+      },
+      {
+        "name": "src/lib/badges.ts",
+        "lines": 74,
+        "functions": 11,
+        "cyclomatic": 17,
+        "maxFunction": 3,
+        "maxNesting": 20,
+        "anyCount": 0
+      },
+      {
+        "name": "src/components/ModelSearch.svelte#script",
+        "lines": 58,
+        "functions": 4,
+        "cyclomatic": 15,
+        "maxFunction": 11,
+        "maxNesting": 16,
+        "anyCount": 0
+      }
+    ],
+    "topFunctions": [
+      {
+        "file": "src/lib/charts.ts",
+        "name": "data",
+        "cyc": 36,
+        "nest": 8
+      },
+      {
+        "file": "src/lib/filters.ts",
+        "name": "passThresholds",
+        "cyc": 22,
+        "nest": 1
+      },
+      {
+        "file": "src/lib/urlstate.ts",
+        "name": "read",
+        "cyc": 21,
+        "nest": 1
+      },
+      {
+        "file": "src/lib/charts.ts",
+        "name": "renderPanel",
+        "cyc": 19,
+        "nest": 1
+      },
+      {
+        "file": "src/lib/charts.ts",
+        "name": "build3DScene",
+        "cyc": 19,
+        "nest": 1
+      },
+      {
+        "file": "src/lib/urlstate.ts",
+        "name": "write",
+        "cyc": 16,
+        "nest": 1
+      },
+      {
+        "file": "src/lib/tour.ts",
+        "name": "frame",
+        "cyc": 15,
+        "nest": 6
+      },
+      {
+        "file": "src/lib/charts.ts",
+        "name": "tooltipHTML",
+        "cyc": 14,
+        "nest": 1
+      },
+      {
+        "file": "src/lib/charts.ts",
+        "name": "renderSpeedPanel",
+        "cyc": 13,
+        "nest": 1
+      },
+      {
+        "file": "src/lib/history.svelte.ts",
+        "name": "applyFromURL",
+        "cyc": 13,
+        "nest": 1
+      },
+      {
+        "file": "src/lib/charts.ts",
+        "name": "onChartClick",
+        "cyc": 12,
+        "nest": 1
+      },
+      {
+        "file": "src/lib/history.svelte.ts",
+        "name": "seedFromURL",
+        "cyc": 12,
+        "nest": 1
+      },
+      {
+        "file": "src/components/ModelSearch.svelte#script",
+        "name": "onkeydown",
+        "cyc": 11,
+        "nest": 1
+      },
+      {
+        "file": "src/lib/filters.ts",
+        "name": "searchHit",
+        "cyc": 11,
+        "nest": 1
+      },
+      {
+        "file": "src/lib/pareto.ts",
+        "name": "paretoFrontier3D",
+        "cyc": 11,
+        "nest": 1
+      }
+    ],
+    "anyFiles": [
+      [
+        "src/lib/charts.ts",
+        27
+      ]
+    ]
+  },
+  "duplication": {
+    "percent": 2.0974706971005554,
+    "percentTokens": 2.452733776188043,
+    "duplicatedLines": 68,
+    "lines": 3242,
+    "clones": 8
+  },
+  "longestFiles": [
+    [
+      "src/lib/charts.ts",
+      1294
+    ],
+    [
+      "src/App.svelte (raw)",
+      347
+    ],
+    [
+      "src/components/ThresholdCtl.svelte (raw)",
+      267
+    ],
+    [
+      "src/components/Comparator.svelte (raw)",
+      257
+    ],
+    [
+      "src/components/Details.svelte (raw)",
+      251
+    ]
+  ],
+  "tests": {
+    "js": {
+      "files": 20,
+      "describes": 52,
+      "cases": 173
+    },
+    "python": {
+      "files": 9
+    }
+  },
+  "notes": [
+    "escomplex (npx) rejected: escomplex / typhonjs-escomplex / typhonjs-escomplex-project ship no CLI (npx: 'could not determine executable') and their 2015-era parsers cannot read TypeScript; substituted an in-module cyclomatic/nesting/any pass over ASTs from the repo's own TypeScript compiler — same method both sides.",
+    "complexity + cloc corpora are app code only (tests excluded both sides, reported separately); svelte templates are measured as raw file lines but not complexity-scored."
+  ]
+}

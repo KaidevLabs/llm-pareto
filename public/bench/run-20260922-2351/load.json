@@ -1,0 +1,409 @@
+{
+  "label": "b9f6b23 (dirty)",
+  "conditions": {
+    "cold-unthrottled": {
+      "runs": 7,
+      "ttfbMs": {
+        "median": 1,
+        "p90": 2,
+        "min": 1,
+        "max": 2
+      },
+      "dclMs": {
+        "median": 40,
+        "p90": 45,
+        "min": 39,
+        "max": 45
+      },
+      "loadMs": {
+        "median": 46,
+        "p90": 51,
+        "min": 45,
+        "max": 51
+      },
+      "fcpMs": {
+        "median": 56,
+        "p90": 76,
+        "min": 52,
+        "max": 76
+      },
+      "lcpMs": {
+        "median": 56,
+        "p90": 76,
+        "min": 52,
+        "max": 76
+      },
+      "chartMs": {
+        "median": 153,
+        "p90": 160,
+        "min": 131,
+        "max": 160
+      },
+      "requests": {
+        "median": 32,
+        "p90": 32,
+        "min": 32,
+        "max": 32
+      },
+      "transferKB": {
+        "median": 647,
+        "p90": 647,
+        "min": 647,
+        "max": 647
+      },
+      "encodedKB": {
+        "median": 637,
+        "p90": 637,
+        "min": 637,
+        "max": 637
+      },
+      "decodedKB": {
+        "median": 3622,
+        "p90": 3622,
+        "min": 3622,
+        "max": 3622
+      }
+    },
+    "cold-throttled": {
+      "runs": 7,
+      "ttfbMs": {
+        "median": 1,
+        "p90": 1,
+        "min": 1,
+        "max": 1
+      },
+      "dclMs": {
+        "median": 3188,
+        "p90": 3209,
+        "min": 3173,
+        "max": 3209
+      },
+      "loadMs": {
+        "median": 6880,
+        "p90": 6919,
+        "min": 6857,
+        "max": 6919
+      },
+      "fcpMs": {
+        "median": 3212,
+        "p90": 3236,
+        "min": 3200,
+        "max": 3236
+      },
+      "lcpMs": {
+        "median": 3212,
+        "p90": 3236,
+        "min": 3200,
+        "max": 3236
+      },
+      "chartMs": {
+        "median": 6931,
+        "p90": 6975,
+        "min": 6903,
+        "max": 6975
+      },
+      "requests": {
+        "median": 30,
+        "p90": 30,
+        "min": 30,
+        "max": 30
+      },
+      "transferKB": {
+        "median": 544,
+        "p90": 544,
+        "min": 544,
+        "max": 544
+      },
+      "encodedKB": {
+        "median": 535,
+        "p90": 535,
+        "min": 535,
+        "max": 535
+      },
+      "decodedKB": {
+        "median": 1473,
+        "p90": 1473,
+        "min": 1473,
+        "max": 1473
+      }
+    },
+    "warm-unthrottled": {
+      "runs": 7,
+      "ttfbMs": {
+        "median": 1,
+        "p90": 1,
+        "min": 1,
+        "max": 1
+      },
+      "dclMs": {
+        "median": 23,
+        "p90": 26,
+        "min": 18,
+        "max": 26
+      },
+      "loadMs": {
+        "median": 26,
+        "p90": 29,
+        "min": 22,
+        "max": 29
+      },
+      "fcpMs": {
+        "median": 40,
+        "p90": 52,
+        "min": 36,
+        "max": 52
+      },
+      "lcpMs": {
+        "median": 40,
+        "p90": 52,
+        "min": 36,
+        "max": 52
+      },
+      "chartMs": {
+        "median": 117,
+        "p90": 138,
+        "min": 109,
+        "max": 138
+      },
+      "requests": {
+        "median": 32,
+        "p90": 32,
+        "min": 32,
+        "max": 32
+      },
+      "transferKB": {
+        "median": 0,
+        "p90": 0,
+        "min": 0,
+        "max": 0
+      },
+      "encodedKB": {
+        "median": 637,
+        "p90": 637,
+        "min": 637,
+        "max": 637
+      },
+      "decodedKB": {
+        "median": 3622,
+        "p90": 3622,
+        "min": 3622,
+        "max": 3622
+      }
+    },
+    "warm-throttled": {
+      "runs": 7,
+      "ttfbMs": {
+        "median": 1,
+        "p90": 1,
+        "min": 1,
+        "max": 1
+      },
+      "dclMs": {
+        "median": 94,
+        "p90": 111,
+        "min": 76,
+        "max": 111
+      },
+      "loadMs": {
+        "median": 108,
+        "p90": 131,
+        "min": 90,
+        "max": 131
+      },
+      "fcpMs": {
+        "median": 132,
+        "p90": 156,
+        "min": 124,
+        "max": 156
+      },
+      "lcpMs": {
+        "median": 132,
+        "p90": 156,
+        "min": 124,
+        "max": 156
+      },
+      "chartMs": {
+        "median": 459,
+        "p90": 544,
+        "min": 414,
+        "max": 544
+      },
+      "requests": {
+        "median": 32,
+        "p90": 33,
+        "min": 32,
+        "max": 33
+      },
+      "transferKB": {
+        "median": 0,
+        "p90": 0,
+        "min": 0,
+        "max": 0
+      },
+      "encodedKB": {
+        "median": 637,
+        "p90": 639,
+        "min": 637,
+        "max": 639
+      },
+      "decodedKB": {
+        "median": 3622,
+        "p90": 3623,
+        "min": 3622,
+        "max": 3623
+      }
+    }
+  },
+  "waterfall": [
+    {
+      "url": "/js/echarts-5.6.0.min.js",
+      "transferKB": 305,
+      "encodedKB": 304,
+      "durationMs": 31
+    },
+    {
+      "url": "/data/endpoints.json",
+      "transferKB": 102,
+      "encodedKB": 102,
+      "durationMs": 80
+    },
+    {
+      "url": "/assets/logos/moonshot.png",
+      "transferKB": 51,
+      "encodedKB": 51,
+      "durationMs": 20
+    },
+    {
+      "url": "/fonts/inter-var.woff2",
+      "transferKB": 47,
+      "encodedKB": 47,
+      "durationMs": 4
+    },
+    {
+      "url": "/assets/logos/thinky.png",
+      "transferKB": 43,
+      "encodedKB": 42,
+      "durationMs": 27
+    },
+    {
+      "url": "/assets/index-h4T--1LN.js",
+      "transferKB": 40,
+      "encodedKB": 40,
+      "durationMs": 8
+    },
+    {
+      "url": "/data/combined.json",
+      "transferKB": 15,
+      "encodedKB": 15,
+      "durationMs": 7
+    },
+    {
+      "url": "/assets/index-DxCke74S.css",
+      "transferKB": 4,
+      "encodedKB": 4,
+      "durationMs": 7
+    },
+    {
+      "url": "/assets/logos/microsoft.svg",
+      "transferKB": 4,
+      "encodedKB": 4,
+      "durationMs": 19
+    },
+    {
+      "url": "/assets/logos/rekaai.svg",
+      "transferKB": 4,
+      "encodedKB": 4,
+      "durationMs": 28
+    },
+    {
+      "url": "/assets/logos/amazon.svg",
+      "transferKB": 3,
+      "encodedKB": 2,
+      "durationMs": 9
+    },
+    {
+      "url": "/assets/logos/stepfun.png",
+      "transferKB": 3,
+      "encodedKB": 3,
+      "durationMs": 19
+    },
+    {
+      "url": "/assets/logos/tencent.svg",
+      "transferKB": 3,
+      "encodedKB": 3,
+      "durationMs": 23
+    },
+    {
+      "url": "/assets/logos/upstage.png",
+      "transferKB": 3,
+      "encodedKB": 2,
+      "durationMs": 25
+    },
+    {
+      "url": "/data/meta.json",
+      "transferKB": 2,
+      "encodedKB": 1,
+      "durationMs": 7
+    },
+    {
+      "url": "/assets/logos/spacexai.png",
+      "transferKB": 2,
+      "encodedKB": 2,
+      "durationMs": 19
+    },
+    {
+      "url": "/assets/logos/z-ai.svg",
+      "transferKB": 2,
+      "encodedKB": 2,
+      "durationMs": 26
+    },
+    {
+      "url": "/assets/logos/arcee-ai.svg",
+      "transferKB": 2,
+      "encodedKB": 1,
+      "durationMs": 26
+    },
+    {
+      "url": "/favicon.svg",
+      "transferKB": 1,
+      "encodedKB": 1,
+      "durationMs": 3
+    },
+    {
+      "url": "/assets/logos/anthropic.svg",
+      "transferKB": 1,
+      "encodedKB": 0,
+      "durationMs": 6
+    },
+    {
+      "url": "/assets/logos/openai.svg",
+      "transferKB": 1,
+      "encodedKB": 1,
+      "durationMs": 6
+    },
+    {
+      "url": "/assets/logos/alibaba.svg",
+      "transferKB": 1,
+      "encodedKB": 0,
+      "durationMs": 6
+    },
+    {
+      "url": "/assets/logos/cohere.svg",
+      "transferKB": 1,
+      "encodedKB": 1,
+      "durationMs": 11
+    },
+    {
+      "url": "/assets/logos/deepseek.svg",
+      "transferKB": 1,
+      "encodedKB": 1,
+      "durationMs": 11
+    },
+    {
+      "url": "/assets/logos/google.svg",
+      "transferKB": 1,
+      "encodedKB": 0,
+      "durationMs": 12
+    }
+  ]
+}
