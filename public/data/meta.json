@@ -1,5 +1,5 @@
 {
- "fetched_at": "2026-09-21T06:52:24Z",
+ "fetched_at": "2026-09-22T01:00:48Z",
  "sources": {
   "arena": {
    "url": "https://lmarena.ai/leaderboard/text",
@@ -7,21 +7,21 @@
   },
   "openrouter": {
    "url": "https://openrouter.ai/api/v1/models",
-   "models": 354
+   "models": 357
   }
  },
  "join": {
-  "combined": 154,
-  "unmatched_arena": 192,
-  "unmatched_openrouter": 200,
+  "combined": 153,
+  "unmatched_arena": 194,
+  "unmatched_openrouter": 204,
   "by_method": {
-   "exact": 162,
+   "exact": 161,
    "override": 1,
    "prefix-variant": 10,
-   "prefix-base": 31,
+   "prefix-base": 30,
    "fuzzy": 6
   },
-  "variants_collapsed": 41,
+  "variants_collapsed": 40,
   "collisions": [
    "ling-3-0-flash-vl: inclusionai/ling-3.0-flash-vl vs inclusionai/ling-3.0-flash-vl:free",
    "ling-3-0-flash-fin: inclusionai/ling-3.0-flash-fin vs inclusionai/ling-3.0-flash-fin:free",
@@ -99,13 +99,13 @@
    "endpoints_api": "https://openrouter.ai/api/v1/models/{or_id}/endpoints",
    "model_page": "https://openrouter.ai/{or_id}"
   },
-  "models": 154,
-  "endpoints": 798,
+  "models": 153,
+  "endpoints": 795,
   "stats": {
    "models_with_stats": 152,
-   "endpoints_with_stats": 747
+   "endpoints_with_stats": 733
   },
-  "joined_page_endpoints": 807,
+  "joined_page_endpoints": 804,
   "page_endpoints_unjoined": 0,
   "duplicates_merged": 9
  }

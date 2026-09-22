@@ -1,5 +1,41 @@
 [
  {
+  "id": "xiaomi/mimo-v2.6-pro-ultraspeed",
+  "name": "Xiaomi: MiMo-V2.6-Pro-UltraSpeed",
+  "org": "xiaomi",
+  "price_in_per_m": 4.35,
+  "price_out_per_m": 8.7,
+  "vision": true,
+  "context_length": 1048576
+ },
+ {
+  "id": "xiaomi/mimo-v2.6-flash",
+  "name": "Xiaomi: MiMo-V2.6-Flash",
+  "org": "xiaomi",
+  "price_in_per_m": 0.14,
+  "price_out_per_m": 0.28,
+  "vision": true,
+  "context_length": 1048576
+ },
+ {
+  "id": "xiaomi/mimo-v2.6-pro",
+  "name": "Xiaomi: MiMo-V2.6-Pro",
+  "org": "xiaomi",
+  "price_in_per_m": 0.435,
+  "price_out_per_m": 0.87,
+  "vision": true,
+  "context_length": 1048576
+ },
+ {
+  "id": "x-ai/grok-4.7",
+  "name": "SpaceXAI: Grok 4.7",
+  "org": "x-ai",
+  "price_in_per_m": 1.6,
+  "price_out_per_m": 4.8,
+  "vision": true,
+  "context_length": 500000
+ },
+ {
   "id": "prism-ml/ternary-bonsai-2-27b",
   "name": "PrismML: Ternary Bonsai 2 27B",
   "org": "prism-ml",
@@ -84,8 +120,8 @@
   "id": "deepseek/deepseek-v4.1-flash",
   "name": "DeepSeek: DeepSeek V4.1 Flash",
   "org": "deepseek",
-  "price_in_per_m": 0.3,
-  "price_out_per_m": 1.2,
+  "price_in_per_m": 0.15,
+  "price_out_per_m": 0.6,
   "vision": true,
   "context_length": 1048576
  },
@@ -192,8 +228,8 @@
   "id": "ibm-granite/granite-4.2-8b",
   "name": "IBM: Granite 4.2 8B",
   "org": "ibm-granite",
-  "price_in_per_m": 0.1,
-  "price_out_per_m": 0.15,
+  "price_in_per_m": 0.06,
+  "price_out_per_m": 0.25,
   "vision": false,
   "context_length": 131072
  },
@@ -237,8 +273,8 @@
   "id": "z-ai/glm-5.3-flash",
   "name": "Z.ai: GLM 5.3 Flash",
   "org": "z-ai",
-  "price_in_per_m": 0.09,
-  "price_out_per_m": 0.3,
+  "price_in_per_m": 0.15,
+  "price_out_per_m": 0.5,
   "vision": true,
   "context_length": 1310720
  },
@@ -291,8 +327,8 @@
   "id": "z-ai/glm-5.3",
   "name": "Z.ai: GLM 5.3",
   "org": "z-ai",
-  "price_in_per_m": 0.91,
-  "price_out_per_m": 2.86,
+  "price_in_per_m": 0.784,
+  "price_out_per_m": 2.464,
   "vision": false,
   "context_length": 1310720
  },
@@ -300,8 +336,8 @@
   "id": "qwen/qwen3.8-27b",
   "name": "Qwen: Qwen3.8 27B",
   "org": "qwen",
-  "price_in_per_m": 0.2,
-  "price_out_per_m": 2.5,
+  "price_in_per_m": 0.42,
+  "price_out_per_m": 3.0,
   "vision": true,
   "context_length": 1000000
  },
@@ -363,8 +399,8 @@
   "id": "deepseek/deepseek-v4-pro-0813",
   "name": "DeepSeek: DeepSeek V4 Pro 0813",
   "org": "deepseek",
-  "price_in_per_m": 1.32,
-  "price_out_per_m": 3.96,
+  "price_in_per_m": 0.66,
+  "price_out_per_m": 1.98,
   "vision": false,
   "context_length": 1048576
  },
@@ -445,7 +481,7 @@
   "name": "DeepSeek: DeepSeek V4 Flash 0731",
   "org": "deepseek",
   "price_in_per_m": 0.04,
-  "price_out_per_m": 0.16,
+  "price_out_per_m": 0.64,
   "vision": false,
   "context_length": 1310720
  },
@@ -570,8 +606,8 @@
   "id": "moonshotai/kimi-k3",
   "name": "MoonshotAI: Kimi K3",
   "org": "moonshotai",
-  "price_in_per_m": 1.7,
-  "price_out_per_m": 8.5,
+  "price_in_per_m": 3.0,
+  "price_out_per_m": 15.0,
   "vision": true,
   "context_length": 1048576
  },
@@ -1641,8 +1677,8 @@
   "id": "nvidia/nemotron-3-nano-30b-a3b",
   "name": "NVIDIA: Nemotron 3 Nano 30B A3B",
   "org": "nvidia",
-  "price_in_per_m": 0.06,
-  "price_out_per_m": 0.24,
+  "price_in_per_m": 0.05,
+  "price_out_per_m": 0.2,
   "vision": false,
   "context_length": 262144
  },
@@ -2403,22 +2439,13 @@
   "context_length": 163840
  },
  {
-  "id": "anthropic/claude-opus-4",
-  "name": "Anthropic: Claude Opus 4",
-  "org": "anthropic",
-  "price_in_per_m": 15.0,
-  "price_out_per_m": 75.0,
-  "vision": true,
-  "context_length": 200000
- },
- {
   "id": "anthropic/claude-sonnet-4",
   "name": "Anthropic: Claude Sonnet 4",
   "org": "anthropic",
   "price_in_per_m": 3.0,
   "price_out_per_m": 15.0,
   "vision": true,
-  "context_length": 1000000
+  "context_length": 200000
  },
  {
   "id": "mistralai/mistral-medium-3",
@@ -2541,8 +2568,8 @@
   "id": "meta-llama/llama-4-maverick",
   "name": "Meta: Llama 4 Maverick",
   "org": "meta-llama",
-  "price_in_per_m": 0.2,
-  "price_out_per_m": 0.8,
+  "price_in_per_m": 0.1875,
+  "price_out_per_m": 0.6525,
   "vision": true,
   "context_length": 1048576
  },
@@ -2991,8 +3018,8 @@
   "id": "meta-llama/llama-3.1-70b-instruct",
   "name": "Meta: Llama 3.1 70B Instruct",
   "org": "meta-llama",
-  "price_in_per_m": 0.72,
-  "price_out_per_m": 0.72,
+  "price_in_per_m": 0.4,
+  "price_out_per_m": 0.4,
   "vision": false,
   "context_length": 131072
  },
