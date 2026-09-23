@@ -183,8 +183,8 @@
   "id": "deepseek/deepseek-v4.1-flash",
   "name": "DeepSeek: DeepSeek V4.1 Flash",
   "org": "deepseek",
-  "price_in_per_m": 0.1,
-  "price_out_per_m": 0.5,
+  "price_in_per_m": 0.04,
+  "price_out_per_m": 0.64,
   "vision": true,
   "context_length": 1048576
  },
@@ -480,8 +480,8 @@
   "id": "deepseek/deepseek-v4-pro-0813",
   "name": "DeepSeek: DeepSeek V4 Pro 0813",
   "org": "deepseek",
-  "price_in_per_m": 0.66,
-  "price_out_per_m": 1.98,
+  "price_in_per_m": 1.32,
+  "price_out_per_m": 3.96,
   "vision": false,
   "context_length": 1048576
  },

@@ -1111,8 +1111,8 @@
   ],
   "arena_context_length": 262144,
   "arena_model_url": "https://huggingface.co/tencent/Hy3",
-  "arena_price_in_per_m": 0.0825,
-  "arena_price_out_per_m": 0.33,
+  "arena_price_in_per_m": 0.132,
+  "arena_price_out_per_m": 0.528,
   "match_method": "exact",
   "match_ratio": null
  },
