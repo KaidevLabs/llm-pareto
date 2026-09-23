@@ -23,7 +23,7 @@ import { ui, type Mode } from "./state.svelte";
 import { data, logoFor } from "./data.svelte";
 import { store } from "./endpoints.svelte";
 import { panelStatus, type PanelKey } from "./panels.svelte";
-import { badgeFor, fallbackBadge } from "./badges";
+import { badgeFor, fallbackBadge } from "./badges.svelte";
 import type { Row } from "./types";
 
 declare const echarts: any;
@@ -239,13 +239,19 @@ function chartOption(
         spd: p.spd,
         // "image://" (two slashes) is the ECharts image-symbol prefix —
         // a single "image:" prefix falls through to a rect path and renders
-        // nothing (verified 2026-09-16: the badge drew as an empty box)
+        // nothing (verified 2026-09-16: the badge drew as an empty box).
+        // Placeholder rule (plan 035 D2): a badge that hasn't landed yet
+        // renders the fallback letter disc; a landed load-failure keeps the
+        // raw logo (soft, plan 007); a landed badge reads through the
+        // store — the reactive read re-renders and swaps the symbol in.
         symbol: isFrontier
-          ? badgeFor(org)
-            ? "image://" + badgeFor(org)
-            : logo
-              ? "image://" + logo
-              : "image://" + fallbackBadge(org)
+          ? badgeFor(org) === undefined
+            ? "image://" + fallbackBadge(org)
+            : badgeFor(org)
+              ? "image://" + badgeFor(org)
+              : logo
+                ? "image://" + logo
+                : "image://" + fallbackBadge(org)
           : "circle",
         symbolSize: isFrontier ? [24, 24] : 10,
         itemStyle: {

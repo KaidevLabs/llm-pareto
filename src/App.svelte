@@ -1,12 +1,12 @@
 <!--
   App shell (028 step 2): header, nav controls, the four 2D panels, the
-  details drawer overlay, and the boot sequence (live main(): data +
-  badges, then the shared endpoints fetch). The 3D showcase joins in
-  step 3; the footer content in step 4.
+  details drawer overlay, and the boot sequence (data gates the first
+  chart; badges and the endpoints fetch run off the critical path —
+  plan 035 D1, 023 D8).
 -->
 <script lang="ts">
   import { data, boot, loadData } from "./lib/data.svelte";
-  import { buildBadges } from "./lib/badges";
+  import { buildBadges } from "./lib/badges.svelte";
   import { ensureEndpoints } from "./lib/endpoints.svelte";
   import { ui, type Mode } from "./lib/state.svelte";
   import { seedFromURL, initHistory, notifyChanged } from "./lib/history.svelte";
@@ -30,12 +30,15 @@
       return;
     }
     await loadData();
-    await buildBadges();
     boot.ready = true;
-    // Fire the shared endpoints fetch on load, after first paint (023 D8):
-    // the hover card's p50 speed line needs it without the caller having to
-    // open a drawer first. Non-blocking.
-    if (!data.error) ensureEndpoints();
+    // Frontier badges build off the critical path (plan 035 D1/D2): the
+    // first chart renders fallback letter discs and a landed badge swaps
+    // in via the store's reactive reads. The shared endpoints fetch stays
+    // the same non-blocking pattern (023 D8).
+    if (!data.error) {
+      ensureEndpoints();
+      buildBadges();
+    }
   }
 
   // boot once on mount (no reactive reads in bootOnce's sync path)
