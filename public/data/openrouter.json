@@ -1,5 +1,32 @@
 [
  {
+  "id": "stealth/space-bunny-alpha",
+  "name": "Space Bunny Alpha",
+  "org": "stealth",
+  "price_in_per_m": 0.0,
+  "price_out_per_m": 0.0,
+  "vision": true,
+  "context_length": 1000000
+ },
+ {
+  "id": "aion-labs/aion-3.5-mini",
+  "name": "AionLabs: Aion 3.5 Mini",
+  "org": "aion-labs",
+  "price_in_per_m": 0.7,
+  "price_out_per_m": 1.4,
+  "vision": false,
+  "context_length": 262144
+ },
+ {
+  "id": "aion-labs/aion-3.5",
+  "name": "AionLabs: Aion 3.5",
+  "org": "aion-labs",
+  "price_in_per_m": 3.0,
+  "price_out_per_m": 6.0,
+  "vision": false,
+  "context_length": 262144
+ },
+ {
   "id": "upstage/solar-mini4",
   "name": "Upstage: Solar Mini 4",
   "org": "upstage",
@@ -177,23 +204,14 @@
   "price_in_per_m": 0.06,
   "price_out_per_m": 0.18,
   "vision": true,
-  "context_length": 131072
- },
- {
-  "id": "inclusionai/ling-3.0-flash-vl:free",
-  "name": "inclusionAI: Ling 3.0 Flash VL (free)",
-  "org": "inclusionai",
-  "price_in_per_m": 0.0,
-  "price_out_per_m": 0.0,
-  "vision": true,
   "context_length": 262144
  },
  {
   "id": "deepseek/deepseek-v4.1-flash",
   "name": "DeepSeek: DeepSeek V4.1 Flash",
   "org": "deepseek",
-  "price_in_per_m": 0.15,
-  "price_out_per_m": 0.6,
+  "price_in_per_m": 0.1,
+  "price_out_per_m": 0.5,
   "vision": true,
   "context_length": 1048576
  },
@@ -489,8 +507,8 @@
   "id": "deepseek/deepseek-v4-pro-0813",
   "name": "DeepSeek: DeepSeek V4 Pro 0813",
   "org": "deepseek",
-  "price_in_per_m": 0.498696,
-  "price_out_per_m": 1.496088,
+  "price_in_per_m": 0.462,
+  "price_out_per_m": 1.386,
   "vision": false,
   "context_length": 1048576
  },
@@ -804,8 +822,8 @@
   "id": "tencent/hy3",
   "name": "Tencent: Hy3",
   "org": "tencent",
-  "price_in_per_m": 0.132,
-  "price_out_per_m": 0.528,
+  "price_in_per_m": 0.0825,
+  "price_out_per_m": 0.33,
   "vision": false,
   "context_length": 262144
  },
@@ -1146,8 +1164,8 @@
   "id": "deepseek/deepseek-v4-pro",
   "name": "DeepSeek: DeepSeek V4 Pro 0423",
   "org": "deepseek",
-  "price_in_per_m": 0.95526,
-  "price_out_per_m": 1.91052,
+  "price_in_per_m": 0.948126,
+  "price_out_per_m": 1.896252,
   "vision": false,
   "context_length": 1048576
  },
@@ -1155,8 +1173,8 @@
   "id": "deepseek/deepseek-v4-flash",
   "name": "DeepSeek: DeepSeek V4 Flash 0423",
   "org": "deepseek",
-  "price_in_per_m": 0.088606,
-  "price_out_per_m": 0.177212,
+  "price_in_per_m": 0.08246,
+  "price_out_per_m": 0.16492,
   "vision": false,
   "context_length": 1048576
  },
@@ -1789,15 +1807,6 @@
   "price_out_per_m": 14.0,
   "vision": true,
   "context_length": 400000
- },
- {
-  "id": "mistralai/devstral-2512",
-  "name": "Mistral: Devstral 2 2512",
-  "org": "mistralai",
-  "price_in_per_m": 0.4,
-  "price_out_per_m": 2.0,
-  "vision": false,
-  "context_length": 262144
  },
  {
   "id": "relace/relace-search",
