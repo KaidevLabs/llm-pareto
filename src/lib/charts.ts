@@ -631,7 +631,8 @@ function bindPan(chart: any) {
 // Chart lifecycle shared by every panel (023 step 2): lazy init on the
 // panel's first active render (Chart2D passes its div) + the four
 // interaction binds. Instances persist across mode switches; the zoom
-// window restores after each not-Merge setOption (018 A2).
+// window restores after each not-Merge setOption (018 A2, 036 D2 gates the
+// merge branch out — it keeps the window alive on its own).
 export function ensureChart2D(el: HTMLElement, id: string): any {
   if (!charts[id]) {
     charts[id] = echarts.init(el, null, { renderer: "canvas" });
@@ -662,8 +663,12 @@ function chartPush(
   GEOM[id] = sig;
   const chart = ensureChart2D(el, id);
   chart.setOption(opt, !animate);
-  // The zoom window survives the not-Merge setOption (018 A2).
-  restoreZoom(id);
+  // A not-Merge setOption rebuilds everything and drops the zoom window —
+  // restore it (018 A2). The merge branch (032 fade path) keeps the dataZoom
+  // components alive, so the window survives on its own; the re-dispatch
+  // here was a second full update pass per fade render (036 D2, gated after
+  // the thrDragSettleMs baseline measured the drag at 898 ms median).
+  if (!animate) restoreZoom(id);
 }
 
 function restoreZoom(id: string) {
