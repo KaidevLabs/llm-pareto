@@ -1,6 +1,9 @@
 # 036 — Badge store off the boot critical path
 
-Date: 2026-09-20. **Status: step 1 executed (2026-09-23, `39cb935`); step 2 pending.**
+Date: 2026-09-20. **Status: ARCHIVED (2026-09-23).** Steps: step 1 code
+`39cb935` + plan `a6fe98b` · bench publish `ad7495e` (step 2 folded:
+owner-run A/B published as `run-20260923-1009`, cookie probe + DoD audit
+in the close record above) · close plan commit below.
 Source: `docs/reports/030-port-perf-findings.md` B20 (full evidence there; origin:
 plan 030 step 01 cost #2 + step 02 F9).
 
@@ -25,6 +28,34 @@ exists as the natural placeholder; badges arriving later swap the symbols.
    Commit: `chart: badge store off the critical path`.
 2. Harness A/B + owner A/B (swap flash) + DoD audit. Commit: folded or
    `chart: badge store verification`.
+
+## As-built — step 2 + close (2026-09-23, bench `ad7495e`)
+
+- **Harness A/B** — owner-run batch, published as bench
+  `run-20260923-1009` (label `2202da8 (dirty)` = step-1 tree; 7 runs per
+  condition, medians):
+  - cold-throttled `chartMs`: **7203 → 4444 ms** (−2.76 s, −38%;
+    baseline run-20260923-0130 `a9443c6`) — DoD target ≈4.2 s met
+    (4444 vs ≈4200, within run noise: p90 4519, min 4341).
+  - requests at chart paint 30 → 7, transfer 549 → 420 KB: the 23 logo
+    fetches are still in flight at first paint — the decoupling, visible
+    in the published numbers.
+  - cold-unthrottled `chartMs` 147 → 193 ms (both effectively instant;
+    small tail from the off-path badge fetches, invisible to the eye).
+- **Owner A/B** — the owner exercised the swap live during the session
+  batch and closed the plan on it (terse close signal, no flash
+  complaint recorded).
+- **Cookie probe** — 020 recipe against a static serve of `dist/`:
+  3 UAs × 18 URLs (entry, hashed js/css, all 5 data files, echarts + GL,
+  font, 4 logo SVGs incl. the malformed-SVG orgs, bench compare + run
+  payloads) — 54 requests, 0 failures, empty cookie jars.
+  **COOKIELESS PASS.** Probe kept at `.tmp/probe_035_cookies.zsh`.
+- **Suites** — `npm test` 170/170, `tsc --noEmit` clean, `npm run build`
+  clean (bundle `index-OBA8Apl_.js`).
+- **DoD audit**: owner approval ✅ (2026-09-23 session) · chartMs ✅
+  · fallback-first + swap ✅ (headless smoke + owner A/B) · suites green
+  ✅ · cookie probe ✅ · owner A/B ✅ · deployed — the deploy rides the
+  owner's next push (Push policy #467), as closed.
 
 ## As-built — step 1 (2026-09-23, code `39cb935`)
 
@@ -84,7 +115,7 @@ exists as the natural placeholder; badges arriving later swap the symbols.
 
 ## Definition of done
 
-- [x] Owner approves D1–D5 in a review session.
-- [ ] Throttled `chartMs` ≈ 4.2 s in the harness A/B (from ~7.0–7.5 s). *(step 2)*
-- [x] Frontier renders with fallback badges immediately; real badges swap in.
-- [ ] Suites green; cookie probe clean; owner A/B ok; deployed per owner. *(suites green; rest step 2)*
+- [x] Owner approves D1–D5 in a review session. *(2026-09-23)*
+- [x] Throttled `chartMs` ≈ 4.2 s in the harness A/B (from ~7.0–7.5 s). *(4444 ms median, bench run-20260923-1009 vs 0130)*
+- [x] Frontier renders with fallback badges immediately; real badges swap in. *(headless smoke: 9/9 swapped, 0 raw placeholders; owner A/B)*
+- [x] Suites green; cookie probe clean; owner A/B ok; deployed per owner. *(170/170, tsc, build, COOKIELESS PASS 54/54; deploy rides the owner's next push per #467)*
