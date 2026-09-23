@@ -17,6 +17,7 @@ const LOAD_METRICS = [
 ];
 const INTERACT_METRICS = [
   ["initPaintMs", "init→paint (ms)"], ["zoomSettleMs", "zoom settle (ms)"], ["zoomEvents", "zoom events"],
+  ["thrDragSettleMs", "threshold drag settle (ms)"],
   ["drawerOpenMs", "drawer open (ms)"], ["drawerCloseMs", "drawer close (ms)"], ["cold3DMs", "3D cold (ms)"],
   ["steady3DMs", "3D steady (ms)"], ["jankCount", "jank count"], ["jankTBTms", "jank TBT (ms)"],
   ["memLoadKB", "heap load (KB)"], ["memDeltaKB", "heap Δ (KB)"],

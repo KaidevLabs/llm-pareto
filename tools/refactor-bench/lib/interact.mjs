@@ -1,5 +1,6 @@
 // 029 A2/interactions: CDP interaction benchmarks — chart init→paint,
-// zoom wheel burst, drawer open/close, 2D→3D (GL cold + steady), longtask jank, memory.
+// zoom wheel burst, threshold drag (036 D1), drawer open/close, 2D→3D
+// (GL cold + steady), longtask jank, memory.
 // Instance-free: vanilla and svelte trees alike are probed via DOM + canvas
 // signals only, so numbers are comparable across the refactor.
 import { spawn } from "node:child_process";
@@ -17,7 +18,7 @@ const hashExpr = (id) => `(() => {
   try { const ctx = cv.getContext('2d'); if (!ctx) return 'gl' + cv.width + 'x' + cv.height; const d = ctx.getImageData(0, 0, cv.width, cv.height).data; let h = 0; for (let i = 3; i < d.length; i += 4000) h = (h * 31 + d[i]) >>> 0; return '2d' + h; } catch (e) { return 'err'; }
 })()`;
 
-const METRIC_KEYS = ["initPaintMs", "zoomSettleMs", "zoomEvents", "drawerOpenMs", "drawerCloseMs", "cold3DMs", "steady3DMs", "jankCount", "jankTBTms", "memLoadKB", "memBurstKB", "memDeltaKB"];
+const METRIC_KEYS = ["initPaintMs", "zoomSettleMs", "zoomEvents", "thrDragSettleMs", "drawerOpenMs", "drawerCloseMs", "cold3DMs", "steady3DMs", "jankCount", "jankTBTms", "memLoadKB", "memBurstKB", "memDeltaKB"];
 
 function stats(values) {
   const v = values.filter((x) => x != null).slice().sort((a, b) => a - b);
@@ -35,8 +36,10 @@ function aggregate(runs) {
 // DOM hooks differ by app shape (vanilla app.js vs svelte bundle), not by
 // anything the run chooses — a measured tree gets the config matching what it ships.
 const SIDE_CFG = {
+  // No `thr` for vanilla: the vanilla tree predates the 032 threshold
+  // filters, so the drag probe has no handle to grab (metric stays null).
   vanilla: { drawerVerify: `!!document.getElementById('details') && !document.getElementById('details').classList.contains('hidden') && (document.getElementById('details').innerText || '').length > 0`, drawerClose: `#details-x`, tgl3d: `#tgl-3d`, tglBack: `#tgl-3d` },
-  svelte: { drawerVerify: `(() => { const d = document.querySelector('.drawer'); return !!d && (d.innerText || '').length > 0; })()`, drawerClose: `.drawer-x`, tgl3d: { cls: "button.pill", text: "3D" }, tglBack: { cls: "button.pill", text: "3D" } },
+  svelte: { drawerVerify: `(() => { const d = document.querySelector('.drawer'); return !!d && (d.innerText || '').length > 0; })()`, drawerClose: `.drawer-x`, tgl3d: { cls: "button.pill", text: "3D" }, tglBack: { cls: "button.pill", text: "3D" }, thr: { handle: `input[aria-label="maximum price"]`, reset: `.thr .reset` } },
 };
 
 async function withChrome(cdpPort, fn) {
@@ -112,6 +115,45 @@ async function closeDrawer(send, cfg) {
   return null;
 }
 
+// 036 D1: threshold-drag settle — grab the price-max handle (parked at the
+// unbounded end), drag it across the point cloud to mid-track (every move is
+// a filter-only merge render through the 032 fade path), and time from the
+// first press until the chart canvas stops changing. Mirror of zoomSettleMs
+// with a stability rule instead of first-change: the merge branch tweens
+// (animationDurationUpdate 350), so settle = the tween fully landed.
+async function thrDrag(send, cfg) {
+  if (!cfg.thr) return null;
+  const b = await box(send, cfg.thr.handle);
+  if (!b) return null;
+  const y = Math.round(b.y + b.h / 2);
+  const x1 = Math.round(b.x + b.w - 8); // thumb parked at max (unbounded)
+  const x0 = Math.round(b.x + b.w * 0.45); // mid-track: bound crosses live points
+  const before = await ev(send, hashExpr("chart-blend"));
+  const t0 = Date.now();
+  await send("Input.dispatchMouseEvent", { type: "mousePressed", x: x1, y, button: "left", clickCount: 1 });
+  const steps = 10;
+  for (let i = 1; i <= steps; i++) {
+    await send("Input.dispatchMouseEvent", { type: "mouseMoved", x: Math.round(x1 + ((x0 - x1) * i) / steps), y, button: "left" });
+    await sleep(25);
+  }
+  await send("Input.dispatchMouseEvent", { type: "mouseReleased", x: x0, y, button: "left", clickCount: 1 });
+  let changed = false;
+  let last = null;
+  let hold = 0;
+  let settledAt = null;
+  for (let i = 0; i < 100; i++) {
+    await sleep(30);
+    const h = await ev(send, hashExpr("chart-blend"));
+    if (h == null || h === "no" || h === "err") continue;
+    if (!changed) { if (h !== before) changed = true; continue; }
+    if (h === last) { hold++; if (hold >= 2) { settledAt = Math.round(Date.now() - t0); break; } } else hold = 0;
+    last = h;
+  }
+  if (changed) await click(send, await centerOf(send, cfg.thr.reset)); // restore defaults for the probes that follow
+  await sleep(400);
+  return settledAt;
+}
+
 async function measureSide(send, port, cfg, repeats) {
   const runs = [];
   for (let i = 0; i < repeats; i++) {
@@ -134,6 +176,8 @@ async function measureSide(send, port, cfg, repeats) {
     for (let i2 = 0; i2 < 60; i2++) { await sleep(30); const h = await ev(send, hashExpr("chart-blend")); if (h !== before && h !== "no") { settled = true; break; } }
     r.zoomSettleMs = settled ? Math.round(Date.now() - tZoom0) : null;
     r.zoomEvents = K;
+    // 2b. threshold drag → fade-path settle (036 D1), then reset defaults
+    r.thrDragSettleMs = await thrDrag(send, cfg);
     // 3. drawer open (grid-scan) then close
     r.drawerOpenMs = await openDrawer(send, cfg);
     r.drawerCloseMs = await closeDrawer(send, cfg);

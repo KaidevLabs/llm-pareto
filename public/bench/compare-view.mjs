@@ -84,6 +84,7 @@ export function loadRows(lA, lB) {
 const INTERACT_ROWS = [
   ["initPaintMs", "init→paint (ms)"],
   ["zoomSettleMs", "zoom settle (ms)"],
+  ["thrDragSettleMs", "threshold drag settle (ms)"],
   ["drawerOpenMs", "drawer open (ms)"],
   ["cold3DMs", "3D cold (ms)"],
   ["steady3DMs", "3D steady (ms)"],

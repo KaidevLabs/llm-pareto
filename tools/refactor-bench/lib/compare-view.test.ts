@@ -183,6 +183,7 @@ describe("interactRows", () => {
     expect(rows.map((r) => r.label)).toEqual([
       "init→paint (ms)",
       "zoom settle (ms)",
+      "threshold drag settle (ms)",
       "drawer open (ms)",
       "3D cold (ms)",
       "3D steady (ms)",
