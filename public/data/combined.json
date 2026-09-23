@@ -356,8 +356,8 @@
  {
   "or_id": "z-ai/glm-5.3",
   "or_name": "Z.ai: GLM 5.3",
-  "price_in_per_m": 0.6538,
-  "price_out_per_m": 2.0548,
+  "price_in_per_m": 0.84,
+  "price_out_per_m": 2.64,
   "vision": false,
   "context_length": 1310720,
   "arena_rank": 19,
@@ -916,8 +916,8 @@
  {
   "or_id": "deepseek/deepseek-v4-pro",
   "or_name": "DeepSeek: DeepSeek V4 Pro 0423",
-  "price_in_per_m": 0.904104,
-  "price_out_per_m": 1.808208,
+  "price_in_per_m": 0.95526,
+  "price_out_per_m": 1.91052,
   "vision": false,
   "context_length": 1048576,
   "arena_rank": 50,
@@ -1094,8 +1094,8 @@
  {
   "or_id": "tencent/hy3",
   "or_name": "Tencent: Hy3",
-  "price_in_per_m": 0.0825,
-  "price_out_per_m": 0.33,
+  "price_in_per_m": 0.132,
+  "price_out_per_m": 0.528,
   "vision": false,
   "context_length": 262144,
   "arena_rank": 60,
@@ -1289,8 +1289,8 @@
   ],
   "arena_context_length": 200000,
   "arena_model_url": "https://www.anthropic.com/news/claude-opus-4-1",
-  "arena_price_in_per_m": 15,
-  "arena_price_out_per_m": 75,
+  "arena_price_in_per_m": 7.5,
+  "arena_price_out_per_m": 37.5,
   "match_method": "prefix-base",
   "match_ratio": null
  },
@@ -1554,8 +1554,8 @@
  {
   "or_id": "deepseek/deepseek-v4-flash",
   "or_name": "DeepSeek: DeepSeek V4 Flash 0423",
-  "price_in_per_m": 0.049,
-  "price_out_per_m": 0.098,
+  "price_in_per_m": 0.088606,
+  "price_out_per_m": 0.177212,
   "vision": false,
   "context_length": 1048576,
   "arena_rank": 87,
@@ -1771,10 +1771,10 @@
   "arena_variants": [
    "kimi-k2-thinking-turbo"
   ],
-  "arena_context_length": 262144,
+  "arena_context_length": 131072,
   "arena_model_url": "https://huggingface.co/moonshotai/Kimi-K2-Thinking",
-  "arena_price_in_per_m": 1.15,
-  "arena_price_out_per_m": 8,
+  "arena_price_in_per_m": 0.57,
+  "arena_price_out_per_m": 2.3,
   "match_method": "prefix-base",
   "match_ratio": null
  },
@@ -2287,7 +2287,7 @@
    "claude-sonnet-4-20250514",
    "claude-sonnet-4-20250514-thinking-32k"
   ],
-  "arena_context_length": 1000000,
+  "arena_context_length": 200000,
   "arena_model_url": "https://www.anthropic.com/news/claude-4",
   "arena_price_in_per_m": 3,
   "arena_price_out_per_m": 15,
@@ -3317,10 +3317,10 @@
   "arena_variants": [
    "llama-4-scout-17b-16e-instruct"
   ],
-  "arena_context_length": 8192,
+  "arena_context_length": 16384,
   "arena_model_url": "https://huggingface.co/meta-llama/Llama-4-Scout-17B-16E-Instruct",
-  "arena_price_in_per_m": 0.4,
-  "arena_price_out_per_m": 0.7,
+  "arena_price_in_per_m": 0.05,
+  "arena_price_out_per_m": 0.1,
   "match_method": "prefix-base",
   "match_ratio": null
  },

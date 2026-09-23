@@ -1,5 +1,14 @@
 [
  {
+  "id": "cohere/command-a-plus",
+  "name": "Cohere: Command A+",
+  "org": "cohere",
+  "price_in_per_m": 0.3,
+  "price_out_per_m": 1.5,
+  "vision": true,
+  "context_length": 192000
+ },
+ {
   "id": "openai/gpt-6-luna-pro",
   "name": "OpenAI: GPT-6 Luna Pro",
   "org": "openai",
@@ -79,6 +88,15 @@
   "price_out_per_m": 4.8,
   "vision": true,
   "context_length": 500000
+ },
+ {
+  "id": "qwen/qwen3.8-omni-flash",
+  "name": "Qwen: Qwen3.8 Omni Flash",
+  "org": "qwen",
+  "price_in_per_m": 0.15,
+  "price_out_per_m": 0.47,
+  "vision": true,
+  "context_length": 1000000
  },
  {
   "id": "prism-ml/ternary-bonsai-2-27b",
@@ -165,8 +183,8 @@
   "id": "deepseek/deepseek-v4.1-flash",
   "name": "DeepSeek: DeepSeek V4.1 Flash",
   "org": "deepseek",
-  "price_in_per_m": 0.15,
-  "price_out_per_m": 0.6,
+  "price_in_per_m": 0.1,
+  "price_out_per_m": 0.5,
   "vision": true,
   "context_length": 1048576
  },
@@ -390,8 +408,8 @@
   "id": "z-ai/glm-5.3",
   "name": "Z.ai: GLM 5.3",
   "org": "z-ai",
-  "price_in_per_m": 0.6538,
-  "price_out_per_m": 2.0548,
+  "price_in_per_m": 0.84,
+  "price_out_per_m": 2.64,
   "vision": false,
   "context_length": 1310720
  },
@@ -762,7 +780,7 @@
   "price_in_per_m": 0.7,
   "price_out_per_m": 1.4,
   "vision": false,
-  "context_length": 1048576
+  "context_length": 131072
  },
  {
   "id": "aion-labs/aion-3.0",
@@ -771,14 +789,14 @@
   "price_in_per_m": 3.0,
   "price_out_per_m": 6.0,
   "vision": false,
-  "context_length": 1048576
+  "context_length": 131072
  },
  {
   "id": "tencent/hy3",
   "name": "Tencent: Hy3",
   "org": "tencent",
-  "price_in_per_m": 0.0825,
-  "price_out_per_m": 0.33,
+  "price_in_per_m": 0.132,
+  "price_out_per_m": 0.528,
   "vision": false,
   "context_length": 262144
  },
@@ -1119,8 +1137,8 @@
   "id": "deepseek/deepseek-v4-pro",
   "name": "DeepSeek: DeepSeek V4 Pro 0423",
   "org": "deepseek",
-  "price_in_per_m": 0.904104,
-  "price_out_per_m": 1.808208,
+  "price_in_per_m": 0.95526,
+  "price_out_per_m": 1.91052,
   "vision": false,
   "context_length": 1048576
  },
@@ -1128,8 +1146,8 @@
   "id": "deepseek/deepseek-v4-flash",
   "name": "DeepSeek: DeepSeek V4 Flash 0423",
   "org": "deepseek",
-  "price_in_per_m": 0.049,
-  "price_out_per_m": 0.098,
+  "price_in_per_m": 0.088606,
+  "price_out_per_m": 0.177212,
   "vision": false,
   "context_length": 1048576
  },
@@ -1509,7 +1527,7 @@
   "price_in_per_m": 0.8,
   "price_out_per_m": 1.6,
   "vision": false,
-  "context_length": 1048576
+  "context_length": 131072
  },
  {
   "id": "google/gemini-3.1-pro-preview",
