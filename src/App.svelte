@@ -337,13 +337,4 @@
     cursor: pointer;
   }
   .drawer-x:hover { color: var(--text); background: rgba(148, 163, 184, 0.08); }
-
-  footer {
-    margin-top: 18px;
-    padding: 16px 28px 26px;
-    border-top: 1px solid var(--border);
-    color: var(--muted);
-    font-size: 12px;
-    line-height: 1.7;
-  }
 </style>

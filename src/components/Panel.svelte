@@ -139,13 +139,6 @@
     position: relative;
     display: flex;
   }
-  .tour-pill {
-    padding: 2px 8px !important;
-    font-size: 10px !important;
-    border-radius: 8px !important;
-    opacity: 0.65;
-  }
-  .tour-pill:hover { opacity: 1; }
   .tour-cap {
     position: absolute;
     left: 50%;
