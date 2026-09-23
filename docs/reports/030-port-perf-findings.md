@@ -12,7 +12,7 @@ interim "B1–B9" numbering is retired — the mapping is stated per item.
 | B# | plan doc | what it fixes |
 |----|----------|---------------|
 | **B19** | `plans/034-static-shell.md` | First paint waits for the whole echarts-download→exec→mount chain (throttled FCP ~3.3 s) because `#app` is empty — paint the static chrome immediately instead (~0.6 s), with the echarts script deferred |
-| **B20** | `plans/035-badge-store.md` | The first chart waits for ~25 badge logos (throttled chart ~7.0–7.5 s) — render with fallback badges immediately, swap real ones in (~4.2 s) |
+| **B20** ✅ | `plans/archive/035-badge-store.md` | The first chart waits for ~25 badge logos (throttled chart ~7.0–7.5 s) — render with fallback badges immediately, swap real ones in (~4.2 s). **Done 2026-09-23: throttled chartMs 7203 → 4444 ms.** |
 | **B21** | `plans/039-hygiene-batch.md` step 1 | Details' sort-header arrow/highlight is frozen (plain const off reactive state) — one-line reactivity fix |
 | **B22** | `plans/036-fade-shave.md` | Threshold-drag / search-keystroke re-render cost — add a real harness metric first, shave only if it measures hot ("measured cheap" is an accepted outcome) |
 | **B23** | `plans/040-echarts-npm.md` (absorbed) | The `any`-typed echarts seam — real types come free with npm echarts; residual component type holes already live in `plans/039-hygiene-batch.md` step 5 |
@@ -167,8 +167,15 @@ echarts script (52% of eager gz) + data.
   segs, labels) vs data-dependent (stamp line, counts — must not lie).
 - **Effort.** M. **Deps:** none. **Impact:** throttled FCP/LCP −~2.7 s.
 
-### B20 — Decouple the badge chain from first chart *(plan: `plans/035-badge-store.md`)*
+### B20 — Decouple the badge chain from first chart *(plan: `plans/archive/035-badge-store.md` — done 2026-09-23)*
 
+- **Outcome.** D1 reactive store + D2 fallback-first/swap + D3 48px
+  canvases, executed as planned. Throttled chartMs **7203 → 4444 ms**
+  (bench run-20260923-1009 vs 0130, 7-run medians; −38%); requests at
+  first paint 30 → 7 (logos still in flight). Swap reads as progressive
+  waves, owner-accepted. Consumer inventory: the badge store's only
+  consumer is the frontier symbol seam — tooltip/drawer/selector logos
+  ride `logoFor` (raw files) and never gated.
 - **Hypothesis.** `boot.ready` awaits `buildBadges()` — every frontier badge
   logo is on the first chart's critical path; fallback badges already exist
   as the natural placeholder.
