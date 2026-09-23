@@ -27,10 +27,11 @@ second echarts update pass the merge branch doesn't need (windows survive).
 1. ✅ Harness: threshold-drag metric (D1). Commit: `bench: threshold-drag
    settle metric` (f8e64a5, 2026-09-23).
 2. Baseline measurement recorded in this plan's as-built.
-3. D2 (gate restoreZoom) if the baseline says the second pass is visible;
-   D3 only if still hot. Commit: `chart: fade-path shave` / or
-   `chart: fade-path measured cheap (no change)`.
-4. Re-measure; DoD audit; owner A/B (drag feel unchanged).
+3. ✅ D2 (gate restoreZoom) — implemented; baseline said the second pass is
+   NOT visible (see as-built step 3): D3 not exercised.
+   Commit: `chart: fade-path shave` (7bfc082, 2026-09-23).
+4. Re-measure (done, agent-run; see as-built step 3); DoD audit; owner A/B
+   (drag feel unchanged) + owner publishes the final bench entry.
 
 ## Out of scope
 
@@ -72,3 +73,35 @@ second echarts update pass the merge branch doesn't need (windows survive).
   the class lands on `<Pill>`'s child root), and switched index.html's
   echarts/font URLs to public-dir-absolute (base "./" rebases them; build
   now warning-free).
+- Note: the baseline entry (`run-20260923-1527`) was published by the owner
+  mid-step, then dropped from git at the owner's request (the step-boundary
+  publish was premature — the final publish belongs after step 4). The
+  aggregate survives in `benchmarks/run-20260923-1527/interact.json`
+  (gitignored local history) and its numbers are quoted in step 3's as-built.
+
+## As-built — step 3 (2026-09-23, D2 gate; agent-measured)
+
+- Change: `src/lib/charts.ts` `chartPush` — `if (!animate) restoreZoom(id);`
+  (the merge/zoom-window premise verified in code: the dataZoom components
+  survive a merge setOption with their percent windows, so the re-dispatch
+  was a second full update pass per fade render; the notMerge branch still
+  restores, as 018 A2 requires).
+- **Before/after on `thrDragSettleMs`** (7 repeats each, same probe
+  f8e64a5, same machine/day): BEFORE 898 (892–916, ref 70f14c4) →
+  AFTER **915** (892–920, ref 655a91e+D2, dirty tree = the gate itself).
+  Delta +17 ms, inside the run-to-run spread (±30); zoomSettle 745→734,
+  initPaint 336→279, 3D/jank unchanged. **The redundant pass is not visible
+  on the end-user metric** — the settle is dominated by the 350 ms fade
+  tween + gesture time, as suspected.
+- D4 outcome rule exercised: the fade path measures cheap at today's scale
+  (~154 points). Per D2's "only if visible" condition, **D3 (static/dynamic
+  point split) is not exercised** — its precondition (path ≥ one frame
+  budget beyond the tween) did not materialize.
+- The D2 gate **stays in**: it is mechanical, removes a redundant update
+  pass from every fade render (correct by construction — merge keeps the
+  window; notMerge restores), suites/build green, and the metric shows no
+  regression (Δ +17 ms ≈ noise, spread unchanged). Re-classified from
+  "performance shave" to "redundancy removal with a measured no-harm bill".
+- Re-measure artifacts: `benchmarks/run-036-after/` (local, gitignored).
+  Owner publishes the final entry (step 4) — per the plan's publish
+  discipline, the publish commit is the owner's.
