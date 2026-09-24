@@ -1,0 +1,409 @@
+{
+  "label": "9a73b95",
+  "conditions": {
+    "cold-unthrottled": {
+      "runs": 7,
+      "ttfbMs": {
+        "median": 1,
+        "p90": 2,
+        "min": 1,
+        "max": 2
+      },
+      "dclMs": {
+        "median": 45,
+        "p90": 48,
+        "min": 42,
+        "max": 48
+      },
+      "loadMs": {
+        "median": 48,
+        "p90": 50,
+        "min": 45,
+        "max": 50
+      },
+      "fcpMs": {
+        "median": 36,
+        "p90": 48,
+        "min": 32,
+        "max": 48
+      },
+      "lcpMs": {
+        "median": 60,
+        "p90": 112,
+        "min": 52,
+        "max": 112
+      },
+      "chartMs": {
+        "median": 187,
+        "p90": 191,
+        "min": 163,
+        "max": 191
+      },
+      "requests": {
+        "median": 31,
+        "p90": 32,
+        "min": 31,
+        "max": 32
+      },
+      "transferKB": {
+        "median": 651,
+        "p90": 653,
+        "min": 651,
+        "max": 653
+      },
+      "encodedKB": {
+        "median": 642,
+        "p90": 644,
+        "min": 642,
+        "max": 644
+      },
+      "decodedKB": {
+        "median": 3640,
+        "p90": 3642,
+        "min": 3640,
+        "max": 3642
+      }
+    },
+    "cold-throttled": {
+      "runs": 7,
+      "ttfbMs": {
+        "median": 90,
+        "p90": 111,
+        "min": 7,
+        "max": 111
+      },
+      "dclMs": {
+        "median": 3575,
+        "p90": 3596,
+        "min": 3461,
+        "max": 3596
+      },
+      "loadMs": {
+        "median": 3587,
+        "p90": 3608,
+        "min": 3474,
+        "max": 3608
+      },
+      "fcpMs": {
+        "median": 728,
+        "p90": 752,
+        "min": 628,
+        "max": 752
+      },
+      "lcpMs": {
+        "median": 3600,
+        "p90": 3616,
+        "min": 3480,
+        "max": 3616
+      },
+      "chartMs": {
+        "median": 4435,
+        "p90": 4447,
+        "min": 4337,
+        "max": 4447
+      },
+      "requests": {
+        "median": 7,
+        "p90": 7,
+        "min": 7,
+        "max": 7
+      },
+      "transferKB": {
+        "median": 420,
+        "p90": 420,
+        "min": 420,
+        "max": 420
+      },
+      "encodedKB": {
+        "median": 418,
+        "p90": 418,
+        "min": 418,
+        "max": 418
+      },
+      "decodedKB": {
+        "median": 1329,
+        "p90": 1329,
+        "min": 1329,
+        "max": 1329
+      }
+    },
+    "warm-unthrottled": {
+      "runs": 7,
+      "ttfbMs": {
+        "median": 1,
+        "p90": 1,
+        "min": 1,
+        "max": 1
+      },
+      "dclMs": {
+        "median": 23,
+        "p90": 25,
+        "min": 19,
+        "max": 25
+      },
+      "loadMs": {
+        "median": 27,
+        "p90": 31,
+        "min": 23,
+        "max": 31
+      },
+      "fcpMs": {
+        "median": 44,
+        "p90": 56,
+        "min": 40,
+        "max": 56
+      },
+      "lcpMs": {
+        "median": 44,
+        "p90": 56,
+        "min": 40,
+        "max": 56
+      },
+      "chartMs": {
+        "median": 192,
+        "p90": 221,
+        "min": 179,
+        "max": 221
+      },
+      "requests": {
+        "median": 31,
+        "p90": 31,
+        "min": 31,
+        "max": 31
+      },
+      "transferKB": {
+        "median": 0,
+        "p90": 102,
+        "min": 0,
+        "max": 102
+      },
+      "encodedKB": {
+        "median": 642,
+        "p90": 642,
+        "min": 642,
+        "max": 642
+      },
+      "decodedKB": {
+        "median": 3640,
+        "p90": 3640,
+        "min": 3640,
+        "max": 3640
+      }
+    },
+    "warm-throttled": {
+      "runs": 7,
+      "ttfbMs": {
+        "median": 1,
+        "p90": 1,
+        "min": 1,
+        "max": 1
+      },
+      "dclMs": {
+        "median": 86,
+        "p90": 103,
+        "min": 72,
+        "max": 103
+      },
+      "loadMs": {
+        "median": 104,
+        "p90": 133,
+        "min": 92,
+        "max": 133
+      },
+      "fcpMs": {
+        "median": 120,
+        "p90": 140,
+        "min": 112,
+        "max": 140
+      },
+      "lcpMs": {
+        "median": 136,
+        "p90": 140,
+        "min": 112,
+        "max": 140
+      },
+      "chartMs": {
+        "median": 786,
+        "p90": 836,
+        "min": 378,
+        "max": 836
+      },
+      "requests": {
+        "median": 31,
+        "p90": 31,
+        "min": 30,
+        "max": 31
+      },
+      "transferKB": {
+        "median": 0,
+        "p90": 0,
+        "min": 0,
+        "max": 0
+      },
+      "encodedKB": {
+        "median": 642,
+        "p90": 642,
+        "min": 540,
+        "max": 642
+      },
+      "decodedKB": {
+        "median": 3640,
+        "p90": 3640,
+        "min": 1493,
+        "max": 3640
+      }
+    }
+  },
+  "waterfall": [
+    {
+      "url": "/js/echarts-5.6.0.min.js",
+      "transferKB": 305,
+      "encodedKB": 304,
+      "durationMs": 34
+    },
+    {
+      "url": "/data/endpoints.json",
+      "transferKB": 102,
+      "encodedKB": 102,
+      "durationMs": 231
+    },
+    {
+      "url": "/assets/logos/moonshot.png",
+      "transferKB": 51,
+      "encodedKB": 51,
+      "durationMs": 19
+    },
+    {
+      "url": "/fonts/inter-var.woff2",
+      "transferKB": 47,
+      "encodedKB": 47,
+      "durationMs": 18
+    },
+    {
+      "url": "/assets/index-DPdx21Bo.js",
+      "transferKB": 45,
+      "encodedKB": 45,
+      "durationMs": 7
+    },
+    {
+      "url": "/assets/logos/thinky.png",
+      "transferKB": 43,
+      "encodedKB": 42,
+      "durationMs": 26
+    },
+    {
+      "url": "/data/combined.json",
+      "transferKB": 15,
+      "encodedKB": 15,
+      "durationMs": 6
+    },
+    {
+      "url": "/assets/logos/microsoft.svg",
+      "transferKB": 4,
+      "encodedKB": 4,
+      "durationMs": 19
+    },
+    {
+      "url": "/assets/logos/rekaai.svg",
+      "transferKB": 4,
+      "encodedKB": 4,
+      "durationMs": 31
+    },
+    {
+      "url": "/assets/logos/amazon.svg",
+      "transferKB": 3,
+      "encodedKB": 2,
+      "durationMs": 6
+    },
+    {
+      "url": "/assets/logos/stepfun.png",
+      "transferKB": 3,
+      "encodedKB": 3,
+      "durationMs": 25
+    },
+    {
+      "url": "/assets/logos/tencent.svg",
+      "transferKB": 3,
+      "encodedKB": 3,
+      "durationMs": 25
+    },
+    {
+      "url": "/assets/logos/upstage.png",
+      "transferKB": 3,
+      "encodedKB": 2,
+      "durationMs": 26
+    },
+    {
+      "url": "/data/meta.json",
+      "transferKB": 2,
+      "encodedKB": 1,
+      "durationMs": 5
+    },
+    {
+      "url": "/assets/logos/spacexai.png",
+      "transferKB": 2,
+      "encodedKB": 2,
+      "durationMs": 25
+    },
+    {
+      "url": "/assets/logos/z-ai.svg",
+      "transferKB": 2,
+      "encodedKB": 2,
+      "durationMs": 30
+    },
+    {
+      "url": "/assets/logos/arcee-ai.svg",
+      "transferKB": 2,
+      "encodedKB": 1,
+      "durationMs": 30
+    },
+    {
+      "url": "/favicon.svg",
+      "transferKB": 1,
+      "encodedKB": 1,
+      "durationMs": 3
+    },
+    {
+      "url": "/assets/logos/openai.svg",
+      "transferKB": 1,
+      "encodedKB": 1,
+      "durationMs": 4
+    },
+    {
+      "url": "/assets/logos/anthropic.svg",
+      "transferKB": 1,
+      "encodedKB": 0,
+      "durationMs": 4
+    },
+    {
+      "url": "/assets/logos/alibaba.svg",
+      "transferKB": 1,
+      "encodedKB": 0,
+      "durationMs": 5
+    },
+    {
+      "url": "/assets/logos/cohere.svg",
+      "transferKB": 1,
+      "encodedKB": 1,
+      "durationMs": 8
+    },
+    {
+      "url": "/assets/logos/deepseek.svg",
+      "transferKB": 1,
+      "encodedKB": 1,
+      "durationMs": 11
+    },
+    {
+      "url": "/assets/logos/google.svg",
+      "transferKB": 1,
+      "encodedKB": 0,
+      "durationMs": 11
+    },
+    {
+      "url": "/assets/logos/ibm.svg",
+      "transferKB": 1,
+      "encodedKB": 1,
+      "durationMs": 11
+    }
+  ]
+}
