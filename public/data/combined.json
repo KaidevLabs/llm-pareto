@@ -1111,8 +1111,8 @@
   ],
   "arena_context_length": 262144,
   "arena_model_url": "https://huggingface.co/tencent/Hy3",
-  "arena_price_in_per_m": 0.0825,
-  "arena_price_out_per_m": 0.33,
+  "arena_price_in_per_m": 0.132,
+  "arena_price_out_per_m": 0.528,
   "match_method": "exact",
   "match_ratio": null
  },
@@ -2339,7 +2339,7 @@
   ],
   "arena_context_length": 262144,
   "arena_model_url": "https://huggingface.co/Qwen/Qwen3-Next-80B-A3B-Instruct",
-  "arena_price_in_per_m": 0.09,
+  "arena_price_in_per_m": 0.1,
   "arena_price_out_per_m": 1.1,
   "match_method": "exact",
   "match_ratio": null
@@ -2597,8 +2597,8 @@
  {
   "or_id": "qwen/qwen3-30b-a3b-instruct-2507",
   "or_name": "Qwen: Qwen3 30B A3B Instruct 2507",
-  "price_in_per_m": 0.04815,
-  "price_out_per_m": 0.19305,
+  "price_in_per_m": 0.1,
+  "price_out_per_m": 0.3,
   "vision": false,
   "context_length": 262144,
   "arena_rank": 173,
