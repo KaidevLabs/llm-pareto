@@ -429,7 +429,7 @@
   "price_in_per_m": 0.074,
   "price_out_per_m": 0.295,
   "vision": false,
-  "context_length": 32768
+  "context_length": 8192
  },
  {
   "id": "tencent/hy-mt2-7b",
@@ -939,7 +939,7 @@
   "id": "moonshotai/kimi-k2.7-code",
   "name": "MoonshotAI: Kimi K2.7 Code",
   "org": "moonshotai",
-  "price_in_per_m": 0.7062,
+  "price_in_per_m": 0.6562,
   "price_out_per_m": 3.3,
   "vision": true,
   "context_length": 262144

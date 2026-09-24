@@ -2614,8 +2614,8 @@
   ],
   "arena_context_length": 262144,
   "arena_model_url": "https://huggingface.co/Qwen/Qwen3-30B-A3B-Instruct-2507",
-  "arena_price_in_per_m": 0.04815,
-  "arena_price_out_per_m": 0.19305,
+  "arena_price_in_per_m": 0.1,
+  "arena_price_out_per_m": 0.3,
   "match_method": "exact",
   "match_ratio": null
  },
