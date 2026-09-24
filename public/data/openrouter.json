@@ -1,5 +1,23 @@
 [
  {
+  "id": "z-ai/glm-5.3-prime",
+  "name": "Z.ai: GLM 5.3 Prime",
+  "org": "z-ai",
+  "price_in_per_m": 2.8,
+  "price_out_per_m": 8.8,
+  "vision": false,
+  "context_length": 1000000
+ },
+ {
+  "id": "qwen/qwen3.8-max-prime",
+  "name": "Qwen: Qwen3.8 Max Prime",
+  "org": "qwen",
+  "price_in_per_m": 4.0,
+  "price_out_per_m": 12.0,
+  "vision": true,
+  "context_length": 1000000
+ },
+ {
   "id": "stealth/space-bunny-alpha",
   "name": "Space Bunny Alpha",
   "org": "stealth",
@@ -210,8 +228,8 @@
   "id": "deepseek/deepseek-v4.1-flash",
   "name": "DeepSeek: DeepSeek V4.1 Flash",
   "org": "deepseek",
-  "price_in_per_m": 0.1,
-  "price_out_per_m": 0.5,
+  "price_in_per_m": 0.14,
+  "price_out_per_m": 0.42,
   "vision": true,
   "context_length": 1048576
  },
@@ -822,8 +840,8 @@
   "id": "tencent/hy3",
   "name": "Tencent: Hy3",
   "org": "tencent",
-  "price_in_per_m": 0.0825,
-  "price_out_per_m": 0.33,
+  "price_in_per_m": 0.132,
+  "price_out_per_m": 0.528,
   "vision": false,
   "context_length": 262144
  },
@@ -1164,8 +1182,8 @@
   "id": "deepseek/deepseek-v4-pro",
   "name": "DeepSeek: DeepSeek V4 Pro 0423",
   "org": "deepseek",
-  "price_in_per_m": 0.948126,
-  "price_out_per_m": 1.896252,
+  "price_in_per_m": 0.9396,
+  "price_out_per_m": 1.8792,
   "vision": false,
   "context_length": 1048576
  },
@@ -1173,8 +1191,8 @@
   "id": "deepseek/deepseek-v4-flash",
   "name": "DeepSeek: DeepSeek V4 Flash 0423",
   "org": "deepseek",
-  "price_in_per_m": 0.08246,
-  "price_out_per_m": 0.16492,
+  "price_in_per_m": 0.088606,
+  "price_out_per_m": 0.177212,
   "vision": false,
   "context_length": 1048576
  },
@@ -1983,8 +2001,8 @@
   "id": "minimax/minimax-m2",
   "name": "MiniMax: MiniMax M2",
   "org": "minimax",
-  "price_in_per_m": 0.255,
-  "price_out_per_m": 1.02,
+  "price_in_per_m": 0.3,
+  "price_out_per_m": 1.2,
   "vision": false,
   "context_length": 204800
  },
@@ -2199,7 +2217,7 @@
   "id": "qwen/qwen3-next-80b-a3b-instruct",
   "name": "Qwen: Qwen3 Next 80B A3B Instruct",
   "org": "qwen",
-  "price_in_per_m": 0.09,
+  "price_in_per_m": 0.1,
   "price_out_per_m": 1.1,
   "vision": false,
   "context_length": 262144
