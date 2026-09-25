@@ -306,8 +306,8 @@
  {
   "or_id": "moonshotai/kimi-k3",
   "or_name": "MoonshotAI: Kimi K3",
-  "price_in_per_m": 0.8845,
-  "price_out_per_m": 10.5346,
+  "price_in_per_m": 3.0,
+  "price_out_per_m": 15.0,
   "vision": true,
   "context_length": 1048576,
   "arena_rank": 17,
@@ -916,8 +916,8 @@
  {
   "or_id": "deepseek/deepseek-v4-pro",
   "or_name": "DeepSeek: DeepSeek V4 Pro 0423",
-  "price_in_per_m": 0.784044,
-  "price_out_per_m": 1.568088,
+  "price_in_per_m": 0.783,
+  "price_out_per_m": 1.566,
   "vision": false,
   "context_length": 1048576,
   "arena_rank": 50,
