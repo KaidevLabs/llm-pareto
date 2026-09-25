@@ -1,5 +1,14 @@
 [
  {
+  "id": "perceptron/perceptron-mk1.5",
+  "name": "Perceptron: Perceptron Mk1.5",
+  "org": "perceptron",
+  "price_in_per_m": 0.15,
+  "price_out_per_m": 1.5,
+  "vision": true,
+  "context_length": 36864
+ },
+ {
   "id": "fireworks/ember-1",
   "name": "Fireworks: Ember-1",
   "org": "fireworks",
@@ -228,8 +237,8 @@
   "id": "inclusionai/ling-3.0-flash-vl",
   "name": "inclusionAI: Ling 3.0 Flash VL",
   "org": "inclusionai",
-  "price_in_per_m": 0.06,
-  "price_out_per_m": 0.18,
+  "price_in_per_m": 0.021,
+  "price_out_per_m": 0.0616,
   "vision": true,
   "context_length": 262144
  },
@@ -250,24 +259,6 @@
   "price_out_per_m": 0.15,
   "vision": false,
   "context_length": 260000
- },
- {
-  "id": "nex-agi/nex-n2.5-mini:free",
-  "name": "Nex AGI: Nex-N2.5-Mini (free)",
-  "org": "nex-agi",
-  "price_in_per_m": 0.0,
-  "price_out_per_m": 0.0,
-  "vision": true,
-  "context_length": 262144
- },
- {
-  "id": "nex-agi/nex-n2.5-pro:free",
-  "name": "Nex AGI: Nex-N2.5-Pro (free)",
-  "org": "nex-agi",
-  "price_in_per_m": 0.0,
-  "price_out_per_m": 0.0,
-  "vision": true,
-  "context_length": 262144
  },
  {
   "id": "openai/gpt-6-astra",
@@ -516,8 +507,8 @@
   "id": "deepseek/deepseek-v4-pro-0813",
   "name": "DeepSeek: DeepSeek V4 Pro 0813",
   "org": "deepseek",
-  "price_in_per_m": 0.462,
-  "price_out_per_m": 1.386,
+  "price_in_per_m": 0.34584,
+  "price_out_per_m": 1.03752,
   "vision": false,
   "context_length": 1048576
  },
@@ -831,8 +822,8 @@
   "id": "tencent/hy3",
   "name": "Tencent: Hy3",
   "org": "tencent",
-  "price_in_per_m": 0.132,
-  "price_out_per_m": 0.528,
+  "price_in_per_m": 0.0825,
+  "price_out_per_m": 0.33,
   "vision": false,
   "context_length": 262144
  },
@@ -924,7 +915,7 @@
   "price_in_per_m": 0.0,
   "price_out_per_m": 0.0,
   "vision": false,
-  "context_length": 32768
+  "context_length": 131072
  },
  {
   "id": "openrouter/fusion",
@@ -1173,8 +1164,8 @@
   "id": "deepseek/deepseek-v4-pro",
   "name": "DeepSeek: DeepSeek V4 Pro 0423",
   "org": "deepseek",
-  "price_in_per_m": 0.783,
-  "price_out_per_m": 1.566,
+  "price_in_per_m": 0.662244,
+  "price_out_per_m": 1.324488,
   "vision": false,
   "context_length": 1048576
  },
@@ -1182,8 +1173,8 @@
   "id": "deepseek/deepseek-v4-flash",
   "name": "DeepSeek: DeepSeek V4 Flash 0423",
   "org": "deepseek",
-  "price_in_per_m": 0.049,
-  "price_out_per_m": 0.098,
+  "price_in_per_m": 0.04704,
+  "price_out_per_m": 0.09408,
   "vision": false,
   "context_length": 1048576
  },
@@ -1263,8 +1254,8 @@
   "id": "google/gemma-4-26b-a4b-it",
   "name": "Google: Gemma 4 26B A4B ",
   "org": "google",
-  "price_in_per_m": 0.09,
-  "price_out_per_m": 0.3,
+  "price_in_per_m": 0.0675,
+  "price_out_per_m": 0.225,
   "vision": true,
   "context_length": 262144
  },
