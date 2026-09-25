@@ -1,5 +1,5 @@
 {
- "fetched_at": "2026-09-24T18:33:02Z",
+ "fetched_at": "2026-09-25T01:01:17Z",
  "sources": {
   "arena": {
    "url": "https://lmarena.ai/leaderboard/text",
@@ -7,13 +7,13 @@
   },
   "openrouter": {
    "url": "https://openrouter.ai/api/v1/models",
-   "models": 368
+   "models": 370
   }
  },
  "join": {
   "combined": 153,
   "unmatched_arena": 194,
-  "unmatched_openrouter": 215,
+  "unmatched_openrouter": 217,
   "by_method": {
    "exact": 161,
    "override": 1,
@@ -52,11 +52,12 @@
    "qwen-plus: qwen/qwen-plus-2025-07-28 vs qwen/qwen-plus",
    "o3-mini: openai/o3-mini-high vs openai/o3-mini",
    "deepseek-r1: deepseek/deepseek-r1-0528 vs deepseek/deepseek-r1",
+   "mistral-large: mistralai/mistral-large-2512 vs mistralai/mistral-large-2407",
    "gpt-4o: openai/gpt-4o-2024-11-20 vs openai/gpt-4o-2024-08-06",
    "gpt-4o-mini: openai/gpt-4o-mini vs openai/gpt-4o-mini-2024-07-18",
    "gpt-4o: openai/gpt-4o-2024-11-20 vs openai/gpt-4o",
    "gpt-4o: openai/gpt-4o vs openai/gpt-4o-2024-05-13",
-   "mistral-large: mistralai/mistral-large-2407 vs mistralai/mistral-large",
+   "mistral-large: mistralai/mistral-large-2512 vs mistralai/mistral-large",
    "auto: openrouter/auto-beta vs openrouter/auto",
    "gpt-3-5-turbo: openai/gpt-3.5-turbo-0613 vs openai/gpt-3.5-turbo"
   ],
@@ -99,12 +100,12 @@
    "model_page": "https://openrouter.ai/{or_id}"
   },
   "models": 153,
-  "endpoints": 796,
+  "endpoints": 797,
   "stats": {
    "models_with_stats": 152,
-   "endpoints_with_stats": 759
+   "endpoints_with_stats": 740
   },
-  "joined_page_endpoints": 805,
+  "joined_page_endpoints": 806,
   "page_endpoints_unjoined": 0,
   "duplicates_merged": 9
  }
