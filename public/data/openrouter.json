@@ -390,8 +390,8 @@
   "id": "z-ai/glm-5.3-flash",
   "name": "Z.ai: GLM 5.3 Flash",
   "org": "z-ai",
-  "price_in_per_m": 0.045,
-  "price_out_per_m": 0.14,
+  "price_in_per_m": 0.04,
+  "price_out_per_m": 0.5,
   "vision": true,
   "context_length": 1310720
  },
@@ -597,7 +597,7 @@
   "id": "deepseek/deepseek-v4-flash-0731",
   "name": "DeepSeek: DeepSeek V4 Flash 0731",
   "org": "deepseek",
-  "price_in_per_m": 0.022,
+  "price_in_per_m": 0.021,
   "price_out_per_m": 0.32,
   "vision": false,
   "context_length": 1310720
@@ -1164,8 +1164,8 @@
   "id": "deepseek/deepseek-v4-pro",
   "name": "DeepSeek: DeepSeek V4 Pro 0423",
   "org": "deepseek",
-  "price_in_per_m": 0.429084,
-  "price_out_per_m": 0.858168,
+  "price_in_per_m": 0.418818,
+  "price_out_per_m": 0.837636,
   "vision": false,
   "context_length": 1048576
  },
@@ -3220,15 +3220,6 @@
   "price_out_per_m": 30.0,
   "vision": true,
   "context_length": 128000
- },
- {
-  "id": "anthropic/claude-3-haiku",
-  "name": "Anthropic: Claude 3 Haiku",
-  "org": "anthropic",
-  "price_in_per_m": 0.25,
-  "price_out_per_m": 1.25,
-  "vision": true,
-  "context_length": 200000
  },
  {
   "id": "mistralai/mistral-large",
