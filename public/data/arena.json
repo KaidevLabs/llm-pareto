@@ -3472,9 +3472,9 @@
   "modelOrganization": "Alibaba",
   "modelUrl": "https://qwenlm.github.io/blog/qwen3-coder/",
   "license": "Apache 2.0",
-  "inputPricePerMillion": 0.4,
-  "outputPricePerMillion": 1.6,
-  "contextLength": 262144,
+  "inputPricePerMillion": 0.65,
+  "outputPricePerMillion": 3.25,
+  "contextLength": 1000000,
   "pricePerImage": null,
   "pricePerSecond": null,
   "releaseType": null

@@ -484,8 +484,8 @@
  {
   "or_id": "z-ai/glm-5.3",
   "or_name": "Z.ai: GLM 5.3",
-  "price_in_per_m": 1.4,
-  "price_out_per_m": 4.4,
+  "price_in_per_m": 0.3794,
+  "price_out_per_m": 1.1924,
   "vision": false,
   "context_length": 1310720,
   "arena_rank": 24,
@@ -585,8 +585,8 @@
  {
   "or_id": "deepseek/deepseek-v4.1-flash",
   "or_name": "DeepSeek: DeepSeek V4.1 Flash",
-  "price_in_per_m": 0.14,
-  "price_out_per_m": 0.42,
+  "price_in_per_m": 0.3,
+  "price_out_per_m": 1.2,
   "vision": true,
   "context_length": 1048576,
   "arena_rank": 29,
@@ -991,8 +991,8 @@
  {
   "or_id": "deepseek/deepseek-v4-pro",
   "or_name": "DeepSeek: DeepSeek V4 Pro 0423",
-  "price_in_per_m": 0.418818,
-  "price_out_per_m": 0.837636,
+  "price_in_per_m": 0.348,
+  "price_out_per_m": 0.696,
   "vision": false,
   "context_length": 1048576,
   "arena_rank": 53,
@@ -2712,10 +2712,10 @@
   "arena_variants": [
    "qwen3-coder-480b-a35b-instruct"
   ],
-  "arena_context_length": 262144,
+  "arena_context_length": 1000000,
   "arena_model_url": "https://qwenlm.github.io/blog/qwen3-coder/",
-  "arena_price_in_per_m": 0.4,
-  "arena_price_out_per_m": 1.6,
+  "arena_price_in_per_m": 0.65,
+  "arena_price_out_per_m": 3.25,
   "match_method": "prefix-base",
   "match_ratio": null
  },

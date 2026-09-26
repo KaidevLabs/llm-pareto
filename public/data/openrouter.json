@@ -255,8 +255,8 @@
   "id": "deepseek/deepseek-v4.1-flash",
   "name": "DeepSeek: DeepSeek V4.1 Flash",
   "org": "deepseek",
-  "price_in_per_m": 0.14,
-  "price_out_per_m": 0.42,
+  "price_in_per_m": 0.3,
+  "price_out_per_m": 1.2,
   "vision": true,
   "context_length": 1048576
  },
@@ -444,8 +444,8 @@
   "id": "z-ai/glm-5.3",
   "name": "Z.ai: GLM 5.3",
   "org": "z-ai",
-  "price_in_per_m": 1.4,
-  "price_out_per_m": 4.4,
+  "price_in_per_m": 0.3794,
+  "price_out_per_m": 1.1924,
   "vision": false,
   "context_length": 1310720
  },
@@ -1164,8 +1164,8 @@
   "id": "deepseek/deepseek-v4-pro",
   "name": "DeepSeek: DeepSeek V4 Pro 0423",
   "org": "deepseek",
-  "price_in_per_m": 0.418818,
-  "price_out_per_m": 0.837636,
+  "price_in_per_m": 0.348,
+  "price_out_per_m": 0.696,
   "vision": false,
   "context_length": 1048576
  },
