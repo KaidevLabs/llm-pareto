@@ -516,7 +516,7 @@
   "id": "deepseek/deepseek-v4-pro-0813",
   "name": "DeepSeek: DeepSeek V4 Pro 0813",
   "org": "deepseek",
-  "price_in_per_m": 0.24502,
+  "price_in_per_m": 0.29304,
   "price_out_per_m": 3.5,
   "vision": false,
   "context_length": 1048576
@@ -831,8 +831,8 @@
   "id": "tencent/hy3",
   "name": "Tencent: Hy3",
   "org": "tencent",
-  "price_in_per_m": 0.132,
-  "price_out_per_m": 0.528,
+  "price_in_per_m": 0.0825,
+  "price_out_per_m": 0.33,
   "vision": false,
   "context_length": 262144
  },
@@ -2910,8 +2910,8 @@
   "id": "deepseek/deepseek-chat",
   "name": "DeepSeek: DeepSeek V3",
   "org": "deepseek",
-  "price_in_per_m": 0.32,
-  "price_out_per_m": 0.89,
+  "price_in_per_m": 0.2574,
+  "price_out_per_m": 1.0287,
   "vision": false,
   "context_length": 163840
  },
