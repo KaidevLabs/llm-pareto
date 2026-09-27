@@ -444,8 +444,8 @@
   "id": "z-ai/glm-5.3",
   "name": "Z.ai: GLM 5.3",
   "org": "z-ai",
-  "price_in_per_m": 0.2737,
-  "price_out_per_m": 0.8602,
+  "price_in_per_m": 1.4,
+  "price_out_per_m": 4.4,
   "vision": false,
   "context_length": 1310720
  },
@@ -1173,8 +1173,8 @@
   "id": "deepseek/deepseek-v4-flash",
   "name": "DeepSeek: DeepSeek V4 Flash 0423",
   "org": "deepseek",
-  "price_in_per_m": 0.04704,
-  "price_out_per_m": 0.09408,
+  "price_in_per_m": 0.0469,
+  "price_out_per_m": 0.0938,
   "vision": false,
   "context_length": 1048576
  },
@@ -2001,8 +2001,8 @@
   "id": "minimax/minimax-m2",
   "name": "MiniMax: MiniMax M2",
   "org": "minimax",
-  "price_in_per_m": 0.255,
-  "price_out_per_m": 1.02,
+  "price_in_per_m": 0.3,
+  "price_out_per_m": 1.2,
   "vision": false,
   "context_length": 204800
  },
