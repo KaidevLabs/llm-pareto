@@ -39,6 +39,7 @@ afterEach(() => {
   ui.search = "";
   ui.selected = null;
   ui.cmps = null;
+  ui.thr = { priceMin: null, priceMax: null, eloMin: null, eloMax: null, speedMin: null, speedMax: null };
   data.rows = [];
   vi.unstubAllGlobals();
 });
@@ -106,6 +107,27 @@ describe("Details", () => {
 
   it("shows the filtered-out banner when the current filters hide the row", async () => {
     ui.families.add("OpenAI|GPT");
+    render(Details, { props: { d: DEMO } });
+    await screen.findByText(/⚠ filtered out/);
+  });
+
+  it("thresholds hide the row too (parity with the chart's isVisible path)", async () => {
+    ui.thr = { priceMin: null, priceMax: null, eloMin: 1500, eloMax: null, speedMin: null, speedMax: null };
+    render(Details, { props: { d: DEMO } }); // elo 1401.2 < 1500
+    await screen.findByText(/⚠ filtered out/);
+  });
+
+  it("the banner follows threshold changes live via thrCtx (blended price)", async () => {
+    render(Details, { props: { d: DEMO } });
+    await screen.findByText(/across 1 endpoint/); // endpoints store settled
+    expect(screen.queryByText(/filtered out/)).toBe(null);
+    // blended price at ratio 3 is 0.7 — a 0.5 max hides the row, as in the chart
+    ui.thr = { priceMin: null, priceMax: 0.5, eloMin: null, eloMax: null, speedMin: null, speedMax: null };
+    await screen.findByText(/⚠ filtered out/);
+  });
+
+  it("speed thresholds ride the endpoints store via thrCtx.speed", async () => {
+    ui.thr = { priceMin: null, priceMax: null, eloMin: null, eloMax: null, speedMin: 100, speedMax: null }; // p50 81 → hidden
     render(Details, { props: { d: DEMO } });
     await screen.findByText(/⚠ filtered out/);
   });

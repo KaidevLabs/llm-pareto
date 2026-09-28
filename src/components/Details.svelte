@@ -6,7 +6,8 @@
 -->
 <script lang="ts">
   import { fmtPrice, fmtVotes, fmtToks, fmtMs, median } from "../lib/format";
-  import { filterRows } from "../lib/filters";
+  import { isVisible } from "../lib/filters";
+  import { speedOf } from "../lib/speed";
   import { data } from "../lib/data.svelte";
   import { ui } from "../lib/state.svelte";
   import { store, ensureEndpoints } from "../lib/endpoints.svelte";
@@ -37,8 +38,19 @@
     dir: 1,
   });
 
+  // 032 D5's single predicate (plan 039 step 2): one row's visibility is a
+  // predicate call, not a full filterRows pass over every row. The ctx
+  // mirrors charts.ts's f (same speed lookup, same view semantics), so the
+  // banner answers exactly what the chart tags — thresholds included.
   const visible = $derived(
-    filterRows(data.rows, ui).some((r) => r.or_id === d.or_id)
+    isVisible(d, {
+      ...ui,
+      thrCtx: {
+        ratio: ui.ratio,
+        mode: ui.three3d ? "3d" : ui.mode,
+        speed: (orId: string) => speedOf(orId, store.data),
+      },
+    })
   );
   const eps: Endpoint[] = $derived(store.data?.[d.or_id] || []);
 
