@@ -1,7 +1,8 @@
 # 038 — UI polish batch (drawer transition + tour pill)
 
-Date: 2026-09-20. **Status: EXECUTING (step 1/3). Commits: 94ac13a (ui:
-tour pill sizing).**
+Date: 2026-09-20. **Status: EXECUTING (step 2/3). Commits: 94ac13a (ui:
+tour pill sizing) · 3e7a5e4 (plan: step 1) · 36421fe (ui: drawer
+transition).**
 Source: `docs/reports/030-port-perf-findings.md` B24 (full evidence there; origin:
 plan 030 step 02 F4+F8). No harness metric moves — polish is owner-A/B
 territory; this plan exists so the visual regressions get a tracked fix.
@@ -29,7 +30,9 @@ at full pill size; `App.svelte`'s `footer` style block is provably dead
    `ui: tour pill sizing` (94ac13a, 2026-09-28). D3's dead-footer
    removal was already done by fc56a5d (036 step 1 ride-along) —
    verified, nothing left to delete; the commit message drops that half.
-2. Drawer transition (D1+D4). Commit: `ui: drawer transition`.
+2. ✅ Drawer transition (D1+D4) — fly+fade with the reduced-motion guard;
+   browser-probe evidence in the as-built. Commit: `ui: drawer
+   transition` (36421fe, 2026-09-28).
 3. Owner A/B (pill size, drawer feel); suites green; DoD audit.
 
 ## Out of scope
@@ -73,3 +76,38 @@ at full pill size; `App.svelte`'s `footer` style block is provably dead
 - Verification: 170 vitest green · `npx tsc --noEmit` clean ·
   `npm run build` clean (the unused-selector gate — fc56a5d established
   clean-build as the proof for the warning cleanup).
+
+## As-built — step 2 (2026-09-28, commit 36421fe)
+
+- D1 on App.svelte's `<aside class="drawer">`: `transition:fly={{ y: 24,
+  duration: reducedMotion.matches ? 0 : 180 }}`. The aside is the direct
+  child of the `{#if ui.selected}` branch, so one `transition:` covers
+  open and close — no out-wrap needed (the aside was already correctly
+  positioned for it). Fly direction: open slides up 24 + fades in,
+  close slides down + fades out.
+- D4: a module-level `matchMedia("(prefers-reduced-motion: reduce)")`
+  const in App's script — a MediaQueryList is live, so `.matches` is
+  re-read at every transition trigger; reduced-motion users get the old
+  instant open/close. No new state, no reactive machinery.
+- **The `d=null` outro hazard, verified empirically:** `Details`' prop is
+  non-null (`d: Row`), so a re-render during the out-transition would
+  crash. Probed: the outroing branch is frozen — body text byte-identical
+  to the pre-close text on every frame until removal; zero page
+  exceptions across open/close/rapid-reopen cycles. (The first probe run
+  flagged a FAIL here that was a probe bug — scatter points carry no
+  `name`, so the assertion compared `undefined`; the focused debug probe
+  pinned it. Probe bug fixed, probe green.)
+- Browser probe: `.tmp/drawer-motion-probe.mjs` (scratch, rerunnable) —
+  dist + headless Chromium CDP, real clicks; all 7 checks pass (in-flight
+  opacity < 1 → settles at 1; out-transition → aside removed; outro
+  content frozen; reduced-motion emulation → fully opaque on first
+  paint; no exceptions).
+- no tests: motion/visual — the owner A/B is the gate; the probe is the
+  seam's browser-level check (repo's CDP-probe convention).
+- Verification: 170 vitest green · tsc clean · build clean (153 modules,
+  no CSS warnings).
+- Harness note: the transition is DOM transform+opacity on an overlay —
+  canvas-settle metrics can't move; `drawerOpenMs` is null in all
+  published runs (grid-scan), so no published metric is touched. Any
+  future drawer timing re-measure must account for the deliberate
+  ~180 ms motion.
