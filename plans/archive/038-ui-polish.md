@@ -1,8 +1,8 @@
 # 038 — UI polish batch (drawer transition + tour pill)
 
-Date: 2026-09-20. **Status: EXECUTING (step 2/3). Commits: 94ac13a (ui:
+Date: 2026-09-20. **Status: ARCHIVED (2026-09-28). Commits: 94ac13a (ui:
 tour pill sizing) · 3e7a5e4 (plan: step 1) · 36421fe (ui: drawer
-transition).**
+transition) · 0bbbf30 (plan: step 2).**
 Source: `docs/reports/030-port-perf-findings.md` B24 (full evidence there; origin:
 plan 030 step 02 F4+F8). No harness metric moves — polish is owner-A/B
 territory; this plan exists so the visual regressions get a tracked fix.
@@ -33,7 +33,8 @@ at full pill size; `App.svelte`'s `footer` style block is provably dead
 2. ✅ Drawer transition (D1+D4) — fly+fade with the reduced-motion guard;
    browser-probe evidence in the as-built. Commit: `ui: drawer
    transition` (36421fe, 2026-09-28).
-3. Owner A/B (pill size, drawer feel); suites green; DoD audit.
+3. ✅ Owner A/B (pill size, drawer feel — both via the staging signals);
+   suites green; DoD audit (2026-09-28, no code changes).
 
 ## Out of scope
 
@@ -47,9 +48,16 @@ at full pill size; `App.svelte`'s `footer` style block is provably dead
 - [x] svelte-check's 3 warnings resolved (0 unused-selector warnings) —
       fc56a5d deleted the dead blocks; clean `npm run build` is the gate
       (svelte-check deliberately not wired per AGENTS.md).
-- [ ] Tour pill renders at its designed tucked-away size (owner A/B).
-- [ ] Drawer transition passes the owner A/B (or is dropped, recorded here).
-- [ ] Suites green; no metric regression (drawer parity ±2 ms stands).
+- [x] Tour pill renders at its designed tucked-away size (owner A/B —
+      owner staged step 1's diff, 2026-09-28; values byte-match the
+      shell's designed CSS).
+- [x] Drawer transition passes the owner A/B (owner staged step 2's diff
+      with the CDP-probe evidence, 2026-09-28).
+- [x] Suites green; no metric regression — 170 vitest + tsc + clean
+      build on the final tree; both changes are DOM-only (component
+      sizing, overlay transform+opacity), no harness metric can move;
+      drawer parity ±2 ms stands (drawerOpenMs null in all published
+      runs — grid-scan).
 
 ## As-built — step 1 (2026-09-28, commit 94ac13a)
 
@@ -111,3 +119,22 @@ at full pill size; `App.svelte`'s `footer` style block is provably dead
   published runs (grid-scan), so no published metric is touched. Any
   future drawer timing re-measure must account for the deliberate
   ~180 ms motion.
+
+## As-built — step 3, close (2026-09-28, no code changes)
+
+- Owner A/B: drawer feel approved by staging step 2's diff with the
+  CDP-probe evidence (2026-09-28); pill size approved by staging step
+  1's diff — the `tiny` sizing byte-matches the shell's designed
+  tucked-away values.
+- Verification on the final clean tree: 170 vitest green (20 files) ·
+  `npx tsc --noEmit` clean · `npm run build` clean (153 modules, no CSS
+  warnings — the unused-selector gate). Cookieless pre-commit grep clean
+  (no storage APIs in `src/` + `index.html`).
+- Metric: none moved, per the plan header (polish is owner-A/B
+  territory); the drawer parity ±2 ms stands — `drawerOpenMs` is null in
+  all published runs (grid-scan) and the transition is DOM-only.
+- Side note: the owner's mid-plan bench run (run-20260928-2229, ref
+  b9b7ae2, dirty, 7 repeats — taken before step 2) was set aside at the
+  owner's request to `benchmarks/` (gitignored local history), same
+  premature-publish handling as 036 step 1. Any post-close publish is
+  the owner's; a fresh run would be the first to include the transition.
