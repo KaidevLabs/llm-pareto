@@ -27,3 +27,8 @@ echarts.use([
 ]);
 
 export { echarts };
+// The option/instance types ride the same seam (040 D4): EChartsOption from
+// the root module (type-only — erased at compile, no bundle impact), the
+// instance type from the core we already import.
+export type { EChartsOption } from "echarts";
+export type { EChartsType } from "echarts/core";

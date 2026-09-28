@@ -12,7 +12,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { withAlpha, FRONTIER, OVERRIDE } from "./colors";
-import { echarts } from "./echarts";
+import { echarts, type EChartsOption, type EChartsType } from "./echarts";
+import type { CustomSeriesOption, LineSeriesOption, ScatterSeriesOption } from "echarts";
 import { orgOf, displayName } from "./family";
 import { fmtPrice, fmtVotes, fmtToks } from "./format";
 import { isVisible, searchHit, blendedPrice } from "./filters";
@@ -35,7 +36,7 @@ export type Bounds = { x?: object; y?: object };
 // Chart grid insets (single source: axis geometry the y-strip wheel handler
 // needs too) and per-panel zoom windows captured across re-renders (018 A2).
 const GRID = { left: 58, right: 24, top: 26, bottom: 56 };
-const charts: Record<string, any> = {};
+const charts: Record<string, EChartsType> = {};
 const ZOOM: Record<string, { x?: { start: number; end: number }; y?: { start: number; end: number } }> = {};
 // Per-panel frontier arrays (plan 006 D3): the frontier line series carries
 // no row references, so line clicks resolve through this stash — refreshed
@@ -146,11 +147,11 @@ function chartOption(
   bounds: Bounds,
   xFmt?: (v: number) => string,
   fade = false
-) {
+): EChartsOption {
   // Per-panel frontier set (plan 007 D7): the "frontier" tag lives in the
   // scatter tooltip — the marker-less line has nothing to hover.
   const frontierSet = new Set(frontier.map((p) => p.d));
-  const series = [];
+  const series: (CustomSeriesOption | LineSeriesOption | ScatterSeriesOption)[] = [];
 
   if (spreadPts && spreadPts.length) {
     series.push({
@@ -406,8 +407,10 @@ function chartOption(
   };
 }
 
-function captureZoom(chart: any, id: string) {
-  const dz = chart.getOption().dataZoom || [];
+function captureZoom(chart: EChartsType, id: string) {
+  // getOption() types its members unknown — the zoom-shape reads stay
+  // untyped seams (the pre-040 code treated the whole API that way).
+  const dz = (chart.getOption() as any).dataZoom || [];
   const z: Record<string, { start: number; end: number }> = {};
   for (const d of dz) {
     if (d.xAxisIndex === 0) z.x = { start: d.start, end: d.end };
@@ -416,7 +419,7 @@ function captureZoom(chart: any, id: string) {
   ZOOM[id] = z;
 }
 
-function resetZoom(chart: any, id: string) {
+function resetZoom(chart: EChartsType, id: string) {
   ZOOM[id] = { x: { start: 0, end: 100 }, y: { start: 0, end: 100 } };
   chart.dispatchAction({
     type: "dataZoom",
@@ -435,14 +438,14 @@ function resetZoom(chart: any, id: string) {
 // 2D cursor-anchored zoom, so the gesture is manual on both windows).
 // Zoom-out clamps at the fit bounds: the fit view is the widest window,
 // axes never rescale behind the viewer (A1/A4).
-function bindZoomChart(chart: any, id: string) {
+function bindZoomChart(chart: EChartsType, id: string) {
   const dom = chart.getDom();
   // Capture phase: zrender's canvas listeners stopPropagation on wheel
   // (verified on 5.6.0), so a bubble listener on the chart div never sees
   // the event — capture on the div fires first.
   chart.on("datazoom", () => captureZoom(chart, id));
   const windows = () => {
-    const o = chart.getOption();
+    const o = chart.getOption() as any;
     const fitx = o.xAxis[0];
     const fits = o.yAxis[0];
     const dz = o.dataZoom;
@@ -524,7 +527,7 @@ function onChartClick(id: string, p: any) {
   }
 }
 
-function bindDrawerClose(chart: any) {
+function bindDrawerClose(chart: EChartsType) {
   chart.getZr().on("click", (e: any) => {
     if (e.target || Date.now() - lastPanEnd < 300) return;
     if (!ui.selected) return;
@@ -537,7 +540,7 @@ function bindDrawerClose(chart: any) {
 // inside drag only panned x (the two inside dataZooms fight for the gesture
 // through ECharts' interaction mutex), so the gesture is manual: both
 // windows are translated by the cursor delta and dispatched.
-function bindPan(chart: any) {
+function bindPan(chart: EChartsType) {
   const dom = chart.getDom();
   let drag: any = null;
   dom.addEventListener("mousedown", (e: MouseEvent) => {
@@ -551,9 +554,9 @@ function bindPan(chart: any) {
       e.offsetY > GRID.top + h
     )
       return;
-    const fitx = chart.getOption().xAxis[0];
-    const fits = chart.getOption().yAxis[0];
-    const dz = chart.getOption().dataZoom;
+    const fitx = (chart.getOption() as any).xAxis[0];
+    const fits = (chart.getOption() as any).yAxis[0];
+    const dz = (chart.getOption() as any).dataZoom;
     const xz = dz.find((z: any) => z.xAxisIndex === 0);
     const yz = dz.find((z: any) => z.yAxisIndex === 0);
     drag = {
@@ -634,7 +637,7 @@ function bindPan(chart: any) {
 // interaction binds. Instances persist across mode switches; the zoom
 // window restores after each not-Merge setOption (018 A2, 036 D2 gates the
 // merge branch out — it keeps the window alive on its own).
-export function ensureChart2D(el: HTMLElement, id: string): any {
+export function ensureChart2D(el: HTMLElement, id: string): EChartsType {
   if (!charts[id]) {
     charts[id] = echarts.init(el, null, { renderer: "canvas" });
     bindZoomChart(charts[id], id);
@@ -951,7 +954,7 @@ export function startTour3D(): boolean {
   return true;
 }
 
-function zrOff(chart: any, fn: () => void) {
+function zrOff(chart: EChartsType, fn: () => void) {
   chart.getZr().off("mousedown", fn);
   chart.getZr().off("wheel", fn);
   chart.getZr().off("touchstart", fn);
@@ -1013,7 +1016,10 @@ function tourScript(): Waypoint[] {
   }));
 }
 
-function build3DScene(id: string, status: { count: string; badgeHidden: boolean }): { option: any } {
+function build3DScene(
+  id: string,
+  status: { count: string; badgeHidden: boolean }
+): { option: EChartsOption } {
   // Keep-alive set (032 step 3, extended to 3D per owner 2026-09-19): every
   // plottable row stays in the scene; the visibility predicate re-tags and
   // hidden spheres render at opacity 0. The GL update has no tween — the
@@ -1301,5 +1307,9 @@ function build3DScene(id: string, status: { count: string; badgeHidden: boolean 
     (noSpeed ? " · " + noSpeed + " without speed data hidden" : "") +
     (noAxis ? " · " + noAxis + " skipped (no price/elo)" : "");
 
-  return { option };
+  // scatter3D/grid3D have no usable types (echarts-gl's module surface is
+  // declared any — src/echarts-gl.d.ts) and sit outside the core
+  // EChartsOption union; the GL option stays an untyped build, checked in
+  // at this one seam (040 D4).
+  return { option: option as EChartsOption };
 }
