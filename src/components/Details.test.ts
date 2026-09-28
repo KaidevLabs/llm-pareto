@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, cleanup, fireEvent } from "@testing-library/svelte";
 import Details from "./Details.svelte";
 import { ui } from "../lib/state.svelte";
-import { store } from "../lib/endpoints.svelte";
+import { store, ensureEndpoints } from "../lib/endpoints.svelte";
 import { data } from "../lib/data.svelte";
 import type { EndpointsMap, Row } from "../lib/types";
 
@@ -29,6 +29,9 @@ beforeEach(() => {
     Promise.resolve({ ok: true, status: 200, json: () => Promise.resolve(EPTS) })
   ));
   data.rows = [DEMO];
+  // the fetch trigger is App's boot effect (single owner, plan 039 step 3);
+  // the tests call it directly — the module cache settles once per file
+  void ensureEndpoints();
 });
 // The endpoints fetch is a module-level cached promise: it settles once per
 // test file. Tests that need other store outcomes set store fields directly

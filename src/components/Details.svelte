@@ -10,18 +10,12 @@
   import { speedOf } from "../lib/speed";
   import { data } from "../lib/data.svelte";
   import { ui } from "../lib/state.svelte";
-  import { store, ensureEndpoints } from "../lib/endpoints.svelte";
+  import { store } from "../lib/endpoints.svelte";
   import { resolvedCmps, CMP_MAX } from "../lib/comparator";
   import ModelCard from "./ModelCard.svelte";
   import type { Endpoint, Pct, Row } from "../lib/types";
 
   let { d }: { d: Row } = $props();
-
-  // 024 D8: the Providers section renders once the shared lazy fetch
-  // settles — the store updates and the {#if !store.done} branch re-renders.
-  $effect(() => {
-    ensureEndpoints();
-  });
 
   // Compare fast-access: appends the model to the comparator (a model
   // already picked, or a full section, is a no-op); the drawer closes and
