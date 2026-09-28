@@ -4,11 +4,9 @@
 // tour is an entry action, never shareable/serializable state (A5).
 
 let flag = false;
-const readers: Array<(v: boolean) => void> = [];
 
 export function setAutotour(v: boolean): void {
   flag = v;
-  for (const r of readers.splice(0)) r(v);
 }
 
 // The Panel polls this at its render effect; the flag stays until consumed.
@@ -21,5 +19,3 @@ export function takeAutotour(): boolean {
 export function peekAutotour(): boolean {
   return flag;
 }
-
-void readers;

@@ -62,10 +62,11 @@
   // Slot matrix: the picked cards plus one add slot (null) until the cap.
   // Bands of `per` slots each carry their own title rail (4/2/1 by
   // viewport width, tracked via the window binding).
+  type Cell = { r: Row; i: number } | null;
   let vw = $state(1024);
   const per = $derived(vw >= 1024 ? 4 : vw >= 601 ? 2 : 1);
   const cells = $derived(
-    picked.map((r, i) => ({ r, i })).concat(picked.length < CMP_MAX ? [null] : [])
+    picked.map((r, i): Cell => ({ r, i })).concat(picked.length < CMP_MAX ? [null] : [])
   );
   const bands = $derived(band(cells, per));
 

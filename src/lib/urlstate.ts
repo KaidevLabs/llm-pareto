@@ -13,15 +13,20 @@ export type View = Mode | "3d";
 const VIEWS: View[] = ["general", "in", "out", "speed", "3d"];
 const VISIONS = ["all", "vision"];
 
-const NO_THR: Thr = { priceMin: null, priceMax: null, eloMin: null, eloMax: null, speedMin: null, speedMax: null };
+// The defaults' single owner (plan 039 step 5, 030 F11): ui's boot
+// initializers (state.svelte.ts) and applyFromURL's popstate fallbacks
+// (history.svelte.ts) both read from here — a new serialized field adds
+// one default, not three. NO_THR is shared read-only; consumers copy it.
+export const NO_THR: Thr = { priceMin: null, priceMax: null, eloMin: null, eloMax: null, speedMin: null, speedMax: null };
 
-const DEFAULTS = {
+export const DEFAULTS = {
   mode: "general" as Mode,
-  vision: "all",
+  vision: "all" as "all" | "vision",
   ratio: 3,
   spread: false,
   frontier: true,
   three3d: false,
+  search: "",
 };
 
 export type Query = Record<string, string>;

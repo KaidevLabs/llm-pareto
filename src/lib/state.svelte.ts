@@ -7,23 +7,27 @@
 
 import { SvelteSet } from "svelte/reactivity";
 import type { Row } from "./types";
-import type { Thr } from "./filters";
+import { DEFAULTS, NO_THR } from "./urlstate";
 
 export type Mode = "general" | "in" | "out" | "speed";
 
 // Named `ui` (not `state`): a binding called `state` cannot coexist with
 // local `$state` runes in the same component (store_rune_conflict) — and
 // every component that reads the store also has local runes.
+//
+// The serialized fields' defaults come from urlstate's DEFAULTS/NO_THR —
+// the single owner (plan 039 step 5); `selected`/`cmps` are transient
+// (never serialized) so they keep local literals.
 export const ui = $state({
-  mode: "general" as Mode,
-  vision: "all" as "all" | "vision",
+  mode: DEFAULTS.mode,
+  vision: DEFAULTS.vision,
   families: new SvelteSet<string>(),
-  frontier: true,
-  spread: false,
-  ratio: 3,
-  search: "",
+  frontier: DEFAULTS.frontier,
+  spread: DEFAULTS.spread,
+  ratio: DEFAULTS.ratio,
+  search: DEFAULTS.search,
   selected: null as Row | null,
-  three3d: false,
+  three3d: DEFAULTS.three3d,
   // 025 D6 (owner-amended 2026-09-19 to the multi-comparator): the picked
   // models, or_id-keyed, in-memory only (no URL hash, no storage — reset
   // on reload). null = untouched → the D5 pre-seed (top-2 by arena rank,
@@ -34,13 +38,6 @@ export const ui = $state({
   // Numeric threshold filters (plan 032 D3, all six bounds double-sided per
   // owner 2026-09-19): null = unbounded. Serialized
   // via urlstate (pmin/pmax/emin/emax/smin/smax), continuous for history-burst.
-  thr: {
-    priceMin: null,
-    priceMax: null,
-    eloMin: null,
-    eloMax: null,
-    speedMin: null,
-    speedMax: null,
-  } as Thr,
+  thr: { ...NO_THR },
 });
 

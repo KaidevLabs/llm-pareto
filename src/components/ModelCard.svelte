@@ -71,7 +71,7 @@
   </div>
 
   <div class="drow">{#if !aligned}<span class="k">arena</span>{/if}
-    <span class="v">#{d.arena_rank} · elo <span style:color={mcol("elo")}>{d.arena_elo.toFixed(1)}{ci}</span> · <span style:color={mcol("votes")}>{fmtVotes(d.arena_votes)} votes</span></span></div>
+    <span class="v">#{d.arena_rank} · elo <span style:color={mcol("elo")}>{d.arena_elo != null ? d.arena_elo.toFixed(1) : "--"}{ci}</span> · <span style:color={mcol("votes")}>{fmtVotes(d.arena_votes)} votes</span></span></div>
   <div class="drow">{#if !aligned}<span class="k">openrouter $/m</span>{/if}
     <span class="v"><span style:color={mcol("price_in")}>{fmtPrice(d.price_in_per_m)}</span> in · <span style:color={mcol("price_out")}>{fmtPrice(d.price_out_per_m)}</span> out</span></div>
   {#if aligned || d.arena_price_in_per_m != null || d.arena_price_out_per_m != null}

@@ -7,8 +7,8 @@
 // (guard: the apply never re-writes history; a pending burst is dropped).
 // Read-once seeding happens in seedFromURL() before the first render.
 
-import { ui, type Mode } from "./state.svelte";
-import { read, write } from "./urlstate";
+import { ui } from "./state.svelte";
+import { read, write, DEFAULTS, NO_THR } from "./urlstate";
 
 let initialized = false;
 let burst: ReturnType<typeof setTimeout> | null = null;
@@ -91,17 +91,19 @@ export function applyFromURL(): void {
     burst = null;
   }
   try {
+    // Fallbacks are urlstate's DEFAULTS/NO_THR — the single defaults
+    // owner (plan 039 step 5); NO_THR is copied so ui owns its object.
     const patch = read(location.search);
-    ui.mode = (patch.mode ?? "general") as Mode;
-    ui.three3d = patch.three3d ?? false;
-    ui.vision = patch.vision ?? "all";
-    ui.ratio = patch.ratio !== undefined ? patch.ratio : 3;
-    ui.spread = patch.spread ?? false;
-    ui.frontier = patch.frontier ?? true;
-    ui.search = patch.search ?? "";
+    ui.mode = patch.mode ?? DEFAULTS.mode;
+    ui.three3d = patch.three3d ?? DEFAULTS.three3d;
+    ui.vision = patch.vision ?? DEFAULTS.vision;
+    ui.ratio = patch.ratio !== undefined ? patch.ratio : DEFAULTS.ratio;
+    ui.spread = patch.spread ?? DEFAULTS.spread;
+    ui.frontier = patch.frontier ?? DEFAULTS.frontier;
+    ui.search = patch.search ?? DEFAULTS.search;
     ui.families.clear();
     if (patch.families) for (const f of patch.families) ui.families.add(f);
-    ui.thr = patch.thr ?? { priceMin: null, priceMax: null, eloMin: null, eloMax: null, speedMin: null, speedMax: null };
+    ui.thr = patch.thr ?? { ...NO_THR };
     lastCont = contSnap();
   } finally {
     applying = false;
