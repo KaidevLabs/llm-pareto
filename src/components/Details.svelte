@@ -11,6 +11,7 @@
   import { data } from "../lib/data.svelte";
   import { ui } from "../lib/state.svelte";
   import { store } from "../lib/endpoints.svelte";
+  import { scrollToCompare } from "../lib/scroll";
   import { resolvedCmps, CMP_MAX } from "../lib/comparator";
   import ModelCard from "./ModelCard.svelte";
   import type { Endpoint, Pct, Row } from "../lib/types";
@@ -19,12 +20,12 @@
 
   // Compare fast-access: appends the model to the comparator (a model
   // already picked, or a full section, is a no-op); the drawer closes and
-  // the section scrolls into view.
+  // the section scrolls into view (scrollToCompare owns the target).
   function sendToCompare() {
     const base = resolvedCmps(ui.cmps, data.rows);
     if (!base.includes(d.or_id) && base.length < CMP_MAX) ui.cmps = [...base, d.or_id];
     ui.selected = null;
-    document.getElementById("compare")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    scrollToCompare();
   }
 
   let provSort = $state<{ key: "in" | "out" | "up" | "spd"; dir: number }>({

@@ -19,6 +19,7 @@
   import { store } from "../lib/endpoints.svelte";
   import ModelCard from "./ModelCard.svelte";
   import ModelSearch from "./ModelSearch.svelte";
+  import { scrollToDrawer } from "../lib/scroll";
   import { flip } from "svelte/animate";
   import { cubicOut } from "svelte/easing";
   import type { Row } from "../lib/types";
@@ -51,14 +52,11 @@
   };
 
   // The full model card (the drawer) for the rest of the info — the drawer
-  // overlays the chart's top edge, so the click scrolls up to it too. The
-  // scroll waits a frame: the drawer mounts with the state flush (the
-  // selector would miss inside the click handler).
+  // overlays the chart's top edge, so the click scrolls up to it too
+  // (scrollToDrawer owns the target and the mount-flush frame wait).
   const openFull = (r: Row) => {
     ui.selected = r;
-    requestAnimationFrame(() =>
-      document.querySelector(".drawer")?.scrollIntoView({ behavior: "smooth", block: "start" })
-    );
+    scrollToDrawer();
   };
 
   // Slot matrix: the picked cards plus one add slot (null) until the cap.
