@@ -1,7 +1,11 @@
 # 040 — Bundle echarts from npm (treeshake + dynamic GL chunk)
 
-Date: 2026-09-20. **Status: EXECUTING (step 3/3) — owner go 2026-09-29
-("Execute plans/040-echarts-npm.md"), D1–D5 adopted as recommended.**
+Date: 2026-09-20. **Status: ARCHIVED (2026-09-29). Commits: 85a15d0
+(chart: npm echarts treeshake + lazy gl chunk) · ab6d1a2 (plan: step 1) ·
+56c7bc0 (chart: type the echarts seam) · 1c576d3 (plan: step 2) ·
+0182512 (docs: amend 019 byte-pin to lockfile pinning).** Owner go
+2026-09-29 ("Execute plans/040-echarts-npm.md"), D1–D5 adopted as
+recommended.
 Source: `docs/reports/030-port-perf-findings.md` B28 (owner question
 2026-09-20: "what if we add echarts via package.json?"). **Absorbs B23's
 typing scope** (the plan `037-chart-typing.md` is superseded by this one;
@@ -44,7 +48,9 @@ Chart-ready stays dominated by data + badge logos (B20).
    2026-09-29). ✅ COMPLETE
 2. Typing pass (D4) on the same imports. Commit: `chart: type the
    echarts seam` (56c7bc0, 2026-09-29). ✅ COMPLETE
-3. Verification (D5) + owner A/B; DoD audit. Commit: foldable.
+3. Verification (D5) + owner A/B; DoD audit. Commit: foldable —
+   `docs: amend 019 byte-pin to lockfile pinning (040)` (0182512,
+   2026-09-29) + the close commit. ✅ COMPLETE
 
 ## Out of scope
 
@@ -54,12 +60,30 @@ Chart-ready stays dominated by data + badge logos (B20).
 
 ## Definition of done
 
-- [ ] Owner approves D1–D5 in a review session.
-- [ ] Eager JS measured ≈ 215 KB gz (from ~378); GL chunk lazy and ~unchanged.
-- [ ] Zero behavior change: suites green untouched; chart/GL probes pass;
-      zoom/pan trailing unchanged (018 A2).
-- [ ] `npx svelte-check` 0 errors on the seam; cookie probe clean.
-- [ ] 019's audit note amended to the lockfile mechanism; vendored files gone.
+- [x] Owner approves D1–D5 in a review session. — owner go 2026-09-29
+      ("Execute plans/040-echarts-npm.md"); D1–D5 adopted as recommended.
+- [x] Eager JS measured ≈ 215 KB gz (from ~378); GL chunk lazy and
+      ~unchanged. — eager JS 222.06 KB gz (663.33 kB raw app chunk + 0.15 kB
+      runtime chunk) vs ~378 KB gz vendored-eager (−41%); GL chunk 175.46
+      KB gz, separate dynamic chunk (vendored: 175 KB gz). The +7 KB over
+      ≈215 is echarts-gl's static `echarts/lib/...` imports
+      (DatasetComponent et al.) landing as shared modules in the eager
+      path — within "≈", exact numbers in the as-builts.
+- [x] Zero behavior change: suites green untouched; chart/GL probes pass;
+      zoom/pan trailing unchanged (018 A2). — python 159 OK / vitest 180
+      passed untouched; build byte-identical across steps 1→2 (same three
+      asset hashes); headless smoke: 2D 153 models + wheel/pan/dblclick
+      clean, 3D lazy chunk + 147 models · 22 frontier, 0 console errors;
+      trailing unchanged by construction (byte-identical app logic, same
+      echarts 5.6.0).
+- [x] `npx svelte-check` 0 errors on the seam; cookie probe clean. —
+      svelte-check 0 errors / 0 warnings; storage-API greps 0 matches in
+      `src/` + `index.html` + all built chunks; static-serve cookie-jar
+      probe (desktop/curl/mobile UAs × 4 paths): no Set-Cookie. The
+      live-edge half rides the owner's next deploy (020 standing rule).
+- [x] 019's audit note amended to the lockfile mechanism; vendored files
+      gone. — D3′ row in 019's Amendments table + AGENTS.md wording
+      (0182512); `public/js/` deleted from git and dist.
 
 ## As-built — step 1 (2026-09-29, commit 85a15d0)
 
@@ -139,3 +163,46 @@ and the production build is byte-identical to step 1's (same three
 asset hashes, index-D9zQ6c1R.js / echarts-gl-CwVWOCex.js /
 rolldown-runtime-DK3Fl9T5.js — every change type-only, erased at
 compile). `npx tsc --noEmit` clean.
+
+## As-built — close (2026-09-29, docs commit 0182512)
+
+D5's gate, item by item. Suites: python 159 OK, vitest 180 passed
+(untouched through all three steps), `npx tsc --noEmit` clean,
+`npx -y svelte-check` 0 errors / 0 warnings. `update.py` not run — no
+data seam is touched by this plan, and a fresh fetch would inject
+unrelated `public/data/` churn into the step's diff; the data-refresh
+bot covers it on push. Cookieless: storage-API greps 0 matches across
+`src/`, `index.html`, and all three built chunks; cookie-jar probe
+over a static serve of `dist/` (desktop / curl / mobile UAs × 4
+paths): no Set-Cookie anywhere. The live-edge half of the 020 probe
+(CF `__cf_bm` surface) rides the owner's push per the standing rule.
+
+Harness load A/B (`node .tmp/040-trace.mjs`, the 030 probe adapted:
+chart-ready detected from the DOM — the npm bundle exposes no
+`window.echarts`; 3 runs per phase, Fast3G + 4× CPU throttled):
+
+| metric | before (030 baseline, vendored) | after (040) |
+|---|---|---|
+| throttled FCP | 3268–3608 ms | **696–812 ms** |
+| throttled chart-ready | 6980–7517 ms | **3618–3682 ms** |
+| unthrottled FCP | 112–328 ms | 60–96 ms |
+| unthrottled chart-ready | 438–974 ms | 434–540 ms |
+
+The plan's own prediction for the script's removal was throttled FCP
+~3.3 s → ~1.5–2 s; measured ~0.7 s — 034's static shell composes (FCP
+is now the shell paint; throttled LCP ~2.7–2.8 s is the app replacing
+it). Zoom settle: unaffected by construction — the app bundle is
+byte-identical across steps 1→2 and the app logic is unchanged; the
+echarts version is the same 5.6.0. Probes are scratch (`.tmp/
+040-trace.mjs`, `.tmp/040-trace-report.json`, plus the smoke/cookie
+scripts in /tmp/opencode), rerunnable against any future build.
+
+Docs amendments in 0182512: D3′ row appended to 019's Amendments table
+(byte-pin → lockfile pinning) and AGENTS.md's stale wording fixed
+(dev-server no longer serves `public/js`; the 020 rule line now says
+"npm echarts bundled — 019 → 040 lockfile pinning"). Owner follow-ups
+outside this plan: push + deploy (the CF build runs `npm ci` — the new
+lockfile's integrity hashes are the supply-chain mechanism), the
+live-edge cookie re-probe at that deploy, and eyeballing the eager
+number (222.06 vs ≈215 KB gz — the +7 KB shared-module explanation is
+recorded above).
