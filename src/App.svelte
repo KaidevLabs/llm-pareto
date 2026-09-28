@@ -23,13 +23,8 @@
   import Details from "./components/Details.svelte";
   import Comparator from "./components/Comparator.svelte";
   import Footer from "./components/Footer.svelte";
-  let echartsFatal = $state(false);
 
   async function bootOnce() {
-    if (!window.echarts) {
-      echartsFatal = true;
-      return;
-    }
     await loadData();
     boot.ready = true;
     // Frontier badges build off the critical path (plan 035 D1/D2): the
@@ -161,9 +156,7 @@
 </div>
 
 <main>
-  {#if echartsFatal}
-    <div class="fatal">ECharts failed to load from CDN — check your connection and reload.</div>
-  {:else if data.error}
+  {#if data.error}
     <div class="fatal">
       Failed to load data ({data.error}). Run <code>python3 update.py</code> and commit <code>public/data/</code>.
     </div>

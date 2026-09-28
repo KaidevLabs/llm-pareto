@@ -6,10 +6,13 @@
 // zoom windows, frontier stashes, and the pan-click timestamp exactly as
 // app.js did.
 //
-// echarts is the vendored global (classic <script> before the bundle).
+// echarts is the npm package, treeshaken through the ./echarts seam
+// module (040 D1); the GL extension joins via gl.ts's dynamic import.
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { withAlpha, FRONTIER, OVERRIDE } from "./colors";
+import { echarts } from "./echarts";
 import { orgOf, displayName } from "./family";
 import { fmtPrice, fmtVotes, fmtToks } from "./format";
 import { isVisible, searchHit, blendedPrice } from "./filters";
@@ -25,8 +28,6 @@ import { store } from "./endpoints.svelte";
 import { panelStatus, type PanelKey } from "./panels.svelte";
 import { badgeFor, fallbackBadge } from "./badges.svelte";
 import type { Row } from "./types";
-
-declare const echarts: any;
 
 export type Pt = { value: number[]; d: Row; spd: Speed | null; vis?: boolean };
 export type Bounds = { x?: object; y?: object };

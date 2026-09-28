@@ -320,19 +320,11 @@
     margin-right: 6px;
   }
 </style>
-<!-- echarts 5.6.0 (vendored, plan 019 byte-pin audit), deferred in <head> on
-     purpose (034 D2): vite hoists the entry module into <head> AFTER the
-     original head content, so this tag stays ahead of it in document order —
-     deferred scripts execute in document order, so window.echarts exists
-     when any chart code runs. defer also frees the body-end parse (the
-     blocking position) and lets the download run in parallel with it.
-     echarts-gl stays lazy (injected on 3D entry, 023 D5). -->
-<script src="/js/echarts-5.6.0.min.js" defer></script>
 </head>
 <body>
 <!-- Static shell (034 D1a/D3): a copy of the app's first render in its
-     pre-data state, so first paint is contentful before the ~1 MB echarts
-     download + module mount chain completes. Data-dependent bits are the
+     pre-data state, so first paint is contentful before the JS bundle
+     (echarts + app) download + mount chain completes. Data-dependent bits are the
      same placeholders Svelte itself renders first (no stamp, empty counts,
      disabled thresholds, "data unknown") — no fake numbers. Cleared on
      mount (main.ts); these nodes live until then only. Markup mirrors
