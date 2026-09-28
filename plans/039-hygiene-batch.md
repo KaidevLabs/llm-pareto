@@ -1,6 +1,7 @@
-# 040 — Hygiene batch (carried-over reaches + dead code)
+# 039 — Hygiene batch (carried-over reaches + dead code)
 
-Date: 2026-09-20. **Status: PROPOSED — not reviewed, not executed.**
+Date: 2026-09-20. **Status: EXECUTING (step 1/5). Commits: 31d0d3a (ui:
+details sort header reactivity).**
 Source: `docs/reports/030-port-perf-findings.md` B25 (+ B21's bug as step 1; full
 evidence there; origin: plan 030 step 02 F2/F3/F10/F11).
 
@@ -9,10 +10,10 @@ metric; several consolidate shared predicates (tests guard those).
 
 ## Steps (commit per step; owner stages each diff)
 
-1. **B21 (bug, independent-able):** `Details.svelte:112` — `heads` is a
+1. ✅ **B21 (bug, independent-able):** `Details.svelte:112` — `heads` is a
    plain `const` built from `provSort`; the sort arrow/highlight freeze at
    the initial state. Fix: `const heads = $derived(...)`.
-   Commit: `ui: details sort header reactivity`.
+   Commit: `ui: details sort header reactivity` (31d0d3a, 2026-09-29).
 2. `Details.svelte:40` — `visible` recomputes `filterRows` over all rows
    for one row's answer; reuse the single visibility predicate
    `isVisible(d, {...ui, thrCtx})` (032 D5's point).
@@ -38,6 +39,23 @@ metric; several consolidate shared predicates (tests guard those).
 
 ## Definition of done
 
-- [ ] Owner approves the step list in a review session.
+- [x] Owner approves the step list in a review session (execution trigger
+      2026-09-28 — "Execute" directive; step 3's owner pick answered
+      2026-09-28: drop the per-drawer-mount effect, App stays single owner).
 - [ ] Steps 1–5 landed or explicitly dropped with a reason recorded here.
 - [ ] Suites green; no metric regression (none expected — hygiene only).
+
+## As-built — step 1 (2026-09-29, commit 31d0d3a)
+
+- B21 as specified: `const heads` → `const heads = $derived(...)` in
+  Details.svelte — the only change; `th()`/`setSort` untouched.
+- Test-first: new Details.test.ts case pins the arrow/highlight following
+  the active sort (initial ▲ on "in" → moves to "spd" on click → ▼ on the
+  flip). Red pre-fix (`expected undefined to be '▲'` — the init-time
+  snapshot froze the arrow on "in"), green after.
+- Title-number typo fixed in this file: "# 040" → "# 039" (the file is
+  039; 040 is the echarts-npm plan).
+- Verification: 13 Details tests green · full `npm test` suite green ·
+  `npx tsc --noEmit` clean.
+- Harness note: pure reactivity fix on a header cell — no timing metric
+  touches this path.
