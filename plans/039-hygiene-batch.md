@@ -14,10 +14,10 @@ metric; several consolidate shared predicates (tests guard those).
    plain `const` built from `provSort`; the sort arrow/highlight freeze at
    the initial state. Fix: `const heads = $derived(...)`.
    Commit: `ui: details sort header reactivity` (31d0d3a, 2026-09-29).
-2. `Details.svelte:40` — `visible` recomputes `filterRows` over all rows
+2. ✅ `Details.svelte:40` — `visible` recomputes `filterRows` over all rows
    for one row's answer; reuse the single visibility predicate
    `isVisible(d, {...ui, thrCtx})` (032 D5's point).
-   Commit: `ui: details visibility via isVisible`.
+   Commit: `ui: details visibility via isVisible` (52db449, 2026-09-29).
 3. `ensureEndpoints` single owner — App fires it post-boot; drop the
    per-drawer-mount `$effect` in Details (or keep deliberately as a
    retry-on-open with a comment — owner picks).
@@ -59,3 +59,27 @@ metric; several consolidate shared predicates (tests guard those).
   `npx tsc --noEmit` clean.
 - Harness note: pure reactivity fix on a header cell — no timing metric
   touches this path.
+
+## As-built — step 2 (2026-09-29, commit 52db449)
+
+- `visible` now calls the shared `isVisible(d, { ...ui, thrCtx })` — the
+  ctx mirrors charts.ts's construction exactly (same `speedOf(orId,
+  store.data)` lookup, `mode: ui.three3d ? "3d" : ui.mode`), so the
+  drawer banner answers with the same predicate the chart's fade path
+  uses. `filterRows`/O(rows) per ui change is gone from the drawer.
+- **Behavior note (parity fix, pinned by the new tests):** the old
+  `filterRows(data.rows, ui)` call had no `thrCtx`, so
+  `isVisible`'s `f.thr && f.thrCtx` guard silently skipped thresholds —
+  the drawer banner never fired for threshold-only filtering while the
+  chart hid the very same row. Reusing the single predicate restores
+  parity (the reason 032 D5 wants one predicate). Filters/threshold
+  semantics themselves are untouched — 032 territory untouched.
+- Test-first: three new cases — eloMin hides; blended-price threshold
+  hides live through `thrCtx` (reactivity + the ratio blend); speedMin
+  hides via the endpoints store. All red pre-fix (thresholds ignored),
+  green after. afterEach now resets `ui.thr`.
+- Verification: Details 16 green · full `npm test` 174 green (20 files) ·
+  `npx tsc --noEmit` clean.
+- Harness note: no timing metric covers the drawer's banner path; the
+  per-render work shrinks (O(rows) → O(1)) — direction is safe by
+  construction, nothing measured.
