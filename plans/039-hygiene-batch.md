@@ -22,9 +22,10 @@ metric; several consolidate shared predicates (tests guard those).
    per-drawer-mount `$effect` dropped (owner pick 2026-09-28: drop — the
    "keep as retry" option was a no-op, see as-built).
    Commit: `ui: single ensureEndpoints owner` (f4de24b, 2026-09-29).
-4. Typed scroll targets — `sendToCompare`'s `getElementById("compare")` +
-   `openFull`'s rAF/`querySelector(".drawer")` → element bindings / a tiny
-   shared helper. Commit: `ui: typed scroll targets`.
+4. ✅ Typed scroll targets — `sendToCompare`'s `getElementById("compare")` +
+   `openFull`'s rAF/`querySelector(".drawer")` → a tiny shared helper
+   (`src/lib/scroll.ts`; bindings were the alternative, helper chosen —
+   as-built). Commit: `ui: typed scroll targets` (49d5b4d, 2026-09-29).
 5. Dead code + type holes — `tourflag`'s always-empty `readers` array;
    Comparator `cells` concat type hole; ModelCard elo guard;
    `applyFromURL` defaults consolidated over `urlstate`'s
@@ -107,3 +108,25 @@ metric; several consolidate shared predicates (tests guard those).
   `npx tsc --noEmit` clean.
 - Harness note: no metric covers the endpoints fetch trigger count; the
   removed effect was reactive bookkeeping only.
+
+## As-built — step 4 (2026-09-29, commit 49d5b4d)
+
+- New `src/lib/scroll.ts`: `scrollToCompare()` + `scrollToDrawer()` — the
+  two manual reaches (Details.sendToCompare, Comparator.openFull) call
+  these; the `getElementById`/`querySelector` strings and the
+  mount-flush rAF live in one place now, with typed receivers at the
+  helper (the only `document` reach for either flow).
+- **Design pick within the step's "bindings / helper" fork:** the helper,
+  not element bindings — the compare section lives in Comparator and the
+  drawer in App, so cross-component bindings would have needed prop
+  plumbing (or a wrapper div that changes `main`'s grid children); the
+  helper keeps both call sites one-liners with zero structural change.
+  The rAF mount-flush comment moved into the helper it belongs to.
+- no tests: the helpers are behavior-identical to the inline reaches;
+  `src/lib/scroll.test.ts` was added anyway as a cheap seam guard — it
+  pins the targets (`#compare`, `.drawer`), the scrollIntoView options,
+  and the one-frame delay, with a hand stub (jsdom has no scrolling).
+- Verification: scroll/Details/Comparator tests green · full `npm test`
+  177 green (21 files) · `npx tsc --noEmit` clean.
+- Harness note: scrolling is outside every measured path; no metric can
+  move.
