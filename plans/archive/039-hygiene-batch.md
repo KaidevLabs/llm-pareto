@@ -1,7 +1,11 @@
 # 039 — Hygiene batch (carried-over reaches + dead code)
 
-Date: 2026-09-20. **Status: EXECUTING (step 1/5). Commits: 31d0d3a (ui:
-details sort header reactivity).**
+Date: 2026-09-20. **Status: ARCHIVED (2026-09-29). Commits: 31d0d3a (ui:
+details sort header reactivity) · 11b9a4c (plan: step 1) · 52db449 (ui:
+details visibility via isVisible) · 9ddc932 (plan: step 2) · f4de24b (ui:
+single ensureEndpoints owner) · bce7eba (plan: step 3) · 49d5b4d (ui:
+typed scroll targets) · 107af3b (plan: step 4) · de521e5 (ui: hygiene
+batch).**
 Source: `docs/reports/030-port-perf-findings.md` B25 (+ B21's bug as step 1; full
 evidence there; origin: plan 030 step 02 F2/F3/F10/F11).
 
@@ -26,11 +30,11 @@ metric; several consolidate shared predicates (tests guard those).
    `openFull`'s rAF/`querySelector(".drawer")` → a tiny shared helper
    (`src/lib/scroll.ts`; bindings were the alternative, helper chosen —
    as-built). Commit: `ui: typed scroll targets` (49d5b4d, 2026-09-29).
-5. Dead code + type holes — `tourflag`'s always-empty `readers` array;
+5. ✅ Dead code + type holes — `tourflag`'s always-empty `readers` array;
    Comparator `cells` concat type hole; ModelCard elo guard;
    `applyFromURL` defaults consolidated over `urlstate`'s
    DEFAULTS/NO_THR (three places own defaults today — drift risk for the
-   next field). Commit: `ui: hygiene batch`.
+   next field). Commit: `ui: hygiene batch` (de521e5, 2026-09-29).
 
 ## Out of scope
 
@@ -42,9 +46,14 @@ metric; several consolidate shared predicates (tests guard those).
 
 - [x] Owner approves the step list in a review session (execution trigger
       2026-09-28 — "Execute" directive; step 3's owner pick answered
-      2026-09-28: drop the per-drawer-mount effect, App stays single owner).
-- [ ] Steps 1–5 landed or explicitly dropped with a reason recorded here.
-- [ ] Suites green; no metric regression (none expected — hygiene only).
+      2026-09-28: drop the per-drawer-mount effect, App stays single owner;
+      commit flow directive: per-step commits, owner reviews at the end).
+- [x] Steps 1–5 landed (all five, none dropped).
+- [x] Suites green; no metric regression — final tree: python 159 OK ·
+      vitest 180 green (22 files) · `npx tsc --noEmit` clean · `npm run
+      build` clean. Browser probe over dist/ green (11 checks). No harness
+      metric covers the touched paths (drawer reactivity, scroll); none
+      can move.
 
 ## As-built — step 1 (2026-09-29, commit 31d0d3a)
 
@@ -130,3 +139,61 @@ metric; several consolidate shared predicates (tests guard those).
   177 green (21 files) · `npx tsc --noEmit` clean.
 - Harness note: scrolling is outside every measured path; no metric can
   move.
+
+## As-built — step 5 (2026-09-29, commit de521e5)
+
+- **tourflag:** the `readers` array, its splice loop in `setAutotour`, and
+  the trailing `void readers;` are gone — `takeAutotour` polling owns the
+  handoff (027 A3). Side observation (not acted on, out of scope):
+  `peekAutotour` has no call sites today — dropped or kept is an owner
+  choice for a later hygiene pass.
+- **Comparator cells:** typed via a local `type Cell = { r: Row; i: number }
+  | null;` — the map callback annotates its return and `concat([null])`
+  widens cleanly. svelte-check's Comparator error is gone.
+- **ModelCard elo:** `{d.arena_elo != null ? d.arena_elo.toFixed(1) : "--"}`
+  — matches the card's existing missing-value convention (`--`), never
+  crashes on an elo-less row. svelte-check's ModelCard error is gone.
+  (svelte-check now reports exactly 1 error: App's `window.echarts`
+  global — B23/B28 territory, `plans/040-echarts-npm.md`, deliberately
+  untouched here.)
+- **Defaults single owner:** urlstate's `DEFAULTS`/`NO_THR` are now
+  exported (DEFAULTS gains `search: ""`); `state.svelte.ts`'s `ui` field
+  initializers read them; `applyFromURL`'s popstate fallbacks read them
+  (the `(patch.mode ?? "general") as Mode` cast is gone with it; NO_THR
+  is spread into `ui.thr` so consumers copy the shared const). Both files
+  comment the ownership. Runtime import direction: state.svelte.ts →
+  urlstate.ts, urlstate's state import stays type-only — no cycle.
+- Guard test `src/lib/history.test.ts` (new): pins applyFromURL's
+  reset-to-defaults on an empty URL, a full non-default apply
+  field-for-field, and that the reset thr is a fresh object (not the
+  shared NO_THR) — the drift tripwire the F11 note asked for.
+- Verification: full `npm test` 180 green · `npx tsc --noEmit` clean ·
+  svelte-check 3 errors → 1 (the out-of-scope window.echarts one) ·
+  `npm run build` clean.
+- Harness note: none — no measured path touched.
+
+## As-built — close (2026-09-29, no code changes)
+
+- Final verification on the clean tree: python 159 OK · vitest 180 green
+  (22 files) · `npx tsc --noEmit` clean · `npm run build` clean ·
+  cookieless grep clean (no `document.cookie`/`localStorage`/
+  `sessionStorage`/IndexedDB in `src/` + `index.html`). `python3
+  update.py` not run — no data-seam touch (UI-only batch; running it
+  would only churn `public/data/`).
+- Browser-level probe `.tmp/039-hygiene-probe.mjs` (scratch, rerunnable):
+  dist served, headless Chromium CDP, real bubble click → drawer — 11
+  checks green: sort arrow/highlight follows the active sort and flips
+  (B21); a threshold typed into the real ThresholdCtl shows/clears the
+  drawer's filtered-out banner (isVisible parity through the live UI);
+  compare fast-access closes the drawer, scrolls, and carries the pick;
+  no URL threshold residue; zero page exceptions.
+- Two probe-authoring fixes along the way (both probe bugs, not code):
+  (1) reads must wait a frame after clicks — Svelte 5 batches updates in
+  microtasks, the unit tests' awaited ticks already handled this; (2)
+  the original `top < 120` scroll assertion was geometry-wrong — at
+  1600×1000 the compare section is taller than the content below it, so
+  `block:"start"` tops out at the document's max scroll (verified with a
+  manual scrollIntoView diagnostic, `.tmp/039-scroll-diag.mjs`, which
+  reproduced the identical landing on the untouched browser path); the
+  probe now asserts aligned-at-top OR at docMax.
+- No harness metric moved (none covers these paths); nothing to publish.
