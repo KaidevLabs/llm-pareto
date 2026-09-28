@@ -484,7 +484,7 @@
  {
   "or_id": "z-ai/glm-5.3",
   "or_name": "Z.ai: GLM 5.3",
-  "price_in_per_m": 0.325,
+  "price_in_per_m": 1.4,
   "price_out_per_m": 4.4,
   "vision": false,
   "context_length": 1310720,
@@ -585,8 +585,8 @@
  {
   "or_id": "deepseek/deepseek-v4.1-flash",
   "or_name": "DeepSeek: DeepSeek V4.1 Flash",
-  "price_in_per_m": 0.0295,
-  "price_out_per_m": 0.6,
+  "price_in_per_m": 0.035,
+  "price_out_per_m": 0.29,
   "vision": true,
   "context_length": 1048576,
   "arena_rank": 29,
@@ -914,8 +914,8 @@
  {
   "or_id": "z-ai/glm-5.1",
   "or_name": "Z.ai: GLM 5.1",
-  "price_in_per_m": 1.4,
-  "price_out_per_m": 4.4,
+  "price_in_per_m": 0.9646,
+  "price_out_per_m": 3.0316,
   "vision": false,
   "context_length": 204800,
   "arena_rank": 49,
@@ -1729,8 +1729,8 @@
  {
   "or_id": "deepseek/deepseek-v4-flash",
   "or_name": "DeepSeek: DeepSeek V4 Flash 0423",
-  "price_in_per_m": 0.14,
-  "price_out_per_m": 0.28,
+  "price_in_per_m": 0.08848,
+  "price_out_per_m": 0.17696,
   "vision": false,
   "context_length": 1048576,
   "arena_rank": 93,
@@ -1780,8 +1780,8 @@
  {
   "or_id": "google/gemma-4-26b-a4b-it",
   "or_name": "Google: Gemma 4 26B A4B ",
-  "price_in_per_m": 0.0675,
-  "price_out_per_m": 0.225,
+  "price_in_per_m": 0.09,
+  "price_out_per_m": 0.3,
   "vision": true,
   "context_length": 262144,
   "arena_rank": 96,

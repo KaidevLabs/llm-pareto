@@ -255,8 +255,8 @@
   "id": "deepseek/deepseek-v4.1-flash",
   "name": "DeepSeek: DeepSeek V4.1 Flash",
   "org": "deepseek",
-  "price_in_per_m": 0.0295,
-  "price_out_per_m": 0.6,
+  "price_in_per_m": 0.035,
+  "price_out_per_m": 0.29,
   "vision": true,
   "context_length": 1048576
  },
@@ -444,7 +444,7 @@
   "id": "z-ai/glm-5.3",
   "name": "Z.ai: GLM 5.3",
   "org": "z-ai",
-  "price_in_per_m": 0.325,
+  "price_in_per_m": 1.4,
   "price_out_per_m": 4.4,
   "vision": false,
   "context_length": 1310720
@@ -516,7 +516,7 @@
   "id": "deepseek/deepseek-v4-pro-0813",
   "name": "DeepSeek: DeepSeek V4 Pro 0813",
   "org": "deepseek",
-  "price_in_per_m": 0.2266,
+  "price_in_per_m": 0.3995,
   "price_out_per_m": 4.2,
   "vision": false,
   "context_length": 1048576
@@ -1173,8 +1173,8 @@
   "id": "deepseek/deepseek-v4-flash",
   "name": "DeepSeek: DeepSeek V4 Flash 0423",
   "org": "deepseek",
-  "price_in_per_m": 0.14,
-  "price_out_per_m": 0.28,
+  "price_in_per_m": 0.08848,
+  "price_out_per_m": 0.17696,
   "vision": false,
   "context_length": 1048576
  },
@@ -1245,8 +1245,8 @@
   "id": "z-ai/glm-5.1",
   "name": "Z.ai: GLM 5.1",
   "org": "z-ai",
-  "price_in_per_m": 1.4,
-  "price_out_per_m": 4.4,
+  "price_in_per_m": 0.9646,
+  "price_out_per_m": 3.0316,
   "vision": false,
   "context_length": 204800
  },
@@ -1254,8 +1254,8 @@
   "id": "google/gemma-4-26b-a4b-it",
   "name": "Google: Gemma 4 26B A4B ",
   "org": "google",
-  "price_in_per_m": 0.0675,
-  "price_out_per_m": 0.225,
+  "price_in_per_m": 0.09,
+  "price_out_per_m": 0.3,
   "vision": true,
   "context_length": 262144
  },
