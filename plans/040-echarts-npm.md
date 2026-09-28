@@ -1,6 +1,6 @@
 # 040 — Bundle echarts from npm (treeshake + dynamic GL chunk)
 
-Date: 2026-09-20. **Status: EXECUTING (step 2/3) — owner go 2026-09-29
+Date: 2026-09-20. **Status: EXECUTING (step 3/3) — owner go 2026-09-29
 ("Execute plans/040-echarts-npm.md"), D1–D5 adopted as recommended.**
 Source: `docs/reports/030-port-perf-findings.md` B28 (owner question
 2026-09-20: "what if we add echarts via package.json?"). **Absorbs B23's
@@ -43,7 +43,7 @@ Chart-ready stays dominated by data + badge logos (B20).
    Commit: `chart: npm echarts (treeshake + lazy gl chunk)` (85a15d0,
    2026-09-29). ✅ COMPLETE
 2. Typing pass (D4) on the same imports. Commit: `chart: type the
-   echarts seam` (absorbed B23).
+   echarts seam` (56c7bc0, 2026-09-29). ✅ COMPLETE
 3. Verification (D5) + owner A/B; DoD audit. Commit: foldable.
 
 ## Out of scope
@@ -105,3 +105,37 @@ static serve of `dist/` (scratch probe /tmp/opencode/040-smoke.mjs):
 3D pill loads the lazy chunk (performance entry confirms) and renders
 147 models · 22 on the frontier with crowns, zero console errors or
 exceptions; screenshot reviewed.
+
+## As-built — step 2 (2026-09-29, commit 56c7bc0)
+
+D4's three surfaces, as landed. (1) **Typed instances:** `const charts:
+Record<string, EChartsType>`; the params/returns of captureZoom,
+resetZoom, bindZoomChart, bindPan, bindDrawerClose, ensureChart2D,
+zrOff went `any` → `EChartsType`. (2) **EChartsOption on the option
+builders:** `chartOption(...): EChartsOption` with its series array
+annotated `(CustomSeriesOption | LineSeriesOption | ScatterSeriesOption)[]`
+— the annotation contextually types the pushed literals, so the
+`type: "custom" | "line" | "scatter"` tags stay checked and the custom
+`d`/`spd`/`vis` payloads assigned clean, no boundary cast needed;
+`build3DScene(...): { option: EChartsOption }` with one cast at the
+return (scatter3D/grid3D sit outside the core union and echarts-gl's
+module surface is declared any — the GL option stays an untyped build,
+checked in at the single seam). (3) **Types ride the seam module:**
+`src/lib/echarts.ts` re-exports `EChartsOption` (type-only, from the
+root module — erased, no bundle impact) and `EChartsType` (from the
+core already imported).
+
+The `getOption()` reads (captureZoom, the zoom windows(), bindPan's
+mousedown) type their members `unknown` in echarts 5.6 — three local
+`as any` casts with a comment keep those zoom-shape reads as untyped
+seams, same as they were pre-040. The remaining `any`s in charts.ts
+are the echarts callback params (formatter/renderItem/click/symbolSize)
+and bindPan's local `drag` bag — the same seams 030 B23 catalogued,
+outside D4's instances-and-builders scope. `import type { ... } from
+"echarts"` (series union) added alongside the seam import.
+
+Zero behavior change, proven two ways: suites 180 passed untouched,
+and the production build is byte-identical to step 1's (same three
+asset hashes, index-D9zQ6c1R.js / echarts-gl-CwVWOCex.js /
+rolldown-runtime-DK3Fl9T5.js — every change type-only, erased at
+compile). `npx tsc --noEmit` clean.
