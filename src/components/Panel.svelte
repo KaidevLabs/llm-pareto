@@ -72,7 +72,7 @@
     <h2>{title}</h2>
     <span class="badge" class:hidden={panelStatus[key].badgeHidden}>◈ frontier</span>
     {#if key === "3d"}
-      <Pill class="tour-pill" title="Play the guided tour" onclick={playTour}>
+      <Pill tiny title="Play the guided tour" onclick={playTour}>
         {touring ? "■" : "▶"}
       </Pill>
     {/if}
