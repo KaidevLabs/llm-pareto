@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bench run — 83c7b97</title>
+<style>
+:root { color-scheme: light; --bg:#f6f7f9; --card:#fff; --ink:#1c2230; --mut:#5b6678; --line:#e3e7ee; --pos:#1a7f4b; --neg:#b3261e; --acc:#3b5bdb; }
+* { box-sizing: border-box; }
+body { margin:0; font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; background:var(--bg); color:var(--ink); }
+.wrap { max-width: 1080px; margin: 0 auto; padding: 28px 20px 60px; }
+header { display:flex; flex-wrap:wrap; align-items:baseline; gap:12px; }
+h1 { font-size: 24px; margin:0; }
+h2 { font-size: 18px; margin: 34px 0 10px; border-bottom: 2px solid var(--line); padding-bottom:6px; }
+h3 { font-size:15px; margin:18px 0 8px; }
+h4 { font-size:13px; color:var(--mut); margin:14px 0 4px; text-transform:uppercase; letter-spacing:.04em; }
+.pill { font-size:13px; font-weight:600; padding:4px 12px; border-radius:999px; background:#5b6678; color:#fff; }
+.sub { font-size:13px; color:var(--mut); margin:10px 0 4px; }
+.kpis { display:grid; grid-template-columns: repeat(auto-fit,minmax(160px,1fr)); gap:12px; margin-top:16px; }
+.kpi { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px 16px; }
+.kv { font-size:22px; font-weight:700; }
+.ks { font-size:13px; color:var(--mut); margin-top:2px; }
+.ksub { font-size:12px; color:var(--mut); }
+.card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px 18px; margin-top:12px; }
+table { border-collapse: collapse; width:100%; margin:6px 0 4px; font-size:13.5px; }
+th,td { text-align:left; padding:6px 10px; border-bottom:1px solid var(--line); }
+thead th { color:var(--mut); font-weight:600; font-size:12px; text-transform:uppercase; letter-spacing:.03em; }
+td:not(:first-child), th:not(:first-child) { text-align:right; font-variant-numeric: tabular-nums; }
+.p90 { color:var(--mut); font-size:11.5px; }
+.muted { color:var(--mut); font-size:13px; }
+footer { margin-top:40px; padding-top:14px; border-top:1px solid var(--line); color:var(--mut); font-size:12.5px; }
+code { background:#eef0f4; padding:1px 4px; border-radius:4px; font-size:12.5px; }
+</style></head>
+<body><div class="wrap">
+<header>
+  <h1>Bench run</h1>
+  <span class="pill">83c7b97</span>
+</header>
+<p class="muted">tree <code>83c7b97</code> · node v26.10.0 · chromium Chromium 153.0.8010.52 Arch Linux · 7 runs · 2026-09-28T21:33:08.250Z</p>
+<div class="kpis"><div class="kpi"><div class="kv">858</div><div class="ks">Σ cyclomatic</div></div><div class="kpi"><div class="kv">89.97%</div><div class="ks">coverage</div></div><div class="kpi"><div class="kv">37</div><div class="ks">worst fn: data</div><div class="ksub">charts.ts</div></div><div class="kpi"><div class="kv">206ms</div><div class="ks">chart-paint</div><div class="ksub">cold / unthrottled</div></div></div>
+
+<h2>1 · Code &amp; complexity</h2>
+<div class="card"><table class=""><thead><tr><th>metric</th><th>value</th></tr></thead><tbody><tr><th>worst function</th><td>data (37)</td></tr><tr><th>charts.ts share</th><td>34.4%</td></tr></tbody></table><div class="sub">15 worst functions by cyclomatic:</div><table class=""><thead><tr><th>fn</th><th>file</th><th>cyc</th><th>nest</th></tr></thead><tbody><tr><th>data</th><td>charts.ts</td><td>37</td><td>8</td></tr><tr><th>passThresholds</th><td>filters.ts</td><td>22</td><td>1</td></tr><tr><th>read</th><td>urlstate.ts</td><td>21</td><td>1</td></tr><tr><th>renderPanel</th><td>charts.ts</td><td>19</td><td>1</td></tr><tr><th>build3DScene</th><td>charts.ts</td><td>19</td><td>1</td></tr><tr><th>write</th><td>urlstate.ts</td><td>16</td><td>1</td></tr><tr><th>frame</th><td>tour.ts</td><td>15</td><td>6</td></tr><tr><th>tooltipHTML</th><td>charts.ts</td><td>14</td><td>1</td></tr><tr><th>renderSpeedPanel</th><td>charts.ts</td><td>13</td><td>1</td></tr><tr><th>applyFromURL</th><td>history.svelte.ts</td><td>13</td><td>1</td></tr><tr><th>onChartClick</th><td>charts.ts</td><td>12</td><td>1</td></tr><tr><th>seedFromURL</th><td>history.svelte.ts</td><td>12</td><td>1</td></tr><tr><th>onkeydown</th><td>ModelSearch.svelte#script</td><td>11</td><td>1</td></tr><tr><th>searchHit</th><td>filters.ts</td><td>11</td><td>1</td></tr><tr><th>paretoFrontier3D</th><td>pareto.ts</td><td>11</td><td>1</td></tr></tbody></table></div>
+
+<h2>2 · Load timing</h2>
+<div class="card"><h4>cold-unthrottled</h4><table class=""><thead><tr><th>metric</th><th>value</th></tr></thead><tbody><tr><th><th>TTFB</th></th><td><td>1 <span class="p90">(2 p90)</span></td></td></tr><tr><th><th>DOMContentLoaded</th></th><td><td>45 <span class="p90">(47 p90)</span></td></td></tr><tr><th><th>load</th></th><td><td>47 <span class="p90">(49 p90)</span></td></td></tr><tr><th><th>FCP</th></th><td><td>40 <span class="p90">(52 p90)</span></td></td></tr><tr><th><th>LCP</th></th><td><td>60 <span class="p90">(108 p90)</span></td></td></tr><tr><th><th>chart-paint</th></th><td><td>206 <span class="p90">(232 p90)</span></td></td></tr><tr><th><th>requests</th></th><td><td>31 <span class="p90">(32 p90)</span></td></td></tr><tr><th><th>transfer KB</th></th><td><td>652 <span class="p90">(654 p90)</span></td></td></tr></tbody></table><h4>warm-unthrottled</h4><table class=""><thead><tr><th>metric</th><th>value</th></tr></thead><tbody><tr><th><th>TTFB</th></th><td><td>1 <span class="p90">(1 p90)</span></td></td></tr><tr><th><th>DOMContentLoaded</th></th><td><td>22 <span class="p90">(26 p90)</span></td></td></tr><tr><th><th>load</th></th><td><td>28 <span class="p90">(31 p90)</span></td></td></tr><tr><th><th>FCP</th></th><td><td>44 <span class="p90">(56 p90)</span></td></td></tr><tr><th><th>LCP</th></th><td><td>44 <span class="p90">(56 p90)</span></td></td></tr><tr><th><th>chart-paint</th></th><td><td>203 <span class="p90">(235 p90)</span></td></td></tr><tr><th><th>requests</th></th><td><td>31 <span class="p90">(31 p90)</span></td></td></tr><tr><th><th>transfer KB</th></th><td><td>0 <span class="p90">(0 p90)</span></td></td></tr></tbody></table><h4>cold-throttled</h4><table class=""><thead><tr><th>metric</th><th>value</th></tr></thead><tbody><tr><th><th>TTFB</th></th><td><td>68 <span class="p90">(84 p90)</span></td></td></tr><tr><th><th>DOMContentLoaded</th></th><td><td>3566 <span class="p90">(3584 p90)</span></td></td></tr><tr><th><th>load</th></th><td><td>3581 <span class="p90">(3602 p90)</span></td></td></tr><tr><th><th>FCP</th></th><td><td>712 <span class="p90">(728 p90)</span></td></td></tr><tr><th><th>LCP</th></th><td><td>3588 <span class="p90">(3608 p90)</span></td></td></tr><tr><th><th>chart-paint</th></th><td><td>4460 <span class="p90">(4474 p90)</span></td></td></tr><tr><th><th>requests</th></th><td><td>7 <span class="p90">(7 p90)</span></td></td></tr><tr><th><th>transfer KB</th></th><td><td>420 <span class="p90">(420 p90)</span></td></td></tr></tbody></table><h4>warm-throttled</h4><table class=""><thead><tr><th>metric</th><th>value</th></tr></thead><tbody><tr><th><th>TTFB</th></th><td><td>1 <span class="p90">(1 p90)</span></td></td></tr><tr><th><th>DOMContentLoaded</th></th><td><td>97 <span class="p90">(142 p90)</span></td></td></tr><tr><th><th>load</th></th><td><td>126 <span class="p90">(169 p90)</span></td></td></tr><tr><th><th>FCP</th></th><td><td>144 <span class="p90">(196 p90)</span></td></td></tr><tr><th><th>LCP</th></th><td><td>154 <span class="p90">(196 p90)</span></td></td></tr><tr><th><th>chart-paint</th></th><td><td>968 <span class="p90">(1117 p90)</span></td></td></tr><tr><th><th>requests</th></th><td><td>31 <span class="p90">(31 p90)</span></td></td></tr><tr><th><th>transfer KB</th></th><td><td>0 <span class="p90">(0 p90)</span></td></td></tr></tbody></table></div>
+
+<h2>3 · Interactions</h2>
+<div class="card"><table class=""><thead><tr><th>metric</th><th>value</th></tr></thead><tbody><tr><th><th>init→paint (ms)</th></th><td><td>308 <span class="p90">(441 p90)</span></td></td></tr><tr><th><th>zoom settle (ms)</th></th><td><td>736 <span class="p90">(907 p90)</span></td></td></tr><tr><th><th>zoom events</th></th><td><td>10 <span class="p90">(10 p90)</span></td></td></tr><tr><th><th>threshold drag settle (ms)</th></th><td><td>904 <span class="p90">(906 p90)</span></td></td></tr><tr><th><th>drawer open (ms)</th></th><td><td>— <span class="p90">(— p90)</span></td></td></tr><tr><th><th>drawer close (ms)</th></th><td><td>0 <span class="p90">(0 p90)</span></td></td></tr><tr><th><th>3D cold (ms)</th></th><td><td>181 <span class="p90">(272 p90)</span></td></td></tr><tr><th><th>3D steady (ms)</th></th><td><td>201 <span class="p90">(214 p90)</span></td></td></tr><tr><th><th>jank count</th></th><td><td>2 <span class="p90">(2 p90)</span></td></td></tr><tr><th><th>jank TBT (ms)</th></th><td><td>42 <span class="p90">(127 p90)</span></td></td></tr><tr><th><th>heap load (KB)</th></th><td><td>56795 <span class="p90">(82763 p90)</span></td></td></tr><tr><th><th>heap Δ (KB)</th></th><td><td>-10321 <span class="p90">(-7692 p90)</span></td></td></tr></tbody></table></div>
+
+<h2>4 · Test coverage</h2>
+<div class="card"><table class=""><thead><tr><th>metric</th><th>value</th></tr></thead><tbody><tr><th>lines</th><td>89.97%</td></tr><tr><th>branches</th><td>77.85%</td></tr><tr><th>functions</th><td>87.53%</td></tr><tr><th>statements</th><td>89.51%</td></tr><tr><th>files covered</th><td>24</td></tr></tbody></table></div>
+
+<footer>
+  Generated by <code>tools/refactor-bench</code> — a profile of one measured tree: static/complexity, per-function cyclomatic, headless load, CDP interactions, and vitest coverage. Cross-run comparison: the published registry's compare page. Self-contained: no external requests, no cookies.
+  <br><br><span class="muted">Methodology:</span> escomplex (npx) rejected: escomplex / typhonjs-escomplex / typhonjs-escomplex-project ship no CLI (npx: &#39;could not determine executable&#39;) and their 2015-era parsers cannot read TypeScript; substituted an in-module cyclomatic/nesting/any pass over ASTs from the repo&#39;s own TypeScript compiler — same method both sides. complexity + cloc corpora are app code only (tests excluded both sides, reported separately); svelte templates are measured as raw file lines but not complexity-scored.
+</footer>
+</div></body></html>

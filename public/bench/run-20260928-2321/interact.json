@@ -1,0 +1,98 @@
+{
+  "label": "83c7b97",
+  "config": {
+    "drawerVerify": "(() => { const d = document.querySelector('.drawer'); return !!d && (d.innerText || '').length > 0; })()",
+    "drawerClose": ".drawer-x",
+    "tgl3d": {
+      "cls": "button.pill",
+      "text": "3D"
+    },
+    "tglBack": {
+      "cls": "button.pill",
+      "text": "3D"
+    },
+    "thr": {
+      "handle": "input[aria-label=\"maximum price\"]",
+      "reset": ".thr .reset"
+    }
+  },
+  "runs": 7,
+  "initPaintMs": {
+    "median": 308,
+    "p90": 441,
+    "min": 284,
+    "max": 441
+  },
+  "zoomSettleMs": {
+    "median": 736,
+    "p90": 907,
+    "min": 721,
+    "max": 907
+  },
+  "zoomEvents": {
+    "median": 10,
+    "p90": 10,
+    "min": 10,
+    "max": 10
+  },
+  "thrDragSettleMs": {
+    "median": 904,
+    "p90": 906,
+    "min": 891,
+    "max": 906
+  },
+  "drawerOpenMs": {
+    "median": null,
+    "p90": null,
+    "min": null,
+    "max": null
+  },
+  "drawerCloseMs": {
+    "median": 0,
+    "p90": 0,
+    "min": 0,
+    "max": 0
+  },
+  "cold3DMs": {
+    "median": 181,
+    "p90": 272,
+    "min": 179,
+    "max": 272
+  },
+  "steady3DMs": {
+    "median": 201,
+    "p90": 214,
+    "min": 199,
+    "max": 214
+  },
+  "jankCount": {
+    "median": 2,
+    "p90": 2,
+    "min": 2,
+    "max": 2
+  },
+  "jankTBTms": {
+    "median": 42,
+    "p90": 127,
+    "min": 27,
+    "max": 127
+  },
+  "memLoadKB": {
+    "median": 56795,
+    "p90": 82763,
+    "min": 26059,
+    "max": 82763
+  },
+  "memBurstKB": {
+    "median": 46407,
+    "p90": 74693,
+    "min": 18367,
+    "max": 74693
+  },
+  "memDeltaKB": {
+    "median": -10321,
+    "p90": -7692,
+    "min": -12169,
+    "max": -7692
+  }
+}
