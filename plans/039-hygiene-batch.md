@@ -18,10 +18,10 @@ metric; several consolidate shared predicates (tests guard those).
    for one row's answer; reuse the single visibility predicate
    `isVisible(d, {...ui, thrCtx})` (032 D5's point).
    Commit: `ui: details visibility via isVisible` (52db449, 2026-09-29).
-3. `ensureEndpoints` single owner — App fires it post-boot; drop the
-   per-drawer-mount `$effect` in Details (or keep deliberately as a
-   retry-on-open with a comment — owner picks).
-   Commit: `ui: single ensureEndpoints owner`.
+3. ✅ `ensureEndpoints` single owner — App fires it post-boot; Details'
+   per-drawer-mount `$effect` dropped (owner pick 2026-09-28: drop — the
+   "keep as retry" option was a no-op, see as-built).
+   Commit: `ui: single ensureEndpoints owner` (f4de24b, 2026-09-29).
 4. Typed scroll targets — `sendToCompare`'s `getElementById("compare")` +
    `openFull`'s rAF/`querySelector(".drawer")` → element bindings / a tiny
    shared helper. Commit: `ui: typed scroll targets`.
@@ -83,3 +83,27 @@ metric; several consolidate shared predicates (tests guard those).
 - Harness note: no timing metric covers the drawer's banner path; the
   per-render work shrinks (O(rows) → O(1)) — direction is safe by
   construction, nothing measured.
+
+## As-built — step 3 (2026-09-29, commit f4de24b)
+
+- Details' `$effect(() => { ensureEndpoints(); })` and its import are
+  gone; App.svelte's post-boot `if (!data.error) ensureEndpoints()` is
+  the single trigger (unchanged). The per-drawer-mount effect was a
+  parallel channel — every re-fire after boot re-awaited the settled
+  cache, so no observable path changes.
+- **Owner pick, resolved (answered 2026-09-28):** drop. The plan's
+  "keep deliberately as a retry-on-open" branch was a no-op as written —
+  `ensureEndpoints` caches its promise even on failure (`.catch` → null,
+  the `let promise` stays set), so a re-open re-awaits the settled
+  promise and never refetches; a comment claiming retry would have lied.
+  Making retry real (cache clears on failure) is a behavior change
+  outside this hygiene batch's scope — recorded here as the explicit
+  reason the branch was not taken.
+- Test-infra only: Details.test.ts calls `ensureEndpoints()` in
+  beforeEach (after the fetch stub) — the component no longer triggers
+  the fetch, and the module cache still settles once per file. The
+  error-path tests' direct store writes are unaffected.
+- Verification: Details 16 green · full `npm test` 174 green ·
+  `npx tsc --noEmit` clean.
+- Harness note: no metric covers the endpoints fetch trigger count; the
+  removed effect was reactive bookkeeping only.
