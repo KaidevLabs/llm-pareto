@@ -5,6 +5,7 @@
   plan 035 D1, 023 D8).
 -->
 <script lang="ts">
+  import { fly } from "svelte/transition";
   import { data, boot, loadData } from "./lib/data.svelte";
   import { buildBadges } from "./lib/badges.svelte";
   import { ensureEndpoints } from "./lib/endpoints.svelte";
@@ -94,6 +95,13 @@
     ui.three3d;
     resizeVisibleCharts();
   });
+
+  // Drawer motion (plan 038 D1/D4): fly+fade on the details drawer — the
+  // old app was instant, so this is owner-A/B polish. The MediaQueryList
+  // is live (.matches re-reads at every transition trigger), so
+  // reduced-motion users get the old instant open/close; Comparator's
+  // slot-in is the CSS-side precedent.
+  const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
 </script>
 
 <svelte:window onresize={() => resizeVisibleCharts()} />
@@ -211,7 +219,11 @@
     <!-- Details drawer (plan 006 D1): overlays the chart's right edge — no
          layout change, no reflow. Capped at the chart's height (brother
          panels); the body scrolls when the card runs long. -->
-    <aside class="drawer" aria-label="model details">
+    <aside
+      class="drawer"
+      aria-label="model details"
+      transition:fly={{ y: 24, duration: reducedMotion.matches ? 0 : 180 }}
+    >
       <button class="drawer-x" aria-label="close details" onclick={() => (ui.selected = null)}>×</button>
       <div class="drawer-body">
         <Details d={ui.selected} />
