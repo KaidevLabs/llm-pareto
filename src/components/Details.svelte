@@ -109,9 +109,9 @@
   function th(key: "in" | "out" | "up" | "spd", label: string) {
     return { key, label, on: provSort.key === key, arr: provSort.dir === 1 ? "▲" : "▼" };
   }
-  const heads = (["in", "out", "up", "spd"] as const).map((k) =>
+  const heads = $derived((["in", "out", "up", "spd"] as const).map((k) =>
     th(k, { in: "$/M in", out: "$/M out", up: "up 1d", spd: "tok/s" }[k])
-  );
+  ));
   function setSort(key: "in" | "out" | "up" | "spd") {
     provSort = { key, dir: provSort.key === key ? -provSort.dir : 1 };
   }

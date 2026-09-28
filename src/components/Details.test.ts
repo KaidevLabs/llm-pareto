@@ -82,6 +82,22 @@ describe("Details", () => {
     expect(cells[1].textContent).toContain("GMICloud");
   });
 
+  it("the sort header arrow/highlight follows the active sort", async () => {
+    render(Details, { props: { d: DEMO } });
+    await screen.findByText("GMICloud");
+    const th = (k: string) => document.querySelector(`th[data-sort="${k}"]`)!;
+    // initial: "in" active, ascending
+    expect(th("in").querySelector(".arr")?.textContent).toBe("▲");
+    expect(th("spd").querySelector(".arr")).toBe(null);
+    // clicking spd moves the arrow/highlight there (frozen on "in" pre-B21)
+    await fireEvent.click(th("spd"));
+    expect(th("spd").querySelector(".arr")?.textContent).toBe("▲");
+    expect(th("in").querySelector(".arr")).toBe(null);
+    // second click on the same key flips to descending
+    await fireEvent.click(th("spd"));
+    expect(th("spd").querySelector(".arr")?.textContent).toBe("▼");
+  });
+
   it("renders & literally (svelte escapes; no double-escaping)", async () => {
     render(Details, { props: { d: { ...DEMO, or_name: "A & B Models" } } });
     await screen.findByText("A & B Models");
