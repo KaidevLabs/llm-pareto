@@ -1,6 +1,7 @@
 # 040 — Bundle echarts from npm (treeshake + dynamic GL chunk)
 
-Date: 2026-09-20. **Status: PROPOSED — not reviewed, not executed.**
+Date: 2026-09-20. **Status: EXECUTING (step 2/3) — owner go 2026-09-29
+("Execute plans/040-echarts-npm.md"), D1–D5 adopted as recommended.**
 Source: `docs/reports/030-port-perf-findings.md` B28 (owner question
 2026-09-20: "what if we add echarts via package.json?"). **Absorbs B23's
 typing scope** (the plan `037-chart-typing.md` is superseded by this one;
@@ -25,7 +26,7 @@ FCP ~3.3 s → ~1.5–2 s); real `EChartsOption` types replace the
 Not an FCP fix: B19's static shell (~0.6 s) still wins alone; they compose.
 Chart-ready stays dominated by data + badge logos (B20).
 
-## Proposed decisions (settled at owner review)
+## Settled decisions (owner approved as recommended, 2026-09-29)
 
 | # | decision | options & recommendation |
 |---|----------|--------------------------|
@@ -39,7 +40,8 @@ Chart-ready stays dominated by data + badge logos (B20).
 
 1. Deps + imports: add echarts/echarts-gl, swap charts.ts + gl.ts to
    module imports, delete both vendored files, dynamic GL chunk.
-   Commit: `chart: npm echarts (treeshake + lazy gl chunk)`.
+   Commit: `chart: npm echarts (treeshake + lazy gl chunk)` (85a15d0,
+   2026-09-29). ✅ COMPLETE
 2. Typing pass (D4) on the same imports. Commit: `chart: type the
    echarts seam` (absorbed B23).
 3. Verification (D5) + owner A/B; DoD audit. Commit: foldable.
@@ -58,3 +60,48 @@ Chart-ready stays dominated by data + badge logos (B20).
       zoom/pan trailing unchanged (018 A2).
 - [ ] `npx svelte-check` 0 errors on the seam; cookie probe clean.
 - [ ] 019's audit note amended to the lockfile mechanism; vendored files gone.
+
+## As-built — step 1 (2026-09-29, commit 85a15d0)
+
+What happened, in the step's order: `npm install --save-exact
+echarts@5.6.0 echarts-gl@2.1.0` (package.json `dependencies`, lockfile
+integrity hashes — D1/D3; single echarts/zrender instance, claygl 1.3.0
+alongside). New seam module `src/lib/echarts.ts` imports
+`echarts/core` + the probe's exact feature set (custom/line/scatter +
+grid/tooltip/inside-zoom + canvas) and `use()`s them; `charts.ts`
+swaps `declare const echarts: any` for `import { echarts } from
+"./echarts"` (every `echarts.*` call site untouched); `gl.ts`'s
+script-inject becomes `import("echarts-gl")` with the same
+promise-cached `Promise<boolean>` signature, so `render3DPanel`
+(whose `.then` keeps the #468 init order) is untouched. `App.svelte`'s
+`window.echarts` boot check + the `echartsFatal` CDN branch went away
+with the global (the 030 B23 resolution's consequence — the step text
+didn't itemize them); the static-shell comment's "~1 MB echarts
+download" wording follows the tag out of `index.html`. Both vendored
+files `git rm`'d (public/js/ is gone entirely). One addition the step
+text didn't name: `src/echarts-gl.d.ts` — echarts-gl 2.1.0 ships no
+usable ESM types and nothing consumes its exports (side-effect import
+only), so a bare `declare module "echarts-gl";` keeps tsc strict-clean
+without a types-only devDependency.
+
+Measured (vite 8/rolldown build, the repo's minify — not the probe's
+plain vite): GL chunk 628.23 kB / **175.46 KB gz, lazy** (vendored:
+639,846 B / 175 KB gz — D2's "~unchanged, as a dynamic-import chunk"
+now measured for real; the probe never installed echarts-gl, so this
+was extrapolated until today). Eager JS 663.33 kB / **222.06 KB gz**
+(+ a 0.15 KB runtime chunk) vs the DoD's ≈215 from ~378 — the +7 KB
+is echarts-gl's static `echarts/lib/...` imports (DatasetComponent and
+friends) becoming shared modules the eager path carries; within "≈",
+flagged for the step-3 DoD audit. Verified `echarts/lib/echarts`
+re-exports the same core `echarts/core` exposes (GL registration lands
+on the shared registry) and that `use()` dedupes by installer
+reference, so the GL chunk's default CanvasRenderer/labelLayout
+re-registration is a no-op.
+
+Verification: `npm test` 180 passed untouched; `npx tsc --noEmit`
+clean; `npm run build` clean; headless-Chromium CDP smoke over a
+static serve of `dist/` (scratch probe /tmp/opencode/040-smoke.mjs):
+2D renders 153 models, wheel/pan/dblclick dispatch without error,
+3D pill loads the lazy chunk (performance entry confirms) and renders
+147 models · 22 on the frontier with crowns, zero console errors or
+exceptions; screenshot reviewed.
