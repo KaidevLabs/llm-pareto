@@ -11,6 +11,7 @@ staging during the session).
 | # | amendment | rationale |
 |---|-----------|-----------|
 | D1′ | **Single variable-font file** — one `public/fonts/inter-var.woff2` (48,256 B) with a single `@font-face` `font-weight: 400 700`, instead of D1's four per-weight static files | Measured in step 1: Google's css2 serves the same gstatic `inter v20` file (variable font, `fvar` wght 100–900) for all four weights — the browser already fetches one 48 KB file today; four duplicate files would cost 193 KB in git and ~145 KB on the wire (3× today's). Owner picked single file 2026-09-17 |
+| D3′ | **echarts byte-pin → lockfile pinning** — echarts 5.6.0 (+ echarts-gl 2.1.0) move from `public/js/` vendored files to exact-pinned npm `dependencies` (package-lock integrity hashes), treeshaken into the app bundle; both vendored files deleted | Plan 040 D1/D2 (2026-09-29): same supply-chain guarantee, amended mechanism; still zero runtime third parties (bundled = self-hosted); −50% eager JS and the parse-blocking body-end script gone (040's measured table) |
 
 The page makes three external runtime requests today: Google Fonts Inter
 (`index.html` L8–10) and ECharts 5.6.0 from jsdelivr (`index.html:393`). After

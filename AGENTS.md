@@ -5,7 +5,7 @@ LMArena frontier models ranked by quality (Elo) against OpenRouter pricing, Pare
 ## Commands
 
 - Data update: `python3 update.py` — fetches both sources, joins, validates; exits non-zero on any anomaly. A failed run is never committed.
-- Front end (node ≥22): `npm ci` once; `npm run dev` (vite dev server, serves `public/data` + `public/js` at root); `npm run build` (vite → `dist/`, gitignored); `npm test` (vitest); `npx tsc --noEmit` (types; `.svelte` files need svelte-check, deliberately not wired — vitest is the gate).
+- Front end (node ≥22): `npm ci` once; `npm run dev` (vite dev server, serves `public/data` at root); `npm run build` (vite → `dist/`, gitignored); `npm test` (vitest); `npx tsc --noEmit` (types; `.svelte` files need svelte-check, deliberately not wired — vitest is the gate).
 - Deploy: push to main → the CF git-integration build runs `npm ci && npm run build && npx wrangler deploy` and ships `dist/`. Manual fallback: `npm run build && npx wrangler deploy` from the repo root (`rm -rf public/.wrangler` first, #440).
 
 ## Testing
@@ -51,7 +51,8 @@ LMArena frontier models ranked by quality (Elo) against OpenRouter pricing, Pare
   item → plan → what-it-fixes table.
 - Cookieless (plan 020, settled 2026-09-17): the site sets no cookies, so
   no GDPR consent mechanism is required — and must stay that way. Rules:
-  no runtime third parties (019 vendored echarts + self-hosted Inter);
+  no runtime third parties (npm echarts bundled — 019 → 040 lockfile
+  pinning — plus self-hosted Inter);
   front-end code never reaches for `document.cookie`/`localStorage`/
   `sessionStorage`/`IndexedDB` (grep `src/` + `index.html` before commit);
   CF zone features that can set cookies (challenge actions → `__cf_bm`,
