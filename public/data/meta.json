@@ -1,21 +1,21 @@
 {
- "fetched_at": "2026-09-22T21:09:00Z",
+ "fetched_at": "2026-09-29T10:44:25Z",
  "sources": {
   "arena": {
    "url": "https://lmarena.ai/leaderboard/text",
-   "entries": 402
+   "entries": 409
   },
   "openrouter": {
    "url": "https://openrouter.ai/api/v1/models",
-   "models": 364
+   "models": 369
   }
  },
  "join": {
-  "combined": 153,
-  "unmatched_arena": 194,
-  "unmatched_openrouter": 211,
+  "combined": 159,
+  "unmatched_arena": 195,
+  "unmatched_openrouter": 210,
   "by_method": {
-   "exact": 161,
+   "exact": 167,
    "override": 1,
    "prefix-variant": 10,
    "prefix-base": 30,
@@ -23,17 +23,12 @@
   },
   "variants_collapsed": 40,
   "collisions": [
-   "ling-3-0-flash-vl: inclusionai/ling-3.0-flash-vl vs inclusionai/ling-3.0-flash-vl:free",
-   "nex-n2-5-mini: nex-agi/nex-n2.5-mini vs nex-agi/nex-n2.5-mini:free",
-   "nex-n2-5-pro: nex-agi/nex-n2.5-pro vs nex-agi/nex-n2.5-pro:free",
-   "ling-3-0-flash-fin: inclusionai/ling-3.0-flash-fin vs inclusionai/ling-3.0-flash-fin:free",
    "qwen3-8-27b: qwen/qwen3.8-27b vs qwen/qwen3.8-27b:free",
    "nemotron-3-5-lightning: nvidia/nemotron-3.5-lightning vs nvidia/nemotron-3.5-lightning:free",
    "inkling-small: thinkingmachines/inkling-small vs thinkingmachines/inkling-small:free",
    "laguna-s-2-1: poolside/laguna-s-2.1 vs poolside/laguna-s-2.1:free",
    "inkling: thinkingmachines/inkling vs thinkingmachines/inkling:free",
    "laguna-xs-2-1: poolside/laguna-xs-2.1 vs poolside/laguna-xs-2.1:free",
-   "glm-5-2: z-ai/glm-5.2 vs z-ai/glm-5.2:free",
    "nemotron-3-5-content-safety: nvidia/nemotron-3.5-content-safety vs nvidia/nemotron-3.5-content-safety:free",
    "nemotron-3-ultra-550b-a55b: nvidia/nemotron-3-ultra-550b-a55b vs nvidia/nemotron-3-ultra-550b-a55b:free",
    "deepseek-v4-pro: deepseek/deepseek-v4-pro-0813 vs deepseek/deepseek-v4-pro",
@@ -55,11 +50,12 @@
    "qwen-plus: qwen/qwen-plus-2025-07-28 vs qwen/qwen-plus",
    "o3-mini: openai/o3-mini-high vs openai/o3-mini",
    "deepseek-r1: deepseek/deepseek-r1-0528 vs deepseek/deepseek-r1",
+   "mistral-large: mistralai/mistral-large-2512 vs mistralai/mistral-large-2407",
    "gpt-4o: openai/gpt-4o-2024-11-20 vs openai/gpt-4o-2024-08-06",
    "gpt-4o-mini: openai/gpt-4o-mini vs openai/gpt-4o-mini-2024-07-18",
    "gpt-4o: openai/gpt-4o-2024-11-20 vs openai/gpt-4o",
    "gpt-4o: openai/gpt-4o vs openai/gpt-4o-2024-05-13",
-   "mistral-large: mistralai/mistral-large-2407 vs mistralai/mistral-large",
+   "mistral-large: mistralai/mistral-large-2512 vs mistralai/mistral-large",
    "auto: openrouter/auto-beta vs openrouter/auto",
    "gpt-3-5-turbo: openai/gpt-3.5-turbo-0613 vs openai/gpt-3.5-turbo"
   ],
@@ -101,14 +97,14 @@
    "endpoints_api": "https://openrouter.ai/api/v1/models/{or_id}/endpoints",
    "model_page": "https://openrouter.ai/{or_id}"
   },
-  "models": 153,
-  "endpoints": 793,
+  "models": 159,
+  "endpoints": 867,
   "stats": {
-   "models_with_stats": 152,
-   "endpoints_with_stats": 748
+   "models_with_stats": 158,
+   "endpoints_with_stats": 820
   },
-  "joined_page_endpoints": 802,
+  "joined_page_endpoints": 875,
   "page_endpoints_unjoined": 0,
-  "duplicates_merged": 9
+  "duplicates_merged": 8
  }
 }
