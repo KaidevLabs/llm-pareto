@@ -1,5 +1,23 @@
 [
  {
+  "id": "openai/gpt-6.1-sol-pro",
+  "name": "OpenAI: GPT-6.1 Sol Pro",
+  "org": "openai",
+  "price_in_per_m": 2.0,
+  "price_out_per_m": 10.0,
+  "vision": true,
+  "context_length": 1050000
+ },
+ {
+  "id": "openai/gpt-6.1-sol",
+  "name": "OpenAI: GPT-6.1 Sol",
+  "org": "openai",
+  "price_in_per_m": 2.0,
+  "price_out_per_m": 10.0,
+  "vision": true,
+  "context_length": 1050000
+ },
+ {
   "id": "anthropic/claude-sonnet-5.5",
   "name": "Anthropic: Claude Sonnet 5.5",
   "org": "anthropic",
@@ -471,7 +489,7 @@
   "id": "qwen/qwen3.8-27b",
   "name": "Qwen: Qwen3.8 27B",
   "org": "qwen",
-  "price_in_per_m": 0.0428,
+  "price_in_per_m": 0.0249,
   "price_out_per_m": 4.4,
   "vision": true,
   "context_length": 1000000
@@ -534,8 +552,8 @@
   "id": "deepseek/deepseek-v4-pro-0813",
   "name": "DeepSeek: DeepSeek V4 Pro 0813",
   "org": "deepseek",
-  "price_in_per_m": 0.48,
-  "price_out_per_m": 4.2,
+  "price_in_per_m": 0.3999,
+  "price_out_per_m": 3.49,
   "vision": false,
   "context_length": 1048576
  },
@@ -849,8 +867,8 @@
   "id": "tencent/hy3",
   "name": "Tencent: Hy3",
   "org": "tencent",
-  "price_in_per_m": 0.132,
-  "price_out_per_m": 0.528,
+  "price_in_per_m": 0.0825,
+  "price_out_per_m": 0.33,
   "vision": false,
   "context_length": 262144
  },
@@ -930,7 +948,7 @@
   "id": "z-ai/glm-5.2",
   "name": "Z.ai: GLM 5.2",
   "org": "z-ai",
-  "price_in_per_m": 0.1949,
+  "price_in_per_m": 0.2339,
   "price_out_per_m": 4.4,
   "vision": false,
   "context_length": 1048576
@@ -1182,8 +1200,8 @@
   "id": "deepseek/deepseek-v4-pro",
   "name": "DeepSeek: DeepSeek V4 Pro 0423",
   "org": "deepseek",
-  "price_in_per_m": 0.95526,
-  "price_out_per_m": 1.91052,
+  "price_in_per_m": 0.927768,
+  "price_out_per_m": 1.855536,
   "vision": false,
   "context_length": 1048576
  },
@@ -1191,8 +1209,8 @@
   "id": "deepseek/deepseek-v4-flash",
   "name": "DeepSeek: DeepSeek V4 Flash 0423",
   "org": "deepseek",
-  "price_in_per_m": 0.14,
-  "price_out_per_m": 0.28,
+  "price_in_per_m": 0.0763,
+  "price_out_per_m": 0.1526,
   "vision": false,
   "context_length": 1048576
  },
@@ -1263,8 +1281,8 @@
   "id": "z-ai/glm-5.1",
   "name": "Z.ai: GLM 5.1",
   "org": "z-ai",
-  "price_in_per_m": 1.4,
-  "price_out_per_m": 4.4,
+  "price_in_per_m": 0.9646,
+  "price_out_per_m": 3.0316,
   "vision": false,
   "context_length": 204800
  },
