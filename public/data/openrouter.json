@@ -471,7 +471,7 @@
   "id": "qwen/qwen3.8-27b",
   "name": "Qwen: Qwen3.8 27B",
   "org": "qwen",
-  "price_in_per_m": 0.0528,
+  "price_in_per_m": 0.0428,
   "price_out_per_m": 4.4,
   "vision": true,
   "context_length": 1000000
@@ -564,7 +564,7 @@
   "price_in_per_m": 0.06,
   "price_out_per_m": 0.16,
   "vision": false,
-  "context_length": 1000000
+  "context_length": 262144
  },
  {
   "id": "nvidia/nemotron-3.5-lightning:free",
@@ -2595,8 +2595,8 @@
   "id": "qwen/qwen3-30b-a3b",
   "name": "Qwen: Qwen3 30B A3B",
   "org": "qwen",
-  "price_in_per_m": 0.13,
-  "price_out_per_m": 0.52,
+  "price_in_per_m": 0.12,
+  "price_out_per_m": 0.5,
   "vision": false,
   "context_length": 131072
  },
