@@ -399,8 +399,8 @@
   "id": "tencent/hy4-preview",
   "name": "Tencent: Hy4 preview",
   "org": "tencent",
-  "price_in_per_m": 0.834,
-  "price_out_per_m": 2.501,
+  "price_in_per_m": 0.7506,
+  "price_out_per_m": 2.2509,
   "vision": false,
   "context_length": 1048576
  },
@@ -867,8 +867,8 @@
   "id": "tencent/hy3",
   "name": "Tencent: Hy3",
   "org": "tencent",
-  "price_in_per_m": 0.132,
-  "price_out_per_m": 0.528,
+  "price_in_per_m": 0.0825,
+  "price_out_per_m": 0.33,
   "vision": false,
   "context_length": 262144
  },
@@ -948,7 +948,7 @@
   "id": "z-ai/glm-5.2",
   "name": "Z.ai: GLM 5.2",
   "org": "z-ai",
-  "price_in_per_m": 0.41,
+  "price_in_per_m": 0.432,
   "price_out_per_m": 3.99,
   "vision": false,
   "context_length": 1048576
@@ -1209,8 +1209,8 @@
   "id": "deepseek/deepseek-v4-flash",
   "name": "DeepSeek: DeepSeek V4 Flash 0423",
   "org": "deepseek",
-  "price_in_per_m": 0.08092,
-  "price_out_per_m": 0.16184,
+  "price_in_per_m": 0.07854,
+  "price_out_per_m": 0.15708,
   "vision": false,
   "context_length": 1048576
  },
@@ -2613,8 +2613,8 @@
   "id": "qwen/qwen3-30b-a3b",
   "name": "Qwen: Qwen3 30B A3B",
   "org": "qwen",
-  "price_in_per_m": 0.13,
-  "price_out_per_m": 0.52,
+  "price_in_per_m": 0.12,
+  "price_out_per_m": 0.5,
   "vision": false,
   "context_length": 131072
  },
