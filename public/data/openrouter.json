@@ -429,7 +429,7 @@
   "price_in_per_m": 0.15,
   "price_out_per_m": 0.5,
   "vision": true,
-  "context_length": 1310720
+  "context_length": 1048576
  },
  {
   "id": "meta/muse-spark-1.2-contributor",
@@ -483,14 +483,14 @@
   "price_in_per_m": 1.4,
   "price_out_per_m": 4.4,
   "vision": false,
-  "context_length": 1310720
+  "context_length": 1048576
  },
  {
   "id": "qwen/qwen3.8-27b",
   "name": "Qwen: Qwen3.8 27B",
   "org": "qwen",
-  "price_in_per_m": 0.0249,
-  "price_out_per_m": 4.4,
+  "price_in_per_m": 0.42,
+  "price_out_per_m": 3.0,
   "vision": true,
   "context_length": 1000000
  },
@@ -552,8 +552,8 @@
   "id": "deepseek/deepseek-v4-pro-0813",
   "name": "DeepSeek: DeepSeek V4 Pro 0813",
   "org": "deepseek",
-  "price_in_per_m": 0.3999,
-  "price_out_per_m": 3.49,
+  "price_in_per_m": 0.66,
+  "price_out_per_m": 1.98,
   "vision": false,
   "context_length": 1048576
  },
@@ -615,8 +615,8 @@
   "id": "meta/muse-glimmer-30b",
   "name": "Meta: Muse Glimmer 30B",
   "org": "meta",
-  "price_in_per_m": 0.3,
-  "price_out_per_m": 1.2,
+  "price_in_per_m": 0.35,
+  "price_out_per_m": 1.5,
   "vision": true,
   "context_length": 131072
  },
@@ -636,7 +636,7 @@
   "price_in_per_m": 0.018,
   "price_out_per_m": 0.32,
   "vision": false,
-  "context_length": 1310720
+  "context_length": 1048576
  },
  {
   "id": "thinkingmachines/inkling-small",
@@ -867,8 +867,8 @@
   "id": "tencent/hy3",
   "name": "Tencent: Hy3",
   "org": "tencent",
-  "price_in_per_m": 0.0825,
-  "price_out_per_m": 0.33,
+  "price_in_per_m": 0.132,
+  "price_out_per_m": 0.528,
   "vision": false,
   "context_length": 262144
  },
@@ -948,8 +948,8 @@
   "id": "z-ai/glm-5.2",
   "name": "Z.ai: GLM 5.2",
   "org": "z-ai",
-  "price_in_per_m": 0.2339,
-  "price_out_per_m": 4.4,
+  "price_in_per_m": 0.1449,
+  "price_out_per_m": 3.99,
   "vision": false,
   "context_length": 1048576
  },
@@ -1200,8 +1200,8 @@
   "id": "deepseek/deepseek-v4-pro",
   "name": "DeepSeek: DeepSeek V4 Pro 0423",
   "org": "deepseek",
-  "price_in_per_m": 0.927768,
-  "price_out_per_m": 1.855536,
+  "price_in_per_m": 0.95526,
+  "price_out_per_m": 1.91052,
   "vision": false,
   "context_length": 1048576
  },
@@ -1209,8 +1209,8 @@
   "id": "deepseek/deepseek-v4-flash",
   "name": "DeepSeek: DeepSeek V4 Flash 0423",
   "org": "deepseek",
-  "price_in_per_m": 0.0763,
-  "price_out_per_m": 0.1526,
+  "price_in_per_m": 0.14,
+  "price_out_per_m": 0.28,
   "vision": false,
   "context_length": 1048576
  },
@@ -1281,8 +1281,8 @@
   "id": "z-ai/glm-5.1",
   "name": "Z.ai: GLM 5.1",
   "org": "z-ai",
-  "price_in_per_m": 0.9646,
-  "price_out_per_m": 3.0316,
+  "price_in_per_m": 1.4,
+  "price_out_per_m": 4.4,
   "vision": false,
   "context_length": 204800
  },
@@ -1290,8 +1290,8 @@
   "id": "google/gemma-4-26b-a4b-it",
   "name": "Google: Gemma 4 26B A4B ",
   "org": "google",
-  "price_in_per_m": 0.09,
-  "price_out_per_m": 0.3,
+  "price_in_per_m": 0.0765,
+  "price_out_per_m": 0.255,
   "vision": true,
   "context_length": 262144
  },
@@ -2613,8 +2613,8 @@
   "id": "qwen/qwen3-30b-a3b",
   "name": "Qwen: Qwen3 30B A3B",
   "org": "qwen",
-  "price_in_per_m": 0.12,
-  "price_out_per_m": 0.5,
+  "price_in_per_m": 0.13,
+  "price_out_per_m": 0.52,
   "vision": false,
   "context_length": 131072
  },
