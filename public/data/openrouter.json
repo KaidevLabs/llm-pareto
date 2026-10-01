@@ -1,5 +1,23 @@
 [
  {
+  "id": "apodex/apodex-1.1-mini:free",
+  "name": "Apodex: Apodex 1.1 Mini (free)",
+  "org": "apodex",
+  "price_in_per_m": 0.0,
+  "price_out_per_m": 0.0,
+  "vision": false,
+  "context_length": 262144
+ },
+ {
+  "id": "unbiased/pareto-26.10-preview",
+  "name": "Pareto 26.10 Preview",
+  "org": "unbiased",
+  "price_in_per_m": 0.8,
+  "price_out_per_m": 3.2,
+  "vision": true,
+  "context_length": 1048576
+ },
+ {
   "id": "openai/gpt-6.1-sol-pro",
   "name": "OpenAI: GPT-6.1 Sol Pro",
   "org": "openai",
@@ -399,8 +417,8 @@
   "id": "tencent/hy4-preview",
   "name": "Tencent: Hy4 preview",
   "org": "tencent",
-  "price_in_per_m": 0.834,
-  "price_out_per_m": 2.501,
+  "price_in_per_m": 0.7506,
+  "price_out_per_m": 2.2509,
   "vision": false,
   "context_length": 1048576
  },
@@ -759,7 +777,7 @@
   "id": "moonshotai/kimi-k3",
   "name": "MoonshotAI: Kimi K3",
   "org": "moonshotai",
-  "price_in_per_m": 0.6845,
+  "price_in_per_m": 0.6635,
   "price_out_per_m": 10.0,
   "vision": true,
   "context_length": 1048576
@@ -867,8 +885,8 @@
   "id": "tencent/hy3",
   "name": "Tencent: Hy3",
   "org": "tencent",
-  "price_in_per_m": 0.132,
-  "price_out_per_m": 0.528,
+  "price_in_per_m": 0.0825,
+  "price_out_per_m": 0.33,
   "vision": false,
   "context_length": 262144
  },
@@ -948,8 +966,8 @@
   "id": "z-ai/glm-5.2",
   "name": "Z.ai: GLM 5.2",
   "org": "z-ai",
-  "price_in_per_m": 1.4,
-  "price_out_per_m": 4.4,
+  "price_in_per_m": 0.41,
+  "price_out_per_m": 3.99,
   "vision": false,
   "context_length": 1048576
  },
