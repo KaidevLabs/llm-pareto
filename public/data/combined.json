@@ -281,7 +281,7 @@
  {
   "or_id": "moonshotai/kimi-k3",
   "or_name": "MoonshotAI: Kimi K3",
-  "price_in_per_m": 0.28,
+  "price_in_per_m": 0.7118,
   "price_out_per_m": 10.0,
   "vision": true,
   "context_length": 1048576,
@@ -509,8 +509,8 @@
  {
   "or_id": "z-ai/glm-5.3",
   "or_name": "Z.ai: GLM 5.3",
-  "price_in_per_m": 0.2219,
-  "price_out_per_m": 6.34,
+  "price_in_per_m": 0.3,
+  "price_out_per_m": 4.4,
   "vision": false,
   "context_length": 1048576,
   "arena_rank": 26,
@@ -610,8 +610,8 @@
  {
   "or_id": "z-ai/glm-5.2",
   "or_name": "Z.ai: GLM 5.2",
-  "price_in_per_m": 0.3249,
-  "price_out_per_m": 3.99,
+  "price_in_per_m": 1.4,
+  "price_out_per_m": 4.4,
   "vision": false,
   "context_length": 1048576,
   "arena_rank": 32,
@@ -763,7 +763,7 @@
  {
   "or_id": "deepseek/deepseek-v4.1-flash",
   "or_name": "DeepSeek: DeepSeek V4.1 Flash",
-  "price_in_per_m": 0.0177,
+  "price_in_per_m": 0.027,
   "price_out_per_m": 0.6,
   "vision": true,
   "context_length": 1048576,
@@ -991,8 +991,8 @@
  {
   "or_id": "deepseek/deepseek-v4-pro",
   "or_name": "DeepSeek: DeepSeek V4 Pro 0423",
-  "price_in_per_m": 0.783,
-  "price_out_per_m": 1.566,
+  "price_in_per_m": 0.23142,
+  "price_out_per_m": 0.46284,
   "vision": false,
   "context_length": 1048576,
   "arena_rank": 54,
@@ -1135,8 +1135,8 @@
   ],
   "arena_context_length": 262144,
   "arena_model_url": "https://huggingface.co/tencent/Hy3",
-  "arena_price_in_per_m": 0.0825,
-  "arena_price_out_per_m": 0.33,
+  "arena_price_in_per_m": 0.132,
+  "arena_price_out_per_m": 0.528,
   "match_method": "exact",
   "match_ratio": null
  },
@@ -1754,8 +1754,8 @@
  {
   "or_id": "deepseek/deepseek-v4-flash",
   "or_name": "DeepSeek: DeepSeek V4 Flash 0423",
-  "price_in_per_m": 0.07854,
-  "price_out_per_m": 0.15708,
+  "price_in_per_m": 0.042,
+  "price_out_per_m": 0.084,
   "vision": false,
   "context_length": 1048576,
   "arena_rank": 96,
@@ -3042,7 +3042,7 @@
   ],
   "arena_context_length": 1000000,
   "arena_model_url": "https://www.minimax.io/news/minimaxm1",
-  "arena_price_in_per_m": 0.4,
+  "arena_price_in_per_m": 0.55,
   "arena_price_out_per_m": 2.2,
   "match_method": "exact",
   "match_ratio": null
@@ -3402,8 +3402,8 @@
  {
   "or_id": "qwen/qwen3-30b-a3b",
   "or_name": "Qwen: Qwen3 30B A3B",
-  "price_in_per_m": 0.13,
-  "price_out_per_m": 0.52,
+  "price_in_per_m": 0.12,
+  "price_out_per_m": 0.5,
   "vision": false,
   "context_length": 131072,
   "arena_rank": 244,

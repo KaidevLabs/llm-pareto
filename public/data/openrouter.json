@@ -282,7 +282,7 @@
   "id": "deepseek/deepseek-v4.1-flash",
   "name": "DeepSeek: DeepSeek V4.1 Flash",
   "org": "deepseek",
-  "price_in_per_m": 0.0177,
+  "price_in_per_m": 0.027,
   "price_out_per_m": 0.6,
   "vision": true,
   "context_length": 1048576
@@ -480,8 +480,8 @@
   "id": "z-ai/glm-5.3",
   "name": "Z.ai: GLM 5.3",
   "org": "z-ai",
-  "price_in_per_m": 0.2219,
-  "price_out_per_m": 6.34,
+  "price_in_per_m": 0.3,
+  "price_out_per_m": 4.4,
   "vision": false,
   "context_length": 1048576
  },
@@ -633,7 +633,7 @@
   "id": "deepseek/deepseek-v4-flash-0731",
   "name": "DeepSeek: DeepSeek V4 Flash 0731",
   "org": "deepseek",
-  "price_in_per_m": 0.0079,
+  "price_in_per_m": 0.0171,
   "price_out_per_m": 1.28,
   "vision": false,
   "context_length": 1048576
@@ -759,7 +759,7 @@
   "id": "moonshotai/kimi-k3",
   "name": "MoonshotAI: Kimi K3",
   "org": "moonshotai",
-  "price_in_per_m": 0.28,
+  "price_in_per_m": 0.7118,
   "price_out_per_m": 10.0,
   "vision": true,
   "context_length": 1048576
@@ -948,8 +948,8 @@
   "id": "z-ai/glm-5.2",
   "name": "Z.ai: GLM 5.2",
   "org": "z-ai",
-  "price_in_per_m": 0.3249,
-  "price_out_per_m": 3.99,
+  "price_in_per_m": 1.4,
+  "price_out_per_m": 4.4,
   "vision": false,
   "context_length": 1048576
  },
@@ -1200,8 +1200,8 @@
   "id": "deepseek/deepseek-v4-pro",
   "name": "DeepSeek: DeepSeek V4 Pro 0423",
   "org": "deepseek",
-  "price_in_per_m": 0.783,
-  "price_out_per_m": 1.566,
+  "price_in_per_m": 0.23142,
+  "price_out_per_m": 0.46284,
   "vision": false,
   "context_length": 1048576
  },
@@ -1209,8 +1209,8 @@
   "id": "deepseek/deepseek-v4-flash",
   "name": "DeepSeek: DeepSeek V4 Flash 0423",
   "org": "deepseek",
-  "price_in_per_m": 0.07854,
-  "price_out_per_m": 0.15708,
+  "price_in_per_m": 0.042,
+  "price_out_per_m": 0.084,
   "vision": false,
   "context_length": 1048576
  },
@@ -2613,8 +2613,8 @@
   "id": "qwen/qwen3-30b-a3b",
   "name": "Qwen: Qwen3 30B A3B",
   "org": "qwen",
-  "price_in_per_m": 0.13,
-  "price_out_per_m": 0.52,
+  "price_in_per_m": 0.12,
+  "price_out_per_m": 0.5,
   "vision": false,
   "context_length": 131072
  },
