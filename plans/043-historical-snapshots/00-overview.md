@@ -1,6 +1,6 @@
 # 043 — Historical snapshots & time playback
 
-> **Status:** OWNER REVIEW — written 2026-10-01 from the 026 exploration
+> **Status:** EXECUTING (step 01/06) — written 2026-10-01 from the 026 exploration
 > (plans/026-historical-snapshots.md), grounded in the post-028 Svelte
 > codebase. Owner decisions settled 2026-10-01 in-session.
 

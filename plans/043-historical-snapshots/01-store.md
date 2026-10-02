@@ -1,4 +1,4 @@
-# Step 01 — Snapshot store in update.py + git backfill — OPEN
+# Step 01 — Snapshot store in update.py + git backfill — IN PROGRESS
 
 ## Spec
 

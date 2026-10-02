@@ -1,0 +1,138 @@
+[
+ {
+  "ts": "2026-09-16T01:13:42Z",
+  "file": "20260916T011342Z.json",
+  "combined": 154,
+  "unmatched_arena": 192,
+  "unmatched_openrouter": 197,
+  "speed": false
+ },
+ {
+  "ts": "2026-09-16T20:12:28Z",
+  "file": "20260916T201228Z.json",
+  "combined": 154,
+  "unmatched_arena": 192,
+  "unmatched_openrouter": 198,
+  "speed": false
+ },
+ {
+  "ts": "2026-09-16T20:28:12Z",
+  "file": "20260916T202812Z.json",
+  "combined": 154,
+  "unmatched_arena": 192,
+  "unmatched_openrouter": 198,
+  "speed": false
+ },
+ {
+  "ts": "2026-09-17T00:26:40Z",
+  "file": "20260917T002640Z.json",
+  "combined": 154,
+  "unmatched_arena": 192,
+  "unmatched_openrouter": 198,
+  "speed": false
+ },
+ {
+  "ts": "2026-09-17T06:39:26Z",
+  "file": "20260917T063926Z.json",
+  "combined": 154,
+  "unmatched_arena": 192,
+  "unmatched_openrouter": 198,
+  "speed": false
+ },
+ {
+  "ts": "2026-09-17T08:45:44Z",
+  "file": "20260917T084544Z.json",
+  "combined": 154,
+  "unmatched_arena": 192,
+  "unmatched_openrouter": 198,
+  "speed": false
+ },
+ {
+  "ts": "2026-09-17T11:17:48Z",
+  "file": "20260917T111748Z.json",
+  "combined": 154,
+  "unmatched_arena": 192,
+  "unmatched_openrouter": 198,
+  "speed": false
+ },
+ {
+  "ts": "2026-09-17T18:32:38Z",
+  "file": "20260917T183238Z.json",
+  "combined": 154,
+  "unmatched_arena": 192,
+  "unmatched_openrouter": 199,
+  "speed": false
+ },
+ {
+  "ts": "2026-09-18T17:10:44Z",
+  "file": "20260918T171044Z.json",
+  "combined": 154,
+  "unmatched_arena": 192,
+  "unmatched_openrouter": 199,
+  "speed": false
+ },
+ {
+  "ts": "2026-09-18T20:00:27Z",
+  "file": "20260918T200027Z.json",
+  "combined": 154,
+  "unmatched_arena": 192,
+  "unmatched_openrouter": 200,
+  "speed": false
+ },
+ {
+  "ts": "2026-09-19T00:58:59Z",
+  "file": "20260919T005859Z.json",
+  "combined": 154,
+  "unmatched_arena": 192,
+  "unmatched_openrouter": 200,
+  "speed": false
+ },
+ {
+  "ts": "2026-09-19T06:37:52Z",
+  "file": "20260919T063752Z.json",
+  "combined": 154,
+  "unmatched_arena": 192,
+  "unmatched_openrouter": 201,
+  "speed": false
+ },
+ {
+  "ts": "2026-09-20T01:06:28Z",
+  "file": "20260920T010628Z.json",
+  "combined": 154,
+  "unmatched_arena": 192,
+  "unmatched_openrouter": 201,
+  "speed": false
+ },
+ {
+  "ts": "2026-09-20T06:38:02Z",
+  "file": "20260920T063802Z.json",
+  "combined": 154,
+  "unmatched_arena": 192,
+  "unmatched_openrouter": 200,
+  "speed": false
+ },
+ {
+  "ts": "2026-09-22T21:09:00Z",
+  "file": "20260922T210900Z.json",
+  "combined": 153,
+  "unmatched_arena": 194,
+  "unmatched_openrouter": 211,
+  "speed": false
+ },
+ {
+  "ts": "2026-09-29T10:44:25Z",
+  "file": "20260929T104425Z.json",
+  "combined": 159,
+  "unmatched_arena": 195,
+  "unmatched_openrouter": 210,
+  "speed": false
+ },
+ {
+  "ts": "2026-10-01T20:49:35Z",
+  "file": "20261001T204935Z.json",
+  "combined": 159,
+  "unmatched_arena": 196,
+  "unmatched_openrouter": 214,
+  "speed": true
+ }
+]

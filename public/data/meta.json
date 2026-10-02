@@ -1,19 +1,19 @@
 {
- "fetched_at": "2026-09-29T10:44:25Z",
+ "fetched_at": "2026-10-01T20:49:35Z",
  "sources": {
   "arena": {
    "url": "https://lmarena.ai/leaderboard/text",
-   "entries": 409
+   "entries": 410
   },
   "openrouter": {
    "url": "https://openrouter.ai/api/v1/models",
-   "models": 369
+   "models": 373
   }
  },
  "join": {
   "combined": 159,
-  "unmatched_arena": 195,
-  "unmatched_openrouter": 210,
+  "unmatched_arena": 196,
+  "unmatched_openrouter": 214,
   "by_method": {
    "exact": 167,
    "override": 1,
@@ -23,6 +23,7 @@
   },
   "variants_collapsed": 40,
   "collisions": [
+   "pareto: unbiased/pareto-26.10-preview vs unbiased/pareto",
    "qwen3-8-27b: qwen/qwen3.8-27b vs qwen/qwen3.8-27b:free",
    "nemotron-3-5-lightning: nvidia/nemotron-3.5-lightning vs nvidia/nemotron-3.5-lightning:free",
    "inkling-small: thinkingmachines/inkling-small vs thinkingmachines/inkling-small:free",
@@ -101,7 +102,7 @@
   "endpoints": 867,
   "stats": {
    "models_with_stats": 158,
-   "endpoints_with_stats": 820
+   "endpoints_with_stats": 819
   },
   "joined_page_endpoints": 875,
   "page_endpoints_unjoined": 0,

@@ -12,10 +12,12 @@ See plans/001-arena-pareto.md for the design and settled decisions.
 
 import difflib
 import json
+import math
 import os
 import re
 import statistics
 import struct
+import subprocess
 import sys
 import tempfile
 import time
@@ -854,6 +856,216 @@ def write_endpoints(layer, path=ENDPOINTS_PATH):
     return True
 
 
+# -------------------------------------------------------------- history
+
+# The snapshot store (plan 043, A1/A2): every data refresh is kept as an
+# immutable history/<stamp>.json plus the append-only index.json. Snapshots
+# are born immutable and never pruned; git deltas them cheaply.
+HISTORY_DIR = OUT_DIR / "history"
+
+
+def snapshot_stamp(fetched_at):
+    """2026-09-29T06:45:04Z -> 20260929T064504Z (filename-safe, sortable)."""
+    return re.sub(r"[-:]", "", fetched_at)
+
+
+# The front-end speedOf floor (023 D2): an endpoint counts for the speed
+# map only with p50_throughput > 0 and request_count >= 30 — the snapshot
+# must surface exactly the values the site computes from endpoints.json.
+SPEED_MIN_REQUESTS = 30
+
+
+def speed_map(provider_layer):
+    """or_id -> {p50_throughput, request_count} from the joined p50 stats:
+    the median p50 throughput over the model's eligible endpoints plus
+    their summed request_count — the same values the front-end's speedOf
+    surfaces (023 D2). Models without eligible stats are omitted; bounded
+    ~2-4 KB per snapshot (043 A6)."""
+    out = {}
+    for or_id, entries in provider_layer.items():
+        vals = []
+        rc = 0
+        for e in entries:
+            s = e.get("stats")
+            if not isinstance(s, dict):
+                continue
+            t = s.get("p50_throughput")
+            c = s.get("request_count") or 0
+            if (
+                isinstance(t, (int, float))
+                and t > 0
+                and math.isfinite(t)
+                and c >= SPEED_MIN_REQUESTS
+            ):
+                vals.append(t)
+                rc += c
+        if vals:
+            out[or_id] = {
+                "p50_throughput": statistics.median(vals),
+                "request_count": rc,
+            }
+    return out
+
+
+def _load_history_index(index_path):
+    """The append-only snapshot index (ts-ascending list of entries); a
+    missing file is an empty store. A corrupt index is a hard error —
+    repo state, like overrides.json."""
+    if not index_path.exists():
+        return []
+    try:
+        index = json.loads(index_path.read_text())
+    except Exception as e:
+        die(f"history: bad index.json: {e}")
+    if not isinstance(index, list) or not all(
+        isinstance(e, dict) and isinstance(e.get("ts"), str) for e in index
+    ):
+        die("history: index.json must be a list of entries with ts")
+    return index
+
+
+def _join_counts(meta):
+    """The index entry's join counts, fail-fast on a malformed meta."""
+    try:
+        join = meta["join"]
+        return (
+            join["combined"],
+            join["unmatched_arena"],
+            join["unmatched_openrouter"],
+        )
+    except (KeyError, TypeError) as e:
+        die(
+            f"history: meta without join counts for "
+            f"ts={meta.get('fetched_at')!r}: {e!r}"
+        )
+
+
+def store_snapshots(items, history_dir):
+    """The shared snapshot-store path (043 A1/A2). items:
+    [(rows, meta, speed, speed_present), ...]. Each item is ts-deduped —
+    an indexed ts is kept, not duplicated; a new ts writes its immutable
+    file (meta with the logos key stripped) and appends its index entry.
+    The index is rewritten ts-ascending only when something landed.
+    Returns (index, n_written)."""
+    history_dir = Path(history_dir)
+    index = _load_history_index(history_dir / "index.json")
+    n_written = 0
+    for rows, meta, speed, speed_present in items:
+        ts = meta["fetched_at"]
+        if any(e["ts"] == ts for e in index):
+            continue
+        fname = f"{snapshot_stamp(ts)}.json"
+        history_dir.mkdir(parents=True, exist_ok=True)
+        combined, unmatched_arena, unmatched_openrouter = _join_counts(meta)
+        write_json(
+            history_dir / fname,
+            {
+                "ts": ts,
+                "rows": rows,
+                "meta": {k: v for k, v in meta.items() if k != "logos"},
+                "speed": speed,
+            },
+        )
+        index.append(
+            {
+                "ts": ts,
+                "file": fname,
+                "combined": combined,
+                "unmatched_arena": unmatched_arena,
+                "unmatched_openrouter": unmatched_openrouter,
+                "speed": speed_present,
+            }
+        )
+        n_written += 1
+    if n_written:
+        index.sort(key=lambda e: e["ts"])
+        write_json(history_dir / "index.json", index)
+    return index, n_written
+
+
+def write_history(combined, meta, provider_layer, history_dir=HISTORY_DIR):
+    """This run's snapshot (043 A1/A2), the live write path: the run's
+    data is stored only when its ts is not indexed yet — write-only-on-
+    change, like endpoints.json. Prints the outcome."""
+    _, n = store_snapshots(
+        [(combined, meta, speed_map(provider_layer), True)], history_dir
+    )
+    if n == 0:
+        print("  history unchanged")
+        return
+    p = Path(history_dir) / f"{snapshot_stamp(meta['fetched_at'])}.json"
+    print(f"  wrote {p.relative_to(ROOT)} ({p.stat().st_size} bytes)")
+
+
+def _git_show(sha, path):
+    """The blob at <sha>:<path> as raw text (the backfill's only
+    shelling-out seam — tests inject fake payloads instead)."""
+    return subprocess.run(
+        ["git", "show", f"{sha}:{path}"],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=True,
+    ).stdout
+
+
+def git_history_payloads():
+    """[(combined_raw, meta_raw), ...] for every commit that touched
+    public/data/combined.json, oldest -> newest — the raw `git show`
+    JSON texts backfill_history parses."""
+    shas = subprocess.run(
+        ["git", "log", "--format=%H", "--", "public/data/combined.json"],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=True,
+    ).stdout.split()
+    return [
+        (
+            _git_show(sha, "public/data/combined.json"),
+            _git_show(sha, "public/data/meta.json"),
+        )
+        for sha in reversed(shas)
+    ]
+
+
+def backfill_history(payloads, history_dir=HISTORY_DIR):
+    """Rebuild the store from git history (043 A1, B2): every historical
+    data commit becomes a snapshot. Speed is absent in git history (the
+    endpoints.json history is full 2.2 MB payloads — not backfilled), so
+    backfilled snapshots carry speed: {} and the index marks speed: false.
+    Dedups by ts against the existing index, so a re-run heals/rebuilds:
+    a snapshot already indexed by ts is kept, not duplicated. payloads:
+    [(combined_raw, meta_raw), ...] oldest -> newest, the raw `git show`
+    JSON texts. Returns (n_written, n_kept)."""
+    items = []
+    for combined_raw, meta_raw in payloads:
+        try:
+            rows = json.loads(combined_raw)
+            meta = json.loads(meta_raw)
+        except Exception as e:
+            die(f"history: bad git blob: {e}")
+        if not isinstance(meta, dict) or not meta.get("fetched_at"):
+            die("history: git blob meta.json without fetched_at")
+        if not isinstance(rows, list):
+            die(
+                f"history: git blob combined.json is not a list "
+                f"(ts={meta['fetched_at']!r})"
+            )
+        items.append((rows, meta, {}, False))
+    _, n_written = store_snapshots(items, history_dir)
+    n_kept = len(items) - n_written
+    try:
+        shown = str(history_dir.relative_to(ROOT))
+    except ValueError:
+        shown = str(history_dir)
+    print(
+        f"history: backfill — {n_written} new snapshot(s), "
+        f"{n_kept} already indexed -> {shown}/"
+    )
+    return n_written, n_kept
+
+
 # ---------------------------------------------------------------- logos
 
 # logo registry (plan 007, D8): logos.json at repo root maps
@@ -1477,6 +1689,9 @@ def main():
         )
     else:
         print(f"  {ENDPOINTS_PATH.relative_to(ROOT)} unchanged")
+    # history (plan 043): this run's snapshot + the append-only index —
+    # write-only-on-change, after all the other artifacts are written
+    write_history(combined, meta, provider_layer)
 
     print()
     print("match report")
@@ -1509,4 +1724,15 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    args = sys.argv[1:]
+    if args == ["--backfill-history"]:
+        try:
+            payloads = git_history_payloads()
+        except subprocess.CalledProcessError as e:
+            die(f"history: git: {e.stderr.strip() or e}")
+        backfill_history(payloads)
+    elif args:
+        die(f"unexpected arguments: {' '.join(args)} "
+            f"(option: --backfill-history)")
+    else:
+        main()
