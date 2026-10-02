@@ -1,6 +1,6 @@
 # 043 — Historical snapshots & time playback
 
-> **Status:** EXECUTING (step 02/06) — written 2026-10-01 from the 026 exploration
+> **Status:** EXECUTING (step 03/06) — written 2026-10-01 from the 026 exploration
 > (plans/026-historical-snapshots.md), grounded in the post-028 Svelte
 > codebase. Owner decisions settled 2026-10-01 in-session.
 
@@ -65,7 +65,7 @@ downloaded until asked for, and nothing is downloaded twice.
 | Step | File | Depends on | Status | Commit |
 |------|------|------------|--------|--------|
 | 01 | 01-store.md | — | ✅ COMPLETE | 226ac13 |
-| 02 | 02-snapshot-store-client.md | 01 | OPEN | — |
+| 02 | 02-snapshot-store-client.md | 01 | ✅ COMPLETE | 51083d6 |
 | 03 | 03-timeline-2d.md | 02 | OPEN | — |
 | 04 | 04-trails-2d.md | 03 | OPEN | — |
 | 05 | 05-3d-playback.md | 02, 04 | OPEN | — |

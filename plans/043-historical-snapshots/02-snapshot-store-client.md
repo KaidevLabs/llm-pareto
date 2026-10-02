@@ -1,4 +1,36 @@
-# Step 02 — Client snapshot store + playback state — OPEN
+# Step 02 — Client snapshot store + playback state — ✅ COMPLETE (committed 51083d6, 2026-10-02)
+
+## As-built
+
+Implemented exactly per spec via TDD (4 red→green slices: index,
+snapshot cache, showFrame/frameRows/speedAt, play/pause/exit). 22 tests,
+one describe per function; each test re-imports the module fresh
+(`vi.resetModules()` + dynamic import) because the index promise and the
+snapshot cache are module-level by design (per page load).
+
+Design points settled where the spec left room, all pinned by tests:
+
+- Index 404 is a tolerated state, `error` stays null — the
+  `endpoints.svelte.ts` precedent; the time viewer just stays hidden.
+- `loadSnapshot(unknown ts)` rejects fail-fast (`unknown ts: …`) — the
+  index is the only ts→file source.
+- A failed frame load mid-playback pauses and stays on the last good
+  frame (soft, like the index); a failed `showFrame` rejects before any
+  state is touched.
+- `showFrame` mid-playback leaves the ticker running from the new
+  position (the spec only says it sets `active`/`i`).
+- `fps` is read at `play()` start; a mid-playback change applies from the
+  next play.
+- The stop-at-last fires one tick after the last frame lands
+  (characterized in the test).
+- `current` (the shown frame) is `$state`, so the step-03 chart effects
+  re-run on a swap without relying on the paired `i`/`active` mutations.
+
+Verification: `npx vitest run src/lib/snapshots.test.ts` 22/22;
+`npm test` 202/202; `npx tsc --noEmit` clean; 020 grep audit on both new
+files clean (no storage/cookie APIs; only the two spec'd fetches). No
+owner decisions mid-review — the spec's design points above are the
+executor's, flagged at review.
 
 ## Spec
 
