@@ -1,6 +1,6 @@
 # 043 — Historical snapshots & time playback
 
-> **Status:** EXECUTING (step 01/06) — written 2026-10-01 from the 026 exploration
+> **Status:** EXECUTING (step 02/06) — written 2026-10-01 from the 026 exploration
 > (plans/026-historical-snapshots.md), grounded in the post-028 Svelte
 > codebase. Owner decisions settled 2026-10-01 in-session.
 
@@ -64,7 +64,7 @@ downloaded until asked for, and nothing is downloaded twice.
 
 | Step | File | Depends on | Status | Commit |
 |------|------|------------|--------|--------|
-| 01 | 01-store.md | — | OPEN | — |
+| 01 | 01-store.md | — | ✅ COMPLETE | 226ac13 |
 | 02 | 02-snapshot-store-client.md | 01 | OPEN | — |
 | 03 | 03-timeline-2d.md | 02 | OPEN | — |
 | 04 | 04-trails-2d.md | 03 | OPEN | — |
@@ -73,7 +73,7 @@ downloaded until asked for, and nothing is downloaded twice.
 
 ## Definition of done
 
-- [ ] Every data refresh lands a snapshot; nothing pruned; index grows
+- [x] Every data refresh lands a snapshot; nothing pruned; index grows
       append-only (backfill + live run verified idempotent).
 - [ ] Page load fetches `index.json` only; a snapshot is fetched exactly
       once per page load and browser-cached immutable thereafter

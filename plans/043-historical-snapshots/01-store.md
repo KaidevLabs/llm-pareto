@@ -1,4 +1,51 @@
-# Step 01 — Snapshot store in update.py + git backfill — IN PROGRESS
+# Step 01 — Snapshot store in update.py + git backfill — ✅ COMPLETE (committed 226ac13, 2026-10-02)
+
+## As-built (2026-10-02)
+
+Built as specified: the `# history` section in `update.py` after
+`write_endpoints` (`HISTORY_DIR`, `snapshot_stamp`, `speed_map`,
+`store_snapshots`, `write_history`, `backfill_history`,
+`git_history_payloads`/`_git_show`), the `--backfill-history` flag
+(minimal `sys.argv` check, unknown flag dies), the `write_history` call
+at the end of `main()` after the endpoints write, and the D3 gate
+extension in `.github/workflows/update-data.yml` (`+ history/`;
+pathspec verified in a scratch repo — tracked `index.json` fires the
+gate, the existing `git add public/data` stages new snapshots).
+20 tests in `tests/test_history.py`, TDD per declared seam.
+
+Deviations from the spec (all flagged at review, approved by staging):
+
+1. **Index entries always carry an explicit `speed: bool`** (`true`
+   live, `false` backfilled) — uniform schema; the spec lists the 5
+   base fields and says backfill "marks `speed: false`", leaving the
+   live shape open. Step 02's client never needs a `?? true` default.
+2. **`store_snapshots()` is the shared write path, a public seam**;
+   `git_history_payloads()`/`_git_show()` are the only shelling-out,
+   and `backfill_history(payloads)` takes injected raw `git show`
+   texts (the spec's "inject the extraction seam" requirement).
+3. **The no-op check is ts-dedup at any index position** — a superset
+   of the spec's "newest ts equals this run's fetched_at" (the normal
+   case); a clock-rollback edge no-ops instead of re-writing an
+   immutable file.
+4. **Speed map measured ~11 KB** (150/159 models with eligible stats),
+   above the spec's ~2–4 KB estimate; snapshot total ~130 KB. Values
+   kept full for `speedOf` parity — rounding is a later decision if
+   size ever matters.
+
+Owner decisions: the four flagged deviations above were confirmed by
+staging. `staged` 2026-10-02; data artifacts from the verification
+live run (fresh refresh + the 17-snapshot store) staged and committed
+together with the step code (index↔files invariant: a committed
+`index.json` never references uncommitted snapshots).
+
+Verification evidence: 179 python / 180 JS / tsc green; backfill wrote
+16 snapshots = 16 data commits, oldest byte-identical to
+`git show 18c68c5:public/data/combined.json` (154 rows); backfill
+re-run byte-identical (`0 new, 16 kept`); live run's snapshot
+`rows == combined.json`, `meta == meta.json minus logos`, speed map
+byte-identical to an independent `speedOf` mirror of
+`endpoints.json`; same-meta re-run prints `history unchanged`; index
+17 entries, ts-ascending, no dupes.
 
 ## Spec
 
