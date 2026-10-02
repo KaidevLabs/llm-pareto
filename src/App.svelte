@@ -9,6 +9,15 @@
   import { data, boot, loadData } from "./lib/data.svelte";
   import { buildBadges } from "./lib/badges.svelte";
   import { ensureEndpoints } from "./lib/endpoints.svelte";
+  import {
+    loadSnapIndex,
+    enterTime,
+    exit,
+    frameInfo,
+    playback,
+    snapIndex,
+  } from "./lib/snapshots.svelte";
+  import { fmtStamp } from "./lib/format";
   import { ui, type Mode } from "./lib/state.svelte";
   import { seedFromURL, initHistory, notifyChanged } from "./lib/history.svelte";
   import { NOTE_PRICE, NOTE_SPEED, NOTE_3D, resizeVisibleCharts } from "./lib/charts";
@@ -22,11 +31,16 @@
   import OfPanel from "./components/OfPanel.svelte";
   import Details from "./components/Details.svelte";
   import Comparator from "./components/Comparator.svelte";
+  import Timeline from "./components/Timeline.svelte";
   import Footer from "./components/Footer.svelte";
 
   async function bootOnce() {
     await loadData();
     boot.ready = true;
+    // The snapshot index (043 A2): the only history file fetched on page
+    // load — soft failure (no index → no playback offer), the page never
+    // awaits it (the endpoints fetch's non-blocking contract).
+    void loadSnapIndex();
     // Frontier badges build off the critical path (plan 035 D1/D2): the
     // first chart renders fallback letter discs and a landed badge swaps
     // in via the store's reactive reads. The shared endpoints fetch stays
@@ -107,7 +121,14 @@
     <div class="subtitle">Frontier models · LMArena quality vs OpenRouter price · Pareto frontier</div>
   </div>
   {#if data.loaded}
-    <div class="stamp"><b>{data.rows.length}</b> models · updated {data.meta?.fetched_at || "—"}</div>
+    {@const hist = frameInfo()}
+    {#if hist}
+      <!-- Time mode (043 step 03): the frame's ts + a marker instead of
+           the live updated stamp. -->
+      <div class="stamp"><b>{hist.meta.join.combined}</b> models · time view — ⏱ {fmtStamp(hist.ts)}</div>
+    {:else}
+      <div class="stamp"><b>{data.rows.length}</b> models · updated {data.meta?.fetched_at || "—"}</div>
+    {/if}
   {/if}
 </header>
 
@@ -145,6 +166,20 @@
   >
     <span class="diamond">◈</span> 3D
   </Pill>
+  {#if snapIndex.entries.length > 0}
+    <!-- History playback (043 step 03, A4): orthogonal over any surface —
+         on = enter time mode at the newest frame, off = back to live. -->
+    <Pill
+      on={playback.active}
+      title="History: scrub or play through the site's past data snapshots"
+      onclick={() =>
+        playback.active
+          ? exit()
+          : void enterTime(snapIndex.entries.length - 1)}
+    >
+      <span class="diamond">⏱</span> History
+    </Pill>
+  {/if}
   <Pill on={ui.frontier} title="Pareto frontier on/off"
     onclick={() => (ui.frontier = !ui.frontier)}>
     <span class="diamond">◈</span> Pareto frontier
@@ -204,6 +239,9 @@
   {/if}
 
   {#if data.loaded}
+    <!-- Timeline dock (043 step 03): under the chart area, over any view —
+         hidden with no loaded index (the component's own gate). -->
+    <Timeline />
     <!-- Two-model comparator (plan 025 D1): panel section below the chart. -->
     <Comparator />
   {/if}

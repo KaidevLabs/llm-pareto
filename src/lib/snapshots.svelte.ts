@@ -129,13 +129,84 @@ export function speedAt(orId: string): SnapSpeed | null {
 // (cached) and make it current. A failed load rejects before any state is
 // touched — the last shown frame (or live data) stays. Does not touch
 // `playing`: a running ticker keeps stepping from the new position.
+// Monotonic guard (043 step 03 owner A/B "smoother"): a fast scrub issues
+// overlapping loads — only the NEWEST selection may land, a slower older
+// fetch that resolves after it is dropped (no backwards jump).
+let selectSeq = 0;
+
 export async function showFrame(i: number): Promise<void> {
   const e = snapIndex.entries[i];
   if (!e) return;
+  const seq = ++selectSeq;
   const snap = await loadSnapshot(e.ts);
+  if (seq !== selectSeq) return;
   current = snap;
   playback.i = i;
   playback.active = true;
+}
+
+// The pinned 2D domain (043 step 03, the spec's cheap v1): the union of
+// the FIRST and LAST snapshot frame's axis fits stands in for the union
+// over the full snapshot set — monotone-ish by construction (the roster
+// only grows, Elo only climbs, so a mid-history extreme widens a later
+// fit rather than breaking the pin). Both frames load into the same
+// per-page-load cache — a playback that reaches either end pays nothing
+// for the pin. The fit itself is computed at render time by charts.ts
+// (the panel's price semantics and the ratio slider apply). Module
+// $state: the render path re-runs when the pin lands — but every entry
+// path awaits ensurePinned before the first frame swap, so the pin is
+// ready by the time time mode renders.
+let pinFirst = $state<Snapshot | null>(null);
+let pinLast = $state<Snapshot | null>(null);
+let pinPromise: Promise<void> | null = null;
+
+export function ensurePinned(): Promise<void> {
+  const n = snapIndex.entries.length;
+  if (n === 0) return Promise.resolve();
+  if (!pinPromise) {
+    pinPromise = Promise.all([
+      loadSnapshot(snapIndex.entries[0].ts),
+      loadSnapshot(snapIndex.entries[n - 1].ts),
+    ])
+      .then(([first, last]) => {
+        pinFirst = first;
+        pinLast = last;
+      })
+      .catch(() => {
+        // Soft, like the index: a failed pin falls back to the per-frame
+        // fit (no jitter guarantee, no time-mode failure). The retry is
+        // the next entry — a failed frame is not retried mid-session
+        // (the cache keeps the rejection), but the pin itself is.
+        pinPromise = null;
+      });
+  }
+  return pinPromise;
+}
+
+// The rows the 2D render path fits its axes over while playback.active
+// (043 step 03): null until the pin lands.
+export function pinnedRows(): Row[] | null {
+  if (!pinFirst || !pinLast) return null;
+  return pinFirst === pinLast
+    ? pinFirst.rows
+    : pinFirst.rows.concat(pinLast.rows);
+}
+
+// Time-mode entry at frame i: the nav pill, the play button's live start,
+// and the slider all take this path — the pinned domain is loaded before
+// the first frame swap, so no frame ever renders on a per-frame fit and
+// then jumps to the pinned domain.
+export async function enterTime(i: number): Promise<void> {
+  await ensurePinned();
+  await showFrame(i);
+}
+
+// The shown frame's chrome (the header's time-view stamp, the dock
+// readout): its ts plus its meta — null when live.
+export function frameInfo(): { ts: string; meta: Omit<Meta, "logos"> } | null {
+  return playback.active && current
+    ? { ts: current.ts, meta: current.meta }
+    : null;
 }
 
 let timer: ReturnType<typeof setInterval> | null = null;
@@ -158,6 +229,7 @@ async function tick(): Promise<void> {
     pause();
     return;
   }
+  const seq = ++selectSeq;
   let snap: Snapshot;
   try {
     snap = await loadSnapshot(snapIndex.entries[next].ts);
@@ -165,7 +237,9 @@ async function tick(): Promise<void> {
     pause();
     return;
   }
-  if (!playback.playing || playback.i !== next - 1) return;
+  // Same monotonic guard as showFrame: a selection that landed mid-load
+  // (a drag) supersedes this tick — and `playing` covers pause/exit.
+  if (!playback.playing || seq !== selectSeq) return;
   current = snap;
   playback.i = next;
   playback.active = true;
@@ -188,6 +262,9 @@ function prefetch(i: number): void {
 export async function play(): Promise<void> {
   const n = snapIndex.entries.length;
   if (!n || playback.playing) return;
+  // A live start renders frames — the pinned domain must be ready first
+  // (043 step 03); a resume from a paused frame already has it.
+  await ensurePinned();
   if (!playback.active || playback.i >= n - 1) {
     current = null;
     playback.i = -1;

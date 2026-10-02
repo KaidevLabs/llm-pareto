@@ -25,6 +25,7 @@ import { startTour, rafTicker, type Waypoint } from "./tour";
 import { takeAutotour } from "./tourflag.svelte";
 import { ui, type Mode } from "./state.svelte";
 import { data, logoFor } from "./data.svelte";
+import { frameRows, pinnedRows, playback } from "./snapshots.svelte";
 import { store } from "./endpoints.svelte";
 import { panelStatus, type PanelKey } from "./panels.svelte";
 import { badgeFor, fallbackBadge } from "./badges.svelte";
@@ -33,10 +34,26 @@ import type { Row } from "./types";
 export type Pt = { value: number[]; d: Row; spd: Speed | null; vis?: boolean };
 export type Bounds = { x?: object; y?: object };
 
+// The frame-swap tween (043 step 03, owner A/B "always smooth"): while
+// PLAYING the tween fills the WHOLE tick interval and moves at constant
+// speed (linear) — consecutive glides join seamlessly, so any fps reads as
+// one continuous drift instead of a pulse of dashes (a decelerating curve
+// stalls near each target and re-accelerates at every tick boundary).
+// Paused/scrubbing swaps and live filter fades keep the 032 fade (350ms,
+// cubicOut).
+function frameTween(): { duration: number; easing: "linear" | "cubicOut" } {
+  if (playback.active && playback.playing)
+    return { duration: 500 / playback.fps, easing: "linear" };
+  return { duration: 350, easing: "cubicOut" };
+}
+
 // Chart grid insets (single source: axis geometry the y-strip wheel handler
 // needs too) and per-panel zoom windows captured across re-renders (018 A2).
 const GRID = { left: 58, right: 24, top: 26, bottom: 56 };
-const charts: Record<string, EChartsType> = {};
+// Exported: the .tmp/ CDP probes read the live instances through
+// window.__charts (main.ts) — the built bundle exports nothing and the
+// page has no global echarts since 040 (npm bundle).
+export const charts: Record<string, EChartsType> = {};
 const ZOOM: Record<string, { x?: { start: number; end: number }; y?: { start: number; end: number } }> = {};
 // Per-panel frontier arrays (plan 006 D3): the frontier line series carries
 // no row references, so line clicks resolve through this stash — refreshed
@@ -330,8 +347,10 @@ function chartOption(
     // Gesture updates (wheel/drag/ratio slider) must be instant — the default
     // 300ms update animation makes continuous zoom/pan trail the cursor (D9).
     // A filter-only change rides the 032 fade path instead: a merge push
-    // tweens the disqualified bubbles' opacity out (350ms).
-    animationDurationUpdate: fade ? 350 : 0,
+    // tweens the disqualified bubbles' opacity out; in time mode the tween
+    // length follows the tick interval (frameTweenMs).
+    animationDurationUpdate: fade ? frameTween().duration : 0,
+    animationEasingUpdate: fade ? frameTween().easing : undefined,
     grid: GRID,
     // Manual gesture model (D9, 018 A3/A4): native inside-dataZoom gestures
     // are off (the x/y mutex makes a native drag pan x only); wheel = 2D
@@ -717,7 +736,7 @@ export function renderPanel(el: HTMLElement, panelKey: Exclude<PanelKey, "speed"
       speed: (orId: string) => speedOf(orId, store.data),
     },
   };
-  const { pts, skipped } = pointsFor(getPrice, data.rows);
+  const { pts, skipped } = pointsFor(getPrice, frameRows());
   for (const p of pts) p.vis = isVisible(p.d, f);
   const vis = pts.filter((p) => p.vis !== false);
   const frontier = paretoFrontier(vis);
@@ -730,21 +749,32 @@ export function renderPanel(el: HTMLElement, panelKey: Exclude<PanelKey, "speed"
         ])
       : null;
 
-  // Axes are fitted to the VISIBLE set (032 step 3, D4): the window follows
-  // what's actually shown instead of hugging faded data. With spread bars
-  // on, the blend panel's x range also covers the real in/out prices the
-  // bars span. (Supersedes 018 A1/A2's fit-to-all for the filter dimension;
-  // geometry changes still notMerge — the ratio slider keeps its instant rule.)
-  const xvals = vis.map((p) => p.value[0]);
+  // The axis domain: fitted to the VISIBLE set when live (032 step 3, D4);
+  // PINNED to the first/last snapshot frames' union while in time mode
+  // (043 step 03) — no rescale jitter between frames; pan/zoom still
+  // override the window (018 A2). The pinned fit applies this panel's own
+  // price semantics (the ratio slider, the spread bars); filters fade
+  // inside the pinned window rather than resizing it.
+  const pinned = playback.active ? pinnedRows() : null;
+  const fitRows = pinned ?? vis.map((p) => p.d);
+  const xvals = fitRows
+    .map((d) => getPrice(d))
+    .filter((p): p is number => p != null);
   if (isBlend && ui.spread) {
-    for (const p of vis) {
-      if (p.d.price_in_per_m != null && p.d.price_in_per_m > 0) xvals.push(p.d.price_in_per_m);
-      if (p.d.price_out_per_m != null && p.d.price_out_per_m > 0) xvals.push(p.d.price_out_per_m);
+    for (const d of fitRows) {
+      if (d.price_in_per_m != null && d.price_in_per_m > 0)
+        xvals.push(d.price_in_per_m);
+      if (d.price_out_per_m != null && d.price_out_per_m > 0)
+        xvals.push(d.price_out_per_m);
     }
   }
   const bounds = {
     x: fitLog(xvals) || undefined,
-    y: fitLinear(vis.map((p) => p.d.arena_elo).filter((v): v is number => v != null)) || undefined,
+    y: fitLinear(
+      fitRows
+        .map((d) => d.arena_elo)
+        .filter((v): v is number => v != null)
+    ) || undefined,
   };
 
   FRONTIERS[id] = frontier;
@@ -789,7 +819,11 @@ export function renderSpeedPanel(el: HTMLElement) {
 
   // Keep-alive set (032 step 3): all rows with elo+speed stay in the
   // dataset; the visibility predicate only re-tags (D5: families/vision/
-  // thresholds fade, search dims inside the option).
+  // thresholds fade, search dims inside the option). Time mode (043 step
+  // 03): the rows are the shown frame's; the speed axis keeps the LIVE
+  // endpoint speeds — the frame's own speed map joins the 3D trails in
+  // step 05, the speed panel's playback is the plan's out-of-scope future
+  // work.
   const f = {
     ...ui,
     thrCtx: {
@@ -801,7 +835,7 @@ export function renderSpeedPanel(el: HTMLElement) {
   const pts: Pt[] = [];
   let noElo = 0;
   let noSpeed = 0;
-  for (const d of data.rows) {
+  for (const d of frameRows()) {
     if (d.arena_elo == null) {
       noElo++;
       continue;
@@ -816,11 +850,32 @@ export function renderSpeedPanel(el: HTMLElement) {
   const vis = pts.filter((p) => p.vis !== false);
   const frontier = paretoFrontier(vis, true);
 
-  // Axes fitted over the VISIBLE set (032 step 3, D4).
-  const bounds = {
-    x: fitLog(vis.map((p) => p.value[0])) || undefined,
-    y: fitLinear(vis.map((p) => p.d.arena_elo).filter((v): v is number => v != null)) || undefined,
-  };
+  // Axes fitted over the VISIBLE set when live (032 step 3, D4); PINNED to
+  // the first/last frames' union in time mode (043 step 03) — the speed
+  // axis keeps its live-endpoint semantics, the domain just stops moving
+  // between frames.
+  let bounds: Bounds;
+  const pinned = playback.active ? pinnedRows() : null;
+  if (pinned) {
+    const toks: number[] = [];
+    for (const d of pinned) {
+      const s = speedOf(d.or_id, store.data);
+      if (s) toks.push(s.toks);
+    }
+    bounds = {
+      x: fitLog(toks) || undefined,
+      y: fitLinear(
+        pinned
+          .map((d) => d.arena_elo)
+          .filter((v): v is number => v != null)
+      ) || undefined,
+    };
+  } else {
+    bounds = {
+      x: fitLog(vis.map((p) => p.value[0])) || undefined,
+      y: fitLinear(vis.map((p) => p.d.arena_elo).filter((v): v is number => v != null)) || undefined,
+    };
+  }
 
   FRONTIERS[id] = frontier;
   const sig = geomSig();

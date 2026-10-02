@@ -37,6 +37,47 @@ export function esc(s: unknown): string {
   return String(s).replace(/[&<>"]/g, (c) => MAP[c]);
 }
 
+// History timestamps (043 step 03): the ISO-UTC instants the snapshot
+// store writes → the dock readout, the header's time-view stamp, and the
+// sparse tick labels. UTC getters throughout — the instants are UTC and
+// local-timezone drift would shift the tick labels.
+const MONTHS = [
+  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+];
+const p2 = (n: number) => String(n).padStart(2, "0");
+function utcOf(ts: string): Date | null {
+  const d = new Date(ts);
+  return isNaN(d.getTime()) ? null : d;
+}
+
+// The frame readout + the header stamp: "2026-09-16 01:13 UTC".
+export function fmtStamp(ts: string): string {
+  const d = utcOf(ts);
+  if (!d) return ts;
+  return (
+    d.getUTCFullYear() + "-" + p2(d.getUTCMonth() + 1) + "-" + p2(d.getUTCDate()) +
+    " " + p2(d.getUTCHours()) + ":" + p2(d.getUTCMinutes()) + " UTC"
+  );
+}
+
+// Sparse timeline ticks (043 step 03): first/last frames carry day+time
+// ("Sep 16 01:13"); month-boundary marks carry the month ("Oct"). The full
+// ts list lives in the index — the dock stays legible at any history length.
+export function tsDay(ts: string): string {
+  const d = utcOf(ts);
+  if (!d) return ts;
+  return (
+    MONTHS[d.getUTCMonth()] + " " + d.getUTCDate() +
+    " " + p2(d.getUTCHours()) + ":" + p2(d.getUTCMinutes())
+  );
+}
+
+export function tsMonth(ts: string): string {
+  const d = utcOf(ts);
+  return d ? MONTHS[d.getUTCMonth()] : "";
+}
+
 export function median(xs: (number | null | undefined)[]): number | null {
   const v = xs
     .filter((x): x is number => x != null && isFinite(x))

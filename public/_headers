@@ -1,0 +1,16 @@
+# History store (043 A2/A3): snapshot files are content-addressed and
+# never rewritten — cache for a year, immutable. The index is append-only
+# — revalidate often so new snapshots surface.
+#
+# Workers static assets apply ALL matching rules and comma-join a header
+# that appears in two of them, so the index detaches the wildcard rule's
+# Cache-Control with `!` in the SAME block before setting its own — the
+# verified shape (wrangler dev 4.146.0, 2026-10-02): a lone detach block
+# before a second set block gets lost, and a plain second value joins as
+# "…, max-age=60" with the year max-age first and winning the RFC-9111
+# first-max-age rule.
+/data/history/*
+  Cache-Control: public, max-age=31536000, immutable
+/data/history/index.json
+  ! Cache-Control
+  Cache-Control: public, max-age=60

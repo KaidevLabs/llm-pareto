@@ -219,8 +219,15 @@ describe("play / pause", () => {
     // frame 1 is already warm in the cache while frame 0 is shown —
     // the next swap must not wait on a cold fetch
     expect(urls).toContain("./data/history/" + INDEX[1].file);
-    // but frame 2 is not fetched yet (prefetch distance 1)
-    expect(urls).not.toContain("./data/history/" + INDEX[2].file);
+    // 043 step 03: the pinned domain loads the first + last frames at
+    // entry, so with this 3-frame index the last frame (2) is fetched by
+    // the pin, not the prefetch — every frame lands exactly once (shown
+    // 0, prefetched 1, pinned 2), none twice.
+    for (const e of INDEX) {
+      expect(
+        urls.filter((u) => u === "./data/history/" + e.file)
+      ).toHaveLength(1);
+    }
   });
 
   it("the ticker advances one frame per 500/fps ms", async () => {
