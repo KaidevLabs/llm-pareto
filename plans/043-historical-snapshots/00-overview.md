@@ -1,6 +1,6 @@
 # 043 — Historical snapshots & time playback
 
-> **Status:** EXECUTING (step 04/06) — written 2026-10-01 from the 026 exploration
+> **Status:** EXECUTING (step 06/06) — written 2026-10-01 from the 026 exploration
 > (plans/026-historical-snapshots.md), grounded in the post-028 Svelte
 > codebase. Owner decisions settled 2026-10-01 in-session.
 
@@ -74,8 +74,8 @@ newest two). Options: (a) accept, (b) badges in their own series,
 | 01 | 01-store.md | — | ✅ COMPLETE | 226ac13 |
 | 02 | 02-snapshot-store-client.md | 01 | ✅ COMPLETE | 51083d6 |
 | 03 | 03-timeline-2d.md | 02 | ✅ COMPLETE | cdb3c1d |
-| 04 | 04-trails-2d.md | 03 | OPEN | — |
-| 05 | 05-3d-playback.md | 02, 04 | OPEN | — |
+| 04 | 04-trails-2d.md | 03 | ✅ COMPLETE (trails removed per A8; pulse + readout kept) | 92fb951 |
+| 05 | 05-3d-playback.md | 02, 04 | ✅ COMPLETE | 92fb951 |
 | 06 | 06-close.md | all | OPEN | — |
 
 ## Definition of done

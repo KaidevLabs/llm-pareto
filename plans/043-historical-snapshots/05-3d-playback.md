@@ -1,4 +1,15 @@
-# Step 05 — 3D playback — OPEN
+# Step 05 — 3D playback — ✅ COMPLETE (92fb951, 2026-10-02)
+
+> **Execution amendments:** (1) `lines3D` is structurally unusable on our
+> cartesian3D grid — echarts-gl 2.1.0's layout has no cartesian3D branch
+> at all (globe/geo3D/map only; the #468 crash's true cause, re-verified
+> against the 040 bundle) — the owner picked the **dot-chain** rendering:
+> small translucent org-colored spheres per frame position (owner pick,
+> in-session). (2) Frame swaps ride **merge** pushes with the unchanged
+> `grid3D` block stripped — a full notMerge re-sent `viewControl` and
+> reset the user's zoom/rotation every tick (owner bug report, 2026-10-02).
+> (3) The trails' cap is its own top-25 + frontier/picks (the "as 2D"
+> reference went stale when A8 removed the 2D trails).
 
 ## Spec
 
