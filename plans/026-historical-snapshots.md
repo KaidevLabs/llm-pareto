@@ -1,8 +1,8 @@
 # 026 — Historical snapshots & evolution viewer (exploration)
 
-Date: 2026-09-17. **Status: PROPOSED** — parked for owner review. Items
-graduate to `plans/027-…` up as their own plan docs; execution is gated on
-explicit owner approval (021 process).
+Date: 2026-09-17. **Status: SUPERSEDED (2026-10-03) by
+`plans/archive/043-historical-snapshots/`** — H1/H2 graduated to plan 043
+(steps 01–05 executed, closed 2026-10-03); H3 items remain parked here.
 
 Source: owner idea-dump (2026-09-17, preserved verbatim):
 
