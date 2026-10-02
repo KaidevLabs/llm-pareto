@@ -1,4 +1,13 @@
-# Step 04 — Trails + entry/exit highlights (2D) — OPEN
+# Step 04 — Trails + entry/exit highlights (2D) — AMENDED 2026-10-02
+
+> **Owner verdict post-A/B (2026-10-02): the 2D `lines` trails are removed
+> as noise** — they were visible mainly when zoomed, on a handful of
+> models, and read as clutter. What SURVIVES from this step:
+> `frameDiff` (entry/exit by or_id), the frame-swap entry pulse (name-keyed
+> highlight bursts), and the Timeline readout's `+N / −M since previous`.
+> `computeTrails` stays in the module — it is the 3D dot-chain trails'
+> source (step 05). The scatter's `name: or_id` diff keys stay (the pulse
+> dispatches by name).
 
 ## Spec
 

@@ -20,7 +20,7 @@
   import { fmtStamp } from "./lib/format";
   import { ui, type Mode } from "./lib/state.svelte";
   import { seedFromURL, initHistory, notifyChanged } from "./lib/history.svelte";
-  import { NOTE_PRICE, NOTE_SPEED, NOTE_3D, resizeVisibleCharts } from "./lib/charts";
+  import { NOTE_PRICE, NOTE_SPEED, NOTE_3D, NOTE_3D_TIME, resizeVisibleCharts } from "./lib/charts";
   import { setAutotour } from "./lib/tourflag.svelte";
   import Panel from "./components/Panel.svelte";
   import Seg from "./components/Seg.svelte";
@@ -187,7 +187,7 @@
 </nav>
 
 <div class="axis-note">
-  {ui.three3d ? NOTE_3D : ui.mode === "speed" ? NOTE_SPEED : NOTE_PRICE}
+  {ui.three3d ? (playback.active ? NOTE_3D + NOTE_3D_TIME : NOTE_3D) : ui.mode === "speed" ? NOTE_SPEED : NOTE_PRICE}
 </div>
 
 <main>

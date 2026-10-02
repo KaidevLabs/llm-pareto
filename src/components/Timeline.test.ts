@@ -240,6 +240,37 @@ describe("Timeline", () => {
     expect(readout.textContent).toContain("5 unmatched"); // 1 arena + 4 OpenRouter
   });
 
+  it("the readout shows the +E / −E delta against the previous frame", async () => {
+    const m = await fresh();
+    // frame 3 gains a model (org/c enters) — the shared fixture is never
+    // mutated; the override serves the extended roster and the pin caches it
+    fetchMock.mockImplementation(async (url: string) => {
+      if (url === "./data/history/index.json") return ok(INDEX);
+      if (url.endsWith("frame-3.json"))
+        return ok({
+          ...SNAPS[3],
+          rows: [...SNAPS[3].rows, row("org/c", 1700)],
+        });
+      const i = INDEX.findIndex((e) => "./data/history/" + e.file === url);
+      return i >= 0 ? ok(SNAPS[i]) : notOk(404);
+    });
+    m.render(m.Timeline);
+    await m.loadSnapIndex();
+    await waitFor(() => screen.getByText(/4 snapshots/));
+    await m.enterTime(2);
+    await waitFor(() => screen.getByText(/2026-10-01 00:00 UTC/));
+    // the first shown frame has nothing to diff against — no delta line
+    expect(screen.getByText(/unmatched/).textContent).not.toContain(
+      "since previous"
+    );
+    await m.showFrame(3);
+    await waitFor(() =>
+      expect(screen.getByText(/unmatched/).textContent).toContain(
+        "+1 / −0 since previous"
+      )
+    );
+  });
+
   it("a fast scrub: a stale selection never lands after a newer one", async () => {
     const m = await fresh();
     m.render(m.Timeline);

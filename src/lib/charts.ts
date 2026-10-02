@@ -24,11 +24,13 @@ import { loadEchartsGL } from "./gl";
 import { startTour, rafTicker, type Waypoint } from "./tour";
 import { takeAutotour } from "./tourflag.svelte";
 import { ui, type Mode } from "./state.svelte";
+import { resolvedCmps } from "./comparator";
 import { data, logoFor } from "./data.svelte";
-import { frameRows, pinnedRows, playback } from "./snapshots.svelte";
+import { frameRows, pinnedRows, playback, speedAt } from "./snapshots.svelte";
 import { store } from "./endpoints.svelte";
 import { panelStatus, type PanelKey } from "./panels.svelte";
 import { badgeFor, fallbackBadge } from "./badges.svelte";
+import { computeTrails, frameDiff, type Trail } from "./trails";
 import type { Row } from "./types";
 
 export type Pt = { value: number[]; d: Row; spd: Speed | null; vis?: boolean };
@@ -62,11 +64,83 @@ const FRONTIERS: Record<string, Pt[]> = {};
 // Per-panel crown points (027 step 2): the crowns series carries the row
 // refs, this stash backs click resolution + the tour's naming.
 const CROWNS: Record<string, Array<{ kind: "cheap" | "fast" | "elo"; label: string; p: Pt; center: [number, number, number] }>> = {};
+// Frame-swap pulse state (043 step 04): the previous frame's rows and the
+// currently-highlighted point names, per panel. LASTROWS diffs a frame
+// swap against the frame before it (a filter-only re-render sees the same
+// rows — no pulse); PULSED is downplayed on the next swap so an entered
+// point returns to rest after exactly one frame.
+const PULSED: Record<string, string[]> = {};
+const LASTROWS: Record<string, Row[] | null> = {};
+
+// Re-applied per frame swap (the spec's dispatchAction burst): entered
+// points take the emphasis style for one frame, the previous swap's pulse
+// is downplayed. Exits are NOT highlighted — they surface as the Timeline
+// readout's delta count.
+function pulseFrame(id: string, pts: Pt[]) {
+  const chart = charts[id];
+  if (!chart) return;
+  const cur = frameRows();
+  const prev = LASTROWS[id];
+  LASTROWS[id] = cur;
+  const downplay = (names: string[]) => {
+    for (const name of names)
+      chart.dispatchAction({ type: "downplay", seriesName: "models", name });
+  };
+  if (!playback.active) {
+    downplay(PULSED[id] || []);
+    PULSED[id] = [];
+    return;
+  }
+  downplay(PULSED[id] || []);
+  const names: string[] = [];
+  if (prev) {
+    for (const r of frameDiff(prev, cur).entered) {
+      const p = pts.find((p) => p.d.or_id === r.or_id);
+      if (!p || p.vis === false) continue;
+      names.push(r.or_id);
+      chart.dispatchAction({ type: "highlight", seriesName: "models", name: r.or_id });
+    }
+  }
+  PULSED[id] = names;
+}
+
+// Trail rows → chartOption coordinates: the panel's xy mapper per row (a
+// row missing an axis drops its point), org color from the trail's newest
+// row; a trail with fewer than two plottable points isn't a path.
+// 3D dot-chain trail dots (043 step 05): each frame position becomes a
+// small org-colored sphere; the speed coordinate is the frame's own
+// snapshot speed with the live map as fallback (B2/B14). Positions missing
+// an axis (price/elo/speed all null) drop out.
+function trailDots3D(
+  ts: Trail[]
+): Array<{ value: number[]; itemStyle: { color: string } }> {
+  const dots: Array<{ value: number[]; itemStyle: { color: string } }> = [];
+  for (const t of ts) {
+    const color =
+      data.orgColor[orgOf(t.rows[t.rows.length - 1])] || "#64748b";
+    for (let i = 0; i < t.rows.length; i++) {
+      const d = t.rows[i];
+      const price = blendedPrice(d, ui.ratio);
+      const toks = t.speeds[i] ?? speedOf(d.or_id, store.data)?.toks ?? null;
+      if (d.arena_elo == null || price == null || price <= 0 || toks == null)
+        continue;
+      dots.push({
+        value: [Math.log10(price), Math.log10(toks), d.arena_elo],
+        itemStyle: { color: withAlpha(color, 0.35) },
+      });
+    }
+  }
+  return dots;
+}
 
 export const X_SPEED = "output tok/s (p50, 30-min window, log)";
 export const NOTE_PRICE = "wheel: zoom price + Elo (anchored at cursor) · drag: pan (both axes) · double-click or ⤢ fit: reset to full view · click a bubble or the frontier: model details · x: price $/M tokens, log scale (cheaper → left) — General blends in/out at the slider's ratio · y: LMArena Elo (higher = better) · color: organization · bar behind a point: its real price spread (blue = input → amber = output) · top-left = best of both";
 export const NOTE_SPEED = "wheel: zoom speed + Elo (anchored at cursor) · drag: pan (both axes) · double-click or ⤢ fit: reset to full view · click a bubble or the frontier: model details · x: output tok/s, p50 across the model's serving endpoints, log scale (faster → right) · y: LMArena Elo (higher = better) · color: organization · top-right = best of both";
 export const NOTE_3D = "drag: rotate · wheel: zoom · right-drag: pan · rotates slowly when idle · click a sphere: model details · x: price $/M blended at the slider's ratio (log, cheaper → left) · depth: output tok/s (log) · up: LMArena Elo (higher = better) · color: organization · glow = 3-objective Pareto frontier — nothing beats these on price, speed and quality";
+// The 3D note's time-mode sentence (043 step 05): composed by App when
+// playback.active. "As-of" semantics (B14): each snapshot's speed is that
+// run's 30-min window, never averaged across frames.
+export const NOTE_3D_TIME = " · time playback: spheres move through the snapshot frames, dots trace each model's path — every speed value is as-of its own run (backfilled frames use the live speeds)";
 
 function pointsFor(
   getPrice: (d: Row) => number | null,
@@ -256,6 +330,9 @@ function chartOption(
         value: p.value,
         d: d,
         spd: p.spd,
+        // name = or_id: the frame-swap entry pulse (043 step 04) dispatches
+        // highlight/downplay by name, surviving the per-frame data changes.
+        name: d.or_id,
         // "image://" (two slashes) is the ECharts image-symbol prefix —
         // a single "image:" prefix falls through to a rect path and renders
         // nothing (verified 2026-09-16: the badge drew as an empty box).
@@ -422,7 +499,7 @@ function chartOption(
       axisLabel: { color: "#8b98ab", fontSize: 11 },
       splitLine: { lineStyle: { color: "rgba(148,163,184,0.07)" } },
     },
-    series,
+    series, // trails (043 step 04) · spread · frontier · models
   };
 }
 
@@ -778,13 +855,14 @@ export function renderPanel(el: HTMLElement, panelKey: Exclude<PanelKey, "speed"
   };
 
   FRONTIERS[id] = frontier;
-  const sig = geomSig();
+  const sig = geomSig(playback.active ? "time" : "");
   chartPush(
     id,
     el,
     chartOption(axisLabel, pts, frontier, spreadPts, bounds, undefined, GEOM[id] === sig),
     sig
   );
+  pulseFrame(id, pts);
 
   panelStatus[panelKey].badgeHidden = !ui.frontier || frontier.length === 0;
   panelStatus[panelKey].count =
@@ -878,7 +956,7 @@ export function renderSpeedPanel(el: HTMLElement) {
   }
 
   FRONTIERS[id] = frontier;
-  const sig = geomSig();
+  const sig = geomSig(playback.active ? "time" : "");
   chartPush(
     id,
     el,
@@ -893,6 +971,7 @@ export function renderSpeedPanel(el: HTMLElement) {
     ),
     sig
   );
+  pulseFrame(id, pts);
 
   status.badgeHidden = !ui.frontier || frontier.length === 0;
   status.count =
@@ -948,7 +1027,28 @@ export function render3DPanel(el: HTMLElement) {
       charts[id].on("click", (p: any) => onChartClick(id, p));
       bindDrawerClose(charts[id]);
     }
-    charts[id].setOption(scene.option, true);
+    // Frame swaps ride MERGE pushes (043 feedback): a full notMerge rebuild
+    // re-sends grid3D.viewControl and resets the camera — user zoom and
+    // rotation snap back on every tick, and the re-send also kills the
+    // autoRotate idle timer (A7). The scene's series set is stable (all
+    // chrome series always emitted), so a merge only replaces data — the
+    // camera state lives outside the option and is never touched. Sig
+    // changes (ratio slider, data refresh, time-mode entry/exit) keep the
+    // full notMerge rebuild.
+    const sig = geomSig("3d|" + playback.active);
+    const animate = GEOM[id] === sig;
+    GEOM[id] = sig;
+    const opt = scene.option as EChartsOption;
+    if (animate) {
+      // The merge push must NOT carry grid3D: its viewControl block would
+      // re-apply the option defaults (distance 230) on every frame swap —
+      // measured reset 2026-10-02 (c2/c4 of the cam2 probe: merge-only
+      // pushes preserve, full-scene merges reset). Omitting the unchanged
+      // block leaves the live camera state — user zoom/rotation AND the
+      // autoRotate idle timer (A7) — completely untouched.
+      delete (opt as Record<string, unknown>).grid3D;
+    }
+    charts[id].setOption(opt, !animate);
     // `tour=1` autostart (027 A3): the flag is consumed HERE — the first
     // moment the chart instance actually exists (the Panel's effect runs
     // before the async GL load, so an earlier consume would race it).
@@ -984,7 +1084,9 @@ export function tourRunning(): boolean {
 // 3D chart isn't ready (GL still loading / already touring).
 export function startTour3D(): boolean {
   const chart = charts["chart-3d"];
-  if (!chart || tourStop) return false;
+  // 043 step 05: the tour refuses to start while time playback is active —
+  // the camera choreography and the frame swaps would fight.
+  if (!chart || tourStop || playback.active) return false;
   const tour = startTour(chart, {
     waypoints: tourScript(),
     ticker: rafTicker(),
@@ -1090,19 +1192,25 @@ function build3DScene(
   const pts: Pt[] = [];
   let noAxis = 0;
   let noSpeed = 0;
-  for (const d of data.rows) {
+  // Time playback (043 step 05): the rows are the shown frame's; a point's
+  // speed COORDINATE comes from the frame's own speed map (speedAt), a
+  // backfilled frame ({} map) falling back to the live speeds — "as-of"
+  // semantics, B14 (never averaged). The tooltip keeps the live speed's
+  // basis (endpoint median + request count, which a snapshot doesn't carry).
+  for (const d of frameRows()) {
     const price = blendedPrice(d, ui.ratio);
     const s = speedOf(d.or_id, store.data);
+    const snapToks = speedAt(d.or_id)?.p50_throughput ?? null;
     if (d.arena_elo == null || price == null || price <= 0) {
       noAxis++;
       continue;
     }
-    if (!s) {
+    if (!s && snapToks == null) {
       noSpeed++;
       continue;
     }
     pts.push({
-      value: [Math.log10(price), Math.log10(s.toks), d.arena_elo!],
+      value: [Math.log10(price), Math.log10(snapToks ?? s!.toks), d.arena_elo!],
       d,
       spd: s,
       vis: isVisible(d, f),
@@ -1186,21 +1294,20 @@ function build3DScene(
   const mat = (p: Pt) => sphere(p, !searchHit(p.d, ui.search) && ui.search ? 0.25 : 0.75);
 
   const series = [];
-  if (frontier.length) {
-    // the glow (D8): a larger, translucent twin sphere behind each
-    // frontier point — WebGL has no shadowBlur, so the halo is geometry
-    series.push({
-      name: "models-halo",
-      type: "scatter3D",
-      data: frontier.map((p) => ({
-        value: p.value,
-        d: p.d,
-        spd: p.spd,
-        itemStyle: { color: orgCol(p), opacity: 0.16 },
-      })),
-      symbolSize: 22,
-    });
-  }
+  // All chrome series are ALWAYS emitted (empty data when inactive): a
+  // merge setOption cannot remove a series, and the 3D frame swaps ride
+  // merge pushes (render3DPanel) to keep the camera untouched.
+  series.push({
+    name: "models-halo",
+    type: "scatter3D",
+    data: frontier.map((p) => ({
+      value: p.value,
+      d: p.d,
+      spd: p.spd,
+      itemStyle: { color: orgCol(p), opacity: 0.16 },
+    })),
+    symbolSize: 22,
+  });
   series.push({
     name: "models",
     type: "scatter3D",
@@ -1221,62 +1328,86 @@ function build3DScene(
     },
   });
 
-  if (crowns.length) {
-    // Crown chrome per crowned point, three plain-label series (GL labels
-    // are plain text only). GL lessons (found 2026-09-18): symbols are
-    // sphere MESHES — borderColor/borderWidth don't render, so the marker
-    // is a translucent solid sphere (the #468 halo pattern); and
-    // `opacity: 0` culls the point's LABEL too — label carriers must keep
-    // default opacity with a transparent color.
-    series.push({
-      name: "crowns",
-      type: "scatter3D",
-      data: crowns.map((c) => ({
-        value: c.p.value,
-        d: c.p.d,
-        spd: c.p.spd,
-        crown: c.label,
-        itemStyle: { color: withAlpha(c.color, 0.3) },
-      })),
-      symbolSize: 26,
-    });
-    series.push({
-      name: "crowns-glyph",
-      type: "scatter3D",
-      data: crowns.map((c) => ({
-        value: c.p.value,
-        d: c.p.d,
-        spd: c.p.spd,
-        crown: c.label,
-        itemStyle: { color: "rgba(0,0,0,0)" },
-      })),
-      symbolSize: 0.1,
-      label: {
-        show: true,
-        formatter: () => "♛",
-        distance: 14,
-        textStyle: { color: "#ffd166", fontSize: 26, fontWeight: 700 },
-      },
-    });
-    series.push({
-      name: "crowns-name",
-      type: "scatter3D",
-      data: crowns.map((c) => ({
-        value: c.p.value,
-        d: c.p.d,
-        spd: c.p.spd,
-        crown: c.label,
-        itemStyle: { color: "rgba(0,0,0,0)" },
-      })),
-      symbolSize: 0.1,
-      label: {
-        show: true,
-        formatter: (p: any) => p.data.crown,
-        distance: 40,
-        textStyle: { color: "#e2e8f0", fontSize: 11, fontWeight: 700 },
-      },
-    });
+  // Crown chrome per crowned point, three plain-label series (GL labels
+  // are plain text only). GL lessons (found 2026-09-18): symbols are
+  // sphere MESHES — borderColor/borderWidth don't render, so the marker
+  // is a translucent solid sphere (the #468 halo pattern); and
+  // `opacity: 0` culls the point's LABEL too — label carriers must keep
+  // default opacity with a transparent color. Always emitted (empty data
+  // when uncrowned — merge-safe, see the halo note).
+  series.push({
+    name: "crowns",
+    type: "scatter3D",
+    data: crowns.map((c) => ({
+      value: c.p.value,
+      d: c.p.d,
+      spd: c.p.spd,
+      crown: c.label,
+      itemStyle: { color: withAlpha(c.color, 0.3) },
+    })),
+    symbolSize: 26,
+  });
+  series.push({
+    name: "crowns-glyph",
+    type: "scatter3D",
+    data: crowns.map((c) => ({
+      value: c.p.value,
+      d: c.p.d,
+      spd: c.p.spd,
+      crown: c.label,
+      itemStyle: { color: "rgba(0,0,0,0)" },
+    })),
+    symbolSize: 0.1,
+    label: {
+      show: true,
+      formatter: () => "♛",
+      distance: 14,
+      textStyle: { color: "#ffd166", fontSize: 26, fontWeight: 700 },
+    },
+  });
+  series.push({
+    name: "crowns-name",
+    type: "scatter3D",
+    data: crowns.map((c) => ({
+      value: c.p.value,
+      d: c.p.d,
+      spd: c.p.spd,
+      crown: c.label,
+      itemStyle: { color: "rgba(0,0,0,0)" },
+    })),
+    symbolSize: 0.1,
+    label: {
+      show: true,
+      formatter: (p: any) => p.data.crown,
+      distance: 40,
+      textStyle: { color: "#e2e8f0", fontSize: 11, fontWeight: 700 },
+    },
+  });
+
+  // Movement trails (043 step 05, owner pick "dot-chain"): echarts-gl
+  // 2.1.0's lines3D has NO cartesian3D layout branch (globe/geo3D/map only —
+  // the #468 bisection's structural cause, re-verified against the 040
+  // bundle), so a trail renders as a chain of small translucent spheres,
+  // one per frame position, org-colored. Each dot's speed coordinate is
+  // that frame's own snapshot speed, the live map where the frame carries
+  // none (B2/B14 as-of semantics). Same top-N cap as 2D; the CURRENT frame
+  // stays in the wake (the GL sphere doesn't tween — it IS at the head).
+  // Always emitted, merge-safe (see the halo note).
+  let trailDots: Array<{ value: number[]; itemStyle: { color: string } }> = [];
+  if (playback.active) {
+    const keep = new Set(frontier.map((p) => p.d.or_id));
+    const fr = frameRows();
+    const speeds = fr.map((r) => (store.done ? speedOf(r.or_id, store.data) : null));
+    for (const cid of resolvedCmps(ui.cmps, fr, speeds, ui.ratio)) keep.add(cid);
+    trailDots = trailDots3D(computeTrails(playback.i, 25, keep));
   }
+  series.push({
+    name: "trails",
+    type: "scatter3D",
+    silent: true,
+    data: trailDots,
+    symbolSize: 3,
+  });
 
   const option = {
       backgroundColor: "transparent",

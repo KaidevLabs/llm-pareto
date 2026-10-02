@@ -82,6 +82,20 @@ export function loadSnapIndex(): Promise<SnapIndexEntry[]> {
 // load). Keyed by ts; the filename comes from the index entry.
 const cache = new Map<string, Promise<Snapshot>>();
 
+// Resolved payloads, filled alongside the cache when a load settles. The
+// render path cannot peek a Promise, so the trail computation (step 04)
+// reads this sync map instead: a frame fetched, then failed, contributes
+// nothing (the rejection never lands here).
+const vals = new Map<string, Snapshot>();
+
+// Sync peek at a fetched snapshot — null when never fetched or failed.
+// Deliberately NOT reactive: the render effects re-run on playback.i /
+// playback.active changes, and a frame only becomes visible through one of
+// those (its fetch has settled by then).
+export function cachedSnapshot(ts: string): Snapshot | null {
+  return vals.get(ts) ?? null;
+}
+
 export function loadSnapshot(ts: string): Promise<Snapshot> {
   let p = cache.get(ts);
   if (!p) {
@@ -90,6 +104,9 @@ export function loadSnapshot(ts: string): Promise<Snapshot> {
     p = fetch("./data/history/" + file).then((r) => {
       if (!r.ok) throw new Error("HTTP " + r.status);
       return r.json() as Promise<Snapshot>;
+    }).then((snap) => {
+      vals.set(ts, snap);
+      return snap;
     });
     cache.set(ts, p);
   }

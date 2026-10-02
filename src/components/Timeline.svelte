@@ -15,8 +15,11 @@
     pause,
     exit,
     frameInfo,
+    frameRows,
   } from "../lib/snapshots.svelte";
   import { fmtStamp, tsDay, tsMonth } from "../lib/format";
+  import { frameDiff } from "../lib/trails";
+  import type { Row } from "../lib/types";
 
   const n = $derived(snapIndex.entries.length);
 
@@ -70,9 +73,33 @@
       ? "⏱ " + fmtStamp(info.ts) +
         " · " + info.meta.join.combined + " joined · " +
         (info.meta.join.unmatched_arena + info.meta.join.unmatched_openrouter) +
-        " unmatched"
+        " unmatched" +
+        (delta && delta.entered + delta.exited > 0
+          ? " · +" + delta.entered + " / −" + delta.exited + " since previous"
+          : "")
       : "live · " + n + " snapshots"
   );
+
+  // Entry/exit delta (043 step 04): the shown frame diffed against the
+  // frame before it — exited models surface here, not as chart ghosts.
+  // null while live or on the first frame (nothing to diff against).
+  let delta = $state<{ entered: number; exited: number } | null>(null);
+  let prevRows: Row[] | null = null;
+  $effect(() => {
+    const rows = frameRows();
+    if (!playback.active) {
+      prevRows = null;
+      delta = null;
+      return;
+    }
+    delta = prevRows
+      ? {
+          entered: frameDiff(prevRows, rows).entered.length,
+          exited: frameDiff(prevRows, rows).exited.length,
+        }
+      : null;
+    prevRows = rows;
+  });
 
   // Scrub (043 step 03): a drag updates the slider at once, pauses a
   // running playback (dragging while playing pauses — the spec), and takes

@@ -23,6 +23,7 @@ downloaded until asked for, and nothing is downloaded twice.
 | A5 | Full v1 playback: ghost per-frame render + top-25 trails + entry/exit highlights | Owner pick | 2026-10-01 |
 | A6 | Snapshot payload: full combined `rows` + meta (logos stripped) + trimmed per-model speed map | Owner pick on speed; speed history becomes playable at ~2–4 KB/snapshot | 2026-10-01 |
 | A7 | 3D camera: autoRotate keeps running during playback; drag always wins | Previously "not yet specified" in 026 | 2026-10-01 |
+| A8 | **2D movement trails removed** after the step-04 A/B (noise: visible only zoomed, few models); entry pulse + `±N` readout kept; trails live on the 3D showcase only (dot-chains) | Owner A/B verdict 2026-10-02 | 2026-10-02 |
 
 Pending owner decision (step 03 close, 2026-10-02): the frontier
 badge↔circle symbol-type flip recreates its element instantly (echarts
@@ -86,8 +87,8 @@ newest two). Options: (a) accept, (b) badges in their own series,
       (header-verified).
 - [ ] Timeline dock + play pill play 2D and 3D; axes pinned during play;
       filters/search work per-frame.
-- [ ] Trails (top-25 + frontier + picks) and entry/exit deltas visible on
-      2D; trails on 3D.
+- [ ] Entry/exit deltas visible on 2D (pulse + `±N` readout; 2D line
+      trails removed per A8); dot-chain trails on 3D.
 - [ ] Full verification gate green; 020 cookie probe re-run clean.
 - [ ] No storage/cookie APIs introduced (grep audit).
 
