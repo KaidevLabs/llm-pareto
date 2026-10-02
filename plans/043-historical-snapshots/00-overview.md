@@ -1,6 +1,6 @@
 # 043 — Historical snapshots & time playback
 
-> **Status:** EXECUTING (step 03/06) — written 2026-10-01 from the 026 exploration
+> **Status:** EXECUTING (step 04/06) — written 2026-10-01 from the 026 exploration
 > (plans/026-historical-snapshots.md), grounded in the post-028 Svelte
 > codebase. Owner decisions settled 2026-10-01 in-session.
 
@@ -23,6 +23,12 @@ downloaded until asked for, and nothing is downloaded twice.
 | A5 | Full v1 playback: ghost per-frame render + top-25 trails + entry/exit highlights | Owner pick | 2026-10-01 |
 | A6 | Snapshot payload: full combined `rows` + meta (logos stripped) + trimmed per-model speed map | Owner pick on speed; speed history becomes playable at ~2–4 KB/snapshot | 2026-10-01 |
 | A7 | 3D camera: autoRotate keeps running during playback; drag always wins | Previously "not yet specified" in 026 | 2026-10-01 |
+
+Pending owner decision (step 03 close, 2026-10-02): the frontier
+badge↔circle symbol-type flip recreates its element instantly (echarts
+has no tween on that path; 0–2 flips per frame boundary, 13+10 at the
+newest two). Options: (a) accept, (b) badges in their own series,
+(c) circular badges via image-fill. Settles when the owner picks.
 
 ## Current state (evidenced, measured 2026-10-01)
 
@@ -66,7 +72,7 @@ downloaded until asked for, and nothing is downloaded twice.
 |------|------|------------|--------|--------|
 | 01 | 01-store.md | — | ✅ COMPLETE | 226ac13 |
 | 02 | 02-snapshot-store-client.md | 01 | ✅ COMPLETE | 51083d6 |
-| 03 | 03-timeline-2d.md | 02 | OPEN | — |
+| 03 | 03-timeline-2d.md | 02 | ✅ COMPLETE | cdb3c1d |
 | 04 | 04-trails-2d.md | 03 | OPEN | — |
 | 05 | 05-3d-playback.md | 02, 04 | OPEN | — |
 | 06 | 06-close.md | all | OPEN | — |
