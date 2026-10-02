@@ -281,7 +281,7 @@
  {
   "or_id": "moonshotai/kimi-k3",
   "or_name": "MoonshotAI: Kimi K3",
-  "price_in_per_m": 0.6635,
+  "price_in_per_m": 0.3644,
   "price_out_per_m": 10.0,
   "vision": true,
   "context_length": 1048576,
@@ -509,8 +509,8 @@
  {
   "or_id": "z-ai/glm-5.3",
   "or_name": "Z.ai: GLM 5.3",
-  "price_in_per_m": 0.2219,
-  "price_out_per_m": 3.39,
+  "price_in_per_m": 1.4,
+  "price_out_per_m": 4.4,
   "vision": false,
   "context_length": 1048576,
   "arena_rank": 26,
@@ -1118,8 +1118,8 @@
  {
   "or_id": "tencent/hy3",
   "or_name": "Tencent: Hy3",
-  "price_in_per_m": 0.0825,
-  "price_out_per_m": 0.33,
+  "price_in_per_m": 0.132,
+  "price_out_per_m": 0.528,
   "vision": false,
   "context_length": 262144,
   "arena_rank": 62,
@@ -1603,7 +1603,7 @@
  {
   "or_id": "thinkingmachines/inkling",
   "or_name": "Thinking Machines: Inkling",
-  "price_in_per_m": 1.0,
+  "price_in_per_m": 0.95,
   "price_out_per_m": 4.05,
   "vision": true,
   "context_length": 524288,
@@ -1754,8 +1754,8 @@
  {
   "or_id": "deepseek/deepseek-v4-flash",
   "or_name": "DeepSeek: DeepSeek V4 Flash 0423",
-  "price_in_per_m": 0.04186,
-  "price_out_per_m": 0.08372,
+  "price_in_per_m": 0.042,
+  "price_out_per_m": 0.084,
   "vision": false,
   "context_length": 1048576,
   "arena_rank": 96,
@@ -1780,8 +1780,8 @@
  {
   "or_id": "google/gemma-4-26b-a4b-it",
   "or_name": "Google: Gemma 4 26B A4B ",
-  "price_in_per_m": 0.09,
-  "price_out_per_m": 0.3,
+  "price_in_per_m": 0.0765,
+  "price_out_per_m": 0.255,
   "vision": true,
   "context_length": 262144,
   "arena_rank": 97,
@@ -2772,8 +2772,8 @@
  {
   "or_id": "qwen/qwen3-30b-a3b-instruct-2507",
   "or_name": "Qwen: Qwen3 30B A3B Instruct 2507",
-  "price_in_per_m": 0.04815,
-  "price_out_per_m": 0.19305,
+  "price_in_per_m": 0.1,
+  "price_out_per_m": 0.3,
   "vision": false,
   "context_length": 262144,
   "arena_rank": 180,
