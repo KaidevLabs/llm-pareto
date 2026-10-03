@@ -1,4 +1,22 @@
-# Step 02 — Run the walk, write the findings report — OPEN
+# Step 02 — Run the walk, write the findings report — ✅ COMPLETE (awaiting stage)
+
+## As-built
+
+- Report at `docs/reports/044-frontier-walk.md`, all six spec sections
+  present. Every number is pasted from `python3 -m tests.frontier_walk`
+  and the scratch stability probe `.tmp/044_stability.py` (per-snapshot
+  supported sets, champion holds, CI-flip checks, the gemma impossibility
+  inequalities with chord-cross values) — the probe is scratch per the
+  executor rules, not committed.
+- One bug found by the report run, correctly out of this step's scope:
+  `grok-4.20-multi-agent` was speed-critical champion in the 2 latest
+  snapshots (344 tok/s) but lost all rc≥30 endpoints in live data →
+  speed=None → silently drops out of the class. Documented in report §4
+  as a stability finding (speed-coverage churn), not a code fix — the
+  module behaves as specified.
+- No module changes needed; the CLI's CLASSES gates (1450/1470/1500)
+  carried over with one-line justifications now stated in report §3.
+- `python3 -m unittest discover -s tests` green: 198 tests, OK.
 
 ## Spec
 
