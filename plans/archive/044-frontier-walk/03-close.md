@@ -1,4 +1,17 @@
-# Step 03 — Close — OPEN
+# Step 03 — Close — ✅ COMPLETE
+
+## As-built
+
+- Full python suite green at close: 198 tests, OK.
+- DoD audit: all items checked with evidence (report published 70d46aa;
+  gates labeled as analysis parameters in report §3 and absent from the
+  module; no src/site changes in the plan's commit range).
+- Audit found no code defect requiring a mini-fix. The one open finding
+  from the report run — speed-coverage churn silently dropping a champion
+  (grok-4.20-multi-agent) — is documented in report §4/§6 as a graduation
+  candidate, not a module bug (the module behaves as specified).
+- Overview status -> ARCHIVED with the commit history; plan moved to
+  `plans/archive/044-frontier-walk/`.
 
 ## Spec
 

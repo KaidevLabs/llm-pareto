@@ -1,6 +1,9 @@
 # Plan 044 — Frontier walk: objective model selection without a static score
 
-> **Status:** EXECUTING (step 02/3)
+> **Status:** ARCHIVED (2026-10-03). Commits: ab8f6d2 (plan) · f445014 (01
+> plan) · 2deeef1 (01) · 70d46aa (02) · close = the commit carrying this
+> move. Written 2026-10-03; decisions A1–A7 settled in-session the same
+> day.
 
 ## Goal
 
@@ -77,8 +80,8 @@ its own plan only if the report convinces the owner.
 | Step | File | Depends on | Status | Commit |
 |---|---|---|---|---|
 | 01 | `01-walk-module.md` | — | ✅ COMPLETE (2deeef1) | `analysis: frontier-walk module + tests (plan 044 step 01)` |
-| 02 | `02-report.md` | 01 | OPEN | — |
-| 03 | `03-close.md` | 02 | OPEN | — |
+| 02 | `02-report.md` | 01 | ✅ COMPLETE | 70d46aa |
+| 03 | `03-close.md` | 02 | ✅ COMPLETE | close commit |
 
 ## Definition of done
 
@@ -89,13 +92,16 @@ its own plan only if the report convinces the owner.
 - [x] The module's frontier/speed numbers agree with the site's
       (`pareto.ts` frontier logic, `speed.ts` rc>=30 median rule) on current
       data — same 9 frontier points, same toks/s values (step 01 as-built).
-- [ ] Report published at `docs/reports/044-frontier-walk.md` with: walk
+- [x] Report published at `docs/reports/044-frontier-walk.md` with: walk
       table (per-step Elo gain / price multiple / tok/s delta / CI flag),
       supported vs unsupported set, champions for the three task classes,
-      stability summary across the 19 snapshots.
-- [ ] No hand-curated constants: class Elo gates come from the report's
+      stability summary across the 19 snapshots. (step 02, 70d46aa)
+- [x] No hand-curated constants: class Elo gates come from the report's
       own derivation and are labeled as inputs, not as code constants.
-- [ ] No site/front-end changes.
+      (report §3 states each gate with its one-line justification and the
+      A5 caveat; the module embeds none)
+- [x] No site/front-end changes. (`git log ab8f6d2..70d46aa` touches only
+      `tests/`, `docs/reports/`, `plans/`)
 
 ## Not yet specified
 
