@@ -669,7 +669,7 @@
   "id": "deepseek/deepseek-v4-flash-0731",
   "name": "DeepSeek: DeepSeek V4 Flash 0731",
   "org": "deepseek",
-  "price_in_per_m": 0.0051,
+  "price_in_per_m": 0.0171,
   "price_out_per_m": 1.28,
   "vision": false,
   "context_length": 1048576
@@ -1299,8 +1299,8 @@
   "id": "moonshotai/kimi-k2.6",
   "name": "MoonshotAI: Kimi K2.6",
   "org": "moonshotai",
-  "price_in_per_m": 0.43415,
-  "price_out_per_m": 1.828,
+  "price_in_per_m": 0.95,
+  "price_out_per_m": 4.0,
   "vision": true,
   "context_length": 262144
  },
@@ -2433,8 +2433,8 @@
   "id": "qwen/qwen3-30b-a3b-instruct-2507",
   "name": "Qwen: Qwen3 30B A3B Instruct 2507",
   "org": "qwen",
-  "price_in_per_m": 0.1,
-  "price_out_per_m": 0.3,
+  "price_in_per_m": 0.04815,
+  "price_out_per_m": 0.19305,
   "vision": false,
   "context_length": 262144
  },
