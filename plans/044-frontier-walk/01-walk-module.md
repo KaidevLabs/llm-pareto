@@ -1,4 +1,32 @@
-# Step 01 — Frontier-walk module + tests — OPEN
+# Step 01 — Frontier-walk module + tests — ✅ COMPLETE (committed 2deeef1, 2026-10-03)
+
+## As-built
+
+- Module lives at `tests/frontier_walk.py`, imported by the tests as
+  `from tests import frontier_walk` — a plain `import frontier_walk`
+  does not resolve under the suite's dotted-name discovery (`tests/`
+  is not on `sys.path`; py3 namespace-package form works, and matches
+  how `python3 -m unittest tests.test_frontier_walk` addresses it).
+- `speed_map` returns the flat `{or_id: toks}` the spec's seam list
+  states, not update.py's `{p50_throughput, request_count}` bundle —
+  the walk only needs tok/s; rc stays in the snapshot's own speed map.
+- `load(*paths)` infers the file kind by shape (list → combined,
+  dict-with-"rows" → snapshot, other dict → endpoint layer), so the CLI
+  needs no per-file flags. Snapshot speed maps feed the `speed` field
+  directly (already derived by update.py under the same rc≥30 rule).
+- The hull pops on `cross >= 0`, so collinear points land in the
+  unreachable set — they are only ever tied #1, never strictly
+  reachable (documented in the docstring, pinned by a fixture test).
+- Dogfood cross-check (A1/A3, 2026-10-03 data): module frontier = the
+  same 9 points as the exploration probes (6 supported / 3 unreachable:
+  mimo-v2.6-flash, gemma-4-31b-it, deepseek-v4-pro); speed spot-check
+  against the actual `speed.ts` `speedOf` (scratch vitest probe, removed
+  after the run) — glm-5.3-flash 41, gemini-3.8-flash 103.5,
+  opus-4.6 38, identical on both sides.
+- The class gates in the CLI (1450/1470/1500) are explicitly
+  placeholders pending step 02's derivation; the library functions take
+  gate as an argument and embed no constants (A5).
+- 19 characterization tests; full suite 198 green.
 
 ## Spec
 

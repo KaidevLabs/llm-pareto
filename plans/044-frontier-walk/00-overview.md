@@ -1,6 +1,6 @@
 # Plan 044 — Frontier walk: objective model selection without a static score
 
-> **Status:** OWNER REVIEW
+> **Status:** EXECUTING (step 02/3)
 
 ## Goal
 
@@ -76,17 +76,19 @@ its own plan only if the report convinces the owner.
 
 | Step | File | Depends on | Status | Commit |
 |---|---|---|---|---|
-| 01 | `01-walk-module.md` | — | OPEN | — |
+| 01 | `01-walk-module.md` | — | ✅ COMPLETE (2deeef1) | `analysis: frontier-walk module + tests (plan 044 step 01)` |
 | 02 | `02-report.md` | 01 | OPEN | — |
 | 03 | `03-close.md` | 02 | OPEN | — |
 
 ## Definition of done
 
-- [ ] `frontier_walk` module + `tests/test_frontier_walk.py` green in
-      `python3 -m unittest discover -s tests -v`.
-- [ ] The module's frontier/speed numbers agree with the site's
+## Definition of done
+
+- [x] `frontier_walk` module + `tests/test_frontier_walk.py` green in
+      `python3 -m unittest discover -s tests -v` (198 tests, 2026-10-03).
+- [x] The module's frontier/speed numbers agree with the site's
       (`pareto.ts` frontier logic, `speed.ts` rc>=30 median rule) on current
-      data — same 9 frontier points, same toks/s values.
+      data — same 9 frontier points, same toks/s values (step 01 as-built).
 - [ ] Report published at `docs/reports/044-frontier-walk.md` with: walk
       table (per-step Elo gain / price multiple / tok/s delta / CI flag),
       supported vs unsupported set, champions for the three task classes,
