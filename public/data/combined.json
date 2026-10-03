@@ -737,8 +737,8 @@
  {
   "or_id": "deepseek/deepseek-v4.1-flash",
   "or_name": "DeepSeek: DeepSeek V4.1 Flash",
-  "price_in_per_m": 0.02,
-  "price_out_per_m": 0.6,
+  "price_in_per_m": 0.3,
+  "price_out_per_m": 1.2,
   "vision": true,
   "context_length": 1048576,
   "arena_rank": 38,
@@ -1016,8 +1016,8 @@
  {
   "or_id": "z-ai/glm-5.1",
   "or_name": "Z.ai: GLM 5.1",
-  "price_in_per_m": 0.9646,
-  "price_out_per_m": 3.0316,
+  "price_in_per_m": 1.4,
+  "price_out_per_m": 4.4,
   "vision": false,
   "context_length": 204800,
   "arena_rank": 55,
@@ -1219,8 +1219,8 @@
  {
   "or_id": "tencent/hy3",
   "or_name": "Tencent: Hy3",
-  "price_in_per_m": 0.0825,
-  "price_out_per_m": 0.33,
+  "price_in_per_m": 0.132,
+  "price_out_per_m": 0.528,
   "vision": false,
   "context_length": 262144,
   "arena_rank": 67,
@@ -1830,8 +1830,8 @@
  {
   "or_id": "google/gemma-4-26b-a4b-it",
   "or_name": "Google: Gemma 4 26B A4B ",
-  "price_in_per_m": 0.09,
-  "price_out_per_m": 0.3,
+  "price_in_per_m": 0.0675,
+  "price_out_per_m": 0.225,
   "vision": true,
   "context_length": 262144,
   "arena_rank": 100,
@@ -2188,7 +2188,7 @@
  {
   "or_id": "deepseek/deepseek-v3.1-terminus",
   "or_name": "DeepSeek: DeepSeek V3.1 Terminus",
-  "price_in_per_m": 0.3,
+  "price_in_per_m": 0.27,
   "price_out_per_m": 1.0,
   "vision": false,
   "context_length": 163840,
@@ -2847,8 +2847,8 @@
  {
   "or_id": "qwen/qwen3-30b-a3b-instruct-2507",
   "or_name": "Qwen: Qwen3 30B A3B Instruct 2507",
-  "price_in_per_m": 0.04815,
-  "price_out_per_m": 0.19305,
+  "price_in_per_m": 0.1,
+  "price_out_per_m": 0.3,
   "vision": false,
   "context_length": 262144,
   "arena_rank": 185,

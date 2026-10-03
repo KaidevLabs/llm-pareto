@@ -189,6 +189,15 @@
   "context_length": 1000000
  },
  {
+  "id": "nvidia/switchyard",
+  "name": "NVIDIA: Switchyard",
+  "org": "nvidia",
+  "price_in_per_m": -1000000.0,
+  "price_out_per_m": -1000000.0,
+  "vision": false,
+  "context_length": 1000000
+ },
+ {
   "id": "xiaomi/mimo-v2.6-pro-ultraspeed",
   "name": "Xiaomi: MiMo-V2.6-Pro-UltraSpeed",
   "org": "xiaomi",
@@ -309,8 +318,8 @@
   "id": "deepseek/deepseek-v4.1-flash",
   "name": "DeepSeek: DeepSeek V4.1 Flash",
   "org": "deepseek",
-  "price_in_per_m": 0.02,
-  "price_out_per_m": 0.6,
+  "price_in_per_m": 0.3,
+  "price_out_per_m": 1.2,
   "vision": true,
   "context_length": 1048576
  },
@@ -426,8 +435,8 @@
   "id": "tencent/hy4-preview",
   "name": "Tencent: Hy4 preview",
   "org": "tencent",
-  "price_in_per_m": 0.7506,
-  "price_out_per_m": 2.2509,
+  "price_in_per_m": 0.834,
+  "price_out_per_m": 2.501,
   "vision": false,
   "context_length": 1048576
  },
@@ -435,8 +444,8 @@
   "id": "inclusionai/ling-3.0-flash-fin",
   "name": "inclusionAI: Ling 3.0 Flash Fin",
   "org": "inclusionai",
-  "price_in_per_m": 0.06,
-  "price_out_per_m": 0.18,
+  "price_in_per_m": 0.042,
+  "price_out_per_m": 0.1232,
   "vision": false,
   "context_length": 262144
  },
@@ -606,8 +615,8 @@
   "id": "nvidia/nemotron-3.5-lightning",
   "name": "NVIDIA: Nemotron 3.5 Lightning",
   "org": "nvidia",
-  "price_in_per_m": 0.06,
-  "price_out_per_m": 0.16,
+  "price_in_per_m": 0.0595,
+  "price_out_per_m": 0.17,
   "vision": false,
   "context_length": 262144
  },
@@ -660,7 +669,7 @@
   "id": "deepseek/deepseek-v4-flash-0731",
   "name": "DeepSeek: DeepSeek V4 Flash 0731",
   "org": "deepseek",
-  "price_in_per_m": 0.0077,
+  "price_in_per_m": 0.0051,
   "price_out_per_m": 1.28,
   "vision": false,
   "context_length": 1048576
@@ -894,8 +903,8 @@
   "id": "tencent/hy3",
   "name": "Tencent: Hy3",
   "org": "tencent",
-  "price_in_per_m": 0.0825,
-  "price_out_per_m": 0.33,
+  "price_in_per_m": 0.132,
+  "price_out_per_m": 0.528,
   "vision": false,
   "context_length": 262144
  },
@@ -1029,8 +1038,8 @@
   "id": "nvidia/nemotron-3-ultra-550b-a55b",
   "name": "NVIDIA: Nemotron 3 Ultra",
   "org": "nvidia",
-  "price_in_per_m": 0.6,
-  "price_out_per_m": 2.4,
+  "price_in_per_m": 0.5,
+  "price_out_per_m": 2.2,
   "vision": false,
   "context_length": 262144
  },
@@ -1308,8 +1317,8 @@
   "id": "z-ai/glm-5.1",
   "name": "Z.ai: GLM 5.1",
   "org": "z-ai",
-  "price_in_per_m": 0.9646,
-  "price_out_per_m": 3.0316,
+  "price_in_per_m": 1.4,
+  "price_out_per_m": 4.4,
   "vision": false,
   "context_length": 204800
  },
@@ -1317,8 +1326,8 @@
   "id": "google/gemma-4-26b-a4b-it",
   "name": "Google: Gemma 4 26B A4B ",
   "org": "google",
-  "price_in_per_m": 0.09,
-  "price_out_per_m": 0.3,
+  "price_in_per_m": 0.0675,
+  "price_out_per_m": 0.225,
   "vision": true,
   "context_length": 262144
  },
@@ -2253,7 +2262,7 @@
   "id": "deepseek/deepseek-v3.1-terminus",
   "name": "DeepSeek: DeepSeek V3.1 Terminus",
   "org": "deepseek",
-  "price_in_per_m": 0.3,
+  "price_in_per_m": 0.27,
   "price_out_per_m": 1.0,
   "vision": false,
   "context_length": 163840
@@ -2424,8 +2433,8 @@
   "id": "qwen/qwen3-30b-a3b-instruct-2507",
   "name": "Qwen: Qwen3 30B A3B Instruct 2507",
   "org": "qwen",
-  "price_in_per_m": 0.04815,
-  "price_out_per_m": 0.19305,
+  "price_in_per_m": 0.1,
+  "price_out_per_m": 0.3,
   "vision": false,
   "context_length": 262144
  },
