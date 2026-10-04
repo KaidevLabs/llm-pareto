@@ -610,7 +610,7 @@
  {
   "or_id": "z-ai/glm-5.2",
   "or_name": "Z.ai: GLM 5.2",
-  "price_in_per_m": 0.064,
+  "price_in_per_m": 0.104,
   "price_out_per_m": 8.0,
   "vision": false,
   "context_length": 1048576,
@@ -1219,8 +1219,8 @@
  {
   "or_id": "tencent/hy3",
   "or_name": "Tencent: Hy3",
-  "price_in_per_m": 0.132,
-  "price_out_per_m": 0.528,
+  "price_in_per_m": 0.0825,
+  "price_out_per_m": 0.33,
   "vision": false,
   "context_length": 262144,
   "arena_rank": 67,
@@ -1236,8 +1236,8 @@
   ],
   "arena_context_length": 262144,
   "arena_model_url": "https://huggingface.co/tencent/Hy3",
-  "arena_price_in_per_m": 0.132,
-  "arena_price_out_per_m": 0.528,
+  "arena_price_in_per_m": 0.0825,
+  "arena_price_out_per_m": 0.33,
   "match_method": "exact",
   "match_ratio": null
  },
