@@ -318,8 +318,8 @@
   "id": "deepseek/deepseek-v4.1-flash",
   "name": "DeepSeek: DeepSeek V4.1 Flash",
   "org": "deepseek",
-  "price_in_per_m": 0.3,
-  "price_out_per_m": 1.2,
+  "price_in_per_m": 0.003,
+  "price_out_per_m": 2.4,
   "vision": true,
   "context_length": 1048576
  },
@@ -588,7 +588,7 @@
   "id": "deepseek/deepseek-v4-pro-0813",
   "name": "DeepSeek: DeepSeek V4 Pro 0813",
   "org": "deepseek",
-  "price_in_per_m": 0.22,
+  "price_in_per_m": 0.33,
   "price_out_per_m": 4.2,
   "vision": false,
   "context_length": 1048576
@@ -795,7 +795,7 @@
   "id": "moonshotai/kimi-k3",
   "name": "MoonshotAI: Kimi K3",
   "org": "moonshotai",
-  "price_in_per_m": 0.499,
+  "price_in_per_m": 0.72,
   "price_out_per_m": 13.0,
   "vision": true,
   "context_length": 1048576
@@ -984,7 +984,7 @@
   "id": "z-ai/glm-5.2",
   "name": "Z.ai: GLM 5.2",
   "org": "z-ai",
-  "price_in_per_m": 0.3,
+  "price_in_per_m": 0.38,
   "price_out_per_m": 3.49,
   "vision": false,
   "context_length": 1048576
@@ -1245,8 +1245,8 @@
   "id": "deepseek/deepseek-v4-flash",
   "name": "DeepSeek: DeepSeek V4 Flash 0423",
   "org": "deepseek",
-  "price_in_per_m": 0.028,
-  "price_out_per_m": 0.056,
+  "price_in_per_m": 0.0224,
+  "price_out_per_m": 1.28,
   "vision": false,
   "context_length": 1048576
  },
