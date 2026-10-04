@@ -610,8 +610,8 @@
  {
   "or_id": "z-ai/glm-5.2",
   "or_name": "Z.ai: GLM 5.2",
-  "price_in_per_m": 0.38,
-  "price_out_per_m": 3.49,
+  "price_in_per_m": 0.064,
+  "price_out_per_m": 8.0,
   "vision": false,
   "context_length": 1048576,
   "arena_rank": 32,
@@ -1805,8 +1805,8 @@
  {
   "or_id": "qwen/qwen3.8-27b",
   "or_name": "Qwen: Qwen3.8 27B",
-  "price_in_per_m": 0.42,
-  "price_out_per_m": 3.0,
+  "price_in_per_m": 0.425,
+  "price_out_per_m": 2.55,
   "vision": true,
   "context_length": 1000000,
   "arena_rank": 99,

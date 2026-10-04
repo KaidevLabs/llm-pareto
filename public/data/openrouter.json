@@ -525,8 +525,8 @@
   "id": "qwen/qwen3.8-27b",
   "name": "Qwen: Qwen3.8 27B",
   "org": "qwen",
-  "price_in_per_m": 0.42,
-  "price_out_per_m": 3.0,
+  "price_in_per_m": 0.425,
+  "price_out_per_m": 2.55,
   "vision": true,
   "context_length": 1000000
  },
@@ -588,7 +588,7 @@
   "id": "deepseek/deepseek-v4-pro-0813",
   "name": "DeepSeek: DeepSeek V4 Pro 0813",
   "org": "deepseek",
-  "price_in_per_m": 0.33,
+  "price_in_per_m": 0.55,
   "price_out_per_m": 4.2,
   "vision": false,
   "context_length": 1048576
@@ -984,8 +984,8 @@
   "id": "z-ai/glm-5.2",
   "name": "Z.ai: GLM 5.2",
   "org": "z-ai",
-  "price_in_per_m": 0.38,
-  "price_out_per_m": 3.49,
+  "price_in_per_m": 0.064,
+  "price_out_per_m": 8.0,
   "vision": false,
   "context_length": 1048576
  },
