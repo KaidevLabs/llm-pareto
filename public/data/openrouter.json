@@ -435,8 +435,8 @@
   "id": "tencent/hy4-preview",
   "name": "Tencent: Hy4 preview",
   "org": "tencent",
-  "price_in_per_m": 0.7506,
-  "price_out_per_m": 2.2509,
+  "price_in_per_m": 0.834,
+  "price_out_per_m": 2.501,
   "vision": false,
   "context_length": 1048576
  },
@@ -669,7 +669,7 @@
   "id": "deepseek/deepseek-v4-flash-0731",
   "name": "DeepSeek: DeepSeek V4 Flash 0731",
   "org": "deepseek",
-  "price_in_per_m": 0.0188,
+  "price_in_per_m": 0.0152,
   "price_out_per_m": 1.28,
   "vision": false,
   "context_length": 1048576
@@ -795,7 +795,7 @@
   "id": "moonshotai/kimi-k3",
   "name": "MoonshotAI: Kimi K3",
   "org": "moonshotai",
-  "price_in_per_m": 0.74,
+  "price_in_per_m": 0.499,
   "price_out_per_m": 13.0,
   "vision": true,
   "context_length": 1048576
@@ -903,8 +903,8 @@
   "id": "tencent/hy3",
   "name": "Tencent: Hy3",
   "org": "tencent",
-  "price_in_per_m": 0.0825,
-  "price_out_per_m": 0.33,
+  "price_in_per_m": 0.132,
+  "price_out_per_m": 0.528,
   "vision": false,
   "context_length": 262144
  },
@@ -984,8 +984,8 @@
   "id": "z-ai/glm-5.2",
   "name": "Z.ai: GLM 5.2",
   "org": "z-ai",
-  "price_in_per_m": 0.41,
-  "price_out_per_m": 3.99,
+  "price_in_per_m": 0.3,
+  "price_out_per_m": 3.49,
   "vision": false,
   "context_length": 1048576
  },
@@ -2766,8 +2766,8 @@
   "id": "deepseek/deepseek-chat-v3-0324",
   "name": "DeepSeek: DeepSeek V3 0324",
   "org": "deepseek",
-  "price_in_per_m": 0.29,
-  "price_out_per_m": 1.14,
+  "price_in_per_m": 0.25,
+  "price_out_per_m": 1.0,
   "vision": false,
   "context_length": 163840
  },
@@ -3009,8 +3009,8 @@
   "id": "meta-llama/llama-3.3-70b-instruct",
   "name": "Meta: Llama 3.3 70B Instruct",
   "org": "meta-llama",
-  "price_in_per_m": 0.1,
-  "price_out_per_m": 0.32,
+  "price_in_per_m": 0.22,
+  "price_out_per_m": 0.5,
   "vision": false,
   "context_length": 131072
  },
