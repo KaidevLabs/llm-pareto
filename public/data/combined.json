@@ -256,7 +256,7 @@
  {
   "or_id": "moonshotai/kimi-k3",
   "or_name": "MoonshotAI: Kimi K3",
-  "price_in_per_m": 0.67,
+  "price_in_per_m": 1.39,
   "price_out_per_m": 14.0,
   "vision": true,
   "context_length": 1048576,
@@ -610,8 +610,8 @@
  {
   "or_id": "z-ai/glm-5.2",
   "or_name": "Z.ai: GLM 5.2",
-  "price_in_per_m": 0.0224,
-  "price_out_per_m": 16.0,
+  "price_in_per_m": 0.032,
+  "price_out_per_m": 12.0,
   "vision": false,
   "context_length": 1048576,
   "arena_rank": 32,
@@ -1219,8 +1219,8 @@
  {
   "or_id": "tencent/hy3",
   "or_name": "Tencent: Hy3",
-  "price_in_per_m": 0.132,
-  "price_out_per_m": 0.528,
+  "price_in_per_m": 0.0825,
+  "price_out_per_m": 0.33,
   "vision": false,
   "context_length": 262144,
   "arena_rank": 67,
@@ -1236,8 +1236,8 @@
   ],
   "arena_context_length": 262144,
   "arena_model_url": "https://huggingface.co/tencent/Hy3",
-  "arena_price_in_per_m": 0.132,
-  "arena_price_out_per_m": 0.528,
+  "arena_price_in_per_m": 0.0825,
+  "arena_price_out_per_m": 0.33,
   "match_method": "exact",
   "match_ratio": null
  },
@@ -2188,7 +2188,7 @@
  {
   "or_id": "deepseek/deepseek-v3.1-terminus",
   "or_name": "DeepSeek: DeepSeek V3.1 Terminus",
-  "price_in_per_m": 0.27,
+  "price_in_per_m": 0.3,
   "price_out_per_m": 1.0,
   "vision": false,
   "context_length": 163840,
@@ -3552,8 +3552,8 @@
  {
   "or_id": "meta-llama/llama-3.3-70b-instruct",
   "or_name": "Meta: Llama 3.3 70B Instruct",
-  "price_in_per_m": 0.1,
-  "price_out_per_m": 0.32,
+  "price_in_per_m": 0.22,
+  "price_out_per_m": 0.5,
   "vision": false,
   "context_length": 131072,
   "arena_rank": 261,
@@ -3570,8 +3570,8 @@
   ],
   "arena_context_length": 131072,
   "arena_model_url": "https://huggingface.co/meta-llama/Llama-3.3-70B-Instruct",
-  "arena_price_in_per_m": 0.1,
-  "arena_price_out_per_m": 0.32,
+  "arena_price_in_per_m": 0.22,
+  "arena_price_out_per_m": 0.5,
   "match_method": "exact",
   "match_ratio": null
  },

@@ -99,15 +99,6 @@
   "context_length": 1000000
  },
  {
-  "id": "stealth/space-bunny-alpha",
-  "name": "Space Bunny Alpha",
-  "org": "stealth",
-  "price_in_per_m": 0.0,
-  "price_out_per_m": 0.0,
-  "vision": true,
-  "context_length": 1000000
- },
- {
   "id": "aion-labs/aion-3.5-mini",
   "name": "AionLabs: Aion 3.5 Mini",
   "org": "aion-labs",
@@ -435,8 +426,8 @@
   "id": "tencent/hy4-preview",
   "name": "Tencent: Hy4 preview",
   "org": "tencent",
-  "price_in_per_m": 0.834,
-  "price_out_per_m": 2.501,
+  "price_in_per_m": 0.7506,
+  "price_out_per_m": 2.2509,
   "vision": false,
   "context_length": 1048576
  },
@@ -529,15 +520,6 @@
   "price_out_per_m": 2.55,
   "vision": true,
   "context_length": 1000000
- },
- {
-  "id": "qwen/qwen3.8-27b:free",
-  "name": "Qwen: Qwen3.8 27B (free)",
-  "org": "qwen",
-  "price_in_per_m": 0.0,
-  "price_out_per_m": 0.0,
-  "vision": true,
-  "context_length": 262144
  },
  {
   "id": "dots-studio/dots-3-note-preview:free",
@@ -795,7 +777,7 @@
   "id": "moonshotai/kimi-k3",
   "name": "MoonshotAI: Kimi K3",
   "org": "moonshotai",
-  "price_in_per_m": 0.67,
+  "price_in_per_m": 1.39,
   "price_out_per_m": 14.0,
   "vision": true,
   "context_length": 1048576
@@ -903,8 +885,8 @@
   "id": "tencent/hy3",
   "name": "Tencent: Hy3",
   "org": "tencent",
-  "price_in_per_m": 0.132,
-  "price_out_per_m": 0.528,
+  "price_in_per_m": 0.0825,
+  "price_out_per_m": 0.33,
   "vision": false,
   "context_length": 262144
  },
@@ -984,8 +966,8 @@
   "id": "z-ai/glm-5.2",
   "name": "Z.ai: GLM 5.2",
   "org": "z-ai",
-  "price_in_per_m": 0.0224,
-  "price_out_per_m": 16.0,
+  "price_in_per_m": 0.032,
+  "price_out_per_m": 12.0,
   "vision": false,
   "context_length": 1048576
  },
@@ -2262,7 +2244,7 @@
   "id": "deepseek/deepseek-v3.1-terminus",
   "name": "DeepSeek: DeepSeek V3.1 Terminus",
   "org": "deepseek",
-  "price_in_per_m": 0.27,
+  "price_in_per_m": 0.3,
   "price_out_per_m": 1.0,
   "vision": false,
   "context_length": 163840
@@ -3009,8 +2991,8 @@
   "id": "meta-llama/llama-3.3-70b-instruct",
   "name": "Meta: Llama 3.3 70B Instruct",
   "org": "meta-llama",
-  "price_in_per_m": 0.1,
-  "price_out_per_m": 0.32,
+  "price_in_per_m": 0.22,
+  "price_out_per_m": 0.5,
   "vision": false,
   "context_length": 131072
  },
