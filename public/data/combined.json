@@ -534,8 +534,8 @@
  {
   "or_id": "z-ai/glm-5.3",
   "or_name": "Z.ai: GLM 5.3",
-  "price_in_per_m": 1.4,
-  "price_out_per_m": 4.4,
+  "price_in_per_m": 0.05,
+  "price_out_per_m": 7.0,
   "vision": false,
   "context_length": 1048576,
   "arena_rank": 27,
@@ -610,7 +610,7 @@
  {
   "or_id": "z-ai/glm-5.2",
   "or_name": "Z.ai: GLM 5.2",
-  "price_in_per_m": 0.024,
+  "price_in_per_m": 0.0224,
   "price_out_per_m": 16.0,
   "vision": false,
   "context_length": 1048576,

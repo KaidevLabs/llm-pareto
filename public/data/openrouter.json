@@ -516,8 +516,8 @@
   "id": "z-ai/glm-5.3",
   "name": "Z.ai: GLM 5.3",
   "org": "z-ai",
-  "price_in_per_m": 1.4,
-  "price_out_per_m": 4.4,
+  "price_in_per_m": 0.05,
+  "price_out_per_m": 7.0,
   "vision": false,
   "context_length": 1048576
  },
@@ -588,7 +588,7 @@
   "id": "deepseek/deepseek-v4-pro-0813",
   "name": "DeepSeek: DeepSeek V4 Pro 0813",
   "org": "deepseek",
-  "price_in_per_m": 0.45,
+  "price_in_per_m": 0.4,
   "price_out_per_m": 5.0,
   "vision": false,
   "context_length": 1048576
@@ -984,7 +984,7 @@
   "id": "z-ai/glm-5.2",
   "name": "Z.ai: GLM 5.2",
   "org": "z-ai",
-  "price_in_per_m": 0.024,
+  "price_in_per_m": 0.0224,
   "price_out_per_m": 16.0,
   "vision": false,
   "context_length": 1048576
@@ -1210,7 +1210,7 @@
   "name": "Qwen: Qwen3.6 27B",
   "org": "qwen",
   "price_in_per_m": 0.32,
-  "price_out_per_m": 2.7,
+  "price_out_per_m": 3.25,
   "vision": true,
   "context_length": 262144
  },
