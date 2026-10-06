@@ -256,7 +256,7 @@
  {
   "or_id": "moonshotai/kimi-k3",
   "or_name": "MoonshotAI: Kimi K3",
-  "price_in_per_m": 1.19,
+  "price_in_per_m": 0.95,
   "price_out_per_m": 14.0,
   "vision": true,
   "context_length": 1048576,
@@ -610,7 +610,7 @@
  {
   "or_id": "z-ai/glm-5.2",
   "or_name": "Z.ai: GLM 5.2",
-  "price_in_per_m": 0.0464,
+  "price_in_per_m": 0.152,
   "price_out_per_m": 12.0,
   "vision": false,
   "context_length": 1048576,
@@ -737,8 +737,8 @@
  {
   "or_id": "deepseek/deepseek-v4.1-flash",
   "or_name": "DeepSeek: DeepSeek V4.1 Flash",
-  "price_in_per_m": 0.3,
-  "price_out_per_m": 1.2,
+  "price_in_per_m": 0.003,
+  "price_out_per_m": 2.4,
   "vision": true,
   "context_length": 1048576,
   "arena_rank": 38,
@@ -788,7 +788,7 @@
  {
   "or_id": "z-ai/glm-5.3-flash",
   "or_name": "Z.ai: GLM 5.3 Flash",
-  "price_in_per_m": 0.0352,
+  "price_in_per_m": 0.15,
   "price_out_per_m": 0.5,
   "vision": true,
   "context_length": 1048576,
@@ -1236,8 +1236,8 @@
   ],
   "arena_context_length": 262144,
   "arena_model_url": "https://huggingface.co/tencent/Hy3",
-  "arena_price_in_per_m": 0.0825,
-  "arena_price_out_per_m": 0.33,
+  "arena_price_in_per_m": 0.132,
+  "arena_price_out_per_m": 0.528,
   "match_method": "exact",
   "match_ratio": null
  },
@@ -1670,8 +1670,8 @@
   ],
   "arena_context_length": 262144,
   "arena_model_url": "https://huggingface.co/Qwen/Qwen3.5-397B-A17B",
-  "arena_price_in_per_m": 0.55,
-  "arena_price_out_per_m": 3.5,
+  "arena_price_in_per_m": 0.45,
+  "arena_price_out_per_m": 3,
   "match_method": "exact",
   "match_ratio": null
  },
@@ -1779,7 +1779,7 @@
  {
   "or_id": "deepseek/deepseek-v4-flash",
   "or_name": "DeepSeek: DeepSeek V4 Flash 0423",
-  "price_in_per_m": 0.03,
+  "price_in_per_m": 0.0048,
   "price_out_per_m": 1.28,
   "vision": false,
   "context_length": 1048576,
@@ -1830,8 +1830,8 @@
  {
   "or_id": "google/gemma-4-26b-a4b-it",
   "or_name": "Google: Gemma 4 26B A4B ",
-  "price_in_per_m": 0.0765,
-  "price_out_per_m": 0.255,
+  "price_in_per_m": 0.09,
+  "price_out_per_m": 0.3,
   "vision": true,
   "context_length": 262144,
   "arena_rank": 100,
@@ -2207,7 +2207,7 @@
   ],
   "arena_context_length": 163840,
   "arena_model_url": "https://api-docs.deepseek.com/news/news250922",
-  "arena_price_in_per_m": 0.3,
+  "arena_price_in_per_m": 0.27,
   "arena_price_out_per_m": 1,
   "match_method": "prefix-base",
   "match_ratio": null
@@ -2864,8 +2864,8 @@
   ],
   "arena_context_length": 262144,
   "arena_model_url": "https://huggingface.co/Qwen/Qwen3-30B-A3B-Instruct-2507",
-  "arena_price_in_per_m": 0.04815,
-  "arena_price_out_per_m": 0.19305,
+  "arena_price_in_per_m": 0.1,
+  "arena_price_out_per_m": 0.3,
   "match_method": "exact",
   "match_ratio": null
  },
