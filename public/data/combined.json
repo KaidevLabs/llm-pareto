@@ -737,8 +737,8 @@
  {
   "or_id": "deepseek/deepseek-v4.1-flash",
   "or_name": "DeepSeek: DeepSeek V4.1 Flash",
-  "price_in_per_m": 0.003,
-  "price_out_per_m": 2.4,
+  "price_in_per_m": 0.021421,
+  "price_out_per_m": 1.32,
   "vision": true,
   "context_length": 1048576,
   "arena_rank": 38,
@@ -1779,7 +1779,7 @@
  {
   "or_id": "deepseek/deepseek-v4-flash",
   "or_name": "DeepSeek: DeepSeek V4 Flash 0423",
-  "price_in_per_m": 0.0048,
+  "price_in_per_m": 0.012,
   "price_out_per_m": 1.28,
   "vision": false,
   "context_length": 1048576,
@@ -2031,8 +2031,8 @@
  {
   "or_id": "meta/muse-glimmer-30b",
   "or_name": "Meta: Muse Glimmer 30B",
-  "price_in_per_m": 0.35,
-  "price_out_per_m": 1.5,
+  "price_in_per_m": 0.3,
+  "price_out_per_m": 1.2,
   "vision": true,
   "context_length": 131072,
   "arena_rank": 120,
@@ -2622,8 +2622,8 @@
  {
   "or_id": "qwen/qwen3.5-35b-a3b",
   "or_name": "Qwen: Qwen3.5-35B-A3B",
-  "price_in_per_m": 0.15,
-  "price_out_per_m": 1.0,
+  "price_in_per_m": 0.08,
+  "price_out_per_m": 0.75,
   "vision": true,
   "context_length": 262144,
   "arena_rank": 168,
@@ -2639,8 +2639,8 @@
   ],
   "arena_context_length": 262144,
   "arena_model_url": "https://huggingface.co/Qwen/Qwen3.5-35B-A3B",
-  "arena_price_in_per_m": 0.15,
-  "arena_price_out_per_m": 1,
+  "arena_price_in_per_m": 0.08,
+  "arena_price_out_per_m": 0.75,
   "match_method": "exact",
   "match_ratio": null
  },
