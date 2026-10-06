@@ -1,5 +1,23 @@
 [
  {
+  "id": "google/gemini-nano-banana-2.1",
+  "name": "Google: Nano Banana 2.1",
+  "org": "google",
+  "price_in_per_m": 1.5,
+  "price_out_per_m": 7.5,
+  "vision": true,
+  "context_length": 65536
+ },
+ {
+  "id": "mistralai/mistral-large-4-0",
+  "name": "Mistral: Mistral Large 4",
+  "org": "mistralai",
+  "price_in_per_m": 0.68,
+  "price_out_per_m": 2.09,
+  "vision": true,
+  "context_length": 524288
+ },
+ {
   "id": "inclusionai/ling-3.1-flash",
   "name": "inclusionAI: Ling 3.1 Flash",
   "org": "inclusionai",
@@ -309,8 +327,8 @@
   "id": "deepseek/deepseek-v4.1-flash",
   "name": "DeepSeek: DeepSeek V4.1 Flash",
   "org": "deepseek",
-  "price_in_per_m": 0.021421,
-  "price_out_per_m": 1.32,
+  "price_in_per_m": 0.03345,
+  "price_out_per_m": 1.2,
   "vision": true,
   "context_length": 1048576
  },
@@ -426,8 +444,8 @@
   "id": "tencent/hy4-preview",
   "name": "Tencent: Hy4 preview",
   "org": "tencent",
-  "price_in_per_m": 0.834,
-  "price_out_per_m": 2.501,
+  "price_in_per_m": 0.7506,
+  "price_out_per_m": 2.2509,
   "vision": false,
   "context_length": 1048576
  },
@@ -651,7 +669,7 @@
   "id": "deepseek/deepseek-v4-flash-0731",
   "name": "DeepSeek: DeepSeek V4 Flash 0731",
   "org": "deepseek",
-  "price_in_per_m": 0.0134,
+  "price_in_per_m": 0.0103,
   "price_out_per_m": 1.28,
   "vision": false,
   "context_length": 1048576
@@ -777,7 +795,7 @@
   "id": "moonshotai/kimi-k3",
   "name": "MoonshotAI: Kimi K3",
   "org": "moonshotai",
-  "price_in_per_m": 0.95,
+  "price_in_per_m": 0.69,
   "price_out_per_m": 14.0,
   "vision": true,
   "context_length": 1048576
@@ -885,8 +903,8 @@
   "id": "tencent/hy3",
   "name": "Tencent: Hy3",
   "org": "tencent",
-  "price_in_per_m": 0.132,
-  "price_out_per_m": 0.528,
+  "price_in_per_m": 0.0825,
+  "price_out_per_m": 0.33,
   "vision": false,
   "context_length": 262144
  },
@@ -1227,7 +1245,7 @@
   "id": "deepseek/deepseek-v4-flash",
   "name": "DeepSeek: DeepSeek V4 Flash 0423",
   "org": "deepseek",
-  "price_in_per_m": 0.012,
+  "price_in_per_m": 0.0009,
   "price_out_per_m": 1.28,
   "vision": false,
   "context_length": 1048576
