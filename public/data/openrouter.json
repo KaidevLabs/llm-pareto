@@ -327,8 +327,8 @@
   "id": "deepseek/deepseek-v4.1-flash",
   "name": "DeepSeek: DeepSeek V4.1 Flash",
   "org": "deepseek",
-  "price_in_per_m": 0.039,
-  "price_out_per_m": 0.3,
+  "price_in_per_m": 0.05,
+  "price_out_per_m": 1.2,
   "vision": true,
   "context_length": 1048576
  },
@@ -588,8 +588,8 @@
   "id": "deepseek/deepseek-v4-pro-0813",
   "name": "DeepSeek: DeepSeek V4 Pro 0813",
   "org": "deepseek",
-  "price_in_per_m": 0.66,
-  "price_out_per_m": 1.98,
+  "price_in_per_m": 1.32,
+  "price_out_per_m": 3.96,
   "vision": false,
   "context_length": 1048576
  },
@@ -795,7 +795,7 @@
   "id": "moonshotai/kimi-k3",
   "name": "MoonshotAI: Kimi K3",
   "org": "moonshotai",
-  "price_in_per_m": 0.69,
+  "price_in_per_m": 0.62,
   "price_out_per_m": 15.0,
   "vision": true,
   "context_length": 1048576
@@ -808,15 +808,6 @@
   "price_out_per_m": 4.25,
   "vision": true,
   "context_length": 1048576
- },
- {
-  "id": "kwaipilot/kat-coder-pro-v2.5",
-  "name": "Kwaipilot: KAT-Coder-Pro V2.5",
-  "org": "kwaipilot",
-  "price_in_per_m": 0.74,
-  "price_out_per_m": 2.96,
-  "vision": false,
-  "context_length": 262144
  },
  {
   "id": "openai/gpt-5.6-luna-pro",
@@ -984,7 +975,7 @@
   "id": "z-ai/glm-5.2",
   "name": "Z.ai: GLM 5.2",
   "org": "z-ai",
-  "price_in_per_m": 0.152,
+  "price_in_per_m": 0.03,
   "price_out_per_m": 12.0,
   "vision": false,
   "context_length": 1048576
@@ -1299,8 +1290,8 @@
   "id": "moonshotai/kimi-k2.6",
   "name": "MoonshotAI: Kimi K2.6",
   "org": "moonshotai",
-  "price_in_per_m": 0.95,
-  "price_out_per_m": 4.0,
+  "price_in_per_m": 0.465,
+  "price_out_per_m": 2.45,
   "vision": true,
   "context_length": 262144
  },
@@ -1326,8 +1317,8 @@
   "id": "google/gemma-4-26b-a4b-it",
   "name": "Google: Gemma 4 26B A4B ",
   "org": "google",
-  "price_in_per_m": 0.0765,
-  "price_out_per_m": 0.255,
+  "price_in_per_m": 0.09,
+  "price_out_per_m": 0.3,
   "vision": true,
   "context_length": 262144
  },
