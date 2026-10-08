@@ -33,7 +33,7 @@
   "price_in_per_m": 0.68,
   "price_out_per_m": 2.09,
   "vision": true,
-  "context_length": 524288
+  "context_length": 1048576
  },
  {
   "id": "inclusionai/ling-3.1-flash",
@@ -345,8 +345,8 @@
   "id": "deepseek/deepseek-v4.1-flash",
   "name": "DeepSeek: DeepSeek V4.1 Flash",
   "org": "deepseek",
-  "price_in_per_m": 0.0356,
-  "price_out_per_m": 1.0,
+  "price_in_per_m": 0.3,
+  "price_out_per_m": 1.2,
   "vision": true,
   "context_length": 1048576
  },
@@ -396,11 +396,11 @@
   "context_length": 1050000
  },
  {
-  "id": "inclusionai/ling-3.0-flash-sante:free",
-  "name": "inclusionAI: Ling 3.0 Flash Sante (free)",
+  "id": "inclusionai/ling-3.0-flash-sante",
+  "name": "inclusionAI: Ling 3.0 Flash Sante",
   "org": "inclusionai",
-  "price_in_per_m": 0.0,
-  "price_out_per_m": 0.0,
+  "price_in_per_m": 0.042,
+  "price_out_per_m": 0.1232,
   "vision": false,
   "context_length": 262144
  },
@@ -462,8 +462,8 @@
   "id": "tencent/hy4-preview",
   "name": "Tencent: Hy4 preview",
   "org": "tencent",
-  "price_in_per_m": 0.834,
-  "price_out_per_m": 2.501,
+  "price_in_per_m": 0.7506,
+  "price_out_per_m": 2.2509,
   "vision": false,
   "context_length": 1048576
  },
@@ -543,8 +543,8 @@
   "id": "z-ai/glm-5.3",
   "name": "Z.ai: GLM 5.3",
   "org": "z-ai",
-  "price_in_per_m": 0.049,
-  "price_out_per_m": 3.39,
+  "price_in_per_m": 0.1,
+  "price_out_per_m": 4.2,
   "vision": false,
   "context_length": 1048576
  },
@@ -687,7 +687,7 @@
   "id": "deepseek/deepseek-v4-flash-0731",
   "name": "DeepSeek: DeepSeek V4 Flash 0731",
   "org": "deepseek",
-  "price_in_per_m": 0.0079,
+  "price_in_per_m": 0.0046,
   "price_out_per_m": 1.28,
   "vision": false,
   "context_length": 1048576
@@ -813,8 +813,8 @@
   "id": "moonshotai/kimi-k3",
   "name": "MoonshotAI: Kimi K3",
   "org": "moonshotai",
-  "price_in_per_m": 0.62,
-  "price_out_per_m": 12.3,
+  "price_in_per_m": 0.99,
+  "price_out_per_m": 14.0,
   "vision": true,
   "context_length": 1048576
  },
@@ -912,8 +912,8 @@
   "id": "tencent/hy3",
   "name": "Tencent: Hy3",
   "org": "tencent",
-  "price_in_per_m": 0.132,
-  "price_out_per_m": 0.528,
+  "price_in_per_m": 0.0825,
+  "price_out_per_m": 0.33,
   "vision": false,
   "context_length": 262144
  },
@@ -1218,8 +1218,8 @@
   "id": "qwen/qwen3.6-27b",
   "name": "Qwen: Qwen3.6 27B",
   "org": "qwen",
-  "price_in_per_m": 0.45,
-  "price_out_per_m": 2.7,
+  "price_in_per_m": 0.3,
+  "price_out_per_m": 2.0,
   "vision": true,
   "context_length": 262144
  },
@@ -1245,8 +1245,8 @@
   "id": "deepseek/deepseek-v4-pro",
   "name": "DeepSeek: DeepSeek V4 Pro 0423",
   "org": "deepseek",
-  "price_in_per_m": 0.297366,
-  "price_out_per_m": 0.594732,
+  "price_in_per_m": 0.287274,
+  "price_out_per_m": 0.574548,
   "vision": false,
   "context_length": 1048576
  },
@@ -1254,7 +1254,7 @@
   "id": "deepseek/deepseek-v4-flash",
   "name": "DeepSeek: DeepSeek V4 Flash 0423",
   "org": "deepseek",
-  "price_in_per_m": 0.0099,
+  "price_in_per_m": 0.0131,
   "price_out_per_m": 1.28,
   "vision": false,
   "context_length": 1048576
@@ -1308,7 +1308,7 @@
   "id": "moonshotai/kimi-k2.6",
   "name": "MoonshotAI: Kimi K2.6",
   "org": "moonshotai",
-  "price_in_per_m": 0.465,
+  "price_in_per_m": 0.4375,
   "price_out_per_m": 2.45,
   "vision": true,
   "context_length": 262144
@@ -1488,8 +1488,8 @@
   "id": "nvidia/nemotron-3-super-120b-a12b",
   "name": "NVIDIA: Nemotron 3 Super",
   "org": "nvidia",
-  "price_in_per_m": 0.085,
-  "price_out_per_m": 0.4,
+  "price_in_per_m": 0.08,
+  "price_out_per_m": 0.45,
   "vision": false,
   "context_length": 262144
  },
@@ -2298,8 +2298,8 @@
   "id": "qwen/qwen3-next-80b-a3b-instruct",
   "name": "Qwen: Qwen3 Next 80B A3B Instruct",
   "org": "qwen",
-  "price_in_per_m": 0.15,
-  "price_out_per_m": 1.5,
+  "price_in_per_m": 0.09,
+  "price_out_per_m": 1.1,
   "vision": false,
   "context_length": 262144
  },
@@ -2442,8 +2442,8 @@
   "id": "qwen/qwen3-30b-a3b-instruct-2507",
   "name": "Qwen: Qwen3 30B A3B Instruct 2507",
   "org": "qwen",
-  "price_in_per_m": 0.04815,
-  "price_out_per_m": 0.19305,
+  "price_in_per_m": 0.1,
+  "price_out_per_m": 0.3,
   "vision": false,
   "context_length": 262144
  },
@@ -2554,15 +2554,6 @@
   "price_out_per_m": 1.2,
   "vision": false,
   "context_length": 81920
- },
- {
-  "id": "baidu/ernie-4.5-vl-424b-a47b",
-  "name": "Baidu: ERNIE 4.5 VL 424B A47B ",
-  "org": "baidu",
-  "price_in_per_m": 0.42,
-  "price_out_per_m": 1.25,
-  "vision": true,
-  "context_length": 123000
  },
  {
   "id": "mistralai/mistral-small-3.2-24b-instruct",

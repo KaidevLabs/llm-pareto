@@ -1,24 +1,24 @@
 {
- "fetched_at": "2026-10-08T12:42:25Z",
+ "fetched_at": "2026-10-08T18:35:43Z",
  "sources": {
   "arena": {
    "url": "https://lmarena.ai/leaderboard/text",
-   "entries": 413
+   "entries": 414
   },
   "openrouter": {
    "url": "https://openrouter.ai/api/v1/models",
-   "models": 376
+   "models": 375
   }
  },
  "join": {
   "combined": 161,
   "unmatched_arena": 197,
-  "unmatched_openrouter": 215,
+  "unmatched_openrouter": 214,
   "by_method": {
    "exact": 169,
    "override": 1,
    "prefix-variant": 10,
-   "prefix-base": 30,
+   "prefix-base": 31,
    "fuzzy": 6
   },
   "variants_collapsed": 40,
@@ -98,12 +98,12 @@
    "model_page": "https://openrouter.ai/{or_id}"
   },
   "models": 161,
-  "endpoints": 887,
+  "endpoints": 879,
   "stats": {
-   "models_with_stats": 160,
-   "endpoints_with_stats": 863
+   "models_with_stats": 155,
+   "endpoints_with_stats": 784
   },
-  "joined_page_endpoints": 895,
+  "joined_page_endpoints": 887,
   "page_endpoints_unjoined": 0,
   "duplicates_merged": 8
  }
