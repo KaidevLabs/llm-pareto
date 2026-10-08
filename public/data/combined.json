@@ -256,8 +256,8 @@
  {
   "or_id": "moonshotai/kimi-k3",
   "or_name": "MoonshotAI: Kimi K3",
-  "price_in_per_m": 0.8,
-  "price_out_per_m": 15.0,
+  "price_in_per_m": 0.6,
+  "price_out_per_m": 12.3,
   "vision": true,
   "context_length": 1048576,
   "arena_rank": 16,
@@ -396,10 +396,10 @@
   "arena_variants": [
    "gpt-6.1-sol-max"
   ],
-  "arena_context_length": null,
+  "arena_context_length": 1050000,
   "arena_model_url": "https://openai.com/index/introducing-gpt-6-1-sol/",
-  "arena_price_in_per_m": null,
-  "arena_price_out_per_m": null,
+  "arena_price_in_per_m": 2,
+  "arena_price_out_per_m": 10,
   "match_method": "exact",
   "match_ratio": null
  },
@@ -610,8 +610,8 @@
  {
   "or_id": "z-ai/glm-5.2",
   "or_name": "Z.ai: GLM 5.2",
-  "price_in_per_m": 0.0883,
-  "price_out_per_m": 12.0,
+  "price_in_per_m": 0.03,
+  "price_out_per_m": 10.0,
   "vision": false,
   "context_length": 1048576,
   "arena_rank": 32,
@@ -1041,8 +1041,8 @@
  {
   "or_id": "deepseek/deepseek-v4-pro",
   "or_name": "DeepSeek: DeepSeek V4 Pro 0423",
-  "price_in_per_m": 0.2088,
-  "price_out_per_m": 0.4176,
+  "price_in_per_m": 0.95526,
+  "price_out_per_m": 1.91052,
   "vision": false,
   "context_length": 1048576,
   "arena_rank": 56,
@@ -1236,8 +1236,8 @@
   ],
   "arena_context_length": 262144,
   "arena_model_url": "https://huggingface.co/tencent/Hy3",
-  "arena_price_in_per_m": 0.0825,
-  "arena_price_out_per_m": 0.33,
+  "arena_price_in_per_m": 0.132,
+  "arena_price_out_per_m": 0.528,
   "match_method": "exact",
   "match_ratio": null
  },
@@ -1779,7 +1779,7 @@
  {
   "or_id": "deepseek/deepseek-v4-flash",
   "or_name": "DeepSeek: DeepSeek V4 Flash 0423",
-  "price_in_per_m": 0.03,
+  "price_in_per_m": 0.0054,
   "price_out_per_m": 1.28,
   "vision": false,
   "context_length": 1048576,
@@ -1830,8 +1830,8 @@
  {
   "or_id": "google/gemma-4-26b-a4b-it",
   "or_name": "Google: Gemma 4 26B A4B ",
-  "price_in_per_m": 0.0765,
-  "price_out_per_m": 0.255,
+  "price_in_per_m": 0.09,
+  "price_out_per_m": 0.3,
   "vision": true,
   "context_length": 262144,
   "arena_rank": 100,
@@ -2436,8 +2436,8 @@
   ],
   "arena_context_length": 262144,
   "arena_model_url": "https://huggingface.co/Qwen/Qwen3.5-27B",
-  "arena_price_in_per_m": 0.195,
-  "arena_price_out_per_m": 1.56,
+  "arena_price_in_per_m": 0.26,
+  "arena_price_out_per_m": 2.6,
   "match_method": "exact",
   "match_ratio": null
  },
@@ -2564,8 +2564,8 @@
   ],
   "arena_context_length": 262144,
   "arena_model_url": "https://huggingface.co/Qwen/Qwen3-Next-80B-A3B-Instruct",
-  "arena_price_in_per_m": 0.1,
-  "arena_price_out_per_m": 1.1,
+  "arena_price_in_per_m": 0.15,
+  "arena_price_out_per_m": 1.5,
   "match_method": "exact",
   "match_ratio": null
  },
@@ -2864,8 +2864,8 @@
   ],
   "arena_context_length": 262144,
   "arena_model_url": "https://huggingface.co/Qwen/Qwen3-30B-A3B-Instruct-2507",
-  "arena_price_in_per_m": 0.1,
-  "arena_price_out_per_m": 0.3,
+  "arena_price_in_per_m": 0.04815,
+  "arena_price_out_per_m": 0.19305,
   "match_method": "exact",
   "match_ratio": null
  },
@@ -3570,8 +3570,8 @@
   ],
   "arena_context_length": 131072,
   "arena_model_url": "https://huggingface.co/meta-llama/Llama-3.3-70B-Instruct",
-  "arena_price_in_per_m": 0.22,
-  "arena_price_out_per_m": 0.5,
+  "arena_price_in_per_m": 0.1,
+  "arena_price_out_per_m": 0.32,
   "match_method": "exact",
   "match_ratio": null
  },
