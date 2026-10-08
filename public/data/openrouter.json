@@ -1,5 +1,14 @@
 [
  {
+  "id": "stepfun/step-5-preview",
+  "name": "StepFun: Step 5 Preview",
+  "org": "stepfun",
+  "price_in_per_m": 1.0,
+  "price_out_per_m": 2.7,
+  "vision": true,
+  "context_length": 1000000
+ },
+ {
   "id": "anthropic/claude-haiku-5.5",
   "name": "Anthropic: Claude Haiku 5.5",
   "org": "anthropic",
@@ -336,8 +345,8 @@
   "id": "deepseek/deepseek-v4.1-flash",
   "name": "DeepSeek: DeepSeek V4.1 Flash",
   "org": "deepseek",
-  "price_in_per_m": 0.3,
-  "price_out_per_m": 1.2,
+  "price_in_per_m": 0.0356,
+  "price_out_per_m": 1.0,
   "vision": true,
   "context_length": 1048576
  },
@@ -597,8 +606,8 @@
   "id": "deepseek/deepseek-v4-pro-0813",
   "name": "DeepSeek: DeepSeek V4 Pro 0813",
   "org": "deepseek",
-  "price_in_per_m": 1.32,
-  "price_out_per_m": 3.96,
+  "price_in_per_m": 0.66,
+  "price_out_per_m": 1.98,
   "vision": false,
   "context_length": 1048576
  },
@@ -678,7 +687,7 @@
   "id": "deepseek/deepseek-v4-flash-0731",
   "name": "DeepSeek: DeepSeek V4 Flash 0731",
   "org": "deepseek",
-  "price_in_per_m": 0.0046,
+  "price_in_per_m": 0.0079,
   "price_out_per_m": 1.28,
   "vision": false,
   "context_length": 1048576
@@ -804,7 +813,7 @@
   "id": "moonshotai/kimi-k3",
   "name": "MoonshotAI: Kimi K3",
   "org": "moonshotai",
-  "price_in_per_m": 0.6,
+  "price_in_per_m": 0.62,
   "price_out_per_m": 12.3,
   "vision": true,
   "context_length": 1048576
@@ -1209,8 +1218,8 @@
   "id": "qwen/qwen3.6-27b",
   "name": "Qwen: Qwen3.6 27B",
   "org": "qwen",
-  "price_in_per_m": 0.3,
-  "price_out_per_m": 2.0,
+  "price_in_per_m": 0.45,
+  "price_out_per_m": 2.7,
   "vision": true,
   "context_length": 262144
  },
@@ -1236,8 +1245,8 @@
   "id": "deepseek/deepseek-v4-pro",
   "name": "DeepSeek: DeepSeek V4 Pro 0423",
   "org": "deepseek",
-  "price_in_per_m": 0.95526,
-  "price_out_per_m": 1.91052,
+  "price_in_per_m": 0.297366,
+  "price_out_per_m": 0.594732,
   "vision": false,
   "context_length": 1048576
  },
@@ -1245,7 +1254,7 @@
   "id": "deepseek/deepseek-v4-flash",
   "name": "DeepSeek: DeepSeek V4 Flash 0423",
   "org": "deepseek",
-  "price_in_per_m": 0.0054,
+  "price_in_per_m": 0.0099,
   "price_out_per_m": 1.28,
   "vision": false,
   "context_length": 1048576

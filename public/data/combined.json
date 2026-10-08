@@ -256,7 +256,7 @@
  {
   "or_id": "moonshotai/kimi-k3",
   "or_name": "MoonshotAI: Kimi K3",
-  "price_in_per_m": 0.6,
+  "price_in_per_m": 0.62,
   "price_out_per_m": 12.3,
   "vision": true,
   "context_length": 1048576,
@@ -737,8 +737,8 @@
  {
   "or_id": "deepseek/deepseek-v4.1-flash",
   "or_name": "DeepSeek: DeepSeek V4.1 Flash",
-  "price_in_per_m": 0.3,
-  "price_out_per_m": 1.2,
+  "price_in_per_m": 0.0356,
+  "price_out_per_m": 1.0,
   "vision": true,
   "context_length": 1048576,
   "arena_rank": 38,
@@ -1041,8 +1041,8 @@
  {
   "or_id": "deepseek/deepseek-v4-pro",
   "or_name": "DeepSeek: DeepSeek V4 Pro 0423",
-  "price_in_per_m": 0.95526,
-  "price_out_per_m": 1.91052,
+  "price_in_per_m": 0.297366,
+  "price_out_per_m": 0.594732,
   "vision": false,
   "context_length": 1048576,
   "arena_rank": 56,
@@ -1779,7 +1779,7 @@
  {
   "or_id": "deepseek/deepseek-v4-flash",
   "or_name": "DeepSeek: DeepSeek V4 Flash 0423",
-  "price_in_per_m": 0.0054,
+  "price_in_per_m": 0.0099,
   "price_out_per_m": 1.28,
   "vision": false,
   "context_length": 1048576,
@@ -2360,8 +2360,8 @@
   ],
   "arena_context_length": 262144,
   "arena_model_url": "https://qwen.ai/blog?id=99f0335c4ad9ff6153e517418d48535ab6d8afef&from=research.latest-advancements-list",
-  "arena_price_in_per_m": 0.21,
-  "arena_price_out_per_m": 1.9,
+  "arena_price_in_per_m": 0.287,
+  "arena_price_out_per_m": 1.147,
   "match_method": "exact",
   "match_ratio": null
  },
