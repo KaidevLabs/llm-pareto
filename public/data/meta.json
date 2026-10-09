@@ -1,5 +1,5 @@
 {
- "fetched_at": "2026-10-09T12:39:38Z",
+ "fetched_at": "2026-10-09T18:33:51Z",
  "sources": {
   "arena": {
    "url": "https://lmarena.ai/leaderboard/text",
@@ -7,21 +7,21 @@
   },
   "openrouter": {
    "url": "https://openrouter.ai/api/v1/models",
-   "models": 375
+   "models": 364
   }
  },
  "join": {
-  "combined": 161,
-  "unmatched_arena": 197,
-  "unmatched_openrouter": 214,
+  "combined": 158,
+  "unmatched_arena": 202,
+  "unmatched_openrouter": 206,
   "by_method": {
-   "exact": 169,
+   "exact": 165,
    "override": 1,
    "prefix-variant": 10,
-   "prefix-base": 31,
+   "prefix-base": 30,
    "fuzzy": 6
   },
-  "variants_collapsed": 40,
+  "variants_collapsed": 39,
   "collisions": [
    "pareto: unbiased/pareto-26.10-preview vs unbiased/pareto",
    "nemotron-3-5-lightning: nvidia/nemotron-3.5-lightning vs nvidia/nemotron-3.5-lightning:free",
@@ -45,9 +45,7 @@
    "deepseek-v3-2: deepseek/deepseek-v3.2 vs deepseek/deepseek-v3.2-exp",
    "kimi-k2: moonshotai/kimi-k2-0905 vs moonshotai/kimi-k2",
    "gemini-2-5-pro: google/gemini-2.5-pro vs google/gemini-2.5-pro-preview",
-   "qwen3-235b-a22b: qwen/qwen3-235b-a22b-2507 vs qwen/qwen3-235b-a22b",
    "o4-mini: openai/o4-mini-high vs openai/o4-mini",
-   "qwen-plus: qwen/qwen-plus-2025-07-28 vs qwen/qwen-plus",
    "o3-mini: openai/o3-mini-high vs openai/o3-mini",
    "deepseek-r1: deepseek/deepseek-r1-0528 vs deepseek/deepseek-r1",
    "mistral-large: mistralai/mistral-large-2512 vs mistralai/mistral-large-2407",
@@ -97,14 +95,14 @@
    "endpoints_api": "https://openrouter.ai/api/v1/models/{or_id}/endpoints",
    "model_page": "https://openrouter.ai/{or_id}"
   },
-  "models": 161,
-  "endpoints": 880,
+  "models": 158,
+  "endpoints": 873,
   "stats": {
-   "models_with_stats": 160,
-   "endpoints_with_stats": 844
+   "models_with_stats": 157,
+   "endpoints_with_stats": 835
   },
-  "joined_page_endpoints": 888,
+  "joined_page_endpoints": 882,
   "page_endpoints_unjoined": 0,
-  "duplicates_merged": 8
+  "duplicates_merged": 9
  }
 }
