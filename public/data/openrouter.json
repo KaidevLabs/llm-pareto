@@ -544,7 +544,7 @@
   "name": "Z.ai: GLM 5.3",
   "org": "z-ai",
   "price_in_per_m": 0.039,
-  "price_out_per_m": 3.39,
+  "price_out_per_m": 7.0,
   "vision": false,
   "context_length": 1048576
  },
@@ -633,8 +633,8 @@
   "id": "nvidia/nemotron-3.5-lightning",
   "name": "NVIDIA: Nemotron 3.5 Lightning",
   "org": "nvidia",
-  "price_in_per_m": 0.049,
-  "price_out_per_m": 0.14,
+  "price_in_per_m": 0.0469,
+  "price_out_per_m": 0.134,
   "vision": false,
   "context_length": 262144
  },
@@ -687,7 +687,7 @@
   "id": "deepseek/deepseek-v4-flash-0731",
   "name": "DeepSeek: DeepSeek V4 Flash 0731",
   "org": "deepseek",
-  "price_in_per_m": 0.0079,
+  "price_in_per_m": 0.0104,
   "price_out_per_m": 1.28,
   "vision": false,
   "context_length": 1048576
@@ -813,8 +813,8 @@
   "id": "moonshotai/kimi-k3",
   "name": "MoonshotAI: Kimi K3",
   "org": "moonshotai",
-  "price_in_per_m": 0.76,
-  "price_out_per_m": 13.0,
+  "price_in_per_m": 0.5,
+  "price_out_per_m": 12.0,
   "vision": true,
   "context_length": 1048576
  },
@@ -994,7 +994,7 @@
   "name": "Z.ai: GLM 5.2",
   "org": "z-ai",
   "price_in_per_m": 0.084,
-  "price_out_per_m": 4.3,
+  "price_out_per_m": 8.0,
   "vision": false,
   "context_length": 1048576
  },
@@ -1254,7 +1254,7 @@
   "id": "deepseek/deepseek-v4-flash",
   "name": "DeepSeek: DeepSeek V4 Flash 0423",
   "org": "deepseek",
-  "price_in_per_m": 0.0131,
+  "price_in_per_m": 0.0228,
   "price_out_per_m": 1.28,
   "vision": false,
   "context_length": 1048576
@@ -1335,8 +1335,8 @@
   "id": "google/gemma-4-26b-a4b-it",
   "name": "Google: Gemma 4 26B A4B ",
   "org": "google",
-  "price_in_per_m": 0.0765,
-  "price_out_per_m": 0.255,
+  "price_in_per_m": 0.09,
+  "price_out_per_m": 0.3,
   "vision": true,
   "context_length": 262144
  },
@@ -1578,8 +1578,8 @@
   "id": "qwen/qwen3.5-35b-a3b",
   "name": "Qwen: Qwen3.5-35B-A3B",
   "org": "qwen",
-  "price_in_per_m": 0.1625,
-  "price_out_per_m": 1.3,
+  "price_in_per_m": 0.08,
+  "price_out_per_m": 0.75,
   "vision": true,
   "context_length": 262144
  },
@@ -2298,7 +2298,7 @@
   "id": "qwen/qwen3-next-80b-a3b-instruct",
   "name": "Qwen: Qwen3 Next 80B A3B Instruct",
   "org": "qwen",
-  "price_in_per_m": 0.09,
+  "price_in_per_m": 0.1,
   "price_out_per_m": 1.1,
   "vision": false,
   "context_length": 262144
@@ -2973,8 +2973,8 @@
   "id": "deepseek/deepseek-chat",
   "name": "DeepSeek: DeepSeek V3",
   "org": "deepseek",
-  "price_in_per_m": 0.2574,
-  "price_out_per_m": 1.0287,
+  "price_in_per_m": 0.32,
+  "price_out_per_m": 0.89,
   "vision": false,
   "context_length": 163840
  },
