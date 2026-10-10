@@ -4154,7 +4154,7 @@
   "license": "Apache 2.0",
   "inputPricePerMillion": 0.1,
   "outputPricePerMillion": 0.3,
-  "contextLength": 32000,
+  "contextLength": 262144,
   "pricePerImage": null,
   "pricePerSecond": null,
   "releaseType": null

@@ -256,8 +256,8 @@
  {
   "or_id": "moonshotai/kimi-k3",
   "or_name": "MoonshotAI: Kimi K3",
-  "price_in_per_m": 0.64,
-  "price_out_per_m": 13.5,
+  "price_in_per_m": 0.3,
+  "price_out_per_m": 14.9,
   "vision": true,
   "context_length": 1048576,
   "arena_rank": 16,
@@ -989,8 +989,8 @@
  {
   "or_id": "deepseek/deepseek-v4-pro",
   "or_name": "DeepSeek: DeepSeek V4 Pro 0423",
-  "price_in_per_m": 0.9483,
-  "price_out_per_m": 1.8966,
+  "price_in_per_m": 0.2088,
+  "price_out_per_m": 0.4176,
   "vision": false,
   "context_length": 1048576,
   "arena_rank": 55,
@@ -1066,7 +1066,7 @@
  {
   "or_id": "moonshotai/kimi-k2.6",
   "or_name": "MoonshotAI: Kimi K2.6",
-  "price_in_per_m": 0.465,
+  "price_in_per_m": 0.4344,
   "price_out_per_m": 2.45,
   "vision": true,
   "context_length": 262144,
@@ -1268,8 +1268,8 @@
  {
   "or_id": "tencent/hy3",
   "or_name": "Tencent: Hy3",
-  "price_in_per_m": 0.132,
-  "price_out_per_m": 0.528,
+  "price_in_per_m": 0.0825,
+  "price_out_per_m": 0.33,
   "vision": false,
   "context_length": 262144,
   "arena_rank": 73,
@@ -1727,7 +1727,7 @@
  {
   "or_id": "deepseek/deepseek-v4-flash",
   "or_name": "DeepSeek: DeepSeek V4 Flash 0423",
-  "price_in_per_m": 0.0216,
+  "price_in_per_m": 0.03,
   "price_out_per_m": 1.28,
   "vision": false,
   "context_length": 1048576,
@@ -3065,7 +3065,7 @@
   "arena_variants": [
    "mistral-small-2506"
   ],
-  "arena_context_length": 32000,
+  "arena_context_length": 262144,
   "arena_model_url": "https://huggingface.co/mistralai/Mistral-Small-3.2-24B-Instruct-2506",
   "arena_price_in_per_m": 0.1,
   "arena_price_out_per_m": 0.3,
