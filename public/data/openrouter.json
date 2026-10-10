@@ -633,8 +633,8 @@
   "id": "nvidia/nemotron-3.5-lightning",
   "name": "NVIDIA: Nemotron 3.5 Lightning",
   "org": "nvidia",
-  "price_in_per_m": 0.0469,
-  "price_out_per_m": 0.134,
+  "price_in_per_m": 0.07,
+  "price_out_per_m": 0.2,
   "vision": false,
   "context_length": 262144
  },
@@ -687,7 +687,7 @@
   "id": "deepseek/deepseek-v4-flash-0731",
   "name": "DeepSeek: DeepSeek V4 Flash 0731",
   "org": "deepseek",
-  "price_in_per_m": 0.0058,
+  "price_in_per_m": 0.0116,
   "price_out_per_m": 1.28,
   "vision": false,
   "context_length": 1048576
@@ -1245,7 +1245,7 @@
   "id": "deepseek/deepseek-v4-flash",
   "name": "DeepSeek: DeepSeek V4 Flash 0423",
   "org": "deepseek",
-  "price_in_per_m": 0.0103,
+  "price_in_per_m": 0.0216,
   "price_out_per_m": 1.28,
   "vision": false,
   "context_length": 1048576
@@ -2577,8 +2577,8 @@
   "id": "qwen/qwen3-14b",
   "name": "Qwen: Qwen3 14B",
   "org": "qwen",
-  "price_in_per_m": 0.1,
-  "price_out_per_m": 0.22,
+  "price_in_per_m": 0.12,
+  "price_out_per_m": 0.24,
   "vision": false,
   "context_length": 40960
  },
