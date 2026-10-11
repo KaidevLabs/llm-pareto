@@ -1,5 +1,5 @@
 {
- "fetched_at": "2026-10-10T18:32:41Z",
+ "fetched_at": "2026-10-11T01:13:01Z",
  "sources": {
   "arena": {
    "url": "https://lmarena.ai/leaderboard/text",
@@ -96,12 +96,12 @@
    "model_page": "https://openrouter.ai/{or_id}"
   },
   "models": 158,
-  "endpoints": 876,
+  "endpoints": 875,
   "stats": {
    "models_with_stats": 157,
-   "endpoints_with_stats": 817
+   "endpoints_with_stats": 813
   },
-  "joined_page_endpoints": 887,
+  "joined_page_endpoints": 886,
   "page_endpoints_unjoined": 0,
   "duplicates_merged": 11
  }
