@@ -1,5 +1,5 @@
 {
- "fetched_at": "2026-10-11T01:13:01Z",
+ "fetched_at": "2026-10-11T06:43:01Z",
  "sources": {
   "arena": {
    "url": "https://lmarena.ai/leaderboard/text",
@@ -99,7 +99,7 @@
   "endpoints": 875,
   "stats": {
    "models_with_stats": 157,
-   "endpoints_with_stats": 813
+   "endpoints_with_stats": 822
   },
   "joined_page_endpoints": 886,
   "page_endpoints_unjoined": 0,

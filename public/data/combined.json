@@ -257,7 +257,7 @@
   "or_id": "moonshotai/kimi-k3",
   "or_name": "MoonshotAI: Kimi K3",
   "price_in_per_m": 0.8,
-  "price_out_per_m": 15.0,
+  "price_out_per_m": 10.0,
   "vision": true,
   "context_length": 1048576,
   "arena_rank": 16,
@@ -534,7 +534,7 @@
  {
   "or_id": "z-ai/glm-5.3",
   "or_name": "Z.ai: GLM 5.3",
-  "price_in_per_m": 0.039,
+  "price_in_per_m": 0.07,
   "price_out_per_m": 4.8,
   "vision": false,
   "context_length": 1048576,
@@ -1285,8 +1285,8 @@
   ],
   "arena_context_length": 262144,
   "arena_model_url": "https://huggingface.co/tencent/Hy3",
-  "arena_price_in_per_m": 0.0825,
-  "arena_price_out_per_m": 0.33,
+  "arena_price_in_per_m": 0.132,
+  "arena_price_out_per_m": 0.528,
   "match_method": "exact",
   "match_ratio": null
  },
