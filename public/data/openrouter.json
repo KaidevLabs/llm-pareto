@@ -1,5 +1,14 @@
 [
  {
+  "id": "meta/muse-wonder",
+  "name": "Meta: Muse Wonder",
+  "org": "meta",
+  "price_in_per_m": 4.0,
+  "price_out_per_m": 20.0,
+  "vision": true,
+  "context_length": 1048576
+ },
+ {
   "id": "stepfun/step-5-preview",
   "name": "StepFun: Step 5 Preview",
   "org": "stepfun",
@@ -462,8 +471,8 @@
   "id": "tencent/hy4-preview",
   "name": "Tencent: Hy4 preview",
   "org": "tencent",
-  "price_in_per_m": 0.834,
-  "price_out_per_m": 2.501,
+  "price_in_per_m": 0.7506,
+  "price_out_per_m": 2.2509,
   "vision": false,
   "context_length": 1048576
  },
@@ -912,8 +921,8 @@
   "id": "tencent/hy3",
   "name": "Tencent: Hy3",
   "org": "tencent",
-  "price_in_per_m": 0.132,
-  "price_out_per_m": 0.528,
+  "price_in_per_m": 0.0825,
+  "price_out_per_m": 0.33,
   "vision": false,
   "context_length": 262144
  },
@@ -1236,8 +1245,8 @@
   "id": "deepseek/deepseek-v4-pro",
   "name": "DeepSeek: DeepSeek V4 Pro 0423",
   "org": "deepseek",
-  "price_in_per_m": 0.447876,
-  "price_out_per_m": 0.895752,
+  "price_in_per_m": 0.41238,
+  "price_out_per_m": 0.82476,
   "vision": false,
   "context_length": 1048576
  },
