@@ -1,5 +1,5 @@
 {
- "fetched_at": "2026-10-13T06:49:23Z",
+ "fetched_at": "2026-10-13T12:44:03Z",
  "sources": {
   "arena": {
    "url": "https://lmarena.ai/leaderboard/text",
@@ -7,13 +7,13 @@
   },
   "openrouter": {
    "url": "https://openrouter.ai/api/v1/models",
-   "models": 365
+   "models": 367
   }
  },
  "join": {
   "combined": 158,
   "unmatched_arena": 202,
-  "unmatched_openrouter": 207,
+  "unmatched_openrouter": 209,
   "by_method": {
    "exact": 165,
    "override": 1,
@@ -99,7 +99,7 @@
   "endpoints": 876,
   "stats": {
    "models_with_stats": 157,
-   "endpoints_with_stats": 848
+   "endpoints_with_stats": 842
   },
   "joined_page_endpoints": 887,
   "page_endpoints_unjoined": 0,

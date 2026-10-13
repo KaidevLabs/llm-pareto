@@ -1,5 +1,23 @@
 [
  {
+  "id": "scaledown/summarize",
+  "name": "ScaleDown: Summarize",
+  "org": "scaledown",
+  "price_in_per_m": 0.04,
+  "price_out_per_m": 0.0,
+  "vision": true,
+  "context_length": 1000000
+ },
+ {
+  "id": "scaledown/extract",
+  "name": "ScaleDown: Extract",
+  "org": "scaledown",
+  "price_in_per_m": 0.04,
+  "price_out_per_m": 0.0,
+  "vision": true,
+  "context_length": 1000000
+ },
+ {
   "id": "meta/muse-wonder",
   "name": "Meta: Muse Wonder",
   "org": "meta",
@@ -354,8 +372,8 @@
   "id": "deepseek/deepseek-v4.1-flash",
   "name": "DeepSeek: DeepSeek V4.1 Flash",
   "org": "deepseek",
-  "price_in_per_m": 0.0441,
-  "price_out_per_m": 0.891,
+  "price_in_per_m": 0.15,
+  "price_out_per_m": 0.6,
   "vision": true,
   "context_length": 1048576
  },
@@ -615,8 +633,8 @@
   "id": "deepseek/deepseek-v4-pro-0813",
   "name": "DeepSeek: DeepSeek V4 Pro 0813",
   "org": "deepseek",
-  "price_in_per_m": 1.32,
-  "price_out_per_m": 3.96,
+  "price_in_per_m": 0.66,
+  "price_out_per_m": 1.98,
   "vision": false,
   "context_length": 1048576
  },
@@ -823,7 +841,7 @@
   "name": "MoonshotAI: Kimi K3",
   "org": "moonshotai",
   "price_in_per_m": 0.73,
-  "price_out_per_m": 13.5,
+  "price_out_per_m": 10.0,
   "vision": true,
   "context_length": 1048576
  },
