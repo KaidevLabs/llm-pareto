@@ -354,8 +354,8 @@
   "id": "deepseek/deepseek-v4.1-flash",
   "name": "DeepSeek: DeepSeek V4.1 Flash",
   "org": "deepseek",
-  "price_in_per_m": 0.3,
-  "price_out_per_m": 1.2,
+  "price_in_per_m": 0.0441,
+  "price_out_per_m": 0.891,
   "vision": true,
   "context_length": 1048576
  },
@@ -823,7 +823,7 @@
   "name": "MoonshotAI: Kimi K3",
   "org": "moonshotai",
   "price_in_per_m": 0.73,
-  "price_out_per_m": 10.0,
+  "price_out_per_m": 13.5,
   "vision": true,
   "context_length": 1048576
  },
@@ -1245,8 +1245,8 @@
   "id": "deepseek/deepseek-v4-pro",
   "name": "DeepSeek: DeepSeek V4 Pro 0423",
   "org": "deepseek",
-  "price_in_per_m": 0.41238,
-  "price_out_per_m": 0.82476,
+  "price_in_per_m": 0.95526,
+  "price_out_per_m": 1.91052,
   "vision": false,
   "context_length": 1048576
  },
@@ -1254,7 +1254,7 @@
   "id": "deepseek/deepseek-v4-flash",
   "name": "DeepSeek: DeepSeek V4 Flash 0423",
   "org": "deepseek",
-  "price_in_per_m": 0.03,
+  "price_in_per_m": 0.05,
   "price_out_per_m": 1.28,
   "vision": false,
   "context_length": 1048576
@@ -1335,8 +1335,8 @@
   "id": "google/gemma-4-26b-a4b-it",
   "name": "Google: Gemma 4 26B A4B ",
   "org": "google",
-  "price_in_per_m": 0.0765,
-  "price_out_per_m": 0.255,
+  "price_in_per_m": 0.09,
+  "price_out_per_m": 0.3,
   "vision": true,
   "context_length": 262144
  },
