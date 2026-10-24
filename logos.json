@@ -97,13 +97,6 @@
   "fetched": "2026-09-16",
   "transform": "recolor mark black to white for the dark theme (fill #ffffff on root)"
  },
- "SpaceXAI": {
-  "file": "spacexai.png",
-  "url": "https://x.ai/favicon.ico",
-  "license": "xAI favicon (x.ai)",
-  "fetched": "2026-09-16",
-  "transform": "extracted 48px frame; white monochrome mark on transparent"
- },
  "StepFun": {
   "file": "stepfun.png",
   "url": "https://upload.wikimedia.org/wikipedia/commons/6/6c/StepFun.png",
@@ -155,5 +148,12 @@
   "license": "worldvectorlogo (free to use)",
   "fetched": "2026-09-16",
   "notes": "read as Reka AI (reka.ai); confirm at owner A/B"
+ },
+ "xAI": {
+  "file": "spacexai.png",
+  "url": "https://x.ai/favicon.ico",
+  "license": "xAI favicon (x.ai)",
+  "fetched": "2026-09-16",
+  "transform": "extracted 48px frame; white monochrome mark on transparent"
  }
 }

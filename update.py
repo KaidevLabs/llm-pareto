@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """llm-arena-pareto data updater.
 
-Fetches the LMArena text leaderboard and the OpenRouter model catalog,
+Fetches the LMArena text board (Hugging Face `lmarena-ai/leaderboard-dataset`)
+and the OpenRouter model catalog,
 normalizes both, joins them on model name, validates the result, and
 writes the datasets consumed by the static site into public/data/.
 
@@ -22,12 +23,17 @@ import sys
 import tempfile
 import time
 import urllib.error
+import urllib.parse
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 from pathlib import Path
 
-ARENA_URL = "https://lmarena.ai/leaderboard/text"
+HF_DATASET = "lmarena-ai/leaderboard-dataset"
+HF_BOARD_URL = "https://huggingface.co/datasets/lmarena-ai/leaderboard-dataset"
+HF_ROWS_URL = "https://datasets-server.huggingface.co/rows"
+HF_CONFIG, HF_SPLIT = "text", "latest"
+HF_PAGE, HF_MAX_PAGES = 100, 10
 OPENROUTER_URL = "https://openrouter.ai/api/v1/models"
 USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64) llm-arena-pareto-updater/1.0"
 TIMEOUT = 60
@@ -137,18 +143,107 @@ def _extract_json_array(text, key, from_i=0, label="arena"):
     die(f"{label}: unterminated entries array (page format changed?)")
 
 
-def parse_arena(html):
-    chunks = RSC_RE.findall(html)
-    if not chunks:
-        die("arena: no RSC chunks found in HTML (page format changed?)")
-    text = "".join(_decode_chunk(c) for c in chunks)
-    entries = _extract_json_array(text, '"entries":')
-    if not isinstance(entries, list) or not entries:
-        die("arena: entries array is empty")
-    for e in entries:
-        if not isinstance(e, dict):
-            die(f"arena: non-object entry in entries: {e!r}")
+def arena_name(model_name):
+    """HF model_name -> the slug form the arena page used to serve
+    (plan 047): display names carry spaces and a trailing "(...)" config."""
+    s = model_name
+    if not re.search(r"[A-Z ]", s):
+        return s
+    s = s.lower()
+    m = re.search(r" \(([^()]*)\)$", s)
+    if m:
+        inner = m.group(1).replace(", ", "-").replace(" ", "-")
+        s = s[: m.start()] + "-" + inner
+    return s.replace(" ", "-")
+
+
+def org_key(s):
+    """Comparison key for an organization name: lowercase, a-z0-9 only."""
+    return re.sub(r"[^a-z0-9]", "", s.lower())
+
+
+def resolve_org(slug, org_names):
+    """HF organization slug -> display name, from the logo registry keys
+    (plan 047): `google` -> `Google`; an unmapped or empty slug verbatim."""
+    if not slug:
+        return slug
+    return org_names.get(org_key(slug), slug)
+
+
+def parse_arena_rows(rows, org_names):
+    """HF rows -> arena entries with the keys join() reads (plan 047)."""
+    entries = []
+    for row in rows:
+        for field in ("rank", "model_name", "rating", "vote_count"):
+            if row.get(field) is None:
+                die(f"arena: HF row missing {field!r}: {row!r}")
+        rank = int(row["rank"])
+        entries.append(
+            {
+                "modelDisplayName": arena_name(row["model_name"]),
+                "rank": rank,
+                "rankUpper": rank,
+                "rankLower": rank,
+                "rating": row["rating"],
+                "ratingUpper": row.get("rating_upper"),
+                "ratingLower": row.get("rating_lower"),
+                "votes": int(row["vote_count"]),
+                "modelOrganization": resolve_org(
+                    row.get("organization"), org_names
+                ),
+                "license": row.get("license"),
+                "modelUrl": None,
+                "contextLength": None,
+                "inputPricePerMillion": None,
+                "outputPricePerMillion": None,
+                "publishDate": row.get("leaderboard_publish_date"),
+            }
+        )
     return entries
+
+
+def fetch_arena_rows(fetcher=fetch):
+    """Overall-category rows of the arena text board from the HF rows API
+    (plan 047): page while the category is "overall"; a non-overall row or
+    a short page ends the board."""
+    rows = []
+    offset = 0
+    for _ in range(HF_MAX_PAGES):
+        query = urllib.parse.urlencode(
+            {
+                "dataset": HF_DATASET,
+                "config": HF_CONFIG,
+                "split": HF_SPLIT,
+                "offset": offset,
+                "length": HF_PAGE,
+            }
+        )
+        raw = fetcher(f"{HF_ROWS_URL}?{query}")
+        try:
+            payload = json.loads(raw)
+        except Exception as e:
+            die(f"arena: HF rows: bad JSON at offset {offset}: {e}")
+        page = [r["row"] for r in payload.get("rows") or []]
+        if not page:
+            die(f"arena: HF rows: empty page at offset {offset}")
+        if offset == 0 and page[0].get("category") != "overall":
+            die(
+                "arena: HF rows: first row is not 'overall' "
+                f"({page[0].get('category')!r}) — category ordering changed"
+            )
+        stop = False
+        for row in page:
+            if row.get("category") != "overall":
+                stop = True
+                break
+            rows.append(row)
+        if stop or len(page) < HF_PAGE:
+            return rows
+        offset += HF_PAGE
+    die(
+        f"arena: HF rows: still 'overall' after {HF_MAX_PAGES} pages — "
+        "raise HF_MAX_PAGES deliberately"
+    )
 
 
 # ------------------------------------------------------- openrouter
@@ -1580,8 +1675,10 @@ def write_json(path, obj):
 def main():
     OUT_DIR.mkdir(parents=True, exist_ok=True)
 
-    print(f"fetching {ARENA_URL}")
-    arena_entries = parse_arena(fetch(ARENA_URL))
+    print(f"fetching {HF_BOARD_URL}")
+    logo_manifest = load_logos(LOGOS_PATH)
+    org_names = {org_key(org): org for org in logo_manifest}
+    arena_entries = parse_arena_rows(fetch_arena_rows(), org_names)
     print(f"  arena: {len(arena_entries)} entries")
 
     print(f"fetching {OPENROUTER_URL}")
@@ -1625,16 +1722,28 @@ def main():
     # the meta write so the org->file map lands in meta.json
     logo_orgs = sorted({c["arena_org"] for c in combined if c.get("arena_org")})
     logo_manifest, logo_lines = logos_sync(
-        logo_orgs, load_logos(LOGOS_PATH), LOGOS_DIR, LOGOS_PATH
+        logo_orgs, logo_manifest, LOGOS_DIR, LOGOS_PATH
     )
 
     unmatched_or = [
         m["id"] for m in or_models if m["id"] not in {c["or_id"] for c in combined}
     ]
+    publish_date = max(
+        (e["publishDate"] for e in arena_entries if e.get("publishDate")),
+        default=None,
+    )
     meta = {
         "fetched_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "sources": {
-            "arena": {"url": ARENA_URL, "entries": len(arena_entries)},
+            "arena": {
+                "url": HF_BOARD_URL,
+                "dataset": HF_DATASET,
+                "config": HF_CONFIG,
+                "split": HF_SPLIT,
+                "entries": len(arena_entries),
+                "publish_date": publish_date,
+                "ratings_as_of": publish_date,
+            },
             "openrouter": {"url": OPENROUTER_URL, "models": len(or_models)},
         },
         "join": {

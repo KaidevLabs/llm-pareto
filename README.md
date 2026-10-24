@@ -241,7 +241,7 @@ state. Local `benchmarks/` run dirs are neither listed nor deleted.
 
 | File | Source | Notes |
 |---|---|---|
-| `public/data/arena.json` | `lmarena.ai/leaderboard/text` (server-rendered HTML, RSC payload) | no official API; scrape surface, fail-fast validated |
+| `public/data/arena.json` | HF dataset `lmarena-ai/leaderboard-dataset` (`text`/`latest` rows) | LMArena text board mirror; fail-fast validated |
 | `public/data/openrouter.json` | `openrouter.ai/api/v1/models` (public, no auth) | `:batch` variants and `~` aliases dropped |
 | `public/data/combined.json` | join of the two | what the site renders |
 | `public/data/meta.json` | updater | timestamps, counts, join summary, applied overrides |
