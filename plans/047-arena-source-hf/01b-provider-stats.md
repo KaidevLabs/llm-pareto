@@ -1,4 +1,46 @@
-# Step 01b — Provider stats after OpenRouter's percentile flip — OPEN
+# Step 01b — Provider stats after OpenRouter's percentile flip — ✅ COMPLETE (committed 9176edf, 2026-10-24)
+
+## As-built (2026-10-24)
+
+Built as specified, with three additions the spec did not list and one
+measured correction to its numbers:
+
+- `tests/test_frontier_walk.py` fixtures were not in the spec's test list but
+  die on the field rename (they are `speed_map` inputs); renamed with the
+  module they mirror.
+- `src/components/ThresholdCtl.test.ts`'s EPS fixture needed
+  `throughput_request_count: 50`: its `[50, 200]` speed domain is derived
+  from a 100 t/s endpoint, so without the new field the model leaves the
+  eligible set and the slider test loses its domain.
+- One added test pins the honest-window branch of the Details basis (a model
+  whose endpoints carry 30 and 1440 → `30/1440-min window`), since the spec
+  asked for that behaviour but no test would have executed it.
+
+Measured effect of the floor move, isolated on the run's own payload (not
+across snapshots): 150 → 156 models with a speed (**+6, none lost**), 42
+medians move (claude-sonnet-4.6 43 → 53.5). The plan's 162/163 / +5 / 36 came
+from the pre-run payload (858 endpoints); this run fetched 863 endpoints and
+7 models carry no throughput stats at all, so 156 — not 162 — is the ceiling
+the data sets. The floor itself only adds.
+
+First green refresh since Oct-13: arena 418 entries, `publish_date`
+2026-10-22, combined 158 → 163, top-20 20/20, provider layer 163 models with
+863/938 endpoints of stats, 0 join misses. 204 python tests, 224 vitest,
+`tsc` clean. `throughput_window_minutes` is present on every endpoint this
+run (0 absent; the plan measured 12 absent earlier in the day).
+
+Follow-up, same day (owner delegated the call): the chart seam did have one
+lie left. `charts.ts` hardcoded `(30-min window)` in the tooltip and in the
+speed view's x-axis label, and 75 models now draw their median from a window
+set that is not just 30 — 62 mixed (30/1440), 13 all-1440 — so both said
+something untrue about a quarter of the plotted points. Fixed by moving the
+window onto `Speed` (`win: number[]`, built by `speedOf` through the shared
+`windowsOf`) and rendering `spd.win.join("/")` in the tooltip, with
+`Details.svelte` using the same `windowsOf` instead of its own copy; the
+x-axis keeps the metric and scale (`output tok/s (p50, log)`) because a
+window is per model, not per axis. One `comparator.test.ts` fixture and the
+`speed.test.ts` expectations gained `win`, plus a test that only eligible
+endpoints contribute to it.
 
 > Runs immediately after `01-hf-source.md`: it restores the green end-to-end
 > run that step 01's outstanding verification item depends on. It touches the

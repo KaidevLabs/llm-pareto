@@ -109,7 +109,7 @@ pipeline can never go unnoticed for 11 days again.
 | Step | File | Depends on | Status | Commit |
 |------|------|------------|--------|--------|
 | 01 | [01-hf-source.md](01-hf-source.md) | — | DONE (512d00c) | 512d00c |
-| 01b | [01b-provider-stats.md](01b-provider-stats.md) | 01 | OPEN | |
+| 01b | [01b-provider-stats.md](01b-provider-stats.md) | 01 | DONE (9176edf) | 9176edf |
 | 02 | [02-failure-alert.md](02-failure-alert.md) | — | OPEN | |
 | 02b | [02b-schema-drift.md](02b-schema-drift.md) | 01b, 02 | OPEN | |
 | 03 | [03-close.md](03-close.md) | 01, 01b, 02, 02b | OPEN | |

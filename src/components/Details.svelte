@@ -7,7 +7,7 @@
 <script lang="ts">
   import { fmtPrice, fmtVotes, fmtToks, fmtMs, median } from "../lib/format";
   import { isVisible } from "../lib/filters";
-  import { speedEligible, speedOf } from "../lib/speed";
+  import { speedEligible, speedOf, windowsOf } from "../lib/speed";
   import { data } from "../lib/data.svelte";
   import { ui } from "../lib/state.svelte";
   import { store } from "../lib/endpoints.svelte";
@@ -55,10 +55,7 @@
     a != null && b != null && Math.abs(a - b) < 1e-9;
 
   const use = $derived(eps.filter(speedEligible));
-  const windows = $derived(
-    [...new Set(use.map((e) => e.stats!.throughput_window_minutes ?? 30))]
-      .sort((a, b) => a - b)
-  );
+  const windows = $derived(windowsOf(use));
   const basis = $derived(
     use.length
       ? "across " + use.length + (use.length > 1 ? " endpoints" : " endpoint") +

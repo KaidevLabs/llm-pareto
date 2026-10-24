@@ -28,7 +28,7 @@
   // catches up when it lands. The effect follows external moves (the
   // ticker's steps, an exit back to live, where the slider parks at the
   // newest frame — live sits past the last snapshot).
-  let pos = $state(n - 1);
+  let pos = $state(snapIndex.entries.length - 1);
   $effect(() => {
     const i = playback.i;
     pos = playback.active ? i : snapIndex.entries.length - 1;

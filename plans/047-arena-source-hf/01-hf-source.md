@@ -1,4 +1,21 @@
-# Step 01 — Arena text board from the HF dataset — OPEN
+# Step 01 — Arena text board from the HF dataset — ✅ COMPLETE (committed 512d00c, 2026-10-24)
+
+## As-built (2026-10-24)
+
+Committed 512d00c. The one verification item left open at that commit — the
+green end-to-end run — was blocked on OpenRouter's percentile flip and is
+satisfied by step 01b's run (9176edf): `arena: 418 entries`, `publish_date`
+2026-10-22, `join: 163 combined` from 216 matched arena names (216/418 =
+52 %, gate 40 %), **top-20 20/20**, provider layer 163 models at 96 % stats
+coverage, 0 join misses, the run reaching the writes.
+
+Data diff reviewed `meta.json` first: `sources.arena` carries
+`dataset`/`config`/`split`/`publish_date`/`ratings_as_of`, the logos map is
+23 entries before and after (it gains `xAI` from the `SpaceXAI` rename, no
+logo asset needed), and combined 158 → 163 (10 new models, 5 dropped, 152
+Elos moved by the 11-day gap). One new org, `reflection`, resolves to its
+verbatim HF slug because no logo key names it — it renders without a logo,
+the documented behaviour for an unmapped slug.
 
 ## Spec
 

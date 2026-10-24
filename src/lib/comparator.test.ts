@@ -56,7 +56,7 @@ const gamma: Row = {
   context_length: 200000,
   arena_org: "OrgC",
 };
-const spd = (toks: number): Speed => ({ toks, latency: null, n: 1, rc: 100 });
+const spd = (toks: number): Speed => ({ toks, latency: null, n: 1, rc: 100, win: [30] });
 
 describe("resolvedCmps", () => {
   it("null resolves to the crown pre-seed", () => {

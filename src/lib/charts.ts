@@ -133,13 +133,13 @@ function trailDots3D(
   return dots;
 }
 
-export const X_SPEED = "output tok/s (p50, 30-min window, log)";
+export const X_SPEED = "output tok/s (p50, log)";
 export const NOTE_PRICE = "wheel: zoom price + Elo (anchored at cursor) · drag: pan (both axes) · double-click or ⤢ fit: reset to full view · click a bubble or the frontier: model details · x: price $/M tokens, log scale (cheaper → left) — General blends in/out at the slider's ratio · y: LMArena Elo (higher = better) · color: organization · bar behind a point: its real price spread (blue = input → amber = output) · top-left = best of both";
 export const NOTE_SPEED = "wheel: zoom speed + Elo (anchored at cursor) · drag: pan (both axes) · double-click or ⤢ fit: reset to full view · click a bubble or the frontier: model details · x: output tok/s, p50 across the model's serving endpoints, log scale (faster → right) · y: LMArena Elo (higher = better) · color: organization · top-right = best of both";
 export const NOTE_3D = "drag: rotate · wheel: zoom · right-drag: pan · rotates slowly when idle · click a sphere: model details · x: price $/M blended at the slider's ratio (log, cheaper → left) · depth: output tok/s (log) · up: LMArena Elo (higher = better) · color: organization · glow = 3-objective Pareto frontier — nothing beats these on price, speed and quality";
 // The 3D note's time-mode sentence (043 step 05): composed by App when
 // playback.active. "As-of" semantics (B14): each snapshot's speed is that
-// run's 30-min window, never averaged across frames.
+// run's own measurement window, never averaged across frames.
 export const NOTE_3D_TIME = " · time playback: spheres move through the snapshot frames, dots trace each model's path — every speed value is as-of its own run (backfilled frames use the live speeds)";
 
 function pointsFor(
@@ -174,8 +174,9 @@ function tooltipHTML(p: Pt): string {
       : "match: " + d.match_method + (d.match_ratio ? " (similarity " + d.match_ratio + ")" : "");
   const lg = logoFor(orgOf(d));
   // p50 speed in every view (023 D2/D6): the value plus its basis — the
-  // median rule and the 30-min window are shown, not hidden. The 3D view
-  // plots speed as its depth axis, so it carries the same lines. p.spd is
+  // median rule and the endpoints' measurement windows (30, or 1440 on the
+  // slower-cadence providers — 047 step 01b) are shown, not hidden. The 3D
+  // view plots speed as its depth axis, so it carries the same lines. p.spd is
   // the render-time value (speed/3D builders); the live recompute keeps
   // the blend/price cards correct even before any post-fetch re-render.
   const spd = p.spd || speedOf(d.or_id, store.data);
@@ -201,7 +202,9 @@ function tooltipHTML(p: Pt): string {
     rows.push(
       '<div style="margin-top:5px;color:#34d399;font-weight:600">' +
         fmtToks(spd.toks) +
-        ' tok/s output p50 <span style="color:#8b98ab;font-weight:400">(30-min window)</span></div>',
+        ' tok/s output p50 <span style="color:#8b98ab;font-weight:400">(' +
+        spd.win.join("/") +
+        "-min window)</span></div>",
       '<div style="color:#8b98ab;font-size:11px">median of ' + spd.n +
         (spd.n === 1 ? " endpoint" : " endpoints") + " · " +
         spd.rc.toLocaleString("en-US") + " requests" +
