@@ -1,7 +1,8 @@
-# Step 04 — Provider stats after OpenRouter's percentile flip — OPEN
+# Step 01b — Provider stats after OpenRouter's percentile flip — OPEN
 
-> Runs before `03-close.md`. Depends on nothing (independent of steps 01/02),
-> but executes after step 01 because it is what makes a green run possible.
+> Runs immediately after `01-hf-source.md`: it restores the green end-to-end
+> run that step 01's outstanding verification item depends on. It touches the
+> provider layer, not the arena source.
 
 ## Why
 
@@ -56,7 +57,7 @@ median comes from `throughput_request_count` (1803, 2354). Same on Oct-13
    above the tuple with:
 
    ```python
-   # speed stats kept per endpoint (plan 022, D4; plan 047 step 04): values as
+   # speed stats kept per endpoint (plan 022, D4; plan 047 step 01b): values as
    # received. Latency percentiles ascend (p99 = slow tail); throughput
    # percentiles run the other way since ~2026-10-13 (p50 = the fastest
    # typical rate, p99 = slow tail) — the site reads p50 only. Two windows,
@@ -92,7 +93,7 @@ median comes from `throughput_request_count` (1803, 2354). Same on Oct-13
    ```
 
    Extend the function docstring with one sentence: `A percentile series may
-   run either way (047 step 04: throughput now descends); a series that turns
+   run either way (047 step 01b: throughput now descends); a series that turns
    is the drift this dies on.`
 
 3. **`speed_map`** — the floor and the sum move to the throughput sample:
@@ -113,7 +114,7 @@ median comes from `throughput_request_count` (1803, 2354). Same on Oct-13
    ```
 
    Docstring: replace `plus their summed request_count` with `plus their
-   summed throughput_request_count (the sample behind the p50 — 047 step 04)`.
+   summed throughput_request_count (the sample behind the p50 — 047 step 01b)`.
 
 ## Spec — front end
 
@@ -154,7 +155,7 @@ median comes from `throughput_request_count` (1803, 2354). Same on Oct-13
    `speedOf` filters with `.filter(speedEligible)` and its `rc` becomes
    `use.reduce((s, e) => s + (e.stats!.throughput_request_count || 0), 0)`.
    Update the header comment: the floor is the *throughput* sample
-   (`request_count` counts latency samples only — 047 step 04), and the basis
+   (`request_count` counts latency samples only — 047 step 01b), and the basis
    travels with the value as before.
 
 6. **`src/components/Details.svelte`** — replace the local `use` derivation

@@ -14,9 +14,10 @@ No new behaviour. Prove the plan landed and record it:
    npm run build
    ```
 
-   `update.py` must print a sane report: `arena: ~418 entries`,
-   `join: ~215 models matched`, top-20 ≥ 18/20, overall match ≥ 40 %, and it
-   must reach the writes without a `die`.
+   `update.py` must print a sane report: `arena: ~418 entries`, `join: ~163
+   models matched` (216 arena names, from the ~418), top-20 ≥ 18/20, overall
+   match ≥ 40 %, a provider layer at ~96 % stats coverage with no percentile
+   `die`, a `schema report` of five sections, and it must reach the writes.
 
 2. **Data diff review** — `git diff public/data/meta.json` first
    (`sources.arena.publish_date`, `join.*`, `logos` count), then
@@ -29,8 +30,11 @@ No new behaviour. Prove the plan landed and record it:
    prose comments that describe provenance.
 
 4. **Doc audit** — `AGENTS.md` (Testing/Commands sections) and `README.md`
-   describe the source as the HF dataset; `plans/047-arena-source-hf/` is
-   marked CLOSED.
+   describe the source as the HF dataset; `public/data/meta.json` carries
+   `schema` with the five surfaces; `.github/workflows/update-data.yml` has the
+   alert step, the recovery step and the drift notice; `tests/` has no
+   `test_parse_arena.py` and does have `test_arena_hf.py` + `test_schema.py`;
+   `plans/047-arena-source-hf/` is marked CLOSED.
 
 5. **Archive** — move the directory to `plans/archive/047-arena-source-hf/`,
    with `00-overview.md` noting the close date and the final measured counts.

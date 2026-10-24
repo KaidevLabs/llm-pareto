@@ -1,8 +1,8 @@
 # Step 02b — Notice upstream schema drift — OPEN
 
-> Runs before `03-close.md`, and **after** `04-provider-stats.md`: the
+> Runs before `03-close.md`, and **after** `01b-provider-stats.md`: the
 > fingerprint's baseline can only be established by a run that reaches the
-> write step, which step 04 restores.
+> write step, which 01b restores.
 
 ## Why
 
@@ -288,7 +288,7 @@ python3 -c "import json;print(json.dumps(json.load(open('public/data/meta.json')
 
 - five sections: `arena_rows` (11 fields today), `openrouter_models`,
   `endpoints_api`, `model_page_endpoint`, `model_page_stats` (the stats block
-  carries `throughput_window_minutes` after step 04).
+  carries `throughput_window_minutes` after step 01b).
 
 Drift path, locally provable without touching upstream: copy `meta.json`,
 delete one field name from one section, and re-run `check_schema` against the

@@ -77,7 +77,7 @@ pipeline can never go unnoticed for 11 days again.
   percentiles not monotonic: [58, 40, 25.2, 23, 18]`. OpenRouter inverted the
   throughput percentiles (856/858 endpoints descend; latency still ascends) and
   added `throughput_window_minutes` (30 min × 723, 1440 × 137). Untouched
-  plan-022 code, independent of the source swap — that is step 04. Live
+  plan-022 code, independent of the source swap — that is step 01b. Live
   measurements at that point: HF 418 `overall` rows (`publish_date
   2026-10-22`), OR catalog 375 models, 216 arena names matched → 163 combined,
   202 unmatched, top-20 20/20, provider join 939/939, stats coverage 156/163.
@@ -93,10 +93,11 @@ pipeline can never go unnoticed for 11 days again.
 - **Step 02** — alerting in the workflow: issue open/reopen on failure with
   the report tail and the run URL, comment + close on recovery,
   `force_fail` dispatch input, `issues: write` permission.
-- **Step 04** — provider stats after OpenRouter's percentile flip: direction-
+- **Step 01b** — provider stats after OpenRouter's percentile flip: direction-
   agnostic tripwire, the speed floor moved onto `throughput_request_count`,
   `throughput_window_minutes` stored, `Details.svelte` folded into
-  `speed.ts`. This is what makes a green run possible again.
+  `speed.ts`. It lands on the source swap's heels because it is what turns
+  step 01 into a green run.
 - **Step 02b** — upstream schema fingerprint: five payload shapes recorded in
   `meta.json`, delta printed in the report, workflow opens/comments on one
   `data: upstream schema drift` issue.
@@ -107,15 +108,15 @@ pipeline can never go unnoticed for 11 days again.
 
 | Step | File | Depends on | Status | Commit |
 |------|------|------------|--------|--------|
-| 01 | [01-hf-source.md](01-hf-source.md) | — | OPEN | |
+| 01 | [01-hf-source.md](01-hf-source.md) | — | DONE (512d00c) | 512d00c |
+| 01b | [01b-provider-stats.md](01b-provider-stats.md) | 01 | OPEN | |
 | 02 | [02-failure-alert.md](02-failure-alert.md) | — | OPEN | |
-| 04 | [04-provider-stats.md](04-provider-stats.md) | — | OPEN | |
-| 02b | [02b-schema-drift.md](02b-schema-drift.md) | 02, 04 | OPEN | |
-| 03 | [03-close.md](03-close.md) | 01, 02, 04, 02b | OPEN | |
+| 02b | [02b-schema-drift.md](02b-schema-drift.md) | 01b, 02 | OPEN | |
+| 03 | [03-close.md](03-close.md) | 01, 01b, 02, 02b | OPEN | |
 
-The table is the order, not the labels: **04 runs before 02b** (the
-fingerprint baseline can only be established by a run that reaches the write
-step), and **03 — the closing step — runs last**.
+The table is the order: **01b lands before 02b** (the fingerprint baseline can
+only be established by a run that reaches the write step), and **03 — the
+closing step — runs last**.
 
 ## Out of scope
 
