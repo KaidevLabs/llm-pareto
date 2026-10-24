@@ -126,8 +126,8 @@ class TestSpeedMap(unittest.TestCase):
     def test_median_of_eligible_endpoints(self):
         layer = {
             "a/b": [
-                {"stats": {"p50_throughput": 10, "request_count": 100}},
-                {"stats": {"p50_throughput": 30, "request_count": 200}},
+                {"stats": {"p50_throughput": 10, "throughput_request_count": 100}},
+                {"stats": {"p50_throughput": 30, "throughput_request_count": 200}},
             ]
         }
         self.assertEqual(fw.speed_map(layer), {"a/b": 20.0})
@@ -135,14 +135,14 @@ class TestSpeedMap(unittest.TestCase):
     def test_endpoints_below_the_request_floor_are_excluded(self):
         layer = {
             "a/b": [
-                {"stats": {"p50_throughput": 10, "request_count": 100}},
-                {"stats": {"p50_throughput": 999, "request_count": 10}},
+                {"stats": {"p50_throughput": 10, "throughput_request_count": 100}},
+                {"stats": {"p50_throughput": 999, "throughput_request_count": 10}},
             ]
         }
         self.assertEqual(fw.speed_map(layer), {"a/b": 10.0})
 
     def test_models_without_eligible_endpoints_are_omitted(self):
-        layer = {"a/b": [{"stats": {"p50_throughput": 5, "request_count": 10}}]}
+        layer = {"a/b": [{"stats": {"p50_throughput": 5, "throughput_request_count": 10}}]}
         self.assertEqual(fw.speed_map(layer), {})
 
 
@@ -187,7 +187,7 @@ class TestLoad(unittest.TestCase):
                         "speed": {
                             "o/m": {
                                 "p50_throughput": 42.0,
-                                "request_count": 500,
+                                "throughput_request_count": 500,
                             }
                         },
                     }

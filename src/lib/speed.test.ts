@@ -4,13 +4,13 @@ import type { EndpointsMap } from "./types";
 
 // Characterization: values pinned from the real app.js functions
 // (harness run 2026-09-18, plan 028 step 1).
-const ep = (toks: number, lat: number, rc: number) => ({
+const ep = (toks: number, lat: number, trc: number, rc = trc) => ({
   provider: "p",
   stats: {
     p50_throughput: toks, p50_latency: lat,
     p75_throughput: 0, p75_latency: 0, p90_throughput: 0, p90_latency: 0,
     p95_throughput: 0, p95_latency: 0, p99_throughput: 0, p99_latency: 0,
-    request_count: rc, window_minutes: 30,
+    request_count: rc, throughput_request_count: trc, window_minutes: 30,
   },
 });
 
@@ -25,6 +25,12 @@ describe("speedOf", () => {
     expect(speedOf("single", { single: [ep(81, 940, 1200)] })).toEqual({
       toks: 81, latency: 940, n: 1, rc: 1200,
     });
+  });
+  it("applies the floor to the throughput sample, not the latency count", () => {
+    const eps: EndpointsMap = {
+      m: [ep(81, 940, 20, 5000), ep(90, 800, 500, 2)],
+    };
+    expect(speedOf("m", eps)).toEqual({ toks: 90, latency: 800, n: 1, rc: 500 });
   });
   it("returns null for empty, unknown, or missing maps", () => {
     expect(speedOf("empty", { empty: [] })).toBe(null);

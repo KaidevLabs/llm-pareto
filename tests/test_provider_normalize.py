@@ -14,7 +14,7 @@ STATS_KEYS = (
     "p50_latency", "p75_latency", "p90_latency", "p95_latency", "p99_latency",
     "p50_throughput", "p75_throughput", "p90_throughput", "p95_throughput",
     "p99_throughput", "latency_request_count", "throughput_request_count",
-    "request_count", "window_minutes",
+    "request_count", "window_minutes", "throughput_window_minutes",
 )
 
 
@@ -36,6 +36,7 @@ def stats(**over):
         "throughput_request_count": 100,
         "request_count": 120,
         "window_minutes": 30,
+        "throughput_window_minutes": 30,
     }
     s.update(over)
     return s
@@ -291,6 +292,7 @@ class TestJoinProviderLayers(unittest.TestCase):
                     "throughput_request_count": 100,
                     "request_count": 120,
                     "window_minutes": 30,
+                    "throughput_window_minutes": 30,
                 },
             },
         )

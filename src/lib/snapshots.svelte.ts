@@ -12,12 +12,14 @@ import type { Meta, Row } from "./types";
 import { data } from "./data.svelte";
 
 // The trimmed per-model speed map a live snapshot carries (update.py's
-// speed_map, 043 A6): the median p50 throughput over the model's eligible
-// endpoints plus their summed request_count — exactly the values the
-// front end's speedOf surfaces from endpoints.json as of that run.
+// speed_map, 043 A6; 047 step 01b): the median p50 throughput over the
+// model's eligible endpoints plus their summed throughput_request_count —
+// exactly the values the front end's speedOf surfaces from endpoints.json
+// as of that run. Older snapshot files keep their request_count key; nothing
+// reads it.
 export interface SnapSpeed {
   p50_throughput: number;
-  request_count: number;
+  throughput_request_count: number;
 }
 
 export interface SnapIndexEntry {

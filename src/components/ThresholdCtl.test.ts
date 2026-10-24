@@ -25,7 +25,7 @@ const dear: Row = {
   arena_elo: 1400,
 } as Row;
 const EPS: EndpointsMap = {
-  "orga/x": [{ provider: "p", stats: { p50_throughput: 100, p50_latency: 200, request_count: 50 } as EndpointStats }],
+  "orga/x": [{ provider: "p", stats: { p50_throughput: 100, p50_latency: 200, request_count: 50, throughput_request_count: 50 } as EndpointStats }],
 };
 
 const NO_THR = {

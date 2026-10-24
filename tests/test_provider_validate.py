@@ -23,6 +23,7 @@ def stats(
     p90_throughput=70,
     p95_throughput=80,
     p99_throughput=90,
+    throughput_window_minutes=30,
 ):
     return {
         "p50_latency": p50_latency,
@@ -39,6 +40,7 @@ def stats(
         "throughput_request_count": 10,
         "request_count": 10,
         "window_minutes": 30,
+        "throughput_window_minutes": throughput_window_minutes,
     }
 
 
@@ -143,6 +145,15 @@ class TestValidateProviderLayer(unittest.TestCase):
         layer = {"a/b": [entry(stats=bad)]}
         with self.assertRaises(SystemExit):
             update.validate_provider_layer(layer, detail)
+
+    def test_descending_throughput_percentiles_pass(self):
+        # 047 step 01b: OpenRouter's throughput percentiles run p50 -> p99
+        # high to low; only a series that turns is drift.
+        down = stats(p50_throughput=50, p75_throughput=40, p90_throughput=30,
+                     p95_throughput=20, p99_throughput=10)
+        detail = [row("a/b", api=1, page=1, joined=1, entries=1, with_stats=1)]
+        layer = {"a/b": [entry(stats=down)]}
+        update.validate_provider_layer(layer, detail)
 
     def test_zero_throughput_percentile_passes(self):
         # relocated 2026-09-18: a zero t/s percentile is upstream junk on a

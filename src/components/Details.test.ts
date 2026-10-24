@@ -20,7 +20,7 @@ const DEMO = {
 const EPTS: EndpointsMap = {
   "z-ai/glm-5": [
     { provider: "GMICloud", tag: "fp4", pricing: { prompt: "0.0000003", completion: "0.0000006" }, quantization: "fp4", context_length: 200000, uptime_last_1d: 97.8, stats: null },
-    { provider: "Z.AI", tag: "standard", pricing: { prompt: "0.0000006", completion: "0.000001" }, quantization: "fp8", context_length: 200000, uptime_last_1d: 99.2, stats: { p50_throughput: 81, p75_throughput: 95, p90_throughput: 120, p95_throughput: 140, p99_throughput: 180, p50_latency: 940, p75_latency: 1100, p90_latency: 1500, p95_latency: 2000, p99_latency: 3000, request_count: 1200, window_minutes: 30 } },
+    { provider: "Z.AI", tag: "standard", pricing: { prompt: "0.0000006", completion: "0.000001" }, quantization: "fp8", context_length: 200000, uptime_last_1d: 99.2, stats: { p50_throughput: 81, p75_throughput: 95, p90_throughput: 120, p95_throughput: 140, p99_throughput: 180, p50_latency: 940, p75_latency: 1100, p90_latency: 1500, p95_latency: 2000, p99_latency: 3000, request_count: 1200, throughput_request_count: 1200, throughput_window_minutes: 30, window_minutes: 30 } },
   ],
 };
 
@@ -146,6 +146,23 @@ describe("Details", () => {
     expect(notes.map((n) => n.textContent)).toContain(
       "chart price is final — provider prices are reference"
     );
+  });
+
+  it("names the window honestly when a model's endpoints disagree", async () => {
+    const saved = store.data;
+    const ep = (win: number) => ({
+      ...EPTS["z-ai/glm-5"][1],
+      tag: "w" + win,
+      stats: { ...EPTS["z-ai/glm-5"][1].stats!, throughput_window_minutes: win },
+    });
+    store.data = { "z-ai/glm-5": [ep(30), ep(1440)] };
+    try {
+      render(Details, { props: { d: DEMO } });
+      await screen.findByText(/2400 requests/);
+      expect(screen.getByText(/30\/1440-min window/)).toBeTruthy();
+    } finally {
+      store.data = saved;
+    }
   });
 
   it("shows the tolerated 404 state (data null, no error)", async () => {

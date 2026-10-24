@@ -7,7 +7,7 @@
 <script lang="ts">
   import { fmtPrice, fmtVotes, fmtToks, fmtMs, median } from "../lib/format";
   import { isVisible } from "../lib/filters";
-  import { speedOf } from "../lib/speed";
+  import { speedEligible, speedOf } from "../lib/speed";
   import { data } from "../lib/data.svelte";
   import { ui } from "../lib/state.svelte";
   import { store } from "../lib/endpoints.svelte";
@@ -54,21 +54,18 @@
   const near = (a: number | null, b: number | null) =>
     a != null && b != null && Math.abs(a - b) < 1e-9;
 
-  const use = $derived(
-    eps.filter(
-      (e) =>
-        e.stats &&
-        e.stats.p50_throughput > 0 &&
-        (e.stats.request_count || 0) >= 30
-    )
+  const use = $derived(eps.filter(speedEligible));
+  const windows = $derived(
+    [...new Set(use.map((e) => e.stats!.throughput_window_minutes ?? 30))]
+      .sort((a, b) => a - b)
   );
   const basis = $derived(
     use.length
       ? "across " + use.length + (use.length > 1 ? " endpoints" : " endpoint") +
         " (rc≥30) · " +
-        use.reduce((s, e) => s + (e.stats!.request_count || 0), 0) +
+        use.reduce((s, e) => s + (e.stats!.throughput_request_count || 0), 0) +
         " requests · " +
-        (use[0].stats!.window_minutes || 30) +
+        (windows.length === 1 ? windows[0] : windows.join("/")) +
         "-min window"
       : ""
   );

@@ -60,7 +60,7 @@ function buildSnap(i: number): Snapshot {
         by_method: { exact: 2 },
       },
     },
-    speed: i === 0 ? { "org/a": { p50_throughput: 55, request_count: 1200 } } : {},
+    speed: i === 0 ? { "org/a": { p50_throughput: 55, throughput_request_count: 1200 } } : {},
   };
 }
 
@@ -344,7 +344,7 @@ describe("speedAt", () => {
     await m.showFrame(0);
     expect(m.speedAt("org/a")).toEqual({
       p50_throughput: 55,
-      request_count: 1200,
+      throughput_request_count: 1200,
     });
   });
 

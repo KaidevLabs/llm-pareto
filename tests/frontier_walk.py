@@ -17,7 +17,7 @@ from pathlib import Path
 
 # The front-end speedOf floor (023 D2, mirrored from src/speed.ts): an
 # endpoint counts for the speed map only with p50_throughput > 0 and
-# request_count >= 30.
+# throughput_request_count >= 30.
 SPEED_MIN_REQUESTS = 30
 
 
@@ -101,7 +101,8 @@ def _median_or_none(vals):
 def speed_map(endpoints):
     """The rc>=30 median rule (023 D2, mirrored from src/speed.ts)
     applied to the endpoints.json shape: {or_id: median p50 tok/s over
-    the endpoints with p50_throughput present and request_count >= 30}.
+    the endpoints with p50_throughput present and
+    throughput_request_count >= 30}.
     Models with no eligible endpoint are omitted."""
     out = {}
     for or_id, eps in endpoints.items():
@@ -110,7 +111,7 @@ def speed_map(endpoints):
                 e["stats"]["p50_throughput"]
                 for e in eps
                 if isinstance(e.get("stats"), dict)
-                and (e["stats"].get("request_count") or 0)
+                and (e["stats"].get("throughput_request_count") or 0)
                 >= SPEED_MIN_REQUESTS
                 and e["stats"].get("p50_throughput")
             ]

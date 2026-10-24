@@ -39,11 +39,19 @@ export interface Meta {
 
 export type Pct = "p50" | "p75" | "p90" | "p95" | "p99";
 
+// Throughput percentiles run high -> low (p50 = fastest typical rate,
+// p99 = slow tail); latency percentiles ascend. The site reads p50 only.
 export type EndpointStats = {
   [k in `${Pct}_throughput` | `${Pct}_latency`]: number;
 } & {
+  /** latency samples (latency window minutes, always 30). */
   request_count: number;
   window_minutes?: number;
+  latency_request_count?: number;
+  /** samples behind the throughput percentiles — the speed floor. */
+  throughput_request_count?: number;
+  /** throughput window in minutes: 30 or 1440, mixed across endpoints. */
+  throughput_window_minutes?: number;
 };
 
 export interface Endpoint {

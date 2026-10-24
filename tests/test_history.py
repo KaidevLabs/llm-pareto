@@ -31,40 +31,40 @@ def _meta(ts, combined=3, unmatched_arena=1, unmatched_openrouter=2):
 
 
 class TestSpeedMap(unittest.TestCase):
-    def test_mediates_eligible_endpoints_and_sums_request_count(self):
+    def test_mediates_eligible_endpoints_and_sums_throughput_request_count(self):
         layer = {
             "a/b": [
-                {"stats": {"p50_throughput": 100, "request_count": 1200}},
-                {"stats": {"p50_throughput": 200, "request_count": 300}},
+                {"stats": {"p50_throughput": 100, "throughput_request_count": 1200}},
+                {"stats": {"p50_throughput": 200, "throughput_request_count": 300}},
             ],
         }
         self.assertEqual(
             update.speed_map(layer),
-            {"a/b": {"p50_throughput": 150.0, "request_count": 1500}},
+            {"a/b": {"p50_throughput": 150.0, "throughput_request_count": 1500}},
         )
 
     def test_single_eligible_endpoint_passes_through(self):
         layer = {
             "a/b": [
-                {"stats": {"p50_throughput": 81, "request_count": 1200}},
+                {"stats": {"p50_throughput": 81, "throughput_request_count": 1200}},
             ],
         }
         self.assertEqual(
             update.speed_map(layer),
-            {"a/b": {"p50_throughput": 81, "request_count": 1200}},
+            {"a/b": {"p50_throughput": 81, "throughput_request_count": 1200}},
         )
 
     def test_odd_count_median_is_the_middle_value(self):
         layer = {
             "a/b": [
-                {"stats": {"p50_throughput": 300, "request_count": 100}},
-                {"stats": {"p50_throughput": 100, "request_count": 100}},
-                {"stats": {"p50_throughput": 200, "request_count": 100}},
+                {"stats": {"p50_throughput": 300, "throughput_request_count": 100}},
+                {"stats": {"p50_throughput": 100, "throughput_request_count": 100}},
+                {"stats": {"p50_throughput": 200, "throughput_request_count": 100}},
             ],
         }
         self.assertEqual(
             update.speed_map(layer),
-            {"a/b": {"p50_throughput": 200, "request_count": 300}},
+            {"a/b": {"p50_throughput": 200, "throughput_request_count": 300}},
         )
 
     def test_omits_models_without_eligible_stats(self):
@@ -74,15 +74,24 @@ class TestSpeedMap(unittest.TestCase):
         }
         self.assertEqual(update.speed_map(layer), {})
 
-    def test_below_request_count_floor_is_omitted(self):
+    def test_below_throughput_request_count_floor_is_omitted(self):
         layer = {
-            "a/b": [{"stats": {"p50_throughput": 50, "request_count": 29}}],
+            "a/b": [{"stats": {"p50_throughput": 50, "throughput_request_count": 29}}],
+        }
+        self.assertEqual(update.speed_map(layer), {})
+
+    def test_large_latency_sample_does_not_satisfy_the_speed_floor(self):
+        layer = {
+            "a/b": [
+                {"stats": {"p50_throughput": 50, "request_count": 5000,
+                           "throughput_request_count": 29}},
+            ],
         }
         self.assertEqual(update.speed_map(layer), {})
 
     def test_zero_throughput_is_omitted(self):
         layer = {
-            "a/b": [{"stats": {"p50_throughput": 0, "request_count": 500}}],
+            "a/b": [{"stats": {"p50_throughput": 0, "throughput_request_count": 500}}],
         }
         self.assertEqual(update.speed_map(layer), {})
 
@@ -90,13 +99,13 @@ class TestSpeedMap(unittest.TestCase):
         layer = {
             "a/b": [
                 {"stats": None},
-                {"stats": {"p50_throughput": 81, "request_count": 1200}},
-                {"stats": {"p50_throughput": 0, "request_count": 500}},
+                {"stats": {"p50_throughput": 81, "throughput_request_count": 1200}},
+                {"stats": {"p50_throughput": 0, "throughput_request_count": 500}},
             ],
         }
         self.assertEqual(
             update.speed_map(layer),
-            {"a/b": {"p50_throughput": 81, "request_count": 1200}},
+            {"a/b": {"p50_throughput": 81, "throughput_request_count": 1200}},
         )
 
 
@@ -109,7 +118,7 @@ class TestStoreSnapshots(unittest.TestCase):
         self._tmp.cleanup()
 
     def test_new_ts_writes_snapshot_and_appends_index_entry(self):
-        speed = {"a/b": {"p50_throughput": 81, "request_count": 1200}}
+        speed = {"a/b": {"p50_throughput": 81, "throughput_request_count": 1200}}
         index, n = update.store_snapshots(
             [(_rows(3), _meta("2026-09-29T06:45:04Z"), speed, True)], self.dir
         )

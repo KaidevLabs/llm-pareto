@@ -610,8 +610,12 @@ def merge_duplicate_endpoints(api_eps):
     return merged, len(api_eps) - len(merged)
 
 
-# speed stats kept per endpoint (plan 022, D4): the 30-min rolling window,
-# values as received (the page emits ints / 0.5-granular floats)
+# speed stats kept per endpoint (plan 022, D4; plan 047 step 01b): values as
+# received. Latency percentiles ascend (p99 = slow tail); throughput
+# percentiles run the other way since ~2026-10-13 (p50 = the fastest
+# typical rate, p99 = slow tail) — the site reads p50 only. Two windows,
+# per endpoint: window_minutes (latency, always 30) and
+# throughput_window_minutes (30 or 1440).
 _STATS_KEYS = (
     "p50_latency",
     "p75_latency",
@@ -627,6 +631,7 @@ _STATS_KEYS = (
     "throughput_request_count",
     "request_count",
     "window_minutes",
+    "throughput_window_minutes",
 )
 
 
@@ -843,7 +848,9 @@ JOIN_HIT_RATE_MIN = 0.90
 def validate_provider_layer(layer, detail):
     """D8 bands + structural floors (plan 022). Dies on a violation —
     before any file is written. detail = the models_detail rows from
-    build_provider_layer; layer = {or_id: entries}."""
+    build_provider_layer; layer = {or_id: entries}. A percentile series may
+    run either way (047 step 01b: throughput now descends); a series that
+    turns is the drift this dies on."""
     n = len(detail)
     if not n:
         die("provider: layer is empty (no joined models?)")
@@ -880,10 +887,11 @@ def validate_provider_layer(layer, detail):
                         for q in (50, 75, 90, 95, 99)
                         if s.get(f"p{q}_{metric}") is not None
                     ]
-                    if any(a > b for a, b in zip(present, present[1:])):
+                    steps = [a - b for a, b in zip(present, present[1:])]
+                    if any(s > 0 for s in steps) and any(s < 0 for s in steps):
                         die(
                             f"provider: {or_id}: {e.get('provider')}: "
-                            f"{metric} percentiles not monotonic: {present}"
+                            f"{metric} percentiles not monotone: {present}"
                         )
             price = (e.get("pricing") or {}).get("prompt")
             if price is not None and float(price) <= 0:
@@ -965,16 +973,18 @@ def snapshot_stamp(fetched_at):
 
 
 # The front-end speedOf floor (023 D2): an endpoint counts for the speed
-# map only with p50_throughput > 0 and request_count >= 30 — the snapshot
-# must surface exactly the values the site computes from endpoints.json.
+# map only with p50_throughput > 0 and throughput_request_count >= 30 — the
+# snapshot must surface exactly the values the site computes from
+# endpoints.json.
 SPEED_MIN_REQUESTS = 30
 
 
 def speed_map(provider_layer):
-    """or_id -> {p50_throughput, request_count} from the joined p50 stats:
-    the median p50 throughput over the model's eligible endpoints plus
-    their summed request_count — the same values the front-end's speedOf
-    surfaces (023 D2). Models without eligible stats are omitted; bounded
+    """or_id -> {p50_throughput, throughput_request_count} from the joined
+    p50 stats: the median p50 throughput over the model's eligible endpoints
+    plus their summed throughput_request_count (the sample behind the p50 —
+    047 step 01b) — the same values the front-end's speedOf surfaces
+    (023 D2). Models without eligible stats are omitted; bounded
     ~2-4 KB per snapshot (043 A6)."""
     out = {}
     for or_id, entries in provider_layer.items():
@@ -985,7 +995,7 @@ def speed_map(provider_layer):
             if not isinstance(s, dict):
                 continue
             t = s.get("p50_throughput")
-            c = s.get("request_count") or 0
+            c = s.get("throughput_request_count") or 0
             if (
                 isinstance(t, (int, float))
                 and t > 0
@@ -997,7 +1007,7 @@ def speed_map(provider_layer):
         if vals:
             out[or_id] = {
                 "p50_throughput": statistics.median(vals),
-                "request_count": rc,
+                "throughput_request_count": rc,
             }
     return out
 

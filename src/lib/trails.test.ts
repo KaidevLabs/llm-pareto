@@ -262,7 +262,7 @@ describe("computeTrails", () => {
       if (url.endsWith(INDEX[0].file))
         return ok({
           ...SNAPS[0],
-          speed: { "org/a": { p50_throughput: 55, request_count: 1200 } },
+          speed: { "org/a": { p50_throughput: 55, throughput_request_count: 1200 } },
         });
       if (url.endsWith(INDEX[2].file))
         return ok(
