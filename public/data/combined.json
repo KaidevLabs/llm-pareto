@@ -532,8 +532,8 @@
  {
   "or_id": "z-ai/glm-5.3",
   "or_name": "Z.ai: GLM 5.3",
-  "price_in_per_m": 0.0908,
-  "price_out_per_m": 1.61,
+  "price_in_per_m": 0.079,
+  "price_out_per_m": 1.4,
   "vision": false,
   "context_length": 1048576,
   "arena_rank": 27,
@@ -1444,8 +1444,8 @@
  {
   "or_id": "tencent/hy3",
   "or_name": "Tencent: Hy3",
-  "price_in_per_m": 0.0825,
-  "price_out_per_m": 0.33,
+  "price_in_per_m": 0.132,
+  "price_out_per_m": 0.528,
   "vision": false,
   "context_length": 262144,
   "arena_rank": 80,
@@ -4080,8 +4080,8 @@
  {
   "or_id": "meta-llama/llama-3.2-3b-instruct",
   "or_name": "Meta: Llama 3.2 3B Instruct",
-  "price_in_per_m": 0.0509,
-  "price_out_per_m": 0.335,
+  "price_in_per_m": 0.05,
+  "price_out_per_m": 0.33,
   "vision": false,
   "context_length": 131072,
   "arena_rank": 363,
