@@ -1,5 +1,5 @@
 {
- "fetched_at": "2026-10-25T06:38:30Z",
+ "fetched_at": "2026-10-25T12:34:00Z",
  "sources": {
   "arena": {
    "url": "https://huggingface.co/datasets/lmarena-ai/leaderboard-dataset",
@@ -104,7 +104,7 @@
   "endpoints": 939,
   "stats": {
    "models_with_stats": 157,
-   "endpoints_with_stats": 847
+   "endpoints_with_stats": 858
   },
   "joined_page_endpoints": 940,
   "page_endpoints_unjoined": 0,

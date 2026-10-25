@@ -486,5 +486,13 @@
   "unmatched_arena": 202,
   "unmatched_openrouter": 211,
   "speed": true
+ },
+ {
+  "ts": "2026-10-25T12:34:00Z",
+  "file": "20261025T123400Z.json",
+  "combined": 163,
+  "unmatched_arena": 202,
+  "unmatched_openrouter": 211,
+  "speed": true
  }
 ]
