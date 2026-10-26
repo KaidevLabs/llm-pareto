@@ -507,8 +507,8 @@
  {
   "or_id": "moonshotai/kimi-k3",
   "or_name": "MoonshotAI: Kimi K3",
-  "price_in_per_m": 0.152,
-  "price_out_per_m": 16.0,
+  "price_in_per_m": 0.18,
+  "price_out_per_m": 20.0,
   "vision": true,
   "context_length": 1048576,
   "arena_rank": 25,
@@ -532,7 +532,7 @@
  {
   "or_id": "z-ai/glm-5.3",
   "or_name": "Z.ai: GLM 5.3",
-  "price_in_per_m": 0.079,
+  "price_in_per_m": 0.0699,
   "price_out_per_m": 1.4,
   "vision": false,
   "context_length": 1048576,
@@ -962,8 +962,8 @@
  {
   "or_id": "deepseek/deepseek-v4-pro",
   "or_name": "DeepSeek: DeepSeek V4 Pro 0423",
-  "price_in_per_m": 0.9483,
-  "price_out_per_m": 1.8966,
+  "price_in_per_m": 0.95526,
+  "price_out_per_m": 1.91052,
   "vision": false,
   "context_length": 1048576,
   "arena_rank": 49,
@@ -1595,8 +1595,8 @@
  {
   "or_id": "google/gemma-4-26b-a4b-it",
   "or_name": "Google: Gemma 4 26B A4B ",
-  "price_in_per_m": 0.0675,
-  "price_out_per_m": 0.225,
+  "price_in_per_m": 0.09,
+  "price_out_per_m": 0.3,
   "vision": true,
   "context_length": 262144,
   "arena_rank": 90,
@@ -1620,8 +1620,8 @@
  {
   "or_id": "deepseek/deepseek-v4-flash",
   "or_name": "DeepSeek: DeepSeek V4 Flash 0423",
-  "price_in_per_m": 0.05,
-  "price_out_per_m": 0.45,
+  "price_in_per_m": 0.091,
+  "price_out_per_m": 0.182,
   "vision": false,
   "context_length": 1048576,
   "arena_rank": 91,
