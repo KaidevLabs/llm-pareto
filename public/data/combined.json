@@ -507,7 +507,7 @@
  {
   "or_id": "moonshotai/kimi-k3",
   "or_name": "MoonshotAI: Kimi K3",
-  "price_in_per_m": 0.18,
+  "price_in_per_m": 0.202,
   "price_out_per_m": 20.0,
   "vision": true,
   "context_length": 1048576,
@@ -962,8 +962,8 @@
  {
   "or_id": "deepseek/deepseek-v4-pro",
   "or_name": "DeepSeek: DeepSeek V4 Pro 0423",
-  "price_in_per_m": 0.95526,
-  "price_out_per_m": 1.91052,
+  "price_in_per_m": 0.79257,
+  "price_out_per_m": 1.58514,
   "vision": false,
   "context_length": 1048576,
   "arena_rank": 49,
@@ -1192,8 +1192,8 @@
  {
   "or_id": "google/gemma-4-31b-it",
   "or_name": "Google: Gemma 4 31B",
-  "price_in_per_m": 0.1,
-  "price_out_per_m": 0.34,
+  "price_in_per_m": 0.2,
+  "price_out_per_m": 0.4,
   "vision": true,
   "context_length": 262144,
   "arena_rank": 67,
@@ -2690,7 +2690,7 @@
  {
   "or_id": "qwen/qwen3-30b-a3b-instruct-2507",
   "or_name": "Qwen: Qwen3 30B A3B Instruct 2507",
-  "price_in_per_m": 0.09,
+  "price_in_per_m": 0.1,
   "price_out_per_m": 0.3,
   "vision": false,
   "context_length": 262144,
@@ -3234,32 +3234,6 @@
   "arena_model": "minimax-m2",
   "arena_variants": [
    "minimax-m2"
-  ],
-  "arena_context_length": null,
-  "arena_model_url": null,
-  "arena_price_in_per_m": null,
-  "arena_price_out_per_m": null,
-  "match_method": "exact",
-  "match_ratio": null
- },
- {
-  "or_id": "arcee-ai/trinity-large-thinking",
-  "or_name": "Arcee AI: Trinity Large Thinking",
-  "price_in_per_m": 0.25,
-  "price_out_per_m": 0.8,
-  "vision": false,
-  "context_length": 262144,
-  "arena_rank": 215,
-  "arena_elo": 1340.162782760686,
-  "arena_elo_upper": 1344.7955881686719,
-  "arena_elo_lower": 1335.5299773527001,
-  "arena_votes": 30307,
-  "arena_org": "arcee-ai",
-  "arena_license": "Apache 2.0",
-  "arena_model": "trinity-large-thinking",
-  "arena_variants": [
-   "trinity-large-preview",
-   "trinity-large-thinking"
   ],
   "arena_context_length": null,
   "arena_model_url": null,

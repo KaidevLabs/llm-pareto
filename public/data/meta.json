@@ -1,5 +1,5 @@
 {
- "fetched_at": "2026-10-26T06:53:42Z",
+ "fetched_at": "2026-10-26T14:02:09Z",
  "sources": {
   "arena": {
    "url": "https://huggingface.co/datasets/lmarena-ai/leaderboard-dataset",
@@ -12,21 +12,21 @@
   },
   "openrouter": {
    "url": "https://openrouter.ai/api/v1/models",
-   "models": 374
+   "models": 373
   }
  },
  "join": {
-  "combined": 163,
-  "unmatched_arena": 202,
+  "combined": 162,
+  "unmatched_arena": 204,
   "unmatched_openrouter": 211,
   "by_method": {
-   "exact": 167,
-   "prefix-variant": 8,
+   "exact": 166,
+   "prefix-variant": 7,
    "prefix-base": 32,
    "override": 1,
    "fuzzy": 8
   },
-  "variants_collapsed": 39,
+  "variants_collapsed": 38,
   "collisions": [
    "nemotron-3-5-super-vl: nvidia/nemotron-3.5-super-vl vs nvidia/nemotron-3.5-super-vl:free",
    "deepseek-v4-1-flash: deepseek/deepseek-v4.1-flash-1017 vs deepseek/deepseek-v4.1-flash",
@@ -100,13 +100,13 @@
    "endpoints_api": "https://openrouter.ai/api/v1/models/{or_id}/endpoints",
    "model_page": "https://openrouter.ai/{or_id}"
   },
-  "models": 163,
-  "endpoints": 940,
+  "models": 162,
+  "endpoints": 938,
   "stats": {
-   "models_with_stats": 157,
-   "endpoints_with_stats": 869
+   "models_with_stats": 156,
+   "endpoints_with_stats": 878
   },
-  "joined_page_endpoints": 941,
+  "joined_page_endpoints": 939,
   "page_endpoints_unjoined": 0,
   "duplicates_merged": 1
  }
