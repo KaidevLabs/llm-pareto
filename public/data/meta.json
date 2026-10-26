@@ -1,5 +1,5 @@
 {
- "fetched_at": "2026-10-26T14:02:09Z",
+ "fetched_at": "2026-10-26T18:41:04Z",
  "sources": {
   "arena": {
    "url": "https://huggingface.co/datasets/lmarena-ai/leaderboard-dataset",
@@ -12,13 +12,13 @@
   },
   "openrouter": {
    "url": "https://openrouter.ai/api/v1/models",
-   "models": 373
+   "models": 374
   }
  },
  "join": {
   "combined": 162,
   "unmatched_arena": 204,
-  "unmatched_openrouter": 211,
+  "unmatched_openrouter": 212,
   "by_method": {
    "exact": 166,
    "prefix-variant": 7,
@@ -101,12 +101,12 @@
    "model_page": "https://openrouter.ai/{or_id}"
   },
   "models": 162,
-  "endpoints": 938,
+  "endpoints": 941,
   "stats": {
    "models_with_stats": 156,
-   "endpoints_with_stats": 878
+   "endpoints_with_stats": 883
   },
-  "joined_page_endpoints": 939,
+  "joined_page_endpoints": 942,
   "page_endpoints_unjoined": 0,
   "duplicates_merged": 1
  }
