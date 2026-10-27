@@ -48,8 +48,8 @@
   "id": "deepseek/deepseek-v4.1-flash-1017",
   "name": "DeepSeek: DeepSeek V4.1 Flash 1017",
   "org": "deepseek",
-  "price_in_per_m": 0.3,
-  "price_out_per_m": 1.2,
+  "price_in_per_m": 0.15,
+  "price_out_per_m": 0.6,
   "vision": true,
   "context_length": 1048576
  },
@@ -696,7 +696,7 @@
   "id": "z-ai/glm-5.3",
   "name": "Z.ai: GLM 5.3",
   "org": "z-ai",
-  "price_in_per_m": 0.0769,
+  "price_in_per_m": 0.0699,
   "price_out_per_m": 1.4,
   "vision": false,
   "context_length": 1048576
@@ -759,8 +759,8 @@
   "id": "deepseek/deepseek-v4-pro-0813",
   "name": "DeepSeek: DeepSeek V4 Pro 0813",
   "org": "deepseek",
-  "price_in_per_m": 1.32,
-  "price_out_per_m": 3.96,
+  "price_in_per_m": 0.66,
+  "price_out_per_m": 1.98,
   "vision": false,
   "context_length": 1048576
  },
@@ -976,7 +976,7 @@
   "name": "MoonshotAI: Kimi K3",
   "org": "moonshotai",
   "price_in_per_m": 0.169,
-  "price_out_per_m": 11.5,
+  "price_out_per_m": 20.0,
   "vision": true,
   "context_length": 1048576
  },
@@ -1173,7 +1173,7 @@
   "id": "moonshotai/kimi-k2.7-code",
   "name": "MoonshotAI: Kimi K2.7 Code",
   "org": "moonshotai",
-  "price_in_per_m": 0.56,
+  "price_in_per_m": 0.6725,
   "price_out_per_m": 3.1,
   "vision": true,
   "context_length": 262144
@@ -1407,8 +1407,8 @@
   "id": "deepseek/deepseek-v4-flash",
   "name": "DeepSeek: DeepSeek V4 Flash 0423",
   "org": "deepseek",
-  "price_in_per_m": 0.14,
-  "price_out_per_m": 0.28,
+  "price_in_per_m": 0.05,
+  "price_out_per_m": 0.45,
   "vision": false,
   "context_length": 1048576
  },
@@ -1634,15 +1634,6 @@
   "org": "nvidia",
   "price_in_per_m": 0.3,
   "price_out_per_m": 2.4,
-  "vision": false,
-  "context_length": 262144
- },
- {
-  "id": "nvidia/nemotron-3-super-120b-a12b:free",
-  "name": "NVIDIA: Nemotron 3 Super (free)",
-  "org": "nvidia",
-  "price_in_per_m": 0.0,
-  "price_out_per_m": 0.0,
   "vision": false,
   "context_length": 262144
  },

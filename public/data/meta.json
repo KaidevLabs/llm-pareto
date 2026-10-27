@@ -1,5 +1,5 @@
 {
- "fetched_at": "2026-10-27T06:42:58Z",
+ "fetched_at": "2026-10-27T12:39:59Z",
  "sources": {
   "arena": {
    "url": "https://huggingface.co/datasets/lmarena-ai/leaderboard-dataset",
@@ -12,13 +12,13 @@
   },
   "openrouter": {
    "url": "https://openrouter.ai/api/v1/models",
-   "models": 374
+   "models": 373
   }
  },
  "join": {
   "combined": 162,
   "unmatched_arena": 204,
-  "unmatched_openrouter": 212,
+  "unmatched_openrouter": 211,
   "by_method": {
    "exact": 166,
    "prefix-variant": 7,
@@ -43,7 +43,6 @@
    "hy3: tencent/hy3 vs tencent/hy3-preview",
    "gemma-4-26b-a4b-it: google/gemma-4-26b-a4b-it vs google/gemma-4-26b-a4b-it:free",
    "gemma-4-31b-it: google/gemma-4-31b-it vs google/gemma-4-31b-it:free",
-   "nemotron-3-super-120b-a12b: nvidia/nemotron-3-super-120b-a12b vs nvidia/nemotron-3-super-120b-a12b:free",
    "gemini-3-1-flash-lite: google/gemini-3.1-flash-lite vs google/gemini-3.1-flash-lite-preview",
    "gemini-3-1-flash-image: google/gemini-3.1-flash-image vs google/gemini-3.1-flash-image-preview",
    "qwen3-5-plus: qwen/qwen3.5-plus-20260420 vs qwen/qwen3.5-plus-02-15",
@@ -101,12 +100,12 @@
    "model_page": "https://openrouter.ai/{or_id}"
   },
   "models": 162,
-  "endpoints": 940,
+  "endpoints": 942,
   "stats": {
    "models_with_stats": 156,
-   "endpoints_with_stats": 877
+   "endpoints_with_stats": 889
   },
-  "joined_page_endpoints": 941,
+  "joined_page_endpoints": 943,
   "page_endpoints_unjoined": 0,
   "duplicates_merged": 1
  }
