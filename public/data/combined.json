@@ -962,8 +962,8 @@
  {
   "or_id": "deepseek/deepseek-v4-pro",
   "or_name": "DeepSeek: DeepSeek V4 Pro 0423",
-  "price_in_per_m": 0.95526,
-  "price_out_per_m": 1.91052,
+  "price_in_per_m": 0.88044,
+  "price_out_per_m": 1.76088,
   "vision": false,
   "context_length": 1048576,
   "arena_rank": 49,
@@ -1444,8 +1444,8 @@
  {
   "or_id": "tencent/hy3",
   "or_name": "Tencent: Hy3",
-  "price_in_per_m": 0.132,
-  "price_out_per_m": 0.528,
+  "price_in_per_m": 0.0825,
+  "price_out_per_m": 0.33,
   "vision": false,
   "context_length": 262144,
   "arena_rank": 80,
@@ -1620,8 +1620,8 @@
  {
   "or_id": "deepseek/deepseek-v4-flash",
   "or_name": "DeepSeek: DeepSeek V4 Flash 0423",
-  "price_in_per_m": 0.05,
-  "price_out_per_m": 0.45,
+  "price_in_per_m": 0.04732,
+  "price_out_per_m": 0.09464,
   "vision": false,
   "context_length": 1048576,
   "arena_rank": 91,
