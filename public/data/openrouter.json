@@ -90,6 +90,15 @@
   "context_length": 1000000
  },
  {
+  "id": "prism-ml/ternary-bonsai-2-9b",
+  "name": "PrismML: Ternary Bonsai 2 9B",
+  "org": "prism-ml",
+  "price_in_per_m": 0.08,
+  "price_out_per_m": 0.13,
+  "vision": true,
+  "context_length": 262144
+ },
+ {
   "id": "moondream/moondream3-preview",
   "name": "Moondream: Moondream 3 Preview",
   "org": "moondream",
@@ -624,8 +633,8 @@
   "id": "tencent/hy4-preview",
   "name": "Tencent: Hy4 preview",
   "org": "tencent",
-  "price_in_per_m": 0.7506,
-  "price_out_per_m": 2.2509,
+  "price_in_per_m": 0.834,
+  "price_out_per_m": 2.501,
   "vision": false,
   "context_length": 1048576
  },
@@ -705,8 +714,8 @@
   "id": "qwen/qwen3.8-27b",
   "name": "Qwen: Qwen3.8 27B",
   "org": "qwen",
-  "price_in_per_m": 0.2,
-  "price_out_per_m": 2.5,
+  "price_in_per_m": 0.039,
+  "price_out_per_m": 1.25,
   "vision": true,
   "context_length": 1000000
  },
@@ -1074,8 +1083,8 @@
   "id": "tencent/hy3",
   "name": "Tencent: Hy3",
   "org": "tencent",
-  "price_in_per_m": 0.0825,
-  "price_out_per_m": 0.33,
+  "price_in_per_m": 0.132,
+  "price_out_per_m": 0.528,
   "vision": false,
   "context_length": 262144
  },
@@ -1363,7 +1372,7 @@
   "name": "Qwen: Qwen3.6 35B A3B",
   "org": "qwen",
   "price_in_per_m": 0.1,
-  "price_out_per_m": 0.95,
+  "price_out_per_m": 0.9,
   "vision": true,
   "context_length": 262144
  },
@@ -1371,8 +1380,8 @@
   "id": "qwen/qwen3.6-27b",
   "name": "Qwen: Qwen3.6 27B",
   "org": "qwen",
-  "price_in_per_m": 0.32,
-  "price_out_per_m": 3.2,
+  "price_in_per_m": 0.45,
+  "price_out_per_m": 2.7,
   "vision": true,
   "context_length": 262144
  },
@@ -1398,8 +1407,8 @@
   "id": "deepseek/deepseek-v4-pro",
   "name": "DeepSeek: DeepSeek V4 Pro 0423",
   "org": "deepseek",
-  "price_in_per_m": 0.88044,
-  "price_out_per_m": 1.76088,
+  "price_in_per_m": 0.875394,
+  "price_out_per_m": 1.750788,
   "vision": false,
   "context_length": 1048576
  },
@@ -1407,8 +1416,8 @@
   "id": "deepseek/deepseek-v4-flash",
   "name": "DeepSeek: DeepSeek V4 Flash 0423",
   "org": "deepseek",
-  "price_in_per_m": 0.04732,
-  "price_out_per_m": 0.09464,
+  "price_in_per_m": 0.14,
+  "price_out_per_m": 0.28,
   "vision": false,
   "context_length": 1048576
  },
@@ -1479,8 +1488,8 @@
   "id": "z-ai/glm-5.1",
   "name": "Z.ai: GLM 5.1",
   "org": "z-ai",
-  "price_in_per_m": 0.966,
-  "price_out_per_m": 3.036,
+  "price_in_per_m": 1.4,
+  "price_out_per_m": 4.4,
   "vision": false,
   "context_length": 204800
  },
@@ -1488,8 +1497,8 @@
   "id": "google/gemma-4-26b-a4b-it",
   "name": "Google: Gemma 4 26B A4B ",
   "org": "google",
-  "price_in_per_m": 0.09,
-  "price_out_per_m": 0.3,
+  "price_in_per_m": 0.0765,
+  "price_out_per_m": 0.255,
   "vision": true,
   "context_length": 262144
  },
@@ -1632,8 +1641,8 @@
   "id": "nvidia/nemotron-3-super-120b-a12b",
   "name": "NVIDIA: Nemotron 3 Super",
   "org": "nvidia",
-  "price_in_per_m": 0.3,
-  "price_out_per_m": 2.4,
+  "price_in_per_m": 0.08,
+  "price_out_per_m": 0.45,
   "vision": false,
   "context_length": 262144
  },
@@ -3207,8 +3216,8 @@
   "id": "meta-llama/llama-3.1-8b-instruct",
   "name": "Meta: Llama 3.1 8B Instruct",
   "org": "meta-llama",
-  "price_in_per_m": 0.05,
-  "price_out_per_m": 0.08,
+  "price_in_per_m": 0.02,
+  "price_out_per_m": 0.04,
   "vision": false,
   "context_length": 131072
  },
