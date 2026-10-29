@@ -222,7 +222,7 @@
   "price_in_per_m": 1.0,
   "price_out_per_m": 2.7,
   "vision": true,
-  "context_length": 1000000
+  "context_length": 1048576
  },
  {
   "id": "anthropic/claude-haiku-5.5",
@@ -246,8 +246,8 @@
   "id": "mistralai/mistral-large-4-0",
   "name": "Mistral: Mistral Large 4",
   "org": "mistralai",
-  "price_in_per_m": 1.36,
-  "price_out_per_m": 4.18,
+  "price_in_per_m": 0.7,
+  "price_out_per_m": 2.1,
   "vision": true,
   "context_length": 1048576
  },
@@ -642,8 +642,8 @@
   "id": "tencent/hy4-preview",
   "name": "Tencent: Hy4 preview",
   "org": "tencent",
-  "price_in_per_m": 0.834,
-  "price_out_per_m": 2.501,
+  "price_in_per_m": 0.7506,
+  "price_out_per_m": 2.2509,
   "vision": false,
   "context_length": 1048576
  },
@@ -660,8 +660,8 @@
   "id": "z-ai/glm-5.3-flash",
   "name": "Z.ai: GLM 5.3 Flash",
   "org": "z-ai",
-  "price_in_per_m": 0.0457,
-  "price_out_per_m": 0.0742,
+  "price_in_per_m": 0.15,
+  "price_out_per_m": 0.5,
   "vision": true,
   "context_length": 1048576
  },
@@ -1092,8 +1092,8 @@
   "id": "tencent/hy3",
   "name": "Tencent: Hy3",
   "org": "tencent",
-  "price_in_per_m": 0.132,
-  "price_out_per_m": 0.528,
+  "price_in_per_m": 0.0825,
+  "price_out_per_m": 0.33,
   "vision": false,
   "context_length": 262144
  },
@@ -1416,8 +1416,8 @@
   "id": "deepseek/deepseek-v4-pro",
   "name": "DeepSeek: DeepSeek V4 Pro 0423",
   "org": "deepseek",
-  "price_in_per_m": 0.897318,
-  "price_out_per_m": 1.794636,
+  "price_in_per_m": 0.863562,
+  "price_out_per_m": 1.727124,
   "vision": false,
   "context_length": 1048576
  },
@@ -1888,15 +1888,6 @@
   "price_out_per_m": 2.5,
   "vision": true,
   "context_length": 262144
- },
- {
-  "id": "upstage/solar-pro-3",
-  "name": "Upstage: Solar Pro 3",
-  "org": "upstage",
-  "price_in_per_m": 0.15,
-  "price_out_per_m": 0.6,
-  "vision": false,
-  "context_length": 131072
  },
  {
   "id": "minimax/minimax-m2-her",
