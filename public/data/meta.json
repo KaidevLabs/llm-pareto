@@ -1,5 +1,5 @@
 {
- "fetched_at": "2026-10-28T00:47:06Z",
+ "fetched_at": "2026-10-29T00:46:24Z",
  "sources": {
   "arena": {
    "url": "https://huggingface.co/datasets/lmarena-ai/leaderboard-dataset",
@@ -12,21 +12,21 @@
   },
   "openrouter": {
    "url": "https://openrouter.ai/api/v1/models",
-   "models": 374
+   "models": 367
   }
  },
  "join": {
-  "combined": 162,
-  "unmatched_arena": 204,
-  "unmatched_openrouter": 212,
+  "combined": 157,
+  "unmatched_arena": 209,
+  "unmatched_openrouter": 210,
   "by_method": {
-   "exact": 166,
+   "exact": 157,
    "prefix-variant": 7,
-   "prefix-base": 32,
+   "prefix-base": 36,
    "override": 1,
    "fuzzy": 8
   },
-  "variants_collapsed": 38,
+  "variants_collapsed": 36,
   "collisions": [
    "nemotron-3-5-super-vl: nvidia/nemotron-3.5-super-vl vs nvidia/nemotron-3.5-super-vl:free",
    "deepseek-v4-1-flash: deepseek/deepseek-v4.1-flash-1017 vs deepseek/deepseek-v4.1-flash",
@@ -51,8 +51,6 @@
    "deepseek-v3-2: deepseek/deepseek-v3.2 vs deepseek/deepseek-v3.2-exp",
    "kimi-k2: moonshotai/kimi-k2-0905 vs moonshotai/kimi-k2",
    "gemini-2-5-pro: google/gemini-2.5-pro vs google/gemini-2.5-pro-preview",
-   "o4-mini: openai/o4-mini-high vs openai/o4-mini",
-   "o3-mini: openai/o3-mini-high vs openai/o3-mini",
    "mistral-large: mistralai/mistral-large-2512 vs mistralai/mistral-large-2407",
    "gpt-4o: openai/gpt-4o-2024-11-20 vs openai/gpt-4o-2024-08-06",
    "gpt-4o-mini: openai/gpt-4o-mini vs openai/gpt-4o-mini-2024-07-18",
@@ -99,14 +97,14 @@
    "endpoints_api": "https://openrouter.ai/api/v1/models/{or_id}/endpoints",
    "model_page": "https://openrouter.ai/{or_id}"
   },
-  "models": 162,
-  "endpoints": 939,
+  "models": 157,
+  "endpoints": 928,
   "stats": {
    "models_with_stats": 156,
    "endpoints_with_stats": 867
   },
-  "joined_page_endpoints": 940,
+  "joined_page_endpoints": 928,
   "page_endpoints_unjoined": 0,
-  "duplicates_merged": 1
+  "duplicates_merged": 0
  }
 }

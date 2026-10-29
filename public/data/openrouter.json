@@ -1,5 +1,14 @@
 [
  {
+  "id": "particle-ai/particle-1",
+  "name": "Particle AI: Particle-1",
+  "org": "particle-ai",
+  "price_in_per_m": 0.25,
+  "price_out_per_m": 1.0,
+  "vision": true,
+  "context_length": 1048576
+ },
+ {
   "id": "openai/gpt-6.1-terra-pro",
   "name": "OpenAI: GPT-6.1 Terra Pro",
   "org": "openai",
@@ -249,7 +258,7 @@
   "price_in_per_m": 0.075,
   "price_out_per_m": 0.225,
   "vision": false,
-  "context_length": 262144
+  "context_length": 1000000
  },
  {
   "id": "openai/gpt-6.1-sol-pro",
@@ -525,8 +534,8 @@
   "id": "deepseek/deepseek-v4.1-flash",
   "name": "DeepSeek: DeepSeek V4.1 Flash",
   "org": "deepseek",
-  "price_in_per_m": 0.14,
-  "price_out_per_m": 0.42,
+  "price_in_per_m": 0.045,
+  "price_out_per_m": 0.5,
   "vision": true,
   "context_length": 1048576
  },
@@ -625,7 +634,7 @@
   "name": "IBM: Granite 4.2 8B",
   "org": "ibm-granite",
   "price_in_per_m": 0.06,
-  "price_out_per_m": 0.25,
+  "price_out_per_m": 0.15,
   "vision": false,
   "context_length": 131072
  },
@@ -651,8 +660,8 @@
   "id": "z-ai/glm-5.3-flash",
   "name": "Z.ai: GLM 5.3 Flash",
   "org": "z-ai",
-  "price_in_per_m": 0.15,
-  "price_out_per_m": 0.5,
+  "price_in_per_m": 0.0379,
+  "price_out_per_m": 0.0798,
   "vision": true,
   "context_length": 1048576
  },
@@ -984,7 +993,7 @@
   "id": "moonshotai/kimi-k3",
   "name": "MoonshotAI: Kimi K3",
   "org": "moonshotai",
-  "price_in_per_m": 0.169,
+  "price_in_per_m": 0.192,
   "price_out_per_m": 20.0,
   "vision": true,
   "context_length": 1048576
@@ -1164,8 +1173,8 @@
   "id": "z-ai/glm-5.2",
   "name": "Z.ai: GLM 5.2",
   "org": "z-ai",
-  "price_in_per_m": 0.0341,
-  "price_out_per_m": 7.0,
+  "price_in_per_m": 0.006,
+  "price_out_per_m": 5.4,
   "vision": false,
   "context_length": 1048576
  },
@@ -1407,8 +1416,8 @@
   "id": "deepseek/deepseek-v4-pro",
   "name": "DeepSeek: DeepSeek V4 Pro 0423",
   "org": "deepseek",
-  "price_in_per_m": 0.875394,
-  "price_out_per_m": 1.750788,
+  "price_in_per_m": 0.95526,
+  "price_out_per_m": 1.91052,
   "vision": false,
   "context_length": 1048576
  },
@@ -1416,8 +1425,8 @@
   "id": "deepseek/deepseek-v4-flash",
   "name": "DeepSeek: DeepSeek V4 Flash 0423",
   "org": "deepseek",
-  "price_in_per_m": 0.14,
-  "price_out_per_m": 0.28,
+  "price_in_per_m": 0.091,
+  "price_out_per_m": 0.182,
   "vision": false,
   "context_length": 1048576
  },
@@ -1641,10 +1650,10 @@
   "id": "nvidia/nemotron-3-super-120b-a12b",
   "name": "NVIDIA: Nemotron 3 Super",
   "org": "nvidia",
-  "price_in_per_m": 0.08,
-  "price_out_per_m": 0.45,
+  "price_in_per_m": 0.3,
+  "price_out_per_m": 2.4,
   "vision": false,
-  "context_length": 262144
+  "context_length": 1048576
  },
  {
   "id": "bytedance-seed/seed-2.0-lite",
@@ -2298,8 +2307,8 @@
   "id": "z-ai/glm-4.6",
   "name": "Z.ai: GLM 4.6",
   "org": "z-ai",
-  "price_in_per_m": 0.55,
-  "price_out_per_m": 2.2,
+  "price_in_per_m": 0.5,
+  "price_out_per_m": 2.0,
   "vision": false,
   "context_length": 204800
  },
@@ -2365,15 +2374,6 @@
   "price_out_per_m": 0.975,
   "vision": false,
   "context_length": 1000000
- },
- {
-  "id": "qwen/qwen3-next-80b-a3b-thinking",
-  "name": "Qwen: Qwen3 Next 80B A3B Thinking",
-  "org": "qwen",
-  "price_in_per_m": 0.15,
-  "price_out_per_m": 1.2,
-  "vision": false,
-  "context_length": 262144
  },
  {
   "id": "qwen/qwen3-next-80b-a3b-instruct",
@@ -2727,29 +2727,11 @@
   "context_length": 131072
  },
  {
-  "id": "openai/o4-mini-high",
-  "name": "OpenAI: o4 Mini High",
-  "org": "openai",
-  "price_in_per_m": 1.1,
-  "price_out_per_m": 4.4,
-  "vision": true,
-  "context_length": 200000
- },
- {
   "id": "openai/o3",
   "name": "OpenAI: o3",
   "org": "openai",
   "price_in_per_m": 2.0,
   "price_out_per_m": 8.0,
-  "vision": true,
-  "context_length": 200000
- },
- {
-  "id": "openai/o4-mini",
-  "name": "OpenAI: o4 Mini",
-  "org": "openai",
-  "price_in_per_m": 1.1,
-  "price_out_per_m": 4.4,
   "vision": true,
   "context_length": 200000
  },
@@ -2806,15 +2788,6 @@
   "price_out_per_m": 1.14,
   "vision": false,
   "context_length": 163840
- },
- {
-  "id": "openai/o1-pro",
-  "name": "OpenAI: o1-pro",
-  "org": "openai",
-  "price_in_per_m": 150.0,
-  "price_out_per_m": 600.0,
-  "vision": true,
-  "context_length": 200000
  },
  {
   "id": "mistralai/mistral-small-3.1-24b-instruct",
@@ -2916,15 +2889,6 @@
   "context_length": 32768
  },
  {
-  "id": "openai/o3-mini-high",
-  "name": "OpenAI: o3 Mini High",
-  "org": "openai",
-  "price_in_per_m": 1.1,
-  "price_out_per_m": 4.4,
-  "vision": false,
-  "context_length": 200000
- },
- {
   "id": "aion-labs/aion-rp-llama-3.1-8b",
   "name": "AionLabs: Aion-RP 1.0 (8B)",
   "org": "aion-labs",
@@ -2950,15 +2914,6 @@
   "price_out_per_m": 0.78,
   "vision": false,
   "context_length": 1000000
- },
- {
-  "id": "openai/o3-mini",
-  "name": "OpenAI: o3 Mini",
-  "org": "openai",
-  "price_in_per_m": 1.1,
-  "price_out_per_m": 4.4,
-  "vision": false,
-  "context_length": 200000
  },
  {
   "id": "mistralai/mistral-small-24b-instruct-2501",
@@ -3004,15 +2959,6 @@
   "price_out_per_m": 1.0287,
   "vision": false,
   "context_length": 163840
- },
- {
-  "id": "openai/o1",
-  "name": "OpenAI: o1",
-  "org": "openai",
-  "price_in_per_m": 15.0,
-  "price_out_per_m": 60.0,
-  "vision": true,
-  "context_length": 200000
  },
  {
   "id": "cohere/command-r7b-12-2024",
@@ -3216,8 +3162,8 @@
   "id": "meta-llama/llama-3.1-8b-instruct",
   "name": "Meta: Llama 3.1 8B Instruct",
   "org": "meta-llama",
-  "price_in_per_m": 0.02,
-  "price_out_per_m": 0.04,
+  "price_in_per_m": 0.05,
+  "price_out_per_m": 0.08,
   "vision": false,
   "context_length": 131072
  },
@@ -3283,15 +3229,6 @@
   "price_out_per_m": 6.0,
   "vision": false,
   "context_length": 65536
- },
- {
-  "id": "openai/gpt-4-turbo",
-  "name": "OpenAI: GPT-4 Turbo",
-  "org": "openai",
-  "price_in_per_m": 10.0,
-  "price_out_per_m": 30.0,
-  "vision": true,
-  "context_length": 128000
  },
  {
   "id": "mistralai/mistral-large",

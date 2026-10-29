@@ -507,7 +507,7 @@
  {
   "or_id": "moonshotai/kimi-k3",
   "or_name": "MoonshotAI: Kimi K3",
-  "price_in_per_m": 0.169,
+  "price_in_per_m": 0.192,
   "price_out_per_m": 20.0,
   "vision": true,
   "context_length": 1048576,
@@ -582,8 +582,8 @@
  {
   "or_id": "z-ai/glm-5.3-flash",
   "or_name": "Z.ai: GLM 5.3 Flash",
-  "price_in_per_m": 0.15,
-  "price_out_per_m": 0.5,
+  "price_in_per_m": 0.0379,
+  "price_out_per_m": 0.0798,
   "vision": true,
   "context_length": 1048576,
   "arena_rank": 29,
@@ -634,8 +634,8 @@
  {
   "or_id": "z-ai/glm-5.2",
   "or_name": "Z.ai: GLM 5.2",
-  "price_in_per_m": 0.0341,
-  "price_out_per_m": 7.0,
+  "price_in_per_m": 0.006,
+  "price_out_per_m": 5.4,
   "vision": false,
   "context_length": 1048576,
   "arena_rank": 32,
@@ -711,8 +711,8 @@
  {
   "or_id": "deepseek/deepseek-v4.1-flash",
   "or_name": "DeepSeek: DeepSeek V4.1 Flash",
-  "price_in_per_m": 0.14,
-  "price_out_per_m": 0.42,
+  "price_in_per_m": 0.045,
+  "price_out_per_m": 0.5,
   "vision": true,
   "context_length": 1048576,
   "arena_rank": 37,
@@ -962,8 +962,8 @@
  {
   "or_id": "deepseek/deepseek-v4-pro",
   "or_name": "DeepSeek: DeepSeek V4 Pro 0423",
-  "price_in_per_m": 0.875394,
-  "price_out_per_m": 1.750788,
+  "price_in_per_m": 0.95526,
+  "price_out_per_m": 1.91052,
   "vision": false,
   "context_length": 1048576,
   "arena_rank": 49,
@@ -1343,8 +1343,8 @@
  {
   "or_id": "z-ai/glm-4.6",
   "or_name": "Z.ai: GLM 4.6",
-  "price_in_per_m": 0.55,
-  "price_out_per_m": 2.2,
+  "price_in_per_m": 0.5,
+  "price_out_per_m": 2.0,
   "vision": false,
   "context_length": 204800,
   "arena_rank": 75,
@@ -1620,8 +1620,8 @@
  {
   "or_id": "deepseek/deepseek-v4-flash",
   "or_name": "DeepSeek: DeepSeek V4 Flash 0423",
-  "price_in_per_m": 0.14,
-  "price_out_per_m": 0.28,
+  "price_in_per_m": 0.091,
+  "price_out_per_m": 0.182,
   "vision": false,
   "context_length": 1048576,
   "arena_rank": 91,
@@ -2074,6 +2074,9 @@
   "arena_variants": [
    "gpt-4-0314",
    "gpt-4-0613",
+   "gpt-4-turbo-2024-04-09",
+   "gpt-4-turbo-preview-0125",
+   "gpt-4-turbo-preview-1106",
    "gpt-4.5-preview-2025-02-27"
   ],
   "arena_context_length": null,
@@ -2301,7 +2304,9 @@
   "arena_license": "Proprietary",
   "arena_model": "o3-2025-04-16",
   "arena_variants": [
-   "o3-2025-04-16"
+   "o3-2025-04-16",
+   "o3-mini",
+   "o3-mini-high"
   ],
   "arena_context_length": null,
   "arena_model_url": null,
@@ -2916,31 +2921,6 @@
   "match_ratio": null
  },
  {
-  "or_id": "qwen/qwen3-next-80b-a3b-thinking",
-  "or_name": "Qwen: Qwen3 Next 80B A3B Thinking",
-  "price_in_per_m": 0.15,
-  "price_out_per_m": 1.2,
-  "vision": false,
-  "context_length": 262144,
-  "arena_rank": 189,
-  "arena_elo": 1368.1534563493196,
-  "arena_elo_upper": 1373.9927659112232,
-  "arena_elo_lower": 1362.3141467874161,
-  "arena_votes": 13473,
-  "arena_org": "Alibaba",
-  "arena_license": "Apache 2.0",
-  "arena_model": "qwen3-next-80b-a3b-thinking",
-  "arena_variants": [
-   "qwen3-next-80b-a3b-thinking"
-  ],
-  "arena_context_length": null,
-  "arena_model_url": null,
-  "arena_price_in_per_m": null,
-  "arena_price_out_per_m": null,
-  "match_method": "exact",
-  "match_ratio": null
- },
- {
   "or_id": "qwen/qwen2.5-vl-72b-instruct",
   "or_name": "Qwen: Qwen2.5 VL 72B Instruct",
   "price_in_per_m": 0.8,
@@ -2963,33 +2943,6 @@
   "arena_price_in_per_m": null,
   "arena_price_out_per_m": null,
   "match_method": "prefix-variant",
-  "match_ratio": null
- },
- {
-  "or_id": "openai/o1",
-  "or_name": "OpenAI: o1",
-  "price_in_per_m": 15.0,
-  "price_out_per_m": 60.0,
-  "vision": true,
-  "context_length": 200000,
-  "arena_rank": 193,
-  "arena_elo": 1365.794830865038,
-  "arena_elo_upper": 1370.2688493039982,
-  "arena_elo_lower": 1361.3208124260777,
-  "arena_votes": 27807,
-  "arena_org": "OpenAI",
-  "arena_license": "Proprietary",
-  "arena_model": "o1-2024-12-17",
-  "arena_variants": [
-   "o1-2024-12-17",
-   "o1-mini",
-   "o1-preview"
-  ],
-  "arena_context_length": null,
-  "arena_model_url": null,
-  "arena_price_in_per_m": null,
-  "arena_price_out_per_m": null,
-  "match_method": "exact",
   "match_ratio": null
  },
  {
@@ -3109,31 +3062,6 @@
   "arena_model": "mercury-2",
   "arena_variants": [
    "mercury-2"
-  ],
-  "arena_context_length": null,
-  "arena_model_url": null,
-  "arena_price_in_per_m": null,
-  "arena_price_out_per_m": null,
-  "match_method": "exact",
-  "match_ratio": null
- },
- {
-  "or_id": "openai/o4-mini",
-  "or_name": "OpenAI: o4 Mini",
-  "price_in_per_m": 1.1,
-  "price_out_per_m": 4.4,
-  "vision": true,
-  "context_length": 200000,
-  "arena_rank": 206,
-  "arena_elo": 1353.2104850625724,
-  "arena_elo_upper": 1357.166436860106,
-  "arena_elo_lower": 1349.2545332650386,
-  "arena_votes": 44851,
-  "arena_org": "OpenAI",
-  "arena_license": "Proprietary",
-  "arena_model": "o4-mini-2025-04-16",
-  "arena_variants": [
-   "o4-mini-2025-04-16"
   ],
   "arena_context_length": null,
   "arena_model_url": null,
@@ -3293,32 +3221,6 @@
   "match_ratio": null
  },
  {
-  "or_id": "openai/o3-mini",
-  "or_name": "OpenAI: o3 Mini",
-  "price_in_per_m": 1.1,
-  "price_out_per_m": 4.4,
-  "vision": false,
-  "context_length": 200000,
-  "arena_rank": 221,
-  "arena_elo": 1336.5589562302694,
-  "arena_elo_upper": 1341.8059080595617,
-  "arena_elo_lower": 1331.312004400977,
-  "arena_votes": 18589,
-  "arena_org": "OpenAI",
-  "arena_license": "Proprietary",
-  "arena_model": "o3-mini-high",
-  "arena_variants": [
-   "o3-mini",
-   "o3-mini-high"
-  ],
-  "arena_context_length": null,
-  "arena_model_url": null,
-  "arena_price_in_per_m": null,
-  "arena_price_out_per_m": null,
-  "match_method": "exact",
-  "match_ratio": null
- },
- {
   "or_id": "google/gemma-3-12b-it",
   "or_name": "Google: Gemma 3 12B",
   "price_in_per_m": 0.05,
@@ -3447,7 +3349,7 @@
   "or_id": "ibm-granite/granite-4.2-8b",
   "or_name": "IBM: Granite 4.2 8B",
   "price_in_per_m": 0.06,
-  "price_out_per_m": 0.25,
+  "price_out_per_m": 0.15,
   "vision": false,
   "context_length": 131072,
   "arena_rank": 238,
@@ -3721,33 +3623,6 @@
   "match_ratio": null
  },
  {
-  "or_id": "openai/gpt-4-turbo",
-  "or_name": "OpenAI: GPT-4 Turbo",
-  "price_in_per_m": 10.0,
-  "price_out_per_m": 30.0,
-  "vision": true,
-  "context_length": 128000,
-  "arena_rank": 281,
-  "arena_elo": 1271.664149110862,
-  "arena_elo_upper": 1275.557816441602,
-  "arena_elo_lower": 1267.7704817801218,
-  "arena_votes": 98114,
-  "arena_org": "OpenAI",
-  "arena_license": "Proprietary",
-  "arena_model": "gpt-4-turbo-2024-04-09",
-  "arena_variants": [
-   "gpt-4-turbo-2024-04-09",
-   "gpt-4-turbo-preview-0125",
-   "gpt-4-turbo-preview-1106"
-  ],
-  "arena_context_length": null,
-  "arena_model_url": null,
-  "arena_price_in_per_m": null,
-  "arena_price_out_per_m": null,
-  "match_method": "exact",
-  "match_ratio": null
- },
- {
   "or_id": "qwen/qwen-2.5-72b-instruct",
   "or_name": "Qwen2.5 72B Instruct",
   "price_in_per_m": 0.36,
@@ -3977,8 +3852,8 @@
  {
   "or_id": "meta-llama/llama-3.1-8b-instruct",
   "or_name": "Meta: Llama 3.1 8B Instruct",
-  "price_in_per_m": 0.02,
-  "price_out_per_m": 0.04,
+  "price_in_per_m": 0.05,
+  "price_out_per_m": 0.08,
   "vision": false,
   "context_length": 131072,
   "arena_rank": 329,
