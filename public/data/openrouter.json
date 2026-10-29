@@ -57,8 +57,8 @@
   "id": "deepseek/deepseek-v4.1-flash-1017",
   "name": "DeepSeek: DeepSeek V4.1 Flash 1017",
   "org": "deepseek",
-  "price_in_per_m": 0.3,
-  "price_out_per_m": 1.2,
+  "price_in_per_m": 0.15,
+  "price_out_per_m": 0.6,
   "vision": true,
   "context_length": 1048576
  },
@@ -222,7 +222,7 @@
   "price_in_per_m": 1.0,
   "price_out_per_m": 2.7,
   "vision": true,
-  "context_length": 1048576
+  "context_length": 1000000
  },
  {
   "id": "anthropic/claude-haiku-5.5",
@@ -777,8 +777,8 @@
   "id": "deepseek/deepseek-v4-pro-0813",
   "name": "DeepSeek: DeepSeek V4 Pro 0813",
   "org": "deepseek",
-  "price_in_per_m": 1.32,
-  "price_out_per_m": 3.96,
+  "price_in_per_m": 0.66,
+  "price_out_per_m": 1.98,
   "vision": false,
   "context_length": 1048576
  },
@@ -993,8 +993,8 @@
   "id": "moonshotai/kimi-k3",
   "name": "MoonshotAI: Kimi K3",
   "org": "moonshotai",
-  "price_in_per_m": 0.192,
-  "price_out_per_m": 15.0,
+  "price_in_per_m": 0.239,
+  "price_out_per_m": 10.8,
   "vision": true,
   "context_length": 1048576
  },
@@ -1416,8 +1416,8 @@
   "id": "deepseek/deepseek-v4-pro",
   "name": "DeepSeek: DeepSeek V4 Pro 0423",
   "org": "deepseek",
-  "price_in_per_m": 0.95526,
-  "price_out_per_m": 1.91052,
+  "price_in_per_m": 0.897318,
+  "price_out_per_m": 1.794636,
   "vision": false,
   "context_length": 1048576
  },
