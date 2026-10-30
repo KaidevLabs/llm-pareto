@@ -557,8 +557,8 @@
  {
   "or_id": "z-ai/glm-5.3-flash",
   "or_name": "Z.ai: GLM 5.3 Flash",
-  "price_in_per_m": 0.15,
-  "price_out_per_m": 0.5,
+  "price_in_per_m": 0.018,
+  "price_out_per_m": 0.1402,
   "vision": true,
   "context_length": 1048576,
   "arena_rank": 29,
@@ -962,8 +962,8 @@
  {
   "or_id": "deepseek/deepseek-v4-pro",
   "or_name": "DeepSeek: DeepSeek V4 Pro 0423",
-  "price_in_per_m": 0.816234,
-  "price_out_per_m": 1.632468,
+  "price_in_per_m": 0.9483,
+  "price_out_per_m": 1.8966,
   "vision": false,
   "context_length": 1048576,
   "arena_rank": 50,
@@ -1368,8 +1368,8 @@
  {
   "or_id": "tencent/hy3",
   "or_name": "Tencent: Hy3",
-  "price_in_per_m": 0.132,
-  "price_out_per_m": 0.528,
+  "price_in_per_m": 0.0825,
+  "price_out_per_m": 0.33,
   "vision": false,
   "context_length": 262144,
   "arena_rank": 77,
