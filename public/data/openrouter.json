@@ -48,8 +48,8 @@
   "id": "minimax/minimax-m3.1-flash",
   "name": "MiniMax: MiniMax M3.1 Flash",
   "org": "minimax",
-  "price_in_per_m": 0.075,
-  "price_out_per_m": 0.3,
+  "price_in_per_m": 0.15,
+  "price_out_per_m": 0.6,
   "vision": true,
   "context_length": 1048576
  },
@@ -642,7 +642,7 @@
   "id": "z-ai/glm-5.3-flash",
   "name": "Z.ai: GLM 5.3 Flash",
   "org": "z-ai",
-  "price_in_per_m": 0.0216,
+  "price_in_per_m": 0.018,
   "price_out_per_m": 0.1238,
   "vision": true,
   "context_length": 1048576
@@ -705,8 +705,8 @@
   "id": "qwen/qwen3.8-27b",
   "name": "Qwen: Qwen3.8 27B",
   "org": "qwen",
-  "price_in_per_m": 0.15,
-  "price_out_per_m": 1.875,
+  "price_in_per_m": 0.04,
+  "price_out_per_m": 2.3,
   "vision": true,
   "context_length": 1000000
  },
