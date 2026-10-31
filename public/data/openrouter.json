@@ -642,8 +642,8 @@
   "id": "z-ai/glm-5.3-flash",
   "name": "Z.ai: GLM 5.3 Flash",
   "org": "z-ai",
-  "price_in_per_m": 0.018,
-  "price_out_per_m": 0.1238,
+  "price_in_per_m": 0.0163,
+  "price_out_per_m": 0.1479,
   "vision": true,
   "context_length": 1048576
  },
@@ -1147,7 +1147,7 @@
   "name": "Z.ai: GLM 5.2",
   "org": "z-ai",
   "price_in_per_m": 0.006,
-  "price_out_per_m": 7.0,
+  "price_out_per_m": 6.8,
   "vision": false,
   "context_length": 1048576
  },
