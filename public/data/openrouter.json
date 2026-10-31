@@ -48,8 +48,8 @@
   "id": "minimax/minimax-m3.1-flash",
   "name": "MiniMax: MiniMax M3.1 Flash",
   "org": "minimax",
-  "price_in_per_m": 0.15,
-  "price_out_per_m": 0.6,
+  "price_in_per_m": 0.075,
+  "price_out_per_m": 0.3,
   "vision": true,
   "context_length": 1048576
  },
@@ -624,8 +624,8 @@
   "id": "tencent/hy4-preview",
   "name": "Tencent: Hy4 preview",
   "org": "tencent",
-  "price_in_per_m": 0.834,
-  "price_out_per_m": 2.501,
+  "price_in_per_m": 0.7506,
+  "price_out_per_m": 2.2509,
   "vision": false,
   "context_length": 1048576
  },
@@ -759,8 +759,8 @@
   "id": "deepseek/deepseek-v4-pro-0813",
   "name": "DeepSeek: DeepSeek V4 Pro 0813",
   "org": "deepseek",
-  "price_in_per_m": 0.66,
-  "price_out_per_m": 1.98,
+  "price_in_per_m": 0.115,
+  "price_out_per_m": 4.0,
   "vision": false,
   "context_length": 1048576
  },
@@ -896,24 +896,6 @@
   "org": "inclusionai",
   "price_in_per_m": 0.021,
   "price_out_per_m": 0.063,
-  "vision": false,
-  "context_length": 262144
- },
- {
-  "id": "poolside/laguna-s-2.1",
-  "name": "Poolside: Laguna S 2.1",
-  "org": "poolside",
-  "price_in_per_m": 0.09,
-  "price_out_per_m": 0.18,
-  "vision": false,
-  "context_length": 1048576
- },
- {
-  "id": "poolside/laguna-s-2.1:free",
-  "name": "Poolside: Laguna S 2.1 (free)",
-  "org": "poolside",
-  "price_in_per_m": 0.0,
-  "price_out_per_m": 0.0,
   "vision": false,
   "context_length": 262144
  },
@@ -1065,26 +1047,8 @@
   "id": "tencent/hy3",
   "name": "Tencent: Hy3",
   "org": "tencent",
-  "price_in_per_m": 0.132,
-  "price_out_per_m": 0.528,
-  "vision": false,
-  "context_length": 262144
- },
- {
-  "id": "poolside/laguna-xs-2.1",
-  "name": "Poolside: Laguna XS 2.1",
-  "org": "poolside",
-  "price_in_per_m": 0.06,
-  "price_out_per_m": 0.12,
-  "vision": false,
-  "context_length": 262144
- },
- {
-  "id": "poolside/laguna-xs-2.1:free",
-  "name": "Poolside: Laguna XS 2.1 (free)",
-  "org": "poolside",
-  "price_in_per_m": 0.0,
-  "price_out_per_m": 0.0,
+  "price_in_per_m": 0.0825,
+  "price_out_per_m": 0.33,
   "vision": false,
   "context_length": 262144
  },
@@ -1920,8 +1884,8 @@
   "id": "z-ai/glm-4.7",
   "name": "Z.ai: GLM 4.7",
   "org": "z-ai",
-  "price_in_per_m": 0.54,
-  "price_out_per_m": 1.98,
+  "price_in_per_m": 0.6,
+  "price_out_per_m": 2.2,
   "vision": false,
   "context_length": 204800
  },
