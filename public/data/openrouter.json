@@ -288,15 +288,6 @@
   "context_length": 1000000
  },
  {
-  "id": "typesafe/jev-router",
-  "name": "TypeSafe: Jev Router",
-  "org": "typesafe",
-  "price_in_per_m": -1000000.0,
-  "price_out_per_m": -1000000.0,
-  "vision": true,
-  "context_length": 1000000
- },
- {
   "id": "perceptron/perceptron-mk1.5",
   "name": "Perceptron: Perceptron Mk1.5",
   "org": "perceptron",
@@ -411,15 +402,6 @@
   "price_in_per_m": 4.0,
   "price_out_per_m": 20.0,
   "vision": true,
-  "context_length": 1000000
- },
- {
-  "id": "nvidia/switchyard",
-  "name": "NVIDIA: Switchyard",
-  "org": "nvidia",
-  "price_in_per_m": -1000000.0,
-  "price_out_per_m": -1000000.0,
-  "vision": false,
   "context_length": 1000000
  },
  {
@@ -642,8 +624,8 @@
   "id": "tencent/hy4-preview",
   "name": "Tencent: Hy4 preview",
   "org": "tencent",
-  "price_in_per_m": 0.7506,
-  "price_out_per_m": 2.2509,
+  "price_in_per_m": 0.834,
+  "price_out_per_m": 2.501,
   "vision": false,
   "context_length": 1048576
  },
@@ -660,8 +642,8 @@
   "id": "z-ai/glm-5.3-flash",
   "name": "Z.ai: GLM 5.3 Flash",
   "org": "z-ai",
-  "price_in_per_m": 0.018,
-  "price_out_per_m": 0.1402,
+  "price_in_per_m": 0.0216,
+  "price_out_per_m": 0.1238,
   "vision": true,
   "context_length": 1048576
  },
@@ -714,8 +696,8 @@
   "id": "z-ai/glm-5.3",
   "name": "Z.ai: GLM 5.3",
   "org": "z-ai",
-  "price_in_per_m": 0.08,
-  "price_out_per_m": 3.6,
+  "price_in_per_m": 0.0699,
+  "price_out_per_m": 1.4,
   "vision": false,
   "context_length": 1048576
  },
@@ -981,15 +963,6 @@
   "context_length": 1048576
  },
  {
-  "id": "openrouter/auto-beta",
-  "name": "Auto Router (Beta)",
-  "org": "openrouter",
-  "price_in_per_m": -1000000.0,
-  "price_out_per_m": -1000000.0,
-  "vision": true,
-  "context_length": 2000000
- },
- {
   "id": "moonshotai/kimi-k3",
   "name": "MoonshotAI: Kimi K3",
   "org": "moonshotai",
@@ -1092,8 +1065,8 @@
   "id": "tencent/hy3",
   "name": "Tencent: Hy3",
   "org": "tencent",
-  "price_in_per_m": 0.0825,
-  "price_out_per_m": 0.33,
+  "price_in_per_m": 0.132,
+  "price_out_per_m": 0.528,
   "vision": false,
   "context_length": 262144
  },
@@ -1177,15 +1150,6 @@
   "price_out_per_m": 7.0,
   "vision": false,
   "context_length": 1048576
- },
- {
-  "id": "openrouter/fusion",
-  "name": "OpenRouter: Fusion",
-  "org": "openrouter",
-  "price_in_per_m": -1000000.0,
-  "price_out_per_m": -1000000.0,
-  "vision": false,
-  "context_length": 1000000
  },
  {
   "id": "moonshotai/kimi-k2.7-code",
@@ -1389,8 +1353,8 @@
   "id": "qwen/qwen3.6-27b",
   "name": "Qwen: Qwen3.6 27B",
   "org": "qwen",
-  "price_in_per_m": 0.32,
-  "price_out_per_m": 3.2,
+  "price_in_per_m": 0.45,
+  "price_out_per_m": 2.7,
   "vision": true,
   "context_length": 262144
  },
@@ -1416,8 +1380,8 @@
   "id": "deepseek/deepseek-v4-pro",
   "name": "DeepSeek: DeepSeek V4 Pro 0423",
   "org": "deepseek",
-  "price_in_per_m": 0.9483,
-  "price_out_per_m": 1.8966,
+  "price_in_per_m": 1.6,
+  "price_out_per_m": 3.2,
   "vision": false,
   "context_length": 1048576
  },
@@ -1467,15 +1431,6 @@
   "context_length": 272000
  },
  {
-  "id": "openrouter/pareto-code",
-  "name": "Pareto Code Router",
-  "org": "openrouter",
-  "price_in_per_m": -1000000.0,
-  "price_out_per_m": -1000000.0,
-  "vision": false,
-  "context_length": 2000000
- },
- {
   "id": "moonshotai/kimi-k2.6",
   "name": "MoonshotAI: Kimi K2.6",
   "org": "moonshotai",
@@ -1506,8 +1461,8 @@
   "id": "google/gemma-4-26b-a4b-it",
   "name": "Google: Gemma 4 26B A4B ",
   "org": "google",
-  "price_in_per_m": 0.09,
-  "price_out_per_m": 0.3,
+  "price_in_per_m": 0.0675,
+  "price_out_per_m": 0.225,
   "vision": true,
   "context_length": 262144
  },
@@ -1830,8 +1785,8 @@
   "id": "minimax/minimax-m2.5",
   "name": "MiniMax: MiniMax M2.5",
   "org": "minimax",
-  "price_in_per_m": 0.3,
-  "price_out_per_m": 1.2,
+  "price_in_per_m": 0.27,
+  "price_out_per_m": 0.95,
   "vision": false,
   "context_length": 204800
  },
@@ -1861,15 +1816,6 @@
   "price_out_per_m": 0.8,
   "vision": false,
   "context_length": 262144
- },
- {
-  "id": "openrouter/free",
-  "name": "Free Models Router",
-  "org": "openrouter",
-  "price_in_per_m": 0.0,
-  "price_out_per_m": 0.0,
-  "vision": true,
-  "context_length": 200000
  },
  {
   "id": "stepfun/step-3.5-flash",
@@ -2050,15 +1996,6 @@
   "price_out_per_m": 0.9,
   "vision": true,
   "context_length": 131072
- },
- {
-  "id": "openrouter/bodybuilder",
-  "name": "Body Builder (beta)",
-  "org": "openrouter",
-  "price_in_per_m": -1000000.0,
-  "price_out_per_m": -1000000.0,
-  "vision": false,
-  "context_length": 128000
  },
  {
   "id": "openai/gpt-5.1-codex-max",
@@ -3240,15 +3177,6 @@
   "context_length": 4095
  },
  {
-  "id": "openrouter/auto",
-  "name": "Auto Router",
-  "org": "openrouter",
-  "price_in_per_m": -1000000.0,
-  "price_out_per_m": -1000000.0,
-  "vision": true,
-  "context_length": 2000000
- },
- {
   "id": "openai/gpt-3.5-turbo-16k",
   "name": "OpenAI: GPT-3.5 Turbo 16k",
   "org": "openai",
@@ -3292,5 +3220,77 @@
   "price_out_per_m": 60.0,
   "vision": false,
   "context_length": 8191
+ },
+ {
+  "id": "typesafe/jev-router",
+  "name": "TypeSafe: Jev Router",
+  "org": "typesafe",
+  "price_in_per_m": -1000000.0,
+  "price_out_per_m": -1000000.0,
+  "vision": true,
+  "context_length": 1000000
+ },
+ {
+  "id": "nvidia/switchyard",
+  "name": "NVIDIA: Switchyard",
+  "org": "nvidia",
+  "price_in_per_m": -1000000.0,
+  "price_out_per_m": -1000000.0,
+  "vision": false,
+  "context_length": 1000000
+ },
+ {
+  "id": "openrouter/auto-beta",
+  "name": "Auto Router (Beta)",
+  "org": "openrouter",
+  "price_in_per_m": -1000000.0,
+  "price_out_per_m": -1000000.0,
+  "vision": true,
+  "context_length": 2000000
+ },
+ {
+  "id": "openrouter/fusion",
+  "name": "OpenRouter: Fusion",
+  "org": "openrouter",
+  "price_in_per_m": -1000000.0,
+  "price_out_per_m": -1000000.0,
+  "vision": false,
+  "context_length": 1000000
+ },
+ {
+  "id": "openrouter/pareto-code",
+  "name": "Pareto Code Router",
+  "org": "openrouter",
+  "price_in_per_m": -1000000.0,
+  "price_out_per_m": -1000000.0,
+  "vision": false,
+  "context_length": 2000000
+ },
+ {
+  "id": "openrouter/free",
+  "name": "Free Models Router",
+  "org": "openrouter",
+  "price_in_per_m": 0.0,
+  "price_out_per_m": 0.0,
+  "vision": true,
+  "context_length": 200000
+ },
+ {
+  "id": "openrouter/bodybuilder",
+  "name": "Body Builder (beta)",
+  "org": "openrouter",
+  "price_in_per_m": -1000000.0,
+  "price_out_per_m": -1000000.0,
+  "vision": false,
+  "context_length": 128000
+ },
+ {
+  "id": "openrouter/auto",
+  "name": "Auto Router",
+  "org": "openrouter",
+  "price_in_per_m": -1000000.0,
+  "price_out_per_m": -1000000.0,
+  "vision": true,
+  "context_length": 2000000
  }
 ]

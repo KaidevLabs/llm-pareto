@@ -1,5 +1,5 @@
 {
- "fetched_at": "2026-10-30T18:22:16Z",
+ "fetched_at": "2026-10-31T00:39:19Z",
  "sources": {
   "arena": {
    "url": "https://huggingface.co/datasets/lmarena-ai/leaderboard-dataset",
@@ -98,12 +98,12 @@
    "model_page": "https://openrouter.ai/{or_id}"
   },
   "models": 157,
-  "endpoints": 932,
+  "endpoints": 933,
   "stats": {
    "models_with_stats": 156,
-   "endpoints_with_stats": 876
+   "endpoints_with_stats": 866
   },
-  "joined_page_endpoints": 932,
+  "joined_page_endpoints": 933,
   "page_endpoints_unjoined": 0,
   "duplicates_merged": 0
  }
