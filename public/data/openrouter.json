@@ -48,8 +48,8 @@
   "id": "minimax/minimax-m3.1-flash",
   "name": "MiniMax: MiniMax M3.1 Flash",
   "org": "minimax",
-  "price_in_per_m": 0.075,
-  "price_out_per_m": 0.3,
+  "price_in_per_m": 0.15,
+  "price_out_per_m": 0.6,
   "vision": true,
   "context_length": 1048576
  },
@@ -642,8 +642,8 @@
   "id": "z-ai/glm-5.3-flash",
   "name": "Z.ai: GLM 5.3 Flash",
   "org": "z-ai",
-  "price_in_per_m": 0.0149,
-  "price_out_per_m": 0.1543,
+  "price_in_per_m": 0.0093,
+  "price_out_per_m": 0.1702,
   "vision": true,
   "context_length": 1048576
  },
@@ -2352,8 +2352,8 @@
   "id": "openai/gpt-oss-120b",
   "name": "OpenAI: gpt-oss-120b",
   "org": "openai",
-  "price_in_per_m": 0.15,
-  "price_out_per_m": 0.6,
+  "price_in_per_m": 0.026,
+  "price_out_per_m": 0.095,
   "vision": false,
   "context_length": 131072
  },
@@ -2361,8 +2361,8 @@
   "id": "openai/gpt-oss-20b",
   "name": "OpenAI: gpt-oss-20b",
   "org": "openai",
-  "price_in_per_m": 0.018,
-  "price_out_per_m": 0.09,
+  "price_in_per_m": 0.03,
+  "price_out_per_m": 0.13,
   "vision": false,
   "context_length": 131072
  },
