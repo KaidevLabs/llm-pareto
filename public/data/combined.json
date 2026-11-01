@@ -532,8 +532,8 @@
  {
   "or_id": "z-ai/glm-5.3",
   "or_name": "Z.ai: GLM 5.3",
-  "price_in_per_m": 0.0699,
-  "price_out_per_m": 1.4,
+  "price_in_per_m": 0.08,
+  "price_out_per_m": 3.6,
   "vision": false,
   "context_length": 1048576,
   "arena_rank": 28,
@@ -557,8 +557,8 @@
  {
   "or_id": "z-ai/glm-5.3-flash",
   "or_name": "Z.ai: GLM 5.3 Flash",
-  "price_in_per_m": 0.0093,
-  "price_out_per_m": 0.1702,
+  "price_in_per_m": 0.0285,
+  "price_out_per_m": 0.0923,
   "vision": true,
   "context_length": 1048576,
   "arena_rank": 29,
@@ -2948,8 +2948,8 @@
  {
   "or_id": "openai/gpt-oss-120b",
   "or_name": "OpenAI: gpt-oss-120b",
-  "price_in_per_m": 0.026,
-  "price_out_per_m": 0.095,
+  "price_in_per_m": 0.017,
+  "price_out_per_m": 0.064,
   "vision": false,
   "context_length": 131072,
   "arena_rank": 195,

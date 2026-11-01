@@ -642,8 +642,8 @@
   "id": "z-ai/glm-5.3-flash",
   "name": "Z.ai: GLM 5.3 Flash",
   "org": "z-ai",
-  "price_in_per_m": 0.0093,
-  "price_out_per_m": 0.1702,
+  "price_in_per_m": 0.0285,
+  "price_out_per_m": 0.0923,
   "vision": true,
   "context_length": 1048576
  },
@@ -696,8 +696,8 @@
   "id": "z-ai/glm-5.3",
   "name": "Z.ai: GLM 5.3",
   "org": "z-ai",
-  "price_in_per_m": 0.0699,
-  "price_out_per_m": 1.4,
+  "price_in_per_m": 0.08,
+  "price_out_per_m": 3.6,
   "vision": false,
   "context_length": 1048576
  },
@@ -2352,8 +2352,8 @@
   "id": "openai/gpt-oss-120b",
   "name": "OpenAI: gpt-oss-120b",
   "org": "openai",
-  "price_in_per_m": 0.026,
-  "price_out_per_m": 0.095,
+  "price_in_per_m": 0.017,
+  "price_out_per_m": 0.064,
   "vision": false,
   "context_length": 131072
  },
