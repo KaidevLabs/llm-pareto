@@ -1368,8 +1368,8 @@
  {
   "or_id": "tencent/hy3",
   "or_name": "Tencent: Hy3",
-  "price_in_per_m": 0.0825,
-  "price_out_per_m": 0.33,
+  "price_in_per_m": 0.132,
+  "price_out_per_m": 0.528,
   "vision": false,
   "context_length": 262144,
   "arena_rank": 77,
@@ -1595,8 +1595,8 @@
  {
   "or_id": "google/gemma-4-26b-a4b-it",
   "or_name": "Google: Gemma 4 26B A4B ",
-  "price_in_per_m": 0.0675,
-  "price_out_per_m": 0.225,
+  "price_in_per_m": 0.021,
+  "price_out_per_m": 0.062,
   "vision": true,
   "context_length": 262144,
   "arena_rank": 91,
@@ -2948,8 +2948,8 @@
  {
   "or_id": "openai/gpt-oss-120b",
   "or_name": "OpenAI: gpt-oss-120b",
-  "price_in_per_m": 0.014,
-  "price_out_per_m": 0.051,
+  "price_in_per_m": 0.15,
+  "price_out_per_m": 0.6,
   "vision": false,
   "context_length": 131072,
   "arena_rank": 195,
