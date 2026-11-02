@@ -1,5 +1,14 @@
 [
  {
+  "id": "z-ai/glm-5.3-flashx-legal",
+  "name": "Z.ai: GLM 5.3 FlashX Legal",
+  "org": "z-ai",
+  "price_in_per_m": 0.37,
+  "price_out_per_m": 1.25,
+  "vision": true,
+  "context_length": 1048576
+ },
+ {
   "id": "particle-ai/particle-1",
   "name": "Particle AI: Particle-1",
   "org": "particle-ai",
@@ -48,8 +57,8 @@
   "id": "minimax/minimax-m3.1-flash",
   "name": "MiniMax: MiniMax M3.1 Flash",
   "org": "minimax",
-  "price_in_per_m": 0.15,
-  "price_out_per_m": 0.6,
+  "price_in_per_m": 0.075,
+  "price_out_per_m": 0.3,
   "vision": true,
   "context_length": 1048576
  },
@@ -624,8 +633,8 @@
   "id": "tencent/hy4-preview",
   "name": "Tencent: Hy4 preview",
   "org": "tencent",
-  "price_in_per_m": 0.834,
-  "price_out_per_m": 2.501,
+  "price_in_per_m": 0.7506,
+  "price_out_per_m": 2.2509,
   "vision": false,
   "context_length": 1048576
  },
@@ -1047,8 +1056,8 @@
   "id": "tencent/hy3",
   "name": "Tencent: Hy3",
   "org": "tencent",
-  "price_in_per_m": 0.132,
-  "price_out_per_m": 0.528,
+  "price_in_per_m": 0.0825,
+  "price_out_per_m": 0.33,
   "vision": false,
   "context_length": 262144
  },
@@ -1425,8 +1434,8 @@
   "id": "google/gemma-4-26b-a4b-it",
   "name": "Google: Gemma 4 26B A4B ",
   "org": "google",
-  "price_in_per_m": 0.06,
-  "price_out_per_m": 0.179,
+  "price_in_per_m": 0.09,
+  "price_out_per_m": 0.3,
   "vision": true,
   "context_length": 262144
  },
@@ -2361,8 +2370,8 @@
   "id": "openai/gpt-oss-20b",
   "name": "OpenAI: gpt-oss-20b",
   "org": "openai",
-  "price_in_per_m": 0.03,
-  "price_out_per_m": 0.13,
+  "price_in_per_m": 0.018,
+  "price_out_per_m": 0.09,
   "vision": false,
   "context_length": 131072
  },
@@ -3002,24 +3011,6 @@
   "org": "sao10k",
   "price_in_per_m": 0.85,
   "price_out_per_m": 0.85,
-  "vision": false,
-  "context_length": 131072
- },
- {
-  "id": "nousresearch/hermes-3-llama-3.1-70b",
-  "name": "Nous: Hermes 3 70B Instruct",
-  "org": "nousresearch",
-  "price_in_per_m": 0.7,
-  "price_out_per_m": 0.7,
-  "vision": false,
-  "context_length": 131072
- },
- {
-  "id": "nousresearch/hermes-3-llama-3.1-405b",
-  "name": "Nous: Hermes 3 405B Instruct",
-  "org": "nousresearch",
-  "price_in_per_m": 1.0,
-  "price_out_per_m": 1.0,
   "vision": false,
   "context_length": 131072
  },
