@@ -84,8 +84,8 @@
   "id": "deepseek/deepseek-v4.1-flash-1017",
   "name": "DeepSeek: DeepSeek V4.1 Flash 1017",
   "org": "deepseek",
-  "price_in_per_m": 0.3,
-  "price_out_per_m": 1.2,
+  "price_in_per_m": 0.15,
+  "price_out_per_m": 0.6,
   "vision": true,
   "context_length": 1048576
  },
@@ -1410,7 +1410,7 @@
   "price_in_per_m": 0.4,
   "price_out_per_m": 2.0,
   "vision": true,
-  "context_length": 1050000
+  "context_length": 1000000
  },
  {
   "id": "openai/gpt-5.4-image-2",
@@ -1452,8 +1452,8 @@
   "id": "google/gemma-4-26b-a4b-it",
   "name": "Google: Gemma 4 26B A4B ",
   "org": "google",
-  "price_in_per_m": 0.085,
-  "price_out_per_m": 0.256,
+  "price_in_per_m": 0.088,
+  "price_out_per_m": 0.265,
   "vision": true,
   "context_length": 262144
  },
@@ -2379,8 +2379,8 @@
   "id": "openai/gpt-oss-120b",
   "name": "OpenAI: gpt-oss-120b",
   "org": "openai",
-  "price_in_per_m": 0.029,
-  "price_out_per_m": 0.108,
+  "price_in_per_m": 0.018,
+  "price_out_per_m": 0.067,
   "vision": false,
   "context_length": 131072
  },
