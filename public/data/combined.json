@@ -1368,8 +1368,8 @@
  {
   "or_id": "tencent/hy3",
   "or_name": "Tencent: Hy3",
-  "price_in_per_m": 0.132,
-  "price_out_per_m": 0.528,
+  "price_in_per_m": 0.0825,
+  "price_out_per_m": 0.33,
   "vision": false,
   "context_length": 262144,
   "arena_rank": 77,
@@ -1595,8 +1595,8 @@
  {
   "or_id": "google/gemma-4-26b-a4b-it",
   "or_name": "Google: Gemma 4 26B A4B ",
-  "price_in_per_m": 0.034,
-  "price_out_per_m": 0.103,
+  "price_in_per_m": 0.049,
+  "price_out_per_m": 0.146,
   "vision": true,
   "context_length": 262144,
   "arena_rank": 91,
@@ -2370,8 +2370,8 @@
  {
   "or_id": "minimax/minimax-m2.7",
   "or_name": "MiniMax: MiniMax M2.7",
-  "price_in_per_m": 0.3,
-  "price_out_per_m": 1.2,
+  "price_in_per_m": 0.21,
+  "price_out_per_m": 0.84,
   "vision": false,
   "context_length": 204800,
   "arena_rank": 150,
@@ -2584,31 +2584,6 @@
   "arena_model": "qwen3.5-35b-a3b",
   "arena_variants": [
    "qwen3.5-35b-a3b"
-  ],
-  "arena_context_length": null,
-  "arena_model_url": null,
-  "arena_price_in_per_m": null,
-  "arena_price_out_per_m": null,
-  "match_method": "exact",
-  "match_ratio": null
- },
- {
-  "or_id": "minimax/minimax-m2.1",
-  "or_name": "MiniMax: MiniMax M2.1",
-  "price_in_per_m": 0.3,
-  "price_out_per_m": 1.2,
-  "vision": false,
-  "context_length": 204800,
-  "arena_rank": 168,
-  "arena_elo": 1391.9939284256693,
-  "arena_elo_upper": 1397.0680513927737,
-  "arena_elo_lower": 1386.919805458565,
-  "arena_votes": 17222,
-  "arena_org": "MiniMax",
-  "arena_license": "MIT",
-  "arena_model": "minimax-m2.1-preview",
-  "arena_variants": [
-   "minimax-m2.1-preview"
   ],
   "arena_context_length": null,
   "arena_model_url": null,
@@ -2948,8 +2923,8 @@
  {
   "or_id": "openai/gpt-oss-120b",
   "or_name": "OpenAI: gpt-oss-120b",
-  "price_in_per_m": 0.15,
-  "price_out_per_m": 0.6,
+  "price_in_per_m": 0.022,
+  "price_out_per_m": 0.08,
   "vision": false,
   "context_length": 131072,
   "arena_rank": 195,
@@ -3137,31 +3112,6 @@
   "arena_model": "gpt-4.1-mini-2025-04-14",
   "arena_variants": [
    "gpt-4.1-mini-2025-04-14"
-  ],
-  "arena_context_length": null,
-  "arena_model_url": null,
-  "arena_price_in_per_m": null,
-  "arena_price_out_per_m": null,
-  "match_method": "exact",
-  "match_ratio": null
- },
- {
-  "or_id": "minimax/minimax-m2",
-  "or_name": "MiniMax: MiniMax M2",
-  "price_in_per_m": 0.255,
-  "price_out_per_m": 1.02,
-  "vision": false,
-  "context_length": 204800,
-  "arena_rank": 216,
-  "arena_elo": 1340.0940766507936,
-  "arena_elo_upper": 1347.7795659317871,
-  "arena_elo_lower": 1332.4085873698,
-  "arena_votes": 6850,
-  "arena_org": "MiniMax",
-  "arena_license": "Apache 2.0",
-  "arena_model": "minimax-m2",
-  "arena_variants": [
-   "minimax-m2"
   ],
   "arena_context_length": null,
   "arena_model_url": null,
@@ -3599,8 +3549,8 @@
  {
   "or_id": "meta-llama/llama-3.3-70b-instruct",
   "or_name": "Meta: Llama 3.3 70B Instruct",
-  "price_in_per_m": 0.2,
-  "price_out_per_m": 0.52,
+  "price_in_per_m": 0.59,
+  "price_out_per_m": 0.79,
   "vision": false,
   "context_length": 131072,
   "arena_rank": 279,

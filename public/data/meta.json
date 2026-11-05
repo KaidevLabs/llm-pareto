@@ -1,5 +1,5 @@
 {
- "fetched_at": "2026-11-05T12:26:42Z",
+ "fetched_at": "2026-11-05T18:24:09Z",
  "sources": {
   "arena": {
    "url": "https://huggingface.co/datasets/lmarena-ai/leaderboard-dataset",
@@ -12,15 +12,15 @@
   },
   "openrouter": {
    "url": "https://openrouter.ai/api/v1/models",
-   "models": 363
+   "models": 362
   }
  },
  "join": {
-  "combined": 157,
-  "unmatched_arena": 210,
-  "unmatched_openrouter": 206,
+  "combined": 155,
+  "unmatched_arena": 212,
+  "unmatched_openrouter": 207,
   "by_method": {
-   "exact": 157,
+   "exact": 155,
    "prefix-variant": 7,
    "prefix-base": 36,
    "override": 1,
@@ -54,7 +54,7 @@
    "gpt-4o: openai/gpt-4o-2024-11-20 vs openai/gpt-4o",
    "gpt-4o: openai/gpt-4o vs openai/gpt-4o-2024-05-13",
    "mistral-large: mistralai/mistral-large-2512 vs mistralai/mistral-large",
-   "auto: openrouter/auto-beta vs openrouter/auto"
+   "auto: openrouter/auto vs openrouter/auto-beta"
   ],
   "overrides_loaded": 1,
   "overrides_applied": [
@@ -94,13 +94,13 @@
    "endpoints_api": "https://openrouter.ai/api/v1/models/{or_id}/endpoints",
    "model_page": "https://openrouter.ai/{or_id}"
   },
-  "models": 157,
-  "endpoints": 920,
+  "models": 155,
+  "endpoints": 911,
   "stats": {
-   "models_with_stats": 156,
-   "endpoints_with_stats": 868
+   "models_with_stats": 154,
+   "endpoints_with_stats": 866
   },
-  "joined_page_endpoints": 920,
+  "joined_page_endpoints": 911,
   "page_endpoints_unjoined": 0,
   "duplicates_merged": 0
  }
