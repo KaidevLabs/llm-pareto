@@ -1595,8 +1595,8 @@
  {
   "or_id": "google/gemma-4-26b-a4b-it",
   "or_name": "Google: Gemma 4 26B A4B ",
-  "price_in_per_m": 0.033,
-  "price_out_per_m": 0.099,
+  "price_in_per_m": 0.022,
+  "price_out_per_m": 0.067,
   "vision": true,
   "context_length": 262144,
   "arena_rank": 91,
@@ -2007,8 +2007,8 @@
  {
   "or_id": "qwen/qwen3-235b-a22b-2507",
   "or_name": "Qwen: Qwen3 235B A22B Instruct 2507",
-  "price_in_per_m": 0.09,
-  "price_out_per_m": 0.55,
+  "price_in_per_m": 0.14,
+  "price_out_per_m": 0.8,
   "vision": false,
   "context_length": 262144,
   "arena_rank": 122,
@@ -2948,8 +2948,8 @@
  {
   "or_id": "openai/gpt-oss-120b",
   "or_name": "OpenAI: gpt-oss-120b",
-  "price_in_per_m": 0.027,
-  "price_out_per_m": 0.101,
+  "price_in_per_m": 0.011,
+  "price_out_per_m": 0.04,
   "vision": false,
   "context_length": 131072,
   "arena_rank": 195,
@@ -3449,8 +3449,8 @@
  {
   "or_id": "openai/gpt-oss-20b",
   "or_name": "OpenAI: gpt-oss-20b",
-  "price_in_per_m": 0.018,
-  "price_out_per_m": 0.09,
+  "price_in_per_m": 0.03,
+  "price_out_per_m": 0.13,
   "vision": false,
   "context_length": 131072,
   "arena_rank": 263,

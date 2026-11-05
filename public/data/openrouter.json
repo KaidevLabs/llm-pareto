@@ -1,5 +1,14 @@
 [
  {
+  "id": "inclusionai/ling-3.0-tiny",
+  "name": "inclusionAI: Ling 3.0 Tiny",
+  "org": "inclusionai",
+  "price_in_per_m": 0.015,
+  "price_out_per_m": 0.045,
+  "vision": false,
+  "context_length": 262144
+ },
+ {
   "id": "ricursiveai/ripple-65b-preview",
   "name": "ricursiveAI/Ripple-65B-Preview",
   "org": "ricursiveai",
@@ -84,8 +93,8 @@
   "id": "minimax/minimax-m3.1-flash",
   "name": "MiniMax: MiniMax M3.1 Flash",
   "org": "minimax",
-  "price_in_per_m": 0.075,
-  "price_out_per_m": 0.3,
+  "price_in_per_m": 0.15,
+  "price_out_per_m": 0.6,
   "vision": true,
   "context_length": 1048576
  },
@@ -93,8 +102,8 @@
   "id": "deepseek/deepseek-v4.1-flash-1017",
   "name": "DeepSeek: DeepSeek V4.1 Flash 1017",
   "org": "deepseek",
-  "price_in_per_m": 0.15,
-  "price_out_per_m": 0.6,
+  "price_in_per_m": 0.3,
+  "price_out_per_m": 1.2,
   "vision": true,
   "context_length": 1048576
  },
@@ -795,8 +804,8 @@
   "id": "deepseek/deepseek-v4-pro-0813",
   "name": "DeepSeek: DeepSeek V4 Pro 0813",
   "org": "deepseek",
-  "price_in_per_m": 0.115,
-  "price_out_per_m": 4.6,
+  "price_in_per_m": 0.107,
+  "price_out_per_m": 4.278,
   "vision": false,
   "context_length": 1048576
  },
@@ -1443,8 +1452,8 @@
   "id": "google/gemma-4-26b-a4b-it",
   "name": "Google: Gemma 4 26B A4B ",
   "org": "google",
-  "price_in_per_m": 0.033,
-  "price_out_per_m": 0.099,
+  "price_in_per_m": 0.022,
+  "price_out_per_m": 0.067,
   "vision": true,
   "context_length": 262144
  },
@@ -2370,8 +2379,8 @@
   "id": "openai/gpt-oss-120b",
   "name": "OpenAI: gpt-oss-120b",
   "org": "openai",
-  "price_in_per_m": 0.027,
-  "price_out_per_m": 0.101,
+  "price_in_per_m": 0.011,
+  "price_out_per_m": 0.04,
   "vision": false,
   "context_length": 131072
  },
@@ -2379,8 +2388,8 @@
   "id": "openai/gpt-oss-20b",
   "name": "OpenAI: gpt-oss-20b",
   "org": "openai",
-  "price_in_per_m": 0.018,
-  "price_out_per_m": 0.09,
+  "price_in_per_m": 0.03,
+  "price_out_per_m": 0.13,
   "vision": false,
   "context_length": 131072
  },
@@ -2478,8 +2487,8 @@
   "id": "qwen/qwen3-235b-a22b-2507",
   "name": "Qwen: Qwen3 235B A22B Instruct 2507",
   "org": "qwen",
-  "price_in_per_m": 0.09,
-  "price_out_per_m": 0.55,
+  "price_in_per_m": 0.14,
+  "price_out_per_m": 0.8,
   "vision": false,
   "context_length": 262144
  },
