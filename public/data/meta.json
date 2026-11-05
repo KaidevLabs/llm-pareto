@@ -1,5 +1,5 @@
 {
- "fetched_at": "2026-11-04T12:25:45Z",
+ "fetched_at": "2026-11-05T00:40:19Z",
  "sources": {
   "arena": {
    "url": "https://huggingface.co/datasets/lmarena-ai/leaderboard-dataset",
@@ -12,13 +12,13 @@
   },
   "openrouter": {
    "url": "https://openrouter.ai/api/v1/models",
-   "models": 363
+   "models": 362
   }
  },
  "join": {
   "combined": 157,
   "unmatched_arena": 210,
-  "unmatched_openrouter": 206,
+  "unmatched_openrouter": 205,
   "by_method": {
    "exact": 157,
    "prefix-variant": 7,
@@ -33,8 +33,6 @@
    "hy4: tencent/hy4 vs tencent/hy4-preview",
    "lfm-2-5-2-6b: liquid/lfm-2.5-2.6b vs liquid/lfm-2.5-2.6b:free",
    "nemotron-3-5-lightning: nvidia/nemotron-3.5-lightning vs nvidia/nemotron-3.5-lightning:free",
-   "inkling-small: thinkingmachines/inkling-small vs thinkingmachines/inkling-small:free",
-   "inkling: thinkingmachines/inkling vs thinkingmachines/inkling:free",
    "nemotron-3-5-content-safety: nvidia/nemotron-3.5-content-safety vs nvidia/nemotron-3.5-content-safety:free",
    "nemotron-3-ultra-550b-a55b: nvidia/nemotron-3-ultra-550b-a55b vs nvidia/nemotron-3-ultra-550b-a55b:free",
    "deepseek-v4-pro: deepseek/deepseek-v4-pro-0813 vs deepseek/deepseek-v4-pro",
@@ -97,12 +95,12 @@
    "model_page": "https://openrouter.ai/{or_id}"
   },
   "models": 157,
-  "endpoints": 926,
+  "endpoints": 922,
   "stats": {
    "models_with_stats": 156,
-   "endpoints_with_stats": 873
+   "endpoints_with_stats": 862
   },
-  "joined_page_endpoints": 926,
+  "joined_page_endpoints": 922,
   "page_endpoints_unjoined": 0,
   "duplicates_merged": 0
  }
