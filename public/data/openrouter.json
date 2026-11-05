@@ -1,14 +1,5 @@
 [
  {
-  "id": "inclusionai/ling-3.0-tiny",
-  "name": "inclusionAI: Ling 3.0 Tiny",
-  "org": "inclusionai",
-  "price_in_per_m": 0.015,
-  "price_out_per_m": 0.045,
-  "vision": false,
-  "context_length": 262144
- },
- {
   "id": "ricursiveai/ripple-65b-preview",
   "name": "ricursiveAI/Ripple-65B-Preview",
   "org": "ricursiveai",
@@ -102,8 +93,8 @@
   "id": "deepseek/deepseek-v4.1-flash-1017",
   "name": "DeepSeek: DeepSeek V4.1 Flash 1017",
   "org": "deepseek",
-  "price_in_per_m": 0.3,
-  "price_out_per_m": 1.2,
+  "price_in_per_m": 0.15,
+  "price_out_per_m": 0.6,
   "vision": true,
   "context_length": 1048576
  },
@@ -804,8 +795,8 @@
   "id": "deepseek/deepseek-v4-pro-0813",
   "name": "DeepSeek: DeepSeek V4 Pro 0813",
   "org": "deepseek",
-  "price_in_per_m": 0.107,
-  "price_out_per_m": 4.278,
+  "price_in_per_m": 0.103,
+  "price_out_per_m": 4.11,
   "vision": false,
   "context_length": 1048576
  },
@@ -880,6 +871,15 @@
   "price_out_per_m": 1.2,
   "vision": true,
   "context_length": 131072
+ },
+ {
+  "id": "inclusionai/ling-3.0-tiny",
+  "name": "inclusionAI: Ling 3.0 Tiny",
+  "org": "inclusionai",
+  "price_in_per_m": 0.015,
+  "price_out_per_m": 0.045,
+  "vision": false,
+  "context_length": 262144
  },
  {
   "id": "meta/muse-spark-1.2",
@@ -1452,8 +1452,8 @@
   "id": "google/gemma-4-26b-a4b-it",
   "name": "Google: Gemma 4 26B A4B ",
   "org": "google",
-  "price_in_per_m": 0.022,
-  "price_out_per_m": 0.067,
+  "price_in_per_m": 0.034,
+  "price_out_per_m": 0.103,
   "vision": true,
   "context_length": 262144
  },
@@ -2298,7 +2298,7 @@
   "id": "qwen/qwen3-next-80b-a3b-instruct",
   "name": "Qwen: Qwen3 Next 80B A3B Instruct",
   "org": "qwen",
-  "price_in_per_m": 0.1,
+  "price_in_per_m": 0.09,
   "price_out_per_m": 1.1,
   "vision": false,
   "context_length": 262144
@@ -2379,8 +2379,8 @@
   "id": "openai/gpt-oss-120b",
   "name": "OpenAI: gpt-oss-120b",
   "org": "openai",
-  "price_in_per_m": 0.011,
-  "price_out_per_m": 0.04,
+  "price_in_per_m": 0.15,
+  "price_out_per_m": 0.6,
   "vision": false,
   "context_length": 131072
  },
