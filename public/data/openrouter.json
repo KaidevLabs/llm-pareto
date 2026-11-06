@@ -138,7 +138,7 @@
   "id": "reflection/beam-1.0-501b-a23b",
   "name": "Reflection: Beam 1.0 501B A23B",
   "org": "reflection",
-  "price_in_per_m": 0.25,
+  "price_in_per_m": 0.3,
   "price_out_per_m": 1.0,
   "vision": false,
   "context_length": 1048576
@@ -678,8 +678,8 @@
   "id": "tencent/hy4-preview",
   "name": "Tencent: Hy4 preview",
   "org": "tencent",
-  "price_in_per_m": 0.7506,
-  "price_out_per_m": 2.2509,
+  "price_in_per_m": 0.834,
+  "price_out_per_m": 2.501,
   "vision": false,
   "context_length": 1048576
  },
@@ -714,8 +714,8 @@
   "id": "deepseek/deepseek-v4-flash-vision-exp",
   "name": "DeepSeek: DeepSeek V4 Flash Vision Exp",
   "org": "deepseek",
-  "price_in_per_m": 0.2156,
-  "price_out_per_m": 0.6468,
+  "price_in_per_m": 0.44,
+  "price_out_per_m": 1.32,
   "vision": true,
   "context_length": 1048576
  },
@@ -912,7 +912,7 @@
   "id": "deepseek/deepseek-v4-flash-0731",
   "name": "DeepSeek: DeepSeek V4 Flash 0731",
   "org": "deepseek",
-  "price_in_per_m": 0.0434,
+  "price_in_per_m": 0.059,
   "price_out_per_m": 0.3,
   "vision": false,
   "context_length": 1048576
@@ -1092,8 +1092,8 @@
   "id": "tencent/hy3",
   "name": "Tencent: Hy3",
   "org": "tencent",
-  "price_in_per_m": 0.0825,
-  "price_out_per_m": 0.33,
+  "price_in_per_m": 0.132,
+  "price_out_per_m": 0.528,
   "vision": false,
   "context_length": 262144
  },
@@ -1389,8 +1389,8 @@
   "id": "deepseek/deepseek-v4-pro",
   "name": "DeepSeek: DeepSeek V4 Pro 0423",
   "org": "deepseek",
-  "price_in_per_m": 1.6,
-  "price_out_per_m": 3.2,
+  "price_in_per_m": 0.95526,
+  "price_out_per_m": 1.91052,
   "vision": false,
   "context_length": 1048576
  },
@@ -1470,8 +1470,8 @@
   "id": "google/gemma-4-26b-a4b-it",
   "name": "Google: Gemma 4 26B A4B ",
   "org": "google",
-  "price_in_per_m": 0.049,
-  "price_out_per_m": 0.146,
+  "price_in_per_m": 0.0765,
+  "price_out_per_m": 0.255,
   "vision": true,
   "context_length": 262144
  },
@@ -2370,8 +2370,8 @@
   "id": "openai/gpt-oss-120b",
   "name": "OpenAI: gpt-oss-120b",
   "org": "openai",
-  "price_in_per_m": 0.022,
-  "price_out_per_m": 0.08,
+  "price_in_per_m": 0.02,
+  "price_out_per_m": 0.073,
   "vision": false,
   "context_length": 131072
  },
