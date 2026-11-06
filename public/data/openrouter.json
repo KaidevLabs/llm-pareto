@@ -111,8 +111,8 @@
   "id": "deepseek/deepseek-v4.1-flash-1017",
   "name": "DeepSeek: DeepSeek V4.1 Flash 1017",
   "org": "deepseek",
-  "price_in_per_m": 0.3,
-  "price_out_per_m": 1.2,
+  "price_in_per_m": 0.15,
+  "price_out_per_m": 0.6,
   "vision": true,
   "context_length": 1048576
  },
@@ -570,8 +570,8 @@
   "id": "deepseek/deepseek-v4.1-flash",
   "name": "DeepSeek: DeepSeek V4.1 Flash",
   "org": "deepseek",
-  "price_in_per_m": 0.0486,
-  "price_out_per_m": 0.54,
+  "price_in_per_m": 0.051,
+  "price_out_per_m": 0.567,
   "vision": true,
   "context_length": 1048576
  },
@@ -813,8 +813,8 @@
   "id": "deepseek/deepseek-v4-pro-0813",
   "name": "DeepSeek: DeepSeek V4 Pro 0813",
   "org": "deepseek",
-  "price_in_per_m": 0.111,
-  "price_out_per_m": 4.44,
+  "price_in_per_m": 0.1165,
+  "price_out_per_m": 4.66,
   "vision": false,
   "context_length": 1048576
  },
@@ -1186,15 +1186,6 @@
   "price_out_per_m": 0.2,
   "vision": true,
   "context_length": 131072
- },
- {
-  "id": "nvidia/nemotron-3.5-content-safety:free",
-  "name": "NVIDIA: Nemotron 3.5 Content Safety (free)",
-  "org": "nvidia",
-  "price_in_per_m": 0.0,
-  "price_out_per_m": 0.0,
-  "vision": true,
-  "context_length": 128000
  },
  {
   "id": "nvidia/nemotron-3-ultra-550b-a55b",
@@ -1614,8 +1605,8 @@
   "id": "nvidia/nemotron-3-super-120b-a12b",
   "name": "NVIDIA: Nemotron 3 Super",
   "org": "nvidia",
-  "price_in_per_m": 0.3,
-  "price_out_per_m": 2.4,
+  "price_in_per_m": 0.075,
+  "price_out_per_m": 0.4,
   "vision": false,
   "context_length": 1048576
  },
@@ -2370,8 +2361,8 @@
   "id": "openai/gpt-oss-120b",
   "name": "OpenAI: gpt-oss-120b",
   "org": "openai",
-  "price_in_per_m": 0.022,
-  "price_out_per_m": 0.083,
+  "price_in_per_m": 0.029,
+  "price_out_per_m": 0.109,
   "vision": false,
   "context_length": 131072
  },
@@ -2856,8 +2847,8 @@
   "id": "deepseek/deepseek-chat",
   "name": "DeepSeek: DeepSeek V3",
   "org": "deepseek",
-  "price_in_per_m": 0.2574,
-  "price_out_per_m": 1.0287,
+  "price_in_per_m": 0.32,
+  "price_out_per_m": 0.89,
   "vision": false,
   "context_length": 163840
  },

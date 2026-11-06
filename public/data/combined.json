@@ -711,8 +711,8 @@
  {
   "or_id": "deepseek/deepseek-v4.1-flash",
   "or_name": "DeepSeek: DeepSeek V4.1 Flash",
-  "price_in_per_m": 0.0486,
-  "price_out_per_m": 0.54,
+  "price_in_per_m": 0.051,
+  "price_out_per_m": 0.567,
   "vision": true,
   "context_length": 1048576,
   "arena_rank": 38,
@@ -2923,8 +2923,8 @@
  {
   "or_id": "openai/gpt-oss-120b",
   "or_name": "OpenAI: gpt-oss-120b",
-  "price_in_per_m": 0.022,
-  "price_out_per_m": 0.083,
+  "price_in_per_m": 0.029,
+  "price_out_per_m": 0.109,
   "vision": false,
   "context_length": 131072,
   "arena_rank": 195,
