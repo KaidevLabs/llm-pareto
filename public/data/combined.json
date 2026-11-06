@@ -711,8 +711,8 @@
  {
   "or_id": "deepseek/deepseek-v4.1-flash",
   "or_name": "DeepSeek: DeepSeek V4.1 Flash",
-  "price_in_per_m": 0.045,
-  "price_out_per_m": 0.5,
+  "price_in_per_m": 0.0486,
+  "price_out_per_m": 0.54,
   "vision": true,
   "context_length": 1048576,
   "arena_rank": 38,
@@ -1595,8 +1595,8 @@
  {
   "or_id": "google/gemma-4-26b-a4b-it",
   "or_name": "Google: Gemma 4 26B A4B ",
-  "price_in_per_m": 0.0765,
-  "price_out_per_m": 0.255,
+  "price_in_per_m": 0.09,
+  "price_out_per_m": 0.3,
   "vision": true,
   "context_length": 262144,
   "arena_rank": 91,
@@ -2923,8 +2923,8 @@
  {
   "or_id": "openai/gpt-oss-120b",
   "or_name": "OpenAI: gpt-oss-120b",
-  "price_in_per_m": 0.02,
-  "price_out_per_m": 0.073,
+  "price_in_per_m": 0.022,
+  "price_out_per_m": 0.083,
   "vision": false,
   "context_length": 131072,
   "arena_rank": 195,
