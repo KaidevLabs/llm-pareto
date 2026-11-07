@@ -962,8 +962,8 @@
  {
   "or_id": "deepseek/deepseek-v4-pro",
   "or_name": "DeepSeek: DeepSeek V4 Pro 0423",
-  "price_in_per_m": 0.849816,
-  "price_out_per_m": 1.699632,
+  "price_in_per_m": 0.738282,
+  "price_out_per_m": 1.476564,
   "vision": false,
   "context_length": 1048576,
   "arena_rank": 50,
@@ -2923,8 +2923,8 @@
  {
   "or_id": "openai/gpt-oss-120b",
   "or_name": "OpenAI: gpt-oss-120b",
-  "price_in_per_m": 0.011,
-  "price_out_per_m": 0.04,
+  "price_in_per_m": 0.018,
+  "price_out_per_m": 0.067,
   "vision": false,
   "context_length": 131072,
   "arena_rank": 195,
