@@ -580,7 +580,7 @@
   "name": "DeepSeek: DeepSeek V4.1 Flash",
   "org": "deepseek",
   "price_in_per_m": 0.051,
-  "price_out_per_m": 0.567,
+  "price_out_per_m": 0.41,
   "vision": true,
   "context_length": 1048576
  },
@@ -1380,8 +1380,8 @@
   "id": "deepseek/deepseek-v4-pro",
   "name": "DeepSeek: DeepSeek V4 Pro 0423",
   "org": "deepseek",
-  "price_in_per_m": 0.393588,
-  "price_out_per_m": 0.787176,
+  "price_in_per_m": 0.261696,
+  "price_out_per_m": 0.523392,
   "vision": false,
   "context_length": 1048576
  },
@@ -2352,8 +2352,8 @@
   "id": "openai/gpt-oss-120b",
   "name": "OpenAI: gpt-oss-120b",
   "org": "openai",
-  "price_in_per_m": 0.026,
-  "price_out_per_m": 0.095,
+  "price_in_per_m": 0.021,
+  "price_out_per_m": 0.079,
   "vision": false,
   "context_length": 131072
  },
