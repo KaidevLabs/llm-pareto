@@ -962,8 +962,8 @@
  {
   "or_id": "deepseek/deepseek-v4-pro",
   "or_name": "DeepSeek: DeepSeek V4 Pro 0423",
-  "price_in_per_m": 0.9,
-  "price_out_per_m": 1.5,
+  "price_in_per_m": 0.393588,
+  "price_out_per_m": 0.787176,
   "vision": false,
   "context_length": 1048576,
   "arena_rank": 50,
@@ -2923,8 +2923,8 @@
  {
   "or_id": "openai/gpt-oss-120b",
   "or_name": "OpenAI: gpt-oss-120b",
-  "price_in_per_m": 0.15,
-  "price_out_per_m": 0.6,
+  "price_in_per_m": 0.026,
+  "price_out_per_m": 0.095,
   "vision": false,
   "context_length": 131072,
   "arena_rank": 195,
@@ -3018,31 +3018,6 @@
   "arena_price_in_per_m": null,
   "arena_price_out_per_m": null,
   "match_method": "prefix-base",
-  "match_ratio": null
- },
- {
-  "or_id": "inception/mercury-2",
-  "or_name": "Inception: Mercury 2",
-  "price_in_per_m": 0.25,
-  "price_out_per_m": 0.75,
-  "vision": false,
-  "context_length": 128000,
-  "arena_rank": 205,
-  "arena_elo": 1355.0334127202439,
-  "arena_elo_upper": 1365.4042689177004,
-  "arena_elo_lower": 1344.6625565227873,
-  "arena_votes": 3185,
-  "arena_org": "Inception AI",
-  "arena_license": "Proprietary",
-  "arena_model": "mercury-2",
-  "arena_variants": [
-   "mercury-2"
-  ],
-  "arena_context_length": null,
-  "arena_model_url": null,
-  "arena_price_in_per_m": null,
-  "arena_price_out_per_m": null,
-  "match_method": "exact",
   "match_ratio": null
  },
  {
