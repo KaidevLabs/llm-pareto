@@ -2696,8 +2696,8 @@
  {
   "or_id": "z-ai/glm-4.5-air",
   "or_name": "Z.ai: GLM 4.5 Air",
-  "price_in_per_m": 0.13,
-  "price_out_per_m": 0.85,
+  "price_in_per_m": 0.2,
+  "price_out_per_m": 1.1,
   "vision": false,
   "context_length": 131072,
   "arena_rank": 175,
