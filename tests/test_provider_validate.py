@@ -7,7 +7,7 @@ import json
 import os
 import tempfile
 import unittest
-from contextlib import redirect_stdout
+from contextlib import redirect_stderr, redirect_stdout
 
 import update
 
@@ -164,11 +164,28 @@ class TestValidateProviderLayer(unittest.TestCase):
         layer = {"a/b": [entry(stats=bad)]}
         update.validate_provider_layer(layer, detail)
 
-    def test_prompt_price_not_positive_dies(self):
+    def test_negative_prompt_price_dies(self):
+        # 047 step 02c: a zero prompt price is a legitimate free endpoint;
+        # a negative one is still corruption.
+        detail = [row("a/b", api=1, page=1, joined=1, entries=1, with_stats=1)]
+        layer = {"a/b": [entry(price="-0.000001", stats=stats())]}
+        err = io.StringIO()
+        with redirect_stderr(err):
+            with self.assertRaises(SystemExit) as ctx:
+                update.validate_provider_layer(layer, detail)
+        self.assertEqual(ctx.exception.code, 1)
+        self.assertIn("prompt price not < 0", err.getvalue())
+
+    def test_zero_prompt_price_passes(self):
+        # 047 step 02c decision #5: Thinking Machines serves a real free
+        # endpoint — 0 is a normal value, not an anomaly.
         detail = [row("a/b", api=1, page=1, joined=1, entries=1, with_stats=1)]
         layer = {"a/b": [entry(price="0", stats=stats())]}
-        with self.assertRaises(SystemExit):
+        out, err = io.StringIO(), io.StringIO()
+        with redirect_stdout(out), redirect_stderr(err):
             update.validate_provider_layer(layer, detail)
+        self.assertEqual(out.getvalue(), "")
+        self.assertEqual(err.getvalue(), "")
 
     def test_healthy_layer_passes(self):
         detail = [row("a/b"), row("c/d")]

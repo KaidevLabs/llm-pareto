@@ -6,7 +6,7 @@
 -->
 <script lang="ts">
   import { fmtPrice, fmtVotes, fmtToks, fmtMs, median } from "../lib/format";
-  import { isVisible } from "../lib/filters";
+  import { isVisible, freeLane } from "../lib/filters";
   import { speedEligible, speedOf, windowsOf } from "../lib/speed";
   import { data } from "../lib/data.svelte";
   import { ui } from "../lib/state.svelte";
@@ -42,6 +42,7 @@
       ...ui,
       thrCtx: {
         ratio: ui.ratio,
+        lane: freeLane(data.rows, ui.three3d ? "3d" : ui.mode, ui.ratio),
         mode: ui.three3d ? "3d" : ui.mode,
         speed: (orId: string) => speedOf(orId, store.data),
       },

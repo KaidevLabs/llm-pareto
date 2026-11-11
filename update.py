@@ -774,6 +774,7 @@ def build_provider_layer(raw_layers):
         "duplicates_merged": 0,
         "entries": 0,
         "entries_with_stats": 0,
+        "free_entries": 0,
         "stats_dropped": 0,
         "models_detail": [],
         "join_misses": [],
@@ -802,6 +803,9 @@ def build_provider_layer(raw_layers):
                 rep["stats_dropped"] += 1
             if e.get("stats") is not None:
                 n_stats += 1
+            price = (e.get("pricing") or {}).get("prompt")
+            if price is not None and float(price) == 0:
+                rep["free_entries"] += 1
         layer[or_id] = all_entries
         rep["models"] += 1
         rep["api_endpoints"] += len(api_eps)
@@ -894,10 +898,10 @@ def validate_provider_layer(layer, detail):
                             f"{metric} percentiles not monotone: {present}"
                         )
             price = (e.get("pricing") or {}).get("prompt")
-            if price is not None and float(price) <= 0:
+            if price is not None and float(price) < 0:
                 die(
                     f"provider: {or_id}: {e.get('provider')}: "
-                    f"prompt price not > 0: {price!r}"
+                    f"prompt price not < 0: {price!r}"
                 )
 
 
@@ -1723,7 +1727,8 @@ def main():
         f"({provider_rep['joined']} page stats joined, "
         f"{provider_rep['page_unjoined']} page-only, "
         f"{provider_rep['duplicates_merged']} duplicates merged, "
-        f"{provider_rep['entries_with_stats']} with stats)"
+        f"{provider_rep['entries_with_stats']} with stats, "
+        f"{provider_rep['free_entries']} free)"
     )
     # D8 bands: a violation dies here, before any file is written
     validate_provider_layer(provider_layer, provider_rep["models_detail"])

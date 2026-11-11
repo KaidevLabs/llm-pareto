@@ -96,6 +96,13 @@ class TestValidate(unittest.TestCase):
             update.validate(arena_entries(), or_models(unpriced=9), COMBINED, [])
         )
 
+    def test_zero_price_model_counts_as_priced(self):
+        # pins 047 02c decision #5: a free model has a price, it is 0.
+        models = or_models(unpriced=11)
+        models[0]["price_in_per_m"] = 0.0
+        models[0]["price_out_per_m"] = 0.0
+        self.assertIsNone(update.validate(arena_entries(), models, COMBINED, []))
+
     def test_top20_match_below_18_dies(self):
         unmatched = [{"name": f"model-{i}", "rank": i} for i in (1, 2, 3)]
         self.assert_dies(arena_entries(), or_models(), COMBINED, unmatched)

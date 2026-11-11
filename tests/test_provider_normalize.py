@@ -236,6 +236,21 @@ class TestBuildProviderLayer(unittest.TestCase):
         self.assertEqual(rep["stats_dropped"], 0)
         self.assertEqual(rep["entries_with_stats"], 1)
 
+    def test_free_entries_counted(self):
+        # 047 step 02c decision #5: a 0 prompt price is a legitimate free
+        # endpoint — counted in the report, left as 0 in the truth.
+        raw = self._raw([
+            api_ep("FreeHost", "freehost",
+                   pricing={"prompt": "0", "completion": "0"})
+        ])
+        page = [
+            page_ep("FreeHost", "freehost", "freehost", stats=stats())
+        ]
+        layer, rep = update.build_provider_layer([("t/m", raw, "", page)])
+        self.assertEqual(rep["free_entries"], 1)
+        self.assertEqual(rep["entries"], 1)
+        self.assertEqual(layer["t/m"][0]["pricing"]["prompt"], "0")
+
 
 class TestJoinProviderLayers(unittest.TestCase):
     def test_joins_via_info_slug_when_provider_slug_differs(self):

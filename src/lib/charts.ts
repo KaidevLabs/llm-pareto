@@ -16,7 +16,7 @@ import { echarts, type EChartsOption, type EChartsType } from "./echarts";
 import type { CustomSeriesOption, LineSeriesOption, ScatterSeriesOption } from "echarts";
 import { orgOf, displayName } from "./family";
 import { fmtPrice, fmtVotes, fmtToks } from "./format";
-import { isVisible, searchHit, blendedPrice } from "./filters";
+import { isVisible, searchHit, blendedPrice, freeLane, priceX } from "./filters";
 import { paretoFrontier, paretoFrontier3D, fitLog, fitLinear, fitDecade } from "./pareto";
 import { speedOf } from "./speed";
 import type { Speed } from "./speed";
@@ -112,7 +112,8 @@ function pulseFrame(id: string, pts: Pt[]) {
 // snapshot speed with the live map as fallback (B2/B14). Positions missing
 // an axis (price/elo/speed all null) drop out.
 function trailDots3D(
-  ts: Trail[]
+  ts: Trail[],
+  lane: number
 ): Array<{ value: number[]; itemStyle: { color: string } }> {
   const dots: Array<{ value: number[]; itemStyle: { color: string } }> = [];
   for (const t of ts) {
@@ -120,12 +121,11 @@ function trailDots3D(
       data.orgColor[orgOf(t.rows[t.rows.length - 1])] || "#64748b";
     for (let i = 0; i < t.rows.length; i++) {
       const d = t.rows[i];
-      const price = blendedPrice(d, ui.ratio);
+      const pos = priceX(blendedPrice(d, ui.ratio), lane);
       const toks = t.speeds[i] ?? speedOf(d.or_id, store.data)?.toks ?? null;
-      if (d.arena_elo == null || price == null || price <= 0 || toks == null)
-        continue;
+      if (d.arena_elo == null || pos == null || toks == null) continue;
       dots.push({
-        value: [Math.log10(price), Math.log10(toks), d.arena_elo],
+        value: [Math.log10(pos), Math.log10(toks), d.arena_elo],
         itemStyle: { color: withAlpha(color, 0.35) },
       });
     }
@@ -144,20 +144,21 @@ export const NOTE_3D_TIME = " · time playback: spheres move through the snapsho
 
 function pointsFor(
   getPrice: (d: Row) => number | null,
-  rows: Row[]
+  rows: Row[],
+  lane: number
 ): { pts: Pt[]; skipped: number } {
   const pts: Pt[] = [];
   let skipped = 0;
   for (const d of rows) {
-    const price = getPrice(d);
-    if (price == null || d.arena_elo == null) {
+    const p = priceX(getPrice(d), lane);
+    if (p == null || d.arena_elo == null) {
       skipped++;
       continue;
     }
     // The hover card shows p50 speed in every view (owner A/B, 024 step 1):
     // the same 023 D2 aggregation as the speed axis — null until the
     // endpoints fetch settles, hidden then, same as the drawer.
-    pts.push({ value: [price, d.arena_elo!], d, spd: speedOf(d.or_id, store.data) });
+    pts.push({ value: [p, d.arena_elo!], d, spd: speedOf(d.or_id, store.data) });
   }
   return { pts, skipped };
 }
@@ -804,6 +805,7 @@ export function renderPanel(el: HTMLElement, panelKey: Exclude<PanelKey, "speed"
   const axisLabel = isBlend
     ? "$/M tokens · " + ui.ratio + ":1 in:out blend (log)"
     : "$/M " + (panelKey === "in" ? "input" : "output") + " tokens (log)";
+  const lane = freeLane(data.rows, panelKey as Mode, ui.ratio);
 
   // Keep-alive point set (032 step 3): every plottable row is in the chart
   // dataset once; the visibility predicate only re-tags. Thresholds ride the
@@ -812,11 +814,12 @@ export function renderPanel(el: HTMLElement, panelKey: Exclude<PanelKey, "speed"
     ...ui,
     thrCtx: {
       ratio: ui.ratio,
+      lane,
       mode: panelKey as Mode,
       speed: (orId: string) => speedOf(orId, store.data),
     },
   };
-  const { pts, skipped } = pointsFor(getPrice, frameRows());
+  const { pts, skipped } = pointsFor(getPrice, frameRows(), lane);
   for (const p of pts) p.vis = isVisible(p.d, f);
   const vis = pts.filter((p) => p.vis !== false);
   const frontier = paretoFrontier(vis);
@@ -838,7 +841,7 @@ export function renderPanel(el: HTMLElement, panelKey: Exclude<PanelKey, "speed"
   const pinned = playback.active ? pinnedRows() : null;
   const fitRows = pinned ?? vis.map((p) => p.d);
   const xvals = fitRows
-    .map((d) => getPrice(d))
+    .map((d) => priceX(getPrice(d), lane))
     .filter((p): p is number => p != null);
   if (isBlend && ui.spread) {
     for (const d of fitRows) {
@@ -848,8 +851,14 @@ export function renderPanel(el: HTMLElement, panelKey: Exclude<PanelKey, "speed"
         xvals.push(d.price_out_per_m);
     }
   }
+  const fitX = fitLog(xvals);
   const bounds = {
-    x: fitLog(xvals) || undefined,
+    // 047 step 02c: a drawn free row sits at the lane, the cheapest x there
+    // is — start the axis there so its min tick reads "free" (the formatter
+    // in chartPush below). With no free row the fitted, padded min stands.
+    x: fitX
+      ? { ...fitX, min: xvals.includes(lane) ? lane : fitX.min }
+      : undefined,
     y: fitLinear(
       fitRows
         .map((d) => d.arena_elo)
@@ -862,7 +871,15 @@ export function renderPanel(el: HTMLElement, panelKey: Exclude<PanelKey, "speed"
   chartPush(
     id,
     el,
-    chartOption(axisLabel, pts, frontier, spreadPts, bounds, undefined, GEOM[id] === sig),
+    chartOption(
+      axisLabel,
+      pts,
+      frontier,
+      spreadPts,
+      bounds,
+      (v: number) => (Math.abs(v - lane) / lane < 0.02 ? "free" : fmtPrice(v)),
+      GEOM[id] === sig
+    ),
     sig
   );
   pulseFrame(id, pts);
@@ -909,6 +926,7 @@ export function renderSpeedPanel(el: HTMLElement) {
     ...ui,
     thrCtx: {
       ratio: ui.ratio,
+      lane: freeLane(data.rows, "speed", ui.ratio),
       mode: "speed" as const,
       speed: (orId: string) => speedOf(orId, store.data),
     },
@@ -1184,10 +1202,12 @@ function build3DScene(
   // plottable row stays in the scene; the visibility predicate re-tags and
   // hidden spheres render at opacity 0. The GL update has no tween — the
   // 3D fade is instant (D4's stretch note), the 2D panels keep the tween.
+  const lane = freeLane(data.rows, "3d", ui.ratio);
   const f = {
     ...ui,
     thrCtx: {
       ratio: ui.ratio,
+      lane,
       mode: "3d" as const,
       speed: (orId: string) => speedOf(orId, store.data),
     },
@@ -1201,10 +1221,10 @@ function build3DScene(
   // semantics, B14 (never averaged). The tooltip keeps the live speed's
   // basis (endpoint median + request count, which a snapshot doesn't carry).
   for (const d of frameRows()) {
-    const price = blendedPrice(d, ui.ratio);
+    const pos = priceX(blendedPrice(d, ui.ratio), lane);
     const s = speedOf(d.or_id, store.data);
     const snapToks = speedAt(d.or_id)?.p50_throughput ?? null;
-    if (d.arena_elo == null || price == null || price <= 0) {
+    if (d.arena_elo == null || pos == null) {
       noAxis++;
       continue;
     }
@@ -1213,7 +1233,7 @@ function build3DScene(
       continue;
     }
     pts.push({
-      value: [Math.log10(price), Math.log10(snapToks ?? s!.toks), d.arena_elo!],
+      value: [Math.log10(pos), Math.log10(snapToks ?? s!.toks), d.arena_elo!],
       d,
       spd: s,
       vis: isVisible(d, f),
@@ -1402,7 +1422,7 @@ function build3DScene(
     const fr = frameRows();
     const speeds = fr.map((r) => (store.done ? speedOf(r.or_id, store.data) : null));
     for (const cid of resolvedCmps(ui.cmps, fr, speeds, ui.ratio)) keep.add(cid);
-    trailDots = trailDots3D(computeTrails(playback.i, 25, keep));
+    trailDots = trailDots3D(computeTrails(playback.i, 25, keep), lane);
   }
   series.push({
     name: "trails",

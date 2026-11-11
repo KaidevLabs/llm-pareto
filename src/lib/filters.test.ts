@@ -1,5 +1,12 @@
 import { describe, it, expect } from "vitest";
-import { filterRows, searchHit, blendedPrice, passThresholds } from "./filters";
+import {
+  filterRows,
+  searchHit,
+  blendedPrice,
+  passThresholds,
+  freeLane,
+  priceX,
+} from "./filters";
 import type { Thr } from "./filters";
 import type { Row } from "./types";
 
@@ -48,8 +55,9 @@ describe("filterRows", () => {
 describe("passThresholds", () => {
   // worked example: in 10, out 30, ratio 3 → blended = 0.75*10 + 0.25*30 = 15
   const d = row({ or_id: "a/x", price_in_per_m: 10, price_out_per_m: 30, arena_elo: 1400 });
-  const ctx = (over: Partial<{ ratio: number; mode: "general" | "in" | "out" | "speed" | "3d"; speed: (id: string) => { toks: number } | null }> = {}) => ({
+  const ctx = (over: Partial<{ ratio: number; lane: number; mode: "general" | "in" | "out" | "speed" | "3d"; speed: (id: string) => { toks: number } | null }> = {}) => ({
     ratio: 3,
+    lane: 5,
     mode: "general" as const,
     speed: (_id: string): { toks: number } | null => ({ toks: 100 }),
     ...over,
@@ -107,6 +115,7 @@ describe("filterRows + thresholds", () => {
   const none = { families: { has: () => false, size: 0 }, vision: "all" as const };
   const thrCtx = {
     ratio: 3,
+    lane: 5,
     mode: "general" as const,
     speed: (): { toks: number } | null => null,
   };
@@ -158,5 +167,48 @@ describe("blendedPrice", () => {
     expect(blendedPrice(row({ price_in_per_m: 10, price_out_per_m: null }), 3)).toBe(10);
     expect(blendedPrice(row({ price_in_per_m: null, price_out_per_m: 30 }), 3)).toBe(30);
     expect(blendedPrice(row({ price_in_per_m: null, price_out_per_m: null }), 3)).toBe(null);
+  });
+});
+
+describe("free lane (047 step 02c)", () => {
+  const rows = [
+    row({ or_id: "paid", price_in_per_m: 10, price_out_per_m: 30 }),
+    row({ or_id: "free", price_in_per_m: 0, price_out_per_m: 0 }),
+    row({ or_id: "unpriced" }),
+  ];
+
+  it("freeLane returns half the cheapest positive price in the view", () => {
+    expect(freeLane(rows, "in", 3)).toBe(5);
+    expect(freeLane(rows, "general", 3)).toBe(7.5);
+  });
+  it("freeLane falls back to 1 when no row has a positive price", () => {
+    expect(
+      freeLane(
+        [
+          row({ price_in_per_m: 0, price_out_per_m: 0 }),
+          row({ price_in_per_m: null, price_out_per_m: null }),
+        ],
+        "in",
+        3
+      )
+    ).toBe(1);
+  });
+  it("priceX maps a free price onto the lane and passes positives through", () => {
+    expect(priceX(0, 5)).toBe(5);
+    expect(priceX(0.5, 5)).toBe(0.5);
+    expect(priceX(null, 5)).toBe(null);
+  });
+  it("passThresholds compares a free row at its drawn lane", () => {
+    const free = row({ price_in_per_m: 0, price_out_per_m: 0, arena_elo: 1500 });
+    const thr: Thr = { priceMin: null, priceMax: null, eloMin: null, eloMax: null, speedMin: null, speedMax: null };
+    const ctx = {
+      ratio: 3,
+      lane: 5,
+      mode: "general" as const,
+      speed: (): { toks: number } | null => ({ toks: 100 }),
+    };
+    expect(passThresholds(free, { ...thr, priceMin: null }, ctx)).toBe(true);
+    expect(passThresholds(free, { ...thr, priceMin: 5 }, ctx)).toBe(true);
+    expect(passThresholds(free, { ...thr, priceMin: 5.01 }, ctx)).toBe(false);
   });
 });

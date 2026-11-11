@@ -31,6 +31,7 @@ export interface Thr {
 // the full Speed shape.
 export interface ThrCtx {
   ratio: number;
+  lane: number; // the free lane's price coordinate
   mode: Mode | "3d";
   speed(orId: string): { toks: number } | null;
 }
@@ -41,13 +42,34 @@ export function viewPrice(d: Row, mode: Mode | "3d", ratio: number): number | nu
   return blendedPrice(d, ratio);
 }
 
+// Free models are drawn one octave below the cheapest paid price of the
+// whole dataset in this view (047 step 02c): log10(0) has no place on the
+// price axis, and the lane is where a free model actually sits — cheapest
+// possible — without inventing a price. Half the cheapest positive is also
+// what ThresholdCtl's price extent already uses as its left end.
+export function freeLane(rows: Row[], mode: Mode | "3d", ratio: number): number {
+  let lo = Infinity;
+  for (const d of rows) {
+    const p = viewPrice(d, mode, ratio);
+    if (p != null && p > 0 && p < lo) lo = p;
+  }
+  return lo === Infinity ? 1 : lo / 2;
+}
+
+// The x coordinate a price is drawn at.
+export function priceX(p: number | null, lane: number): number | null {
+  if (p == null) return null;
+  return p > 0 ? p : lane;
+}
+
 export function passThresholds(d: Row, thr: Thr, ctx: ThrCtx): boolean {
   if (thr.priceMin != null || thr.priceMax != null) {
     if (ctx.mode !== "speed") {
       const p = viewPrice(d, ctx.mode, ctx.ratio);
       if (p == null) return false;
-      if (thr.priceMin != null && p < thr.priceMin) return false;
-      if (thr.priceMax != null && p > thr.priceMax) return false;
+      const pos = p > 0 ? p : ctx.lane;
+      if (thr.priceMin != null && pos < thr.priceMin) return false;
+      if (thr.priceMax != null && pos > thr.priceMax) return false;
     }
   }
   if (thr.eloMin != null && (d.arena_elo == null || d.arena_elo < thr.eloMin))
