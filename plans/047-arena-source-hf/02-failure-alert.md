@@ -1,4 +1,33 @@
-# Step 02 — The workflow reports its own failures — OPEN
+# Step 02 — The workflow reports its own failures — ✅ COMPLETE (committed cf8524e, 2026-11-11)
+
+## As-built (2026-11-11)
+
+Committed `cf8524e`. Simplified during review: the alert is one email — the
+GitHub-issue machinery (create / comment / close / search, `issues: write`,
+the recovery step, the `job.status` branch) was dropped before the commit
+(owner decision 2026-11-11). Final file: 5 steps, 84 lines.
+
+Proven in production: dispatch `43102126654` with `force_fail=true` → red run,
+`Email on failure` step green, email received at `info@kaidev.io` with the run
+URL and the forced report line.
+
+Not provable yet: the silent-green half. `if: failure()` makes silence
+structural, but no green run has happened since the commit — see below.
+
+### Found by the first alert
+
+Every scheduled run since **2026-11-09 18:19 UTC** is red (9 consecutive), so
+`public/data` has been frozen at `e70dde0` (2026-11-09 12:26) for two days:
+
+```
+ERROR: provider: thinkingmachines/inkling-2-small:free: Thinking Machines:
+prompt price not > 0: '0'
+```
+
+`update.py:896-901` dies when any provider endpoint reports a prompt price
+`<= 0`; Thinking Machines now serves a genuinely free endpoint, so a real
+value trips a check written for anomalies. Out of this step's scope — the
+fix is the next task.
 
 ## Spec
 

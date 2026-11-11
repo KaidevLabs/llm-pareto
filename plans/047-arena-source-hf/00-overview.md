@@ -101,6 +101,11 @@ unnoticed for 11 days again.
 - **Step 02b** — upstream schema fingerprint: five payload shapes recorded in
   `meta.json`, delta printed in the report, workflow opens/comments on one
   `data: upstream schema drift` issue.
+- **Step 02c** — free models stay on the graph: the provider invariant
+  becomes "negative price is corruption, zero is real", and a free row keeps
+  `price 0` in the data while drawing on a lane one octave below the cheapest
+  paid price, labelled `free`. Runs **before** 02b: the fingerprint baseline
+  needs a run that reaches the write step, which this step restores.
 - **Step 03** — close: full verification, `update.py` end to end, DoD audit,
   `AGENTS.md`/`README.md` wording, archive.
 
@@ -110,12 +115,14 @@ unnoticed for 11 days again.
 |------|------|------------|--------|--------|
 | 01 | [01-hf-source.md](01-hf-source.md) | — | DONE (512d00c) | 512d00c |
 | 01b | [01b-provider-stats.md](01b-provider-stats.md) | 01 | DONE (9176edf) | 9176edf |
-| 02 | [02-failure-alert.md](02-failure-alert.md) | — | OPEN | |
-| 02b | [02b-schema-drift.md](02b-schema-drift.md) | 01b, 02 | OPEN | |
-| 03 | [03-close.md](03-close.md) | 01, 01b, 02, 02b | OPEN | |
+| 02 | [02-failure-alert.md](02-failure-alert.md) | — | DONE (cf8524e) | cf8524e |
+| 02c | [02c-free-models.md](02c-free-models.md) | 02 | OPEN | |
+| 02b | [02b-schema-drift.md](02b-schema-drift.md) | 01b, 02c | OPEN | |
+| 03 | [03-close.md](03-close.md) | 01, 01b, 02, 02b, 02c | OPEN | |
 
-The table is the order: **01b lands before 02b** (the fingerprint baseline can
-only be established by a run that reaches the write step), and **03 — the
+The table is the order: **02c lands before 02b** (the pipeline has been red
+since 2026-11-09, and the fingerprint baseline can only be established by a
+run that reaches the write step), 01b lands before both, and **03 — the
 closing step — runs last**.
 
 ## Out of scope
@@ -155,4 +162,7 @@ closing step — runs last**.
 - [ ] A failing run sends exactly one email to `info@kaidev.io` carrying the
       report tail and a run link (proven by a `force_fail` dispatch); a green
       run sends nothing.
+- [ ] Free models stay on the graph: a $0 row keeps price 0 in the data, draws
+      on the `free` lane one octave below the cheapest paid price, and is
+      labelled `free` on the axis (never a fabricated price).
 - [ ] `AGENTS.md` / `README.md` describe the source as the HF dataset.
