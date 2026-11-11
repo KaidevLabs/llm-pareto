@@ -8,8 +8,8 @@ Date: 2026-10-24.
 
 `update.py` reads the Arena text board from the official HuggingFace dataset
 `lmarena-ai/leaderboard-dataset` instead of scraping `arena.ai`, and the
-6-hourly workflow reports its own failures as a GitHub issue so a dead
-pipeline can never go unnoticed for 11 days again.
+6-hourly workflow emails its own failures so a dead pipeline can never go
+unnoticed for 11 days again.
 
 ## Why
 
@@ -39,7 +39,7 @@ pipeline can never go unnoticed for 11 days again.
 | 4 | `modelOrganization` = HF `organization` resolved against the logo registry's display keys (case- and punctuation-insensitive); unknown orgs keep the HF slug. No hand-written org table. | Keeps all 20 logo keys attached, keeps `arena_org` readable, and derives the display name from an artifact the pipeline already owns (rule #504). | 2026-10-24 |
 | 5 | Fields HF does not carry go **null**, not fabricated: `arena_model_url`, `arena_context_length`, `arena_price_in_per_m`, `arena_price_out_per_m`. `modelKey`/`releaseType` leave `arena.json` (nothing in `src/` reads them). | The front already renders all four nulls (`ModelCard.svelte`); inventing or carrying stale values would be worse than an absent hint. | 2026-10-24 |
 | 6 | Cadence unchanged: cron `15 */6 * * *`. `meta.json` gains `sources.arena.publish_date`. | HF publishes once a day; the 6-hourly run simply commits a history snapshot until the next publish. Provenance must say which Arena date the ratings are. | 2026-10-24 |
-| 7 | Failure alerting = the workflow opens/reopens a GitHub issue on failure and closes it on the next green run, proven by a `force_fail` dispatch input. | Zero secrets, durable, survives schedule drift; `force_fail` is the only honest way to test an alert without breaking real data. | 2026-10-24 |
+| 7 | Failure alerting = one email from the workflow on a red run (MailerSend, `alerts@kaidev.io` → `info@kaidev.io`), proven by a `force_fail` dispatch input; no issue, no recovery message. Amended 2026-11-11. | The issue design was chosen because it needed zero secrets; once email was added, the issue's create/comment/close/search machinery was most of the workflow (~90 of 135 lines) for no extra reach. `force_fail` stays the only honest way to test an alert without breaking real data. | 2026-10-24 |
 | 8 | A percentile series may be monotone in **either** direction; the tripwire dies only on a mixed one. | OpenRouter's throughput percentiles flipped to descending on ~2026-10-13 (856/858 endpoints); that is upstream semantics (p99 = slow tail), not corrupt data. Drift detection stays. | 2026-10-24 |
 | 9 | The speed floor and its summed basis read `throughput_request_count`, not `request_count`. | `request_count` counts latency samples (3, 10 on a failing endpoint) while the throughput median comes from `throughput_request_count` (1803, 2354) — the floor never described the number it guards. | 2026-10-24 |
 | 10 | `throughput_window_minutes` is stored, not filtered on. | 30 min on 723 endpoints, 24 h on 137; filtering to 30-min-only would cost 16 models their speed and move 47 numbers, for a metric that is a rough signal. | 2026-10-24 |
@@ -90,9 +90,9 @@ pipeline can never go unnoticed for 11 days again.
   `fetch_arena_rows` (paged, stop at the first non-`overall` row), org
   resolution, provenance in `meta.json`, `parse_arena` + its RSC test deleted,
   new fixture-based tests.
-- **Step 02** — alerting in the workflow: issue open/reopen on failure with
-  the report tail and the run URL, comment + close on recovery,
-  `force_fail` dispatch input, `issues: write` permission.
+- **Step 02** — alerting in the workflow: one email on a red run with the
+  report tail and the run URL, `force_fail` dispatch input. A green run stays
+  silent.
 - **Step 01b** — provider stats after OpenRouter's percentile flip: direction-
   agnostic tripwire, the speed floor moved onto `throughput_request_count`,
   `throughput_window_minutes` stored, `Details.svelte` folded into
@@ -152,6 +152,7 @@ closing step — runs last**.
       `data: upstream schema drift` issue.
 - [ ] `meta.json` carries `sources.arena.publish_date`; the site still shows
       org logos for every org it showed before.
-- [ ] A failing run opens exactly one GitHub issue (no duplicates), with the
-      report tail and a run link; the next green run comments and closes it.
+- [ ] A failing run sends exactly one email to `info@kaidev.io` carrying the
+      report tail and a run link (proven by a `force_fail` dispatch); a green
+      run sends nothing.
 - [ ] `AGENTS.md` / `README.md` describe the source as the HF dataset.

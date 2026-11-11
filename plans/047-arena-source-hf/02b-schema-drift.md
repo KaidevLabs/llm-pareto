@@ -3,6 +3,11 @@
 > Runs before `03-close.md`, and **after** `01b-provider-stats.md`: the
 > fingerprint's baseline can only be established by a run that reaches the
 > write step, which 01b restores.
+>
+> **Note 2026-11-11:** step 02 dropped the GitHub-issue channel in favour of a
+> single failure email, so this step's "opens/comments on a `data: upstream
+> schema drift` issue" half has no mechanism any more. Open at this step's
+> start, not decided here: email the delta, or keep it to the report line.
 
 ## Why
 

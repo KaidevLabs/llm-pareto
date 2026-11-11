@@ -1,9 +1,15 @@
+# A failed run emails info@kaidev.io via MailerSend (repo secret MAILERSEND_TOKEN); a green run says nothing.
 name: update-data
 
 on:
   schedule:
     - cron: "15 */6 * * *"
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      force_fail:
+        description: "Abort before fetching, to prove the failure alert"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -16,8 +22,6 @@ jobs:
   update:
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    env:
-      GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -25,6 +29,12 @@ jobs:
           python-version: "3.13"
       - name: Run update.py
         run: |
+          if [ "${{ inputs.force_fail }}" = "true" ]; then
+            echo "force_fail: aborting on purpose (alert path test)"
+            mkdir -p .tmp
+            printf 'force_fail: aborted on purpose (alert path test)\n' > .tmp/update-report.txt
+            exit 1
+          fi
           mkdir -p .tmp
           set +e
           python3 update.py > .tmp/update-report.txt 2>&1
@@ -50,3 +60,25 @@ jobs:
           git add public/data public/assets/logos logos.json
           git commit -m "data: scheduled refresh ($stamp)"
           git push origin HEAD:main
+      - name: Email on failure
+        if: failure()
+        env:
+          MAILERSEND_TOKEN: ${{ secrets.MAILERSEND_TOKEN }}
+        run: |
+          mkdir -p .tmp
+          {
+            echo "The data update failed at $(date -u +%FT%TZ)."
+            echo "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            echo
+            tail -n 60 .tmp/update-report.txt 2>/dev/null || echo "(no report captured)"
+          } > .tmp/mail.txt
+          jq -n --arg to "info@kaidev.io" --arg from "alerts@kaidev.io" \
+            --arg subject "data: update.py failing" --arg text "$(cat .tmp/mail.txt)" \
+            '{from: {email: $from, name: "llm-pareto"},
+              to: [{email: $to}],
+              subject: $subject,
+              text: $text}' \
+          | curl -sS --fail-with-body -X POST https://api.mailersend.com/v1/email \
+              -H "Authorization: Bearer $MAILERSEND_TOKEN" \
+              -H "Content-Type: application/json" \
+              --data @- || echo "email failed (run is already red)"
