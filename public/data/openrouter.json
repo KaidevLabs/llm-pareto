@@ -1686,8 +1686,8 @@
   "id": "qwen/qwen3.5-9b",
   "name": "Qwen: Qwen3.5-9B",
   "org": "qwen",
-  "price_in_per_m": 0.169,
-  "price_out_per_m": 0.249,
+  "price_in_per_m": 0.168,
+  "price_out_per_m": 0.248,
   "vision": true,
   "context_length": 262144
  },
