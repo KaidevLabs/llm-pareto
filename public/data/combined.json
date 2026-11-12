@@ -1216,8 +1216,8 @@
  {
   "or_id": "moonshotai/kimi-k2.5",
   "or_name": "MoonshotAI: Kimi K2.5",
-  "price_in_per_m": 0.532,
-  "price_out_per_m": 3.325,
+  "price_in_per_m": 0.5,
+  "price_out_per_m": 2.5,
   "vision": true,
   "context_length": 262144,
   "arena_rank": 66,
@@ -1418,8 +1418,8 @@
  {
   "or_id": "tencent/hy3",
   "or_name": "Tencent: Hy3",
-  "price_in_per_m": 0.132,
-  "price_out_per_m": 0.528,
+  "price_in_per_m": 0.0825,
+  "price_out_per_m": 0.33,
   "vision": false,
   "context_length": 262144,
   "arena_rank": 79,
@@ -1645,8 +1645,8 @@
  {
   "or_id": "google/gemma-4-26b-a4b-it",
   "or_name": "Google: Gemma 4 26B A4B ",
-  "price_in_per_m": 0.08,
-  "price_out_per_m": 0.1,
+  "price_in_per_m": 0.09,
+  "price_out_per_m": 0.28,
   "vision": true,
   "context_length": 262144,
   "arena_rank": 92,

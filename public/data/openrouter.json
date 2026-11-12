@@ -1,5 +1,14 @@
 [
  {
+  "id": "google/gemini-4-hydrogen",
+  "name": "Google: Gemini 4 Hydrogen",
+  "org": "google",
+  "price_in_per_m": 1.5,
+  "price_out_per_m": 7.5,
+  "vision": true,
+  "context_length": 1048576
+ },
+ {
   "id": "baidu/ernie-5.5-flash-preview:free",
   "name": "Baidu: ERNIE-5.5-Flash-Preview (free)",
   "org": "baidu",
@@ -192,8 +201,8 @@
   "id": "minimax/minimax-m3.1-flash",
   "name": "MiniMax: MiniMax M3.1 Flash",
   "org": "minimax",
-  "price_in_per_m": 0.15,
-  "price_out_per_m": 0.6,
+  "price_in_per_m": 0.075,
+  "price_out_per_m": 0.3,
   "vision": true,
   "context_length": 1048576
  },
@@ -750,8 +759,8 @@
   "id": "tencent/hy4-preview",
   "name": "Tencent: Hy4 preview",
   "org": "tencent",
-  "price_in_per_m": 0.834,
-  "price_out_per_m": 2.501,
+  "price_in_per_m": 0.7506,
+  "price_out_per_m": 2.2509,
   "vision": false,
   "context_length": 1048576
  },
@@ -1155,8 +1164,8 @@
   "id": "tencent/hy3",
   "name": "Tencent: Hy3",
   "org": "tencent",
-  "price_in_per_m": 0.132,
-  "price_out_per_m": 0.528,
+  "price_in_per_m": 0.0825,
+  "price_out_per_m": 0.33,
   "vision": false,
   "context_length": 262144
  },
@@ -1524,8 +1533,8 @@
   "id": "google/gemma-4-26b-a4b-it",
   "name": "Google: Gemma 4 26B A4B ",
   "org": "google",
-  "price_in_per_m": 0.08,
-  "price_out_per_m": 0.1,
+  "price_in_per_m": 0.09,
+  "price_out_per_m": 0.28,
   "vision": true,
   "context_length": 262144
  },
@@ -1686,8 +1695,8 @@
   "id": "qwen/qwen3.5-9b",
   "name": "Qwen: Qwen3.5-9B",
   "org": "qwen",
-  "price_in_per_m": 0.168,
-  "price_out_per_m": 0.248,
+  "price_in_per_m": 0.169,
+  "price_out_per_m": 0.249,
   "vision": true,
   "context_length": 262144
  },
@@ -1884,8 +1893,8 @@
   "id": "moonshotai/kimi-k2.5",
   "name": "MoonshotAI: Kimi K2.5",
   "org": "moonshotai",
-  "price_in_per_m": 0.532,
-  "price_out_per_m": 3.325,
+  "price_in_per_m": 0.5,
+  "price_out_per_m": 2.5,
   "vision": true,
   "context_length": 262144
  },
