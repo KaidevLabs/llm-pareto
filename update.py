@@ -249,6 +249,8 @@ def fetch_arena_rows(fetcher=fetch):
 # ------------------------------------------------------- openrouter
 
 def parse_openrouter(raw):
+    """Returns (normalized models, the upstream model objects for the schema
+    fingerprint)."""
     try:
         data = json.loads(raw)
     except Exception as e:
@@ -282,7 +284,7 @@ def parse_openrouter(raw):
                 "context_length": m.get("context_length"),
             }
         )
-    return out
+    return out, models
 
 
 # ---------------------------------------------------------------- join
@@ -777,14 +779,21 @@ def build_provider_layer(raw_layers):
         "free_entries": 0,
         "stats_dropped": 0,
         "models_detail": [],
+        "schema": {},
         "join_misses": [],
         "providers_distinct": 0,
         "top_providers": [],
     }
     provider_counts = {}
+    api_objs, page_objs, stat_objs = [], [], []
     for or_id, ep_raw, page_html, page_eps in raw_layers:
         api_eps = parse_endpoints_api(ep_raw)
         merged, n_merged = merge_duplicate_endpoints(api_eps)
+        api_objs.extend(api_eps)
+        page_objs.extend(page_eps)
+        stat_objs.extend(
+            p["stats"] for p in page_eps if isinstance(p.get("stats"), dict)
+        )
         entries, unjoined, n_joined = join_provider_layers(merged, page_eps)
         all_entries = entries + unjoined
         n_stats = 0
@@ -838,6 +847,11 @@ def build_provider_layer(raw_layers):
     rep["top_providers"] = sorted(
         provider_counts.items(), key=lambda kv: (-kv[1], kv[0])
     )[:10]
+    rep["schema"] = {
+        "endpoints_api": schema_signature(api_objs),
+        "model_page_endpoint": schema_signature(page_objs),
+        "model_page_stats": schema_signature(stat_objs),
+    }
     return layer, rep
 
 
@@ -1673,6 +1687,73 @@ def validate(arena_entries, or_models, combined, unmatched):
 
 # ---------------------------------------------------------------- main
 
+# ------------------------------------------- upstream schema fingerprint (02b)
+
+META_PATH = OUT_DIR / "meta.json"
+
+# every upstream payload shape the pipeline parses; the fingerprint of each
+# one is committed in meta.json under "schema" (plan 047 step 02b)
+SCHEMA_SECTIONS = (
+    "arena_rows",           # HF datasets-server row dicts
+    "openrouter_models",    # /api/v1/models model objects
+    "endpoints_api",        # /api/v1/models/{id}/endpoints endpoint objects
+    "model_page_endpoint",  # model-page RSC endpoint objects
+    "model_page_stats",     # their nested endpointStats blocks
+)
+
+
+def schema_signature(objs):
+    """Sorted field names observed across a payload's objects (union).
+    Non-dict entries are ignored; the union means a field carried by one
+    model in a thousand still shows up."""
+    fields = set()
+    for obj in objs:
+        if isinstance(obj, dict):
+            fields.update(obj)
+    return sorted(fields)
+
+
+def schema_diff(prev, cur):
+    """(added, removed) field names, sorted."""
+    return sorted(set(cur) - set(prev)), sorted(set(prev) - set(cur))
+
+
+def check_schema(sections, prev_path=META_PATH):
+    """Diff this run's field fingerprints against the previous meta.json's
+    "schema" block and report the delta (plan 047 step 02b). Never dies on a
+    delta — see the step doc; a corrupt previous meta.json is a hard error
+    like any other repo-state error. Returns (report lines, block to commit)."""
+    prev = {}
+    if prev_path.exists():
+        try:
+            prev = json.loads(prev_path.read_text()).get("schema") or {}
+        except Exception as e:
+            die(f"schema: previous meta.json unreadable: {e}")
+    block = {}
+    lines = []
+    for name in SCHEMA_SECTIONS:
+        cur = sorted(sections.get(name) or [])
+        block[name] = cur
+        before = sorted(prev.get(name) or [])
+        if not before:
+            lines.append(f"  schema: {name}: {len(cur)} fields (baseline)")
+            continue
+        added, removed = schema_diff(before, cur)
+        if added or removed:
+            delta = " ".join(
+                part
+                for part in (
+                    ("+" + " ".join(added)) if added else "",
+                    ("-" + " ".join(removed)) if removed else "",
+                )
+                if part
+            )
+            lines.append(f"  schema: {name}: {delta}")
+        else:
+            lines.append(f"  schema: {name}: {len(cur)} fields (unchanged)")
+    return lines, block
+
+
 def write_json(path, obj):
     fd, tmp = tempfile.mkstemp(dir=path.parent, suffix=".tmp")
     try:
@@ -1692,11 +1773,13 @@ def main():
     print(f"fetching {HF_BOARD_URL}")
     logo_manifest = load_logos(LOGOS_PATH)
     org_names = {org_key(org): org for org in logo_manifest}
-    arena_entries = parse_arena_rows(fetch_arena_rows(), org_names)
+    arena_rows = fetch_arena_rows()
+    arena_entries = parse_arena_rows(arena_rows, org_names)
     print(f"  arena: {len(arena_entries)} entries")
 
     print(f"fetching {OPENROUTER_URL}")
-    or_models = parse_openrouter(fetch(OPENROUTER_URL))
+    raw_or = fetch(OPENROUTER_URL)
+    or_models, or_raw_models = parse_openrouter(raw_or)
     print(f"  openrouter: {len(or_models)} models (after dropping :batch and ~ aliases)")
 
     overrides = load_overrides()
@@ -1732,6 +1815,14 @@ def main():
     )
     # D8 bands: a violation dies here, before any file is written
     validate_provider_layer(provider_layer, provider_rep["models_detail"])
+
+    schema_lines, schema_block = check_schema(
+        {
+            "arena_rows": schema_signature(arena_rows),
+            "openrouter_models": schema_signature(or_raw_models),
+            **provider_rep["schema"],
+        }
+    )
 
     # logos (soft domain: reports, never dies — plan 007 D8); runs before
     # the meta write so the org->file map lands in meta.json
@@ -1797,12 +1888,13 @@ def main():
             "page_endpoints_unjoined": provider_rep["page_unjoined"],
             "duplicates_merged": provider_rep["duplicates_merged"],
         },
+        "schema": schema_block,
     }
 
     write_json(OUT_DIR / "arena.json", arena_entries)
     write_json(OUT_DIR / "openrouter.json", or_models)
     write_json(OUT_DIR / "combined.json", combined)
-    write_json(OUT_DIR / "meta.json", meta)
+    write_json(META_PATH, meta)
     for name in ("arena.json", "openrouter.json", "combined.json", "meta.json"):
         p = OUT_DIR / name
         print(f"  wrote {p.relative_to(ROOT)} ({p.stat().st_size} bytes)")
@@ -1843,6 +1935,9 @@ def main():
         print(line)
     print("provider report")
     for line in provider_report_lines(provider_rep):
+        print(line)
+    print("schema report")
+    for line in schema_lines:
         print(line)
     print("done.")
 

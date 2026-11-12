@@ -4,10 +4,10 @@
 > fingerprint's baseline can only be established by a run that reaches the
 > write step, which 01b restores.
 >
-> **Note 2026-11-11:** step 02 dropped the GitHub-issue channel in favour of a
-> single failure email, so this step's "opens/comments on a `data: upstream
-> schema drift` issue" half has no mechanism any more. Open at this step's
-> start, not decided here: email the delta, or keep it to the report line.
+> **Note 2026-11-11 (settled):** step 02 dropped the GitHub-issue channel in
+> favour of a single failure email, and the owner's call is that a new field
+> never alarms: no issue, no email, no new thresholds. The fingerprint is a
+> record reviewed from time to time, and a delta never changes the exit code.
 
 ## Why
 
@@ -21,8 +21,9 @@ a different failure anyway. Field *removals* are mostly covered by accident
 
 This step makes the shape an observable: each run fingerprints the field set
 of every upstream surface it parses, diffs it against the previous run's
-fingerprint (kept in the committed `meta.json`), prints the delta in the
-report, and — in the workflow — opens/comments on an issue when it changed.
+fingerprint (kept in the committed `meta.json`), and prints the delta in the
+report. The delta is read from the ordinary data-commit review — `meta.json`
+is reviewed first — never from a notification.
 
 ## Design rules
 
@@ -33,13 +34,15 @@ report, and — in the workflow — opens/comments on an issue when it changed.
   hand-editing `meta.json`. Fatality stays where a field is actually consumed:
   `parse_arena_rows`'s required fields, the stats-coverage floor, the join hit
   rate, the percentile tripwire.
-- The delta is *loud* through the workflow issue, not through the exit code,
-  so data keeps flowing.
+- The delta never changes the exit code, so data keeps flowing. It is reviewed
+  from time to time: every data commit carries `meta.json`, and its diff (read
+  first in the review) shows the fingerprint change; `git log -p --
+  public/data/meta.json` is the periodic check.
 - Known, accepted behaviour: `meta.json` is not in the commit gate (memory
   #441), so a run whose upstream shape changed but whose gated data files did
   not gets no commit — the fingerprint baseline stays put, the same delta is
   reported again next run, and it is noticed the first time a gated file
-  changes. The workflow step exits silently when nothing was committed.
+  changes.
 
 ## Spec — `update.py`
 
@@ -185,63 +188,6 @@ Wire it up:
         print(line)
    ```
 
-## Spec — workflow
-
-`.github/workflows/update-data.yml`, a new step **after** `Commit + push if
-data changed`:
-
-```yaml
-      - name: Notice upstream schema drift
-        if: success()
-        run: |
-          git show HEAD~1:public/data/meta.json > .tmp/prev-meta.json 2>/dev/null \
-            || echo '{}' > .tmp/prev-meta.json
-          python3 - <<'PY' > .tmp/schema-drift.md
-          import json
-
-          def schema(path):
-              try:
-                  return json.load(open(path)).get("schema") or {}
-              except Exception:
-                  return {}
-
-          prev = schema(".tmp/prev-meta.json")
-          cur = schema("public/data/meta.json")
-          for name in sorted(cur):
-              before = set(prev.get(name) or [])
-              after = set(cur[name] or [])
-              if before and before != after:
-                  print(f"- `{name}`: +{sorted(after - before)} -{sorted(before - after)}")
-          PY
-          if [ ! -s .tmp/schema-drift.md ]; then
-            echo "no schema drift"
-            exit 0
-          fi
-          {
-            echo "An upstream payload changed its field set since the previous data commit."
-            echo
-            cat .tmp/schema-drift.md
-            echo
-            echo "- run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-            echo "- at: $(date -u +%FT%TZ)"
-          } > .tmp/schema-issue.md
-          TITLE="data: upstream schema drift"
-          nums=$(gh issue list --state open --search "\"$TITLE\" in:title" \
-            --json number --jq '.[].number')
-          if [ -z "$nums" ]; then
-            gh issue create --title "$TITLE" --body-file .tmp/schema-issue.md
-          else
-            for n in $nums; do gh issue comment "$n" --body-file .tmp/schema-issue.md; done
-          fi
-```
-
-Precondition: step 02 has already added `issues: write` to `permissions` and
-`GH_TOKEN` to the job env — verify both are present; if they are not, stop and
-report (do not duplicate step 02's work).
-
-Add one line to the file's header comment: a green run that changed an upstream
-payload's field set opens/comments on `data: upstream schema drift`.
-
 ## Tests — new `tests/test_schema.py`
 
 Module docstring: `"""Characterization tests for the upstream schema
@@ -272,13 +218,12 @@ fingerprint (plan 047 step 02b)."""` Same style as the rest of `tests/`
 ## Not touched in this step
 
 Parser semantics and every threshold, `logging`/exit behaviour of the update
-run, the commit gate, the alert/recovery steps from step 02, the front end,
-`public/data/*` contents.
+run, the commit gate, the workflow file and the alert/recovery steps from step
+02, the front end, `public/data/*` contents.
 
 ## Verification
 
 ```sh
-python3 -c "import yaml;yaml.safe_load(open('.github/workflows/update-data.yml'))" && echo yaml-ok
 python3 -m unittest discover -s tests -v      # green, incl. test_schema
 python3 update.py                             # exit 0
 ```
@@ -295,23 +240,20 @@ python3 -c "import json;print(json.dumps(json.load(open('public/data/meta.json')
   `endpoints_api`, `model_page_endpoint`, `model_page_stats` (the stats block
   carries `throughput_window_minutes` after step 01b).
 
-Drift path, locally provable without touching upstream: copy `meta.json`,
-delete one field name from one section, and re-run `check_schema` against the
-edited copy —
+Drift path, locally provable without touching upstream: keep the committed
+`meta.json` as the previous baseline and re-run `check_schema` with one field
+deleted from one current section —
 
 ```sh
 python3 - <<'PY'
-import json, shutil, tempfile, pathlib, update
+import json, pathlib, update
 src = pathlib.Path("public/data/meta.json")
-d = tempfile.mkdtemp()
-prev = pathlib.Path(d) / "meta.json"
 meta = json.loads(src.read_text())
-meta["schema"]["model_page_stats"] = [f for f in meta["schema"]["model_page_stats"] if f != "p50_throughput"]
-prev.write_text(json.dumps(meta))
-lines, _ = update.check_schema(
-    {k: json.loads(src.read_text())["schema"][k] for k in update.SCHEMA_SECTIONS},
-    prev_path=prev,
-)
+sections = {k: list(meta["schema"][k]) for k in update.SCHEMA_SECTIONS}
+sections["model_page_stats"] = [
+    f for f in sections["model_page_stats"] if f != "p50_throughput"
+]
+lines, _ = update.check_schema(sections, prev_path=src)
 print("\n".join(lines))
 PY
 ```

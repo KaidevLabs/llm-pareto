@@ -1218,7 +1218,7 @@
   "id": "moonshotai/kimi-k2.7-code",
   "name": "MoonshotAI: Kimi K2.7 Code",
   "org": "moonshotai",
-  "price_in_per_m": 0.7125,
+  "price_in_per_m": 0.6,
   "price_out_per_m": 3.5,
   "vision": true,
   "context_length": 262144
