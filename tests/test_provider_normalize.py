@@ -106,15 +106,26 @@ def rsc_html(*chunks):
     return "<html>" + "".join(parts) + "</html>"
 
 
-def page_html(eps):
+def page_html(eps, after=""):
+    """One dehydrated query object: the data sits before its queryKey."""
     payload = (
-        '{"queryKey":["model-page","endpointStats",'
-        '{"permaslug":"test/model","variant":"standard"}],"queryHash":"h"},'
         '{"dehydratedAt":1789627742828,"state":{"data":'
         + json.dumps(eps)
-        + "}}"
+        + ',"dataUpdateCount":1},"queryKey":["model-page","endpointStats",'
+        '{"permaslug":"test/model","variant":"standard"}],"queryHash":"h"}'
+        + after
     )
     return rsc_html(payload)
+
+
+# a following query whose data is a flight reference, as the live page now
+# emits it (2026-11-12) — the old forward scan died on this
+FLIGHT_REF_SIBLING = (
+    ',{"dehydratedAt":1789627742829,"state":{"data":'
+    '"$5e:props:state:queries:0:state:data","dataUpdateCount":1},'
+    '"queryKey":["model-page","providerTableEndpointStats",'
+    '{"permaslug":"test/model"}],"queryHash":"h2"}'
+)
 
 
 def assert_dies(test, fn):
@@ -132,6 +143,15 @@ class TestParseProviderPage(unittest.TestCase):
         ]
         self.assertEqual(update.parse_provider_page(page_html(eps)), eps)
 
+    def test_extracts_alongside_a_flight_reference_sibling(self):
+        eps = [
+            page_ep("StreamLake", "streamlake/fp8", "streamlake", stats=stats()),
+            page_ep("Baidu", "baidu/fp8", "baidu"),
+        ]
+        self.assertEqual(
+            update.parse_provider_page(page_html(eps, FLIGHT_REF_SIBLING)), eps
+        )
+
     def test_dies_without_rsc_chunks(self):
         assert_dies(self, lambda: update.parse_provider_page("<html>nope</html>"))
 
@@ -142,9 +162,19 @@ class TestParseProviderPage(unittest.TestCase):
         with self.assertRaises(update._PageFormatError):
             update.parse_provider_page(rsc_html('2:{"other":[1]}'))
 
-    def test_raises_page_format_error_when_dehydrated_missing(self):
+    def test_raises_page_format_error_when_no_query_object(self):
         html = rsc_html(
-            '{"queryKey":["model-page","endpointStats",'
+            '"queryKey":["model-page","endpointStats",'
+            '{"permaslug":"test/model"}],"queryHash":"h"'
+        )
+        with self.assertRaises(update._PageFormatError):
+            update.parse_provider_page(html)
+
+    def test_raises_page_format_error_when_data_is_a_flight_reference(self):
+        html = rsc_html(
+            '{"dehydratedAt":1,"state":{"data":'
+            '"$5e:props:state:queries:0:state:data","dataUpdateCount":1},'
+            '"queryKey":["model-page","endpointStats",'
             '{"permaslug":"test/model"}],"queryHash":"h"}'
         )
         with self.assertRaises(update._PageFormatError):
@@ -152,9 +182,9 @@ class TestParseProviderPage(unittest.TestCase):
 
     def test_dies_when_array_not_json(self):
         html = rsc_html(
-            '{"queryKey":["model-page","endpointStats",'
-            '{"permaslug":"test/model"}],"queryHash":"h"},'
-            '{"dehydratedAt":123,"state":{"data":[oops]}}'
+            '{"dehydratedAt":123,"state":{"data":[oops],"dataUpdateCount":1},'
+            '"queryKey":["model-page","endpointStats",'
+            '{"permaslug":"test/model"}],"queryHash":"h"}'
         )
         assert_dies(self, lambda: update.parse_provider_page(html))
 

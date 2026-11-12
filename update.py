@@ -541,13 +541,17 @@ def fetch_provider_layer(or_ids):
 
 EP_STATS_ANCHOR = '"queryKey":["model-page","endpointStats"'
 DEHYDRATED_AT = '"dehydratedAt":'
+DEHYDRATED_DATA = '"state":{"data":['
 
 
 def parse_provider_page(html):
-    """The model page's endpointStats array (plan 022, D1): dehydrated
-    endpoint objects carrying the populated speed stats. RSC surface: the
-    anchor is the endpointStats queryKey, then the dehydratedAt data array
-    that follows it."""
+    """The model page's endpointStats array (plan 022, D1; layout fixed
+    2026-11-12): dehydrated endpoint objects carrying the populated speed
+    stats. Each dehydrated query is {"dehydratedAt":…,"state":{"data":…},
+    "queryKey":…} — the data sits before its queryKey, so it is read from
+    the anchored object itself. A following query may carry its data as a
+    `$5e:` flight reference instead of inline, which is why the old
+    forward scan over the next dehydratedAt no longer works."""
     chunks = RSC_RE.findall(html)
     if not chunks:
         die("provider: no RSC chunks found in page (page format changed?)")
@@ -558,13 +562,13 @@ def parse_provider_page(html):
             "endpointStats queryKey not found in page payload "
             "(page format changed?)"
         )
-    j = text.find(DEHYDRATED_AT, i)
-    if j < 0:
+    obj = text.rfind(DEHYDRATED_AT, 0, i)
+    if obj < 0 or text.find(DEHYDRATED_DATA, obj, i) < 0:
         raise _PageFormatError(
-            "no dehydratedAt after endpointStats queryKey "
+            "endpointStats data not inline in its query object "
             "(page format changed?)"
         )
-    eps = _extract_json_array(text, DEHYDRATED_AT, from_i=j, label="provider")
+    eps = _extract_json_array(text, DEHYDRATED_DATA, from_i=obj, label="provider")
     if not isinstance(eps, list) or not all(isinstance(e, dict) for e in eps):
         die("provider: endpointStats array is not a list of objects")
     return eps
