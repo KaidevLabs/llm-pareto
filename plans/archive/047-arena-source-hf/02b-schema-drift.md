@@ -1,4 +1,4 @@
-# Step 02b — Notice upstream schema drift — OPEN
+# Step 02b — Notice upstream schema drift — ✅ COMPLETE (committed b9c327b, 2026-11-12)
 
 > Runs before `03-close.md`, and **after** `01b-provider-stats.md`: the
 > fingerprint's baseline can only be established by a run that reaches the

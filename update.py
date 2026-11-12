@@ -545,9 +545,9 @@ DEHYDRATED_AT = '"dehydratedAt":'
 
 def parse_provider_page(html):
     """The model page's endpointStats array (plan 022, D1): dehydrated
-    endpoint objects carrying the populated speed stats. Same RSC surface
-    as arena.ai — new anchor (the endpointStats queryKey, then the
-    dehydratedAt data array that follows it)."""
+    endpoint objects carrying the populated speed stats. RSC surface: the
+    anchor is the endpointStats queryKey, then the dehydratedAt data array
+    that follows it."""
     chunks = RSC_RE.findall(html)
     if not chunks:
         die("provider: no RSC chunks found in page (page format changed?)")

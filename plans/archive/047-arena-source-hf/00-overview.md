@@ -1,8 +1,10 @@
 # 047 — Arena source: HF dataset + loud failures
 
-> **Status:** OWNER REVIEW — drafted 2026-10-24.
+> **Status:** ARCHIVED (2026-11-12). Commits: 512d00c (01) · 9176edf (01b) ·
+> cf8524e (02) · 8ca9b9c (02c) · b9c327b (02b) · close = the commit carrying
+> this move.
 
-Date: 2026-10-24.
+Date: 2026-10-24 (closed 2026-11-12).
 
 ## Goal
 
@@ -116,14 +118,30 @@ unnoticed for 11 days again.
 | 01 | [01-hf-source.md](01-hf-source.md) | — | DONE (512d00c) | 512d00c |
 | 01b | [01b-provider-stats.md](01b-provider-stats.md) | 01 | DONE (9176edf) | 9176edf |
 | 02 | [02-failure-alert.md](02-failure-alert.md) | — | DONE (cf8524e) | cf8524e |
-| 02c | [02c-free-models.md](02c-free-models.md) | 02 | OPEN | |
-| 02b | [02b-schema-drift.md](02b-schema-drift.md) | 01b, 02c | OPEN | |
-| 03 | [03-close.md](03-close.md) | 01, 01b, 02, 02b, 02c | OPEN | |
+| 02c | [02c-free-models.md](02c-free-models.md) | 02 | DONE (8ca9b9c) | 8ca9b9c |
+| 02b | [02b-schema-drift.md](02b-schema-drift.md) | 01b, 02c | DONE (b9c327b) | b9c327b |
+| 03 | [03-close.md](03-close.md) | 01, 01b, 02, 02b, 02c | DONE (close) | close commit |
 
 The table is the order: **02c lands before 02b** (the pipeline has been red
 since 2026-11-09, and the fingerprint baseline can only be established by a
 run that reaches the write step), 01b lands before both, and **03 — the
 closing step — runs last**.
+
+## Final measured counts (close run, 2026-11-12)
+
+| surface | measured |
+|---|---|
+| arena `overall` rows | 421 entries, `publish_date` 2026-11-09 |
+| arena names | 369 after collapsing 36 config-variant groups |
+| join | 156 combined (42 % of names, floor 40 %), 213 unmatched, top-20 20/20 |
+| openrouter | 363 models |
+| provider layer | 156 models / 918 endpoints; stats on 155/156 models, 871/918 endpoints |
+| schema fingerprint | five sections, all `(unchanged)` |
+| logos | 23 keys; no org left as a lowercase slug of a key |
+
+Close verification: python suite 218 tests `OK`; `python3 update.py` exit 0
+through the writes; vitest 25 files / 229 tests; `tsc --noEmit` clean; vite
+build clean.
 
 ## Out of scope
 
@@ -140,29 +158,42 @@ closing step — runs last**.
 
 ## Definition of done
 
-- [ ] `update.py` builds `arena.json`/`combined.json` from the HF dataset; no
-      request to arena.ai/lmarena.ai remains in the codebase.
-- [ ] Paged fetch stops at the first non-`overall` row, dies on ordering
-      drift, on an empty first page, and on exceeding the page cap.
-- [ ] Tests cover `arena_name`, the row→entry mapping, org resolution and the
-      pagination stop rule; python suite green.
-- [ ] `python3 update.py` runs green end to end with a sane report (entries
+- [x] `update.py` builds `arena.json`/`combined.json` from the HF dataset; no
+      request to arena.ai/lmarena.ai remains in the codebase. (421 entries
+      from `lmarena-ai/leaderboard-dataset`; no `lmarena.ai`/`liveboard` in
+      `*.py`, no `arena.ai` in `update.py`/`.github/`)
+- [x] Paged fetch stops at the first non-`overall` row, dies on ordering
+      drift, on an empty first page, and on exceeding the page cap. (covered
+      in `tests/test_arena_hf.py`: stop rule, ordering drift, empty first
+      page, page cap)
+- [x] Tests cover `arena_name`, the row→entry mapping, org resolution and the
+      pagination stop rule; python suite green. (218 tests, `OK`, 2026-11-12)
+- [x] `python3 update.py` runs green end to end with a sane report (entries
       ~418, 216 arena names matched → **163 combined models**, top-20 ≥ 18/20,
       overall ≥ 40 %), and the `public/data` diff is reviewed `meta.json`
-      first.
-- [ ] Provider stats survive the percentile flip: the tripwire accepts a series
+      first. (measured 2026-11-12: 421 entries → 369 names → 156 combined,
+      top-20 20/20; `meta.json` reviewed first)
+- [x] Provider stats survive the percentile flip: the tripwire accepts a series
       monotone in either direction, the speed floor reads
       `throughput_request_count`, and `endpoints.json` carries
-      `throughput_window_minutes`.
-- [ ] Every run records the field set of all five upstream surfaces in
-      `meta.json`; a delta is printed in the report and opens/comments on one
-      `data: upstream schema drift` issue.
-- [ ] `meta.json` carries `sources.arena.publish_date`; the site still shows
-      org logos for every org it showed before.
-- [ ] A failing run sends exactly one email to `info@kaidev.io` carrying the
+      `throughput_window_minutes`. (918 endpoints, 871 with stats; floor on
+      `throughput_request_count`; `throughput_window_minutes` stored)
+- [x] Every run records the field set of all five upstream surfaces in
+      `meta.json`; a delta is printed in the report and never alarms (02b's
+      2026-11-11 amendment dropped the `data: upstream schema drift` issue).
+      (`schema report`: five sections, all `(unchanged)` on the close run)
+- [x] `meta.json` carries `sources.arena.publish_date`; the site still shows
+      org logos for every org it showed before. (2026-11-09; 23 logo keys; 0
+      orgs left as a lowercase slug of a key)
+- [x] A failing run sends exactly one email to `info@kaidev.io` carrying the
       report tail and a run link (proven by a `force_fail` dispatch); a green
-      run sends nothing.
-- [ ] Free models stay on the graph: a $0 row keeps price 0 in the data, draws
+      run sends nothing. (dispatch `43102126654` with `force_fail=true`: red
+      run, email at `info@kaidev.io`; green silence is structural via
+      `if: failure()`)
+- [x] Free models stay on the graph: a $0 row keeps price 0 in the data, draws
       on the `free` lane one octave below the cheapest paid price, and is
-      labelled `free` on the axis (never a fabricated price).
-- [ ] `AGENTS.md` / `README.md` describe the source as the HF dataset.
+      labelled `free` on the axis (never a fabricated price). (`src/lib/filters.test.ts`
+      free-lane cases; a $0 row keeps price 0)
+- [x] `AGENTS.md` / `README.md` describe the source as the HF dataset. (both
+      now name the HF dataset; README's build/deploy/workflow facts refreshed
+      at close)

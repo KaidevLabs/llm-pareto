@@ -1,4 +1,4 @@
-# Step 03 — Close — OPEN
+# Step 03 — Close — ✅ COMPLETE (2026-11-12; the close commit carries the archive move)
 
 ## Spec
 
@@ -51,3 +51,28 @@ reopens the step as an amendment, not a new plan.
 ## Seams under test
 
 None.
+
+## Close amendments (2026-11-12)
+
+Recorded at close, not failures — the spec was drafted before the source swap
+ran for real:
+
+- **Grep audit refined.** `grep -rn "lmarena\|liveboard" --include="*.py" .`
+  cannot be empty: the HF dataset id is `lmarena-ai/leaderboard-dataset`, so
+  `update.py:4,32,33` match by design. The audit that holds is
+  `grep -rn "lmarena\.ai\|liveboard" --include="*.py" .` → no output, and
+  `grep -rn "arena\.ai" update.py .github/` → no output (the single
+  `parse_provider_page` docstring mention was reworded at close).
+- **Workflow audit corrected.** `.github/workflows/update-data.yml` has no
+  recovery step and no drift notice: step 02's 2026-11-11 amendment dropped
+  the issue/recovery machinery for one failure email, and step 02b's
+  2026-11-11 amendment made schema drift a report line that never alarms. The
+  workflow is the `force_fail` input, the failure email step, and the
+  commit-push step.
+- **Measured counts differ from the drafted figures** — upstream drift, every
+  threshold held: 421 entries (drafted ~418), 156 combined models of 369
+  arena names = 42 % overall (floor 40 %; drafted 163 of 216), top-20 20/20,
+  OpenRouter catalog 363 models (was 375 at drafting).
+- **Doc drift fixed** in `README.md` (build step, deploy target, workflow
+  gate and alerting, layout, local preview) and `AGENTS.md` (the data source,
+  the fixture shape — `parse_arena` no longer exists).

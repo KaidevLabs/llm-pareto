@@ -31,7 +31,7 @@
 
 LMArena frontier models ranked by quality (Elo) against OpenRouter pricing,
 with the Pareto frontier highlighted. Fully static site built from committed
-JSON — no backend, no build step.
+JSON — no backend; a vite build turns the Svelte 5 explorer into `dist/`.
 
 Live: <https://llm-pareto.kaidev.io>
 
@@ -52,11 +52,18 @@ Open it live: <https://llm-pareto.kaidev.io/?view=3d&tour=1>
 The `update-data` GitHub Actions workflow
 (`.github/workflows/update-data.yml`) runs `python3 update.py` every 6 h
 (cron `15 */6 * * *` UTC) and can also be triggered by hand from the Actions
-tab. If `arena.json`, `openrouter.json` or `combined.json` changed, it commits
-the data straight to `main` (as `github-actions[bot]`, message
-`data: scheduled refresh (<UTC stamp>)`) and pushes; a `meta.json`-only run
-(timestamp bump, no data change) is a green no-op that commits nothing.
-Fetch failures retry up to 3 attempts before the run goes red.
+tab. If `arena.json`, `openrouter.json`, `combined.json`, `endpoints.json` or
+`history/` changed, it commits the data straight to `main` (as
+`github-actions[bot]`, message `data: scheduled refresh (<UTC stamp>)`) and
+pushes; a `meta.json`-only run (timestamp bump, no data change) is a green
+no-op that commits nothing. Fetch failures retry up to 3 attempts before the
+run goes red.
+
+A red run emails `info@kaidev.io` (`alerts@kaidev.io` via MailerSend, repo
+secret `MAILERSEND_TOKEN`) with the run URL and the report tail; a green run
+sends nothing. The `force_fail` dispatch input aborts before fetching, purely
+to prove that alert path. Upstream schema drift is printed in the report and
+fingerprinted in `meta.json` — it never fails a run and never emails.
 
 The push to `main` auto-deploys via the Cloudflare git integration (the
 dashboard build command runs the wrangler deploy). Review surface: the data
@@ -84,9 +91,9 @@ git add update.py overrides.json logos.json public/data public/assets/logos && g
 ```
 
 Push to GitHub — the Cloudflare git integration auto-deploys `main` (Workers
-static site, `wrangler.jsonc` serves `public/` as assets). Manual fallback if
-the git integration is ever switched off: `npx wrangler deploy` from the repo
-root.
+static site: the dashboard build runs `npm ci && npm run build && npx wrangler
+deploy`, and `wrangler.jsonc` serves the vite-built `dist/` as assets). Manual
+fallback: `npm run build && npx wrangler deploy` from the repo root.
 
 ### Deploy hygiene (`wrangler`)
 
@@ -244,25 +251,27 @@ state. Local `benchmarks/` run dirs are neither listed nor deleted.
 | `public/data/arena.json` | HF dataset `lmarena-ai/leaderboard-dataset` (`text`/`latest` rows) | LMArena text board mirror; fail-fast validated |
 | `public/data/openrouter.json` | `openrouter.ai/api/v1/models` (public, no auth) | `:batch` variants and `~` aliases dropped |
 | `public/data/combined.json` | join of the two | what the site renders |
-| `public/data/meta.json` | updater | timestamps, counts, join summary, applied overrides |
+| `public/data/endpoints.json` | OpenRouter endpoints API + model pages | per-endpoint speed stats; `p50..p99` as received plus `throughput_window_minutes` |
+| `public/data/meta.json` | updater | timestamps, counts, join summary, applied overrides, upstream schema fingerprint |
+| `public/data/history/` | updater | one snapshot per run (`<UTC stamp>.json` + append-only `index.json`), deduped by timestamp |
 
 ## Layout
 
 ```
 update.py        # the whole update mechanism (Python 3, stdlib only)
 tests/           # characterization suite for update.py (stdlib unittest)
+src/             # Svelte 5 explorer (components + lib + colocated vitest tests)
+public/          # static assets: data/, assets/, fonts/ (copied into dist/ by vite)
+index.html       # vite entry (global CSS + the app mount point)
 overrides.json   # explicit arena-name → openrouter-id pins
-.github/workflows/update-data.yml  # scheduled data-update workflow (PR per changed run)
-public/          # web root (deployed as-is)
-  index.html     # the page
-  app.js         # ECharts rendering + filters
-  data/          # committed datasets
+.github/workflows/update-data.yml  # scheduled data-update workflow (pushes straight to main)
 plans/           # plan docs (settled decisions live in the first one)
 ```
 
 ## Local preview
 
 ```sh
-python3 -m http.server 8000 --directory public
-# → http://localhost:8000
+npm ci
+npm run dev
+# → the URL vite prints; /data/* is served from public/data
 ```

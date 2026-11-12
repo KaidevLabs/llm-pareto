@@ -4,7 +4,10 @@ LMArena frontier models ranked by quality (Elo) against OpenRouter pricing, Pare
 
 ## Commands
 
-- Data update: `python3 update.py` — fetches both sources, joins, validates; exits non-zero on any anomaly. A failed run is never committed.
+- Data update: `python3 update.py` — fetches the Arena text board from the HF
+  dataset `lmarena-ai/leaderboard-dataset` (`text`/`latest`, `overall` rows)
+  plus the OpenRouter catalog, joins, validates; exits non-zero on any
+  anomaly. A failed run is never committed.
 - Front end (node ≥22): `npm ci` once; `npm run dev` (vite dev server, serves `public/data` at root); `npm run build` (vite → `dist/`, gitignored); `npm test` (vitest); `npx tsc --noEmit` (types; `.svelte` files need svelte-check, deliberately not wired — vitest is the gate).
 - Deploy: push to main → the CF git-integration build runs `npm ci && npm run build && npx wrangler deploy` and ships `dist/`. Manual fallback: `npm run build && npx wrangler deploy` from the repo root (`rm -rf public/.wrangler` first, #440).
 
@@ -25,10 +28,10 @@ LMArena frontier models ranked by quality (Elo) against OpenRouter pricing, Pare
   test after a logic change is a review signal, not a failure: decide
   before changing either side. Drive behavior-changing work test-first
   with the `tdd` skill.
-- Fixtures: synthetic, hand-written (minimal RSC-shaped payloads for
-  `parse_arena`; typed Row fixtures for components); never real page
-  snapshots — schema drift is `update.py` fail-fast's job, not the
-  fixture's.
+- Fixtures: synthetic, hand-written (typed dict rows shaped like the HF
+  `datasets-server` `/rows` payload for `parse_arena_rows`; typed Row
+  fixtures for components); never real page snapshots — schema drift is
+  `update.py` fail-fast's job, not the fixture's.
 - Browser-level: headless-Chromium CDP probes per step live in `.tmp/`
   (scratch): chart/GL rendering, drawer, deep-links, cookie probe against
   a static serve of `dist/`. They are not a committed suite — rerun the

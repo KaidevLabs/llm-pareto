@@ -1,4 +1,4 @@
-# Step 02c — Free models on the log price axis — OPEN
+# Step 02c — Free models on the log price axis — ✅ COMPLETE (committed 8ca9b9c, 2026-11-11)
 
 > Runs after `02-failure-alert.md` and **before** `02b-schema-drift.md`: the
 > pipeline has been red since 2026-11-09 18:19 UTC, so no run reaches the
