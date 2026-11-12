@@ -1,0 +1,4654 @@
+{
+ "ts": "2026-11-12T00:40:53Z",
+ "rows": [
+  {
+   "or_id": "google/gemini-4-carbon",
+   "or_name": "Google: Gemini 4 Carbon",
+   "price_in_per_m": 2.0,
+   "price_out_per_m": 10.0,
+   "vision": true,
+   "context_length": 1048576,
+   "arena_rank": 1,
+   "arena_elo": 1538.2768191996465,
+   "arena_elo_upper": 1547.8165663855534,
+   "arena_elo_lower": 1528.7370720137392,
+   "arena_votes": 4282,
+   "arena_org": "Google",
+   "arena_license": "Proprietary",
+   "arena_model": "gemini-4-carbon-high",
+   "arena_variants": [
+    "gemini-4-carbon-high"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "google/gemini-4-argon",
+   "or_name": "Google: Gemini 4 Argon",
+   "price_in_per_m": 2.0,
+   "price_out_per_m": 10.0,
+   "vision": true,
+   "context_length": 1048576,
+   "arena_rank": 2,
+   "arena_elo": 1530.160034009476,
+   "arena_elo_upper": 1535.597933491806,
+   "arena_elo_lower": 1524.7221345271455,
+   "arena_votes": 19787,
+   "arena_org": "Google",
+   "arena_license": "Proprietary",
+   "arena_model": "gemini-4-argon-high",
+   "arena_variants": [
+    "gemini-4-argon-high"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "anthropic/claude-opus-5.5",
+   "or_name": "Anthropic: Claude Opus 5.5",
+   "price_in_per_m": 4.0,
+   "price_out_per_m": 20.0,
+   "vision": true,
+   "context_length": 1000000,
+   "arena_rank": 3,
+   "arena_elo": 1513.0021399366474,
+   "arena_elo_upper": 1519.0422401810033,
+   "arena_elo_lower": 1506.9620396922915,
+   "arena_votes": 15249,
+   "arena_org": "Anthropic",
+   "arena_license": "Proprietary",
+   "arena_model": "claude-opus-5.5-high",
+   "arena_variants": [
+    "claude-opus-5.5-high"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "anthropic/claude-fable-5.1",
+   "or_name": "Anthropic: Claude Fable 5.1",
+   "price_in_per_m": 10.0,
+   "price_out_per_m": 50.0,
+   "vision": true,
+   "context_length": 1000000,
+   "arena_rank": 4,
+   "arena_elo": 1512.3784035606031,
+   "arena_elo_upper": 1517.9161209749818,
+   "arena_elo_lower": 1506.840686146225,
+   "arena_votes": 20087,
+   "arena_org": "Anthropic",
+   "arena_license": "Proprietary",
+   "arena_model": "claude-fable-5.1-max",
+   "arena_variants": [
+    "claude-fable-5.1-max"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "anthropic/claude-opus-5",
+   "or_name": "Anthropic: Claude Opus 5",
+   "price_in_per_m": 5.0,
+   "price_out_per_m": 25.0,
+   "vision": true,
+   "context_length": 1000000,
+   "arena_rank": 5,
+   "arena_elo": 1506.3172184201153,
+   "arena_elo_upper": 1511.0071887355844,
+   "arena_elo_lower": 1501.6272481046458,
+   "arena_votes": 35710,
+   "arena_org": "Anthropic",
+   "arena_license": "Proprietary",
+   "arena_model": "claude-opus-5-max",
+   "arena_variants": [
+    "claude-opus-5-high",
+    "claude-opus-5-max"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "meta/muse-wonder",
+   "or_name": "Meta: Muse Wonder",
+   "price_in_per_m": 4.0,
+   "price_out_per_m": 20.0,
+   "vision": true,
+   "context_length": 1048576,
+   "arena_rank": 6,
+   "arena_elo": 1503.0484713809174,
+   "arena_elo_upper": 1509.3772338127997,
+   "arena_elo_lower": 1496.719708949035,
+   "arena_votes": 12032,
+   "arena_org": "Meta",
+   "arena_license": "Proprietary",
+   "arena_model": "muse-wonder-max",
+   "arena_variants": [
+    "muse-wonder-max"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "anthropic/claude-opus-4.6",
+   "or_name": "Anthropic: Claude Opus 4.6",
+   "price_in_per_m": 5.0,
+   "price_out_per_m": 25.0,
+   "vision": true,
+   "context_length": 1000000,
+   "arena_rank": 8,
+   "arena_elo": 1501.6578583092228,
+   "arena_elo_upper": 1504.8971200339465,
+   "arena_elo_lower": 1498.4185965844986,
+   "arena_votes": 84424,
+   "arena_org": "Anthropic",
+   "arena_license": "Proprietary",
+   "arena_model": "claude-opus-4.6-high",
+   "arena_variants": [
+    "claude-opus-4.6",
+    "claude-opus-4.6-high"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "google/gemini-3.8-flash",
+   "or_name": "Google: Gemini 3.8 Flash",
+   "price_in_per_m": 0.825,
+   "price_out_per_m": 4.125,
+   "vision": true,
+   "context_length": 1048576,
+   "arena_rank": 9,
+   "arena_elo": 1500.4121268761392,
+   "arena_elo_upper": 1504.642932073527,
+   "arena_elo_lower": 1496.1813216787514,
+   "arena_votes": 61143,
+   "arena_org": "Google",
+   "arena_license": "Proprietary",
+   "arena_model": "gemini-3.8-flash-high",
+   "arena_variants": [
+    "gemini-3.8-flash-high"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "xiaomi/mimo-v2.6-pro",
+   "or_name": "Xiaomi: MiMo-V2.6-Pro",
+   "price_in_per_m": 0.435,
+   "price_out_per_m": 0.87,
+   "vision": true,
+   "context_length": 1050000,
+   "arena_rank": 11,
+   "arena_elo": 1491.7070850560972,
+   "arena_elo_upper": 1501.1318987400714,
+   "arena_elo_lower": 1482.2822713721225,
+   "arena_votes": 4066,
+   "arena_org": "Xiaomi",
+   "arena_license": "MIT",
+   "arena_model": "mimo-v2.6-pro",
+   "arena_variants": [
+    "mimo-v2.6-pro"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "anthropic/claude-fable-5",
+   "or_name": "Anthropic: Claude Fable 5",
+   "price_in_per_m": 10.0,
+   "price_out_per_m": 50.0,
+   "vision": true,
+   "context_length": 1000000,
+   "arena_rank": 12,
+   "arena_elo": 1491.5868575384075,
+   "arena_elo_upper": 1495.7659402249778,
+   "arena_elo_lower": 1487.4077748518366,
+   "arena_votes": 45524,
+   "arena_org": "Anthropic",
+   "arena_license": "Proprietary",
+   "arena_model": "claude-fable-5-high",
+   "arena_variants": [
+    "claude-fable-5-high"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "meta/muse-spark-1.3",
+   "or_name": "Meta: Muse Spark 1.3",
+   "price_in_per_m": 1.25,
+   "price_out_per_m": 4.25,
+   "vision": true,
+   "context_length": 1048576,
+   "arena_rank": 13,
+   "arena_elo": 1491.468287476569,
+   "arena_elo_upper": 1496.5208114214065,
+   "arena_elo_lower": 1486.415763531731,
+   "arena_votes": 26111,
+   "arena_org": "Meta",
+   "arena_license": "Proprietary",
+   "arena_model": "muse-spark-1.3-max",
+   "arena_variants": [
+    "muse-spark",
+    "muse-spark-1.3-max"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "anthropic/claude-opus-4.7",
+   "or_name": "Anthropic: Claude Opus 4.7",
+   "price_in_per_m": 5.0,
+   "price_out_per_m": 25.0,
+   "vision": true,
+   "context_length": 1000000,
+   "arena_rank": 14,
+   "arena_elo": 1489.708157620371,
+   "arena_elo_upper": 1493.4612366181295,
+   "arena_elo_lower": 1485.9550786226118,
+   "arena_votes": 64308,
+   "arena_org": "Anthropic",
+   "arena_license": "Proprietary",
+   "arena_model": "claude-opus-4.7-high",
+   "arena_variants": [
+    "claude-opus-4.7",
+    "claude-opus-4.7-high"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "google/gemini-3.7-flash",
+   "or_name": "Google: Gemini 3.7 Flash",
+   "price_in_per_m": 0.75,
+   "price_out_per_m": 3.75,
+   "vision": true,
+   "context_length": 1048576,
+   "arena_rank": 15,
+   "arena_elo": 1488.8172106766838,
+   "arena_elo_upper": 1493.4922054948925,
+   "arena_elo_lower": 1484.142215858475,
+   "arena_votes": 33300,
+   "arena_org": "Google",
+   "arena_license": "Proprietary",
+   "arena_model": "gemini-3.7-flash-high",
+   "arena_variants": [
+    "gemini-3.7-flash-high"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "qwen/qwen3.8-max-0902",
+   "or_name": "Qwen: Qwen3.8 Max (0902)",
+   "price_in_per_m": 2.0,
+   "price_out_per_m": 6.0,
+   "vision": true,
+   "context_length": 1000000,
+   "arena_rank": 16,
+   "arena_elo": 1485.2093041935336,
+   "arena_elo_upper": 1489.7959141573651,
+   "arena_elo_lower": 1480.6226942297021,
+   "arena_votes": 36324,
+   "arena_org": "Alibaba",
+   "arena_license": "Proprietary",
+   "arena_model": "qwen3.8-max",
+   "arena_variants": [
+    "qwen3.8-max"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "meta/muse-spark-1.2",
+   "or_name": "Meta: Muse Spark 1.2",
+   "price_in_per_m": 1.25,
+   "price_out_per_m": 4.25,
+   "vision": true,
+   "context_length": 1048576,
+   "arena_rank": 17,
+   "arena_elo": 1484.0008497377926,
+   "arena_elo_upper": 1489.864946517766,
+   "arena_elo_lower": 1478.1367529578192,
+   "arena_votes": 15004,
+   "arena_org": "Meta",
+   "arena_license": "Proprietary",
+   "arena_model": "muse-spark-1.2-xhigh",
+   "arena_variants": [
+    "muse-spark-1.2-xhigh"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "google/gemini-3.5-flash",
+   "or_name": "Google: Gemini 3.5 Flash",
+   "price_in_per_m": 1.5,
+   "price_out_per_m": 9.0,
+   "vision": true,
+   "context_length": 1048576,
+   "arena_rank": 19,
+   "arena_elo": 1482.9362147697643,
+   "arena_elo_upper": 1486.82505426353,
+   "arena_elo_lower": 1479.047375275999,
+   "arena_votes": 47642,
+   "arena_org": "Google",
+   "arena_license": "Proprietary",
+   "arena_model": "gemini-3.5-flash-high",
+   "arena_variants": [
+    "gemini-3.5-flash-high",
+    "gemini-3.5-flash-medium"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "google/gemini-3.1-pro-preview",
+   "or_name": "Google: Gemini 3.1 Pro Preview",
+   "price_in_per_m": 2.0,
+   "price_out_per_m": 12.0,
+   "vision": true,
+   "context_length": 1048576,
+   "arena_rank": 20,
+   "arena_elo": 1479.9928559278965,
+   "arena_elo_upper": 1482.9082049867043,
+   "arena_elo_lower": 1477.0775068690887,
+   "arena_votes": 132296,
+   "arena_org": "Google",
+   "arena_license": "Proprietary",
+   "arena_model": "gemini-3.1-pro-preview",
+   "arena_variants": [
+    "gemini-3.1-pro-preview"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "google/gemini-3-pro-image",
+   "or_name": "Google: Nano Banana Pro (Gemini 3 Pro Image)",
+   "price_in_per_m": 2.0,
+   "price_out_per_m": 12.0,
+   "vision": true,
+   "context_length": 131072,
+   "arena_rank": 21,
+   "arena_elo": 1479.5383062894753,
+   "arena_elo_upper": 1483.3103703501579,
+   "arena_elo_lower": 1475.7662422287926,
+   "arena_votes": 41829,
+   "arena_org": "Google",
+   "arena_license": "Proprietary",
+   "arena_model": "gemini-3-pro",
+   "arena_variants": [
+    "gemini-3-pro"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "prefix-variant",
+   "match_ratio": null
+  },
+  {
+   "or_id": "google/gemini-3.6-flash",
+   "or_name": "Google: Gemini 3.6 Flash",
+   "price_in_per_m": 0.75,
+   "price_out_per_m": 3.75,
+   "vision": true,
+   "context_length": 1048576,
+   "arena_rank": 22,
+   "arena_elo": 1479.2630091424253,
+   "arena_elo_upper": 1483.6828507030714,
+   "arena_elo_lower": 1474.8431675817797,
+   "arena_votes": 35405,
+   "arena_org": "Google",
+   "arena_license": "Proprietary",
+   "arena_model": "gemini-3.6-flash-high",
+   "arena_variants": [
+    "gemini-3.6-flash-high"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "meta/muse-spark-1.1",
+   "or_name": "Meta: Muse Spark 1.1",
+   "price_in_per_m": 1.25,
+   "price_out_per_m": 4.25,
+   "vision": true,
+   "context_length": 1048576,
+   "arena_rank": 23,
+   "arena_elo": 1478.7277946321105,
+   "arena_elo_upper": 1482.8738304477579,
+   "arena_elo_lower": 1474.5817588164632,
+   "arena_votes": 45562,
+   "arena_org": "Meta",
+   "arena_license": "Proprietary",
+   "arena_model": "muse-spark-1.1",
+   "arena_variants": [
+    "muse-spark-1.1"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "z-ai/glm-5.3",
+   "or_name": "Z.ai: GLM 5.3",
+   "price_in_per_m": 0.0699,
+   "price_out_per_m": 1.4,
+   "vision": false,
+   "context_length": 1048576,
+   "arena_rank": 25,
+   "arena_elo": 1475.9274416653438,
+   "arena_elo_upper": 1480.6478706383718,
+   "arena_elo_lower": 1471.2070126923159,
+   "arena_votes": 31017,
+   "arena_org": "Z.ai",
+   "arena_license": "MIT",
+   "arena_model": "glm-5.3-max",
+   "arena_variants": [
+    "glm-5.3-max"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "qwen/qwen3.7-max",
+   "or_name": "Qwen: Qwen3.7 Max",
+   "price_in_per_m": 1.475,
+   "price_out_per_m": 4.425,
+   "vision": false,
+   "context_length": 1000000,
+   "arena_rank": 26,
+   "arena_elo": 1474.796238733963,
+   "arena_elo_upper": 1484.4994095011552,
+   "arena_elo_lower": 1465.0930679667708,
+   "arena_votes": 3904,
+   "arena_org": "Alibaba",
+   "arena_license": "Proprietary",
+   "arena_model": "qwen3.7-max-preview",
+   "arena_variants": [
+    "qwen3.7-max-preview"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "moonshotai/kimi-k3",
+   "or_name": "MoonshotAI: Kimi K3",
+   "price_in_per_m": 0.192,
+   "price_out_per_m": 16.0,
+   "vision": true,
+   "context_length": 1048576,
+   "arena_rank": 27,
+   "arena_elo": 1474.3298939995852,
+   "arena_elo_upper": 1478.6237663948605,
+   "arena_elo_lower": 1470.0360216043096,
+   "arena_votes": 40867,
+   "arena_org": "Moonshot",
+   "arena_license": "Kimi K3 license",
+   "arena_model": "kimi-k3-max",
+   "arena_variants": [
+    "kimi-k3-max"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "openai/gpt-5.5",
+   "or_name": "OpenAI: GPT-5.5",
+   "price_in_per_m": 5.0,
+   "price_out_per_m": 30.0,
+   "vision": true,
+   "context_length": 1050000,
+   "arena_rank": 29,
+   "arena_elo": 1471.1840548978962,
+   "arena_elo_upper": 1474.8854076528269,
+   "arena_elo_lower": 1467.482702142966,
+   "arena_votes": 68359,
+   "arena_org": "OpenAI",
+   "arena_license": "Proprietary",
+   "arena_model": "gpt-5.5-high",
+   "arena_variants": [
+    "gpt-5.5",
+    "gpt-5.5-high",
+    "gpt-5.5-instant"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "z-ai/glm-5.3-flash",
+   "or_name": "Z.ai: GLM 5.3 Flash",
+   "price_in_per_m": 0.0399,
+   "price_out_per_m": 0.0784,
+   "vision": true,
+   "context_length": 1048576,
+   "arena_rank": 31,
+   "arena_elo": 1470.6575559766993,
+   "arena_elo_upper": 1475.088386083356,
+   "arena_elo_lower": 1466.226725870043,
+   "arena_votes": 50189,
+   "arena_org": "Z.ai",
+   "arena_license": "MIT",
+   "arena_model": "glm-5.3-flash",
+   "arena_variants": [
+    "glm-5.3-flash"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "z-ai/glm-5.2",
+   "or_name": "Z.ai: GLM 5.2",
+   "price_in_per_m": 0.007,
+   "price_out_per_m": 6.8,
+   "vision": false,
+   "context_length": 1048576,
+   "arena_rank": 32,
+   "arena_elo": 1469.4428527485325,
+   "arena_elo_upper": 1473.4928180361717,
+   "arena_elo_lower": 1465.3928874608932,
+   "arena_votes": 54173,
+   "arena_org": "Z.ai",
+   "arena_license": "MIT",
+   "arena_model": "glm-5.2-max",
+   "arena_variants": [
+    "glm-5.2-max"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "openai/gpt-5.4",
+   "or_name": "OpenAI: GPT-5.4",
+   "price_in_per_m": 2.5,
+   "price_out_per_m": 15.0,
+   "vision": true,
+   "context_length": 1050000,
+   "arena_rank": 33,
+   "arena_elo": 1469.1117050002467,
+   "arena_elo_upper": 1472.8609329620513,
+   "arena_elo_lower": 1465.3624770384422,
+   "arena_votes": 64103,
+   "arena_org": "OpenAI",
+   "arena_license": "Proprietary",
+   "arena_model": "gpt-5.4-high",
+   "arena_variants": [
+    "gpt-5.4",
+    "gpt-5.4-high"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "anthropic/claude-sonnet-5.5",
+   "or_name": "Anthropic: Claude Sonnet 5.5",
+   "price_in_per_m": 2.0,
+   "price_out_per_m": 10.0,
+   "vision": true,
+   "context_length": 1000000,
+   "arena_rank": 34,
+   "arena_elo": 1468.8173447748545,
+   "arena_elo_upper": 1474.9436402480587,
+   "arena_elo_lower": 1462.6910493016503,
+   "arena_votes": 13821,
+   "arena_org": "Anthropic",
+   "arena_license": "Proprietary",
+   "arena_model": "claude-sonnet-5.5-xhigh",
+   "arena_variants": [
+    "claude-sonnet-5.5-xhigh"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "google/gemini-3-flash-preview",
+   "or_name": "Google: Gemini 3 Flash Preview",
+   "price_in_per_m": 0.5,
+   "price_out_per_m": 3.0,
+   "vision": true,
+   "context_length": 1048576,
+   "arena_rank": 37,
+   "arena_elo": 1465.8447700363245,
+   "arena_elo_upper": 1470.167888089586,
+   "arena_elo_lower": 1461.5216519830633,
+   "arena_votes": 31133,
+   "arena_org": "Google",
+   "arena_license": "Proprietary",
+   "arena_model": "gemini-3-flash",
+   "arena_variants": [
+    "gemini-3-flash",
+    "gemini-3-flash-minimal"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "xiaomi/mimo-v2.5-pro",
+   "or_name": "Xiaomi: MiMo-V2.5-Pro",
+   "price_in_per_m": 0.48,
+   "price_out_per_m": 1.8,
+   "vision": false,
+   "context_length": 1024000,
+   "arena_rank": 38,
+   "arena_elo": 1464.0935084668895,
+   "arena_elo_upper": 1467.6075025379887,
+   "arena_elo_lower": 1460.5795143957903,
+   "arena_votes": 76793,
+   "arena_org": "Xiaomi",
+   "arena_license": "MIT",
+   "arena_model": "mimo-v2.5-pro",
+   "arena_variants": [
+    "mimo-v2.5-pro"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "deepseek/deepseek-v4.1-flash",
+   "or_name": "DeepSeek: DeepSeek V4.1 Flash",
+   "price_in_per_m": 0.006,
+   "price_out_per_m": 0.5,
+   "vision": true,
+   "context_length": 1048576,
+   "arena_rank": 39,
+   "arena_elo": 1463.390381391253,
+   "arena_elo_upper": 1469.4948625180182,
+   "arena_elo_lower": 1457.2859002644877,
+   "arena_votes": 13580,
+   "arena_org": "DeepSeek",
+   "arena_license": "MIT",
+   "arena_model": "deepseek-v4.1-flash-20260910-max",
+   "arena_variants": [
+    "deepseek-v4.1-flash-20260910-max"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "z-ai/glm-5.1",
+   "or_name": "Z.ai: GLM 5.1",
+   "price_in_per_m": 1.4,
+   "price_out_per_m": 4.4,
+   "vision": false,
+   "context_length": 204800,
+   "arena_rank": 40,
+   "arena_elo": 1462.70651715235,
+   "arena_elo_upper": 1466.219331766602,
+   "arena_elo_lower": 1459.193702538098,
+   "arena_votes": 67074,
+   "arena_org": "Z.ai",
+   "arena_license": "MIT",
+   "arena_model": "glm-5.1",
+   "arena_variants": [
+    "glm-5.1"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "anthropic/claude-opus-4.8",
+   "or_name": "Anthropic: Claude Opus 4.8",
+   "price_in_per_m": 5.0,
+   "price_out_per_m": 25.0,
+   "vision": true,
+   "context_length": 1000000,
+   "arena_rank": 41,
+   "arena_elo": 1461.4053139922758,
+   "arena_elo_upper": 1465.293592249399,
+   "arena_elo_lower": 1457.517035735153,
+   "arena_votes": 63128,
+   "arena_org": "Anthropic",
+   "arena_license": "Proprietary",
+   "arena_model": "claude-opus-4.8-high",
+   "arena_variants": [
+    "claude-opus-4.8",
+    "claude-opus-4.8-high"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "google/gemini-2.5-pro",
+   "or_name": "Google: Gemini 2.5 Pro",
+   "price_in_per_m": 1.25,
+   "price_out_per_m": 10.0,
+   "vision": true,
+   "context_length": 1048576,
+   "arena_rank": 42,
+   "arena_elo": 1457.8799629992895,
+   "arena_elo_upper": 1460.31794880279,
+   "arena_elo_lower": 1455.4419771957891,
+   "arena_votes": 124789,
+   "arena_org": "Google",
+   "arena_license": "Proprietary",
+   "arena_model": "gemini-2.5-pro",
+   "arena_variants": [
+    "gemini-2.5-pro"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "anthropic/claude-sonnet-4.6",
+   "or_name": "Anthropic: Claude Sonnet 4.6",
+   "price_in_per_m": 3.0,
+   "price_out_per_m": 15.0,
+   "vision": true,
+   "context_length": 1000000,
+   "arena_rank": 43,
+   "arena_elo": 1457.7744544346779,
+   "arena_elo_upper": 1461.2809504906522,
+   "arena_elo_lower": 1454.2679583787035,
+   "arena_votes": 70017,
+   "arena_org": "Anthropic",
+   "arena_license": "Proprietary",
+   "arena_model": "claude-sonnet-4.6",
+   "arena_variants": [
+    "claude-sonnet-4.6"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "moonshotai/kimi-k3.1-pro",
+   "or_name": "MoonshotAI: Kimi K3.1 Pro",
+   "price_in_per_m": 2.0,
+   "price_out_per_m": 10.0,
+   "vision": true,
+   "context_length": 1048576,
+   "arena_rank": 44,
+   "arena_elo": 1457.3106116796416,
+   "arena_elo_upper": 1467.953632378374,
+   "arena_elo_lower": 1446.6675909809087,
+   "arena_votes": 3443,
+   "arena_org": "Moonshot",
+   "arena_license": "Kimi K3.1 Pro License",
+   "arena_model": "kimi-k3.1-pro-max",
+   "arena_variants": [
+    "kimi-k3.1-pro-max"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "openai/gpt-5.6-sol",
+   "or_name": "OpenAI: GPT-5.6 Sol",
+   "price_in_per_m": 4.4,
+   "price_out_per_m": 22.0,
+   "vision": true,
+   "context_length": 1050000,
+   "arena_rank": 45,
+   "arena_elo": 1457.120492040675,
+   "arena_elo_upper": 1461.3635286646531,
+   "arena_elo_lower": 1452.8774554166966,
+   "arena_votes": 43994,
+   "arena_org": "OpenAI",
+   "arena_license": "Proprietary",
+   "arena_model": "gpt-5.6-sol-xhigh",
+   "arena_variants": [
+    "gpt-5.6-sol-xhigh"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "moonshotai/kimi-k2.6",
+   "or_name": "MoonshotAI: Kimi K2.6",
+   "price_in_per_m": 0.65,
+   "price_out_per_m": 3.41,
+   "vision": true,
+   "context_length": 262144,
+   "arena_rank": 46,
+   "arena_elo": 1455.3543366334475,
+   "arena_elo_upper": 1459.7730526389046,
+   "arena_elo_lower": 1450.9356206279904,
+   "arena_votes": 39573,
+   "arena_org": "Moonshot",
+   "arena_license": "Modified MIT",
+   "arena_model": "kimi-k2.6",
+   "arena_variants": [
+    "kimi-k2.6"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "qwen/qwen3.7-plus",
+   "or_name": "Qwen: Qwen3.7 Plus",
+   "price_in_per_m": 0.32,
+   "price_out_per_m": 1.28,
+   "vision": true,
+   "context_length": 1000000,
+   "arena_rank": 47,
+   "arena_elo": 1454.2317075855708,
+   "arena_elo_upper": 1458.5701660746581,
+   "arena_elo_lower": 1449.893249096483,
+   "arena_votes": 41318,
+   "arena_org": "Alibaba",
+   "arena_license": "Proprietary",
+   "arena_model": "qwen3.7-plus",
+   "arena_variants": [
+    "qwen3.7-plus"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "deepseek/deepseek-v4-pro",
+   "or_name": "DeepSeek: DeepSeek V4 Pro 0423",
+   "price_in_per_m": 0.95526,
+   "price_out_per_m": 1.91052,
+   "vision": false,
+   "context_length": 1048576,
+   "arena_rank": 50,
+   "arena_elo": 1451.4484068250058,
+   "arena_elo_upper": 1455.3414260384097,
+   "arena_elo_lower": 1447.5553876116014,
+   "arena_votes": 56906,
+   "arena_org": "DeepSeek",
+   "arena_license": "MIT",
+   "arena_model": "deepseek-v4-pro",
+   "arena_variants": [
+    "deepseek-v4-pro",
+    "deepseek-v4-pro-high-20260813",
+    "deepseek-v4-pro-preview-high"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "x-ai/grok-4.20",
+   "or_name": "SpaceXAI: Grok 4.20",
+   "price_in_per_m": 1.25,
+   "price_out_per_m": 2.5,
+   "vision": true,
+   "context_length": 2000000,
+   "arena_rank": 51,
+   "arena_elo": 1451.2779689603399,
+   "arena_elo_upper": 1454.944498163924,
+   "arena_elo_lower": 1447.6114397567553,
+   "arena_votes": 65713,
+   "arena_org": "xAI",
+   "arena_license": "Proprietary",
+   "arena_model": "grok-4.20-beta-reasoning-0309",
+   "arena_variants": [
+    "grok-4.20-beta-1",
+    "grok-4.20-beta-reasoning-0309"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "prefix-base",
+   "match_ratio": null
+  },
+  {
+   "or_id": "anthropic/claude-opus-4.5",
+   "or_name": "Anthropic: Claude Opus 4.5",
+   "price_in_per_m": 5.0,
+   "price_out_per_m": 25.0,
+   "vision": true,
+   "context_length": 200000,
+   "arena_rank": 52,
+   "arena_elo": 1451.0030369703863,
+   "arena_elo_upper": 1454.1178279044866,
+   "arena_elo_lower": 1447.888246036286,
+   "arena_votes": 72313,
+   "arena_org": "Anthropic",
+   "arena_license": "Proprietary",
+   "arena_model": "claude-opus-4.5-20251101",
+   "arena_variants": [
+    "claude-opus-4.5-20251101",
+    "claude-opus-4.5-high-32k-20251101"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "x-ai/grok-4.20-multi-agent",
+   "or_name": "SpaceXAI: Grok 4.20 Multi-Agent",
+   "price_in_per_m": 1.25,
+   "price_out_per_m": 2.5,
+   "vision": true,
+   "context_length": 2000000,
+   "arena_rank": 53,
+   "arena_elo": 1450.995456316853,
+   "arena_elo_upper": 1454.685370381177,
+   "arena_elo_lower": 1447.3055422525294,
+   "arena_votes": 64252,
+   "arena_org": "xAI",
+   "arena_license": "Proprietary",
+   "arena_model": "grok-4.20-multi-agent-beta-0309",
+   "arena_variants": [
+    "grok-4.20-multi-agent-beta-0309"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "xiaomi/mimo-v2.6-flash",
+   "or_name": "Xiaomi: MiMo-V2.6-Flash",
+   "price_in_per_m": 0.14,
+   "price_out_per_m": 0.28,
+   "vision": true,
+   "context_length": 1050000,
+   "arena_rank": 54,
+   "arena_elo": 1450.3208744557305,
+   "arena_elo_upper": 1455.5339533851757,
+   "arena_elo_lower": 1445.1077955262854,
+   "arena_votes": 22354,
+   "arena_org": "Xiaomi",
+   "arena_license": "MIT",
+   "arena_model": "mimo-v2.6-flash",
+   "arena_variants": [
+    "mimo-v2.6-flash"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "openai/gpt-5.6-terra",
+   "or_name": "OpenAI: GPT-5.6 Terra",
+   "price_in_per_m": 2.0,
+   "price_out_per_m": 12.0,
+   "vision": true,
+   "context_length": 1050000,
+   "arena_rank": 55,
+   "arena_elo": 1448.7394563793828,
+   "arena_elo_upper": 1452.887684109945,
+   "arena_elo_lower": 1444.5912286488206,
+   "arena_votes": 48825,
+   "arena_org": "OpenAI",
+   "arena_license": "Proprietary",
+   "arena_model": "gpt-5.6-terra-xhigh",
+   "arena_variants": [
+    "gpt-5.6-terra-xhigh"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "x-ai/grok-4.5",
+   "or_name": "SpaceXAI: Grok 4.5",
+   "price_in_per_m": 2.0,
+   "price_out_per_m": 6.0,
+   "vision": true,
+   "context_length": 500000,
+   "arena_rank": 59,
+   "arena_elo": 1448.0478043849753,
+   "arena_elo_upper": 1452.4076181446253,
+   "arena_elo_lower": 1443.6879906253253,
+   "arena_votes": 39155,
+   "arena_org": "xAI",
+   "arena_license": "Proprietary",
+   "arena_model": "grok-4.5",
+   "arena_variants": [
+    "grok-4.5"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "z-ai/glm-5",
+   "or_name": "Z.ai: GLM 5",
+   "price_in_per_m": 1.0,
+   "price_out_per_m": 3.2,
+   "vision": false,
+   "context_length": 204800,
+   "arena_rank": 61,
+   "arena_elo": 1446.1220835069007,
+   "arena_elo_upper": 1450.3484358060514,
+   "arena_elo_lower": 1441.89573120775,
+   "arena_votes": 29020,
+   "arena_org": "Z.ai",
+   "arena_license": "MIT",
+   "arena_model": "glm-5",
+   "arena_variants": [
+    "glm-5"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "openai/gpt-6.1-sol",
+   "or_name": "OpenAI: GPT-6.1 Sol",
+   "price_in_per_m": 2.0,
+   "price_out_per_m": 10.0,
+   "vision": true,
+   "context_length": 1050000,
+   "arena_rank": 62,
+   "arena_elo": 1445.9406945198307,
+   "arena_elo_upper": 1452.241850048958,
+   "arena_elo_lower": 1439.6395389907034,
+   "arena_votes": 12952,
+   "arena_org": "OpenAI",
+   "arena_license": "Proprietary",
+   "arena_model": "gpt-6.1-sol-max",
+   "arena_variants": [
+    "gpt-6.1-sol-max"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "moonshotai/kimi-k2.5",
+   "or_name": "MoonshotAI: Kimi K2.5",
+   "price_in_per_m": 0.532,
+   "price_out_per_m": 3.325,
+   "vision": true,
+   "context_length": 262144,
+   "arena_rank": 66,
+   "arena_elo": 1444.6866209257523,
+   "arena_elo_upper": 1447.949811089762,
+   "arena_elo_lower": 1441.423430761742,
+   "arena_votes": 73872,
+   "arena_org": "Moonshot",
+   "arena_license": "Modified MIT",
+   "arena_model": "kimi-k2.5-thinking",
+   "arena_variants": [
+    "kimi-k2.5-instant",
+    "kimi-k2.5-thinking"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "prefix-base",
+   "match_ratio": null
+  },
+  {
+   "or_id": "thinkingmachines/inkling",
+   "or_name": "Thinking Machines: Inkling",
+   "price_in_per_m": 1.0,
+   "price_out_per_m": 4.05,
+   "vision": true,
+   "context_length": 524288,
+   "arena_rank": 69,
+   "arena_elo": 1443.546072497843,
+   "arena_elo_upper": 1447.6119783676731,
+   "arena_elo_lower": 1439.4801666280123,
+   "arena_votes": 50137,
+   "arena_org": "Thinky",
+   "arena_license": "Apache 2.0",
+   "arena_model": "inkling",
+   "arena_variants": [
+    "inkling"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "stepfun/step-5-preview",
+   "or_name": "StepFun: Step 5 Preview",
+   "price_in_per_m": 1.0,
+   "price_out_per_m": 2.7,
+   "vision": true,
+   "context_length": 1000000,
+   "arena_rank": 70,
+   "arena_elo": 1443.1071976314038,
+   "arena_elo_upper": 1449.3475475397868,
+   "arena_elo_lower": 1436.8668477230208,
+   "arena_votes": 12362,
+   "arena_org": "StepFun",
+   "arena_license": "Proprietary",
+   "arena_model": "step-5-preview",
+   "arena_variants": [
+    "step-5-preview"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "openai/gpt-5.1",
+   "or_name": "OpenAI: GPT-5.1",
+   "price_in_per_m": 1.25,
+   "price_out_per_m": 10.0,
+   "vision": true,
+   "context_length": 400000,
+   "arena_rank": 72,
+   "arena_elo": 1442.5976512522989,
+   "arena_elo_upper": 1446.2792927725573,
+   "arena_elo_lower": 1438.916009732041,
+   "arena_votes": 41405,
+   "arena_org": "OpenAI",
+   "arena_license": "Proprietary",
+   "arena_model": "gpt-5.1-high",
+   "arena_variants": [
+    "gpt-5.1",
+    "gpt-5.1-high"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "google/gemma-4-31b-it",
+   "or_name": "Google: Gemma 4 31B",
+   "price_in_per_m": 0.2,
+   "price_out_per_m": 0.4,
+   "vision": true,
+   "context_length": 262144,
+   "arena_rank": 73,
+   "arena_elo": 1442.53571459654,
+   "arena_elo_upper": 1449.9389309360909,
+   "arena_elo_lower": 1435.132498256989,
+   "arena_votes": 6130,
+   "arena_org": "Google",
+   "arena_license": "Apache 2.0",
+   "arena_model": "gemma-4-31b",
+   "arena_variants": [
+    "gemma-4-31b"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "prefix-variant",
+   "match_ratio": null
+  },
+  {
+   "or_id": "anthropic/claude-sonnet-5",
+   "or_name": "Anthropic: Claude Sonnet 5",
+   "price_in_per_m": 2.0,
+   "price_out_per_m": 10.0,
+   "vision": true,
+   "context_length": 1000000,
+   "arena_rank": 75,
+   "arena_elo": 1441.891103707937,
+   "arena_elo_upper": 1445.926342964849,
+   "arena_elo_lower": 1437.8558644510244,
+   "arena_votes": 53013,
+   "arena_org": "Anthropic",
+   "arena_license": "Proprietary",
+   "arena_model": "claude-sonnet-5-high",
+   "arena_variants": [
+    "claude-sonnet-5-high"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "z-ai/glm-4.6",
+   "or_name": "Z.ai: GLM 4.6",
+   "price_in_per_m": 0.5,
+   "price_out_per_m": 2.0,
+   "vision": false,
+   "context_length": 204800,
+   "arena_rank": 76,
+   "arena_elo": 1440.2502905106298,
+   "arena_elo_upper": 1444.143025529284,
+   "arena_elo_lower": 1436.3575554919757,
+   "arena_votes": 35652,
+   "arena_org": "Z.ai",
+   "arena_license": "MIT",
+   "arena_model": "glm-4.6",
+   "arena_variants": [
+    "glm-4.6"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "openai/gpt-6-astra",
+   "or_name": "OpenAI: GPT-6 Astra",
+   "price_in_per_m": 10.0,
+   "price_out_per_m": 50.0,
+   "vision": true,
+   "context_length": 1050000,
+   "arena_rank": 77,
+   "arena_elo": 1439.895953820857,
+   "arena_elo_upper": 1445.4649614101904,
+   "arena_elo_lower": 1434.326946231523,
+   "arena_votes": 18315,
+   "arena_org": "OpenAI",
+   "arena_license": "Proprietary",
+   "arena_model": "gpt-6-astra-max",
+   "arena_variants": [
+    "gpt-6-astra-max"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "tencent/hy3",
+   "or_name": "Tencent: Hy3",
+   "price_in_per_m": 0.132,
+   "price_out_per_m": 0.528,
+   "vision": false,
+   "context_length": 262144,
+   "arena_rank": 79,
+   "arena_elo": 1438.964448790014,
+   "arena_elo_upper": 1444.6312045145555,
+   "arena_elo_lower": 1433.2976930654722,
+   "arena_votes": 15068,
+   "arena_org": "Tencent",
+   "arena_license": "Apache 2.0",
+   "arena_model": "hy3",
+   "arena_variants": [
+    "hy3",
+    "hy3-preview"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "anthropic/claude-sonnet-4.5",
+   "or_name": "Anthropic: Claude Sonnet 4.5",
+   "price_in_per_m": 3.0,
+   "price_out_per_m": 15.0,
+   "vision": true,
+   "context_length": 1000000,
+   "arena_rank": 80,
+   "arena_elo": 1438.5944728654613,
+   "arena_elo_upper": 1441.4498526303291,
+   "arena_elo_lower": 1435.739093100593,
+   "arena_votes": 82119,
+   "arena_org": "Anthropic",
+   "arena_license": "Proprietary",
+   "arena_model": "claude-sonnet-4.5-20250929",
+   "arena_variants": [
+    "claude-sonnet-4.5-20250929",
+    "claude-sonnet-4.5-high-32k-20250929"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "openai/gpt-5.2-chat",
+   "or_name": "OpenAI: GPT-5.2 Chat",
+   "price_in_per_m": 1.75,
+   "price_out_per_m": 14.0,
+   "vision": true,
+   "context_length": 128000,
+   "arena_rank": 81,
+   "arena_elo": 1438.5402747357148,
+   "arena_elo_upper": 1442.546168723385,
+   "arena_elo_lower": 1434.5343807480444,
+   "arena_votes": 35708,
+   "arena_org": "OpenAI",
+   "arena_license": "Proprietary",
+   "arena_model": "gpt-5.2-chat-20260210",
+   "arena_variants": [
+    "gpt-5.2-chat-20260210"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "z-ai/glm-5v-turbo",
+   "or_name": "Z.ai: GLM 5V Turbo",
+   "price_in_per_m": 1.2,
+   "price_out_per_m": 4.0,
+   "vision": true,
+   "context_length": 202752,
+   "arena_rank": 82,
+   "arena_elo": 1437.863922977916,
+   "arena_elo_upper": 1444.3092438275944,
+   "arena_elo_lower": 1431.4186021282371,
+   "arena_votes": 10291,
+   "arena_org": "Z.ai",
+   "arena_license": "Proprietary",
+   "arena_model": "glm-5v-turbo",
+   "arena_variants": [
+    "glm-5v-turbo"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "qwen/qwen3.5-397b-a17b",
+   "or_name": "Qwen: Qwen3.5 397B A17B",
+   "price_in_per_m": 0.6,
+   "price_out_per_m": 3.6,
+   "vision": true,
+   "context_length": 262144,
+   "arena_rank": 83,
+   "arena_elo": 1437.5752866772705,
+   "arena_elo_upper": 1440.6069054285917,
+   "arena_elo_lower": 1434.5436679259492,
+   "arena_votes": 97678,
+   "arena_org": "Alibaba",
+   "arena_license": "Apache 2.0",
+   "arena_model": "qwen3.5-397b-a17b",
+   "arena_variants": [
+    "qwen3.5-397b-a17b"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "qwen/qwen3.6-plus",
+   "or_name": "Qwen: Qwen3.6 Plus",
+   "price_in_per_m": 0.325,
+   "price_out_per_m": 1.95,
+   "vision": true,
+   "context_length": 1000000,
+   "arena_rank": 86,
+   "arena_elo": 1436.2087562810798,
+   "arena_elo_upper": 1440.3297446739489,
+   "arena_elo_lower": 1432.0877678882107,
+   "arena_votes": 47601,
+   "arena_org": "Alibaba",
+   "arena_license": "Proprietary",
+   "arena_model": "qwen3.6-plus",
+   "arena_variants": [
+    "qwen3.6-plus"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "qwen/qwen3.8-27b",
+   "or_name": "Qwen: Qwen3.8 27B",
+   "price_in_per_m": 0.15,
+   "price_out_per_m": 1.875,
+   "vision": true,
+   "context_length": 1048575,
+   "arena_rank": 88,
+   "arena_elo": 1436.1038822396554,
+   "arena_elo_upper": 1440.7188045152084,
+   "arena_elo_lower": 1431.4889599641028,
+   "arena_votes": 32659,
+   "arena_org": "Alibaba",
+   "arena_license": "Apache 2.0",
+   "arena_model": "qwen3.8-27b",
+   "arena_variants": [
+    "qwen3.8-27b"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "z-ai/glm-4.7",
+   "or_name": "Z.ai: GLM 4.7",
+   "price_in_per_m": 0.6,
+   "price_out_per_m": 2.2,
+   "vision": false,
+   "context_length": 204800,
+   "arena_rank": 89,
+   "arena_elo": 1435.4321783953014,
+   "arena_elo_upper": 1441.4654206555474,
+   "arena_elo_lower": 1429.3989361350555,
+   "arena_votes": 12167,
+   "arena_org": "Z.ai",
+   "arena_license": "MIT",
+   "arena_model": "glm-4.7",
+   "arena_variants": [
+    "glm-4.7"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "google/gemini-3.5-flash-lite",
+   "or_name": "Google: Gemini 3.5 Flash Lite",
+   "price_in_per_m": 0.3,
+   "price_out_per_m": 2.5,
+   "vision": true,
+   "context_length": 1048576,
+   "arena_rank": 90,
+   "arena_elo": 1434.5444034963316,
+   "arena_elo_upper": 1439.0419344092447,
+   "arena_elo_lower": 1430.046872583418,
+   "arena_votes": 35114,
+   "arena_org": "Google",
+   "arena_license": "Proprietary",
+   "arena_model": "gemini-3.5-flash-lite",
+   "arena_variants": [
+    "gemini-3.5-flash-lite"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "google/gemma-4-26b-a4b-it",
+   "or_name": "Google: Gemma 4 26B A4B ",
+   "price_in_per_m": 0.08,
+   "price_out_per_m": 0.1,
+   "vision": true,
+   "context_length": 262144,
+   "arena_rank": 92,
+   "arena_elo": 1434.0558280701962,
+   "arena_elo_upper": 1441.4876467248037,
+   "arena_elo_lower": 1426.6240094155892,
+   "arena_votes": 6075,
+   "arena_org": "Google",
+   "arena_license": "Apache 2.0",
+   "arena_model": "gemma-4-26b-a4b",
+   "arena_variants": [
+    "gemma-4-26b-a4b"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "prefix-variant",
+   "match_ratio": null
+  },
+  {
+   "or_id": "deepseek/deepseek-v4-flash",
+   "or_name": "DeepSeek: DeepSeek V4 Flash 0423",
+   "price_in_per_m": 0.09,
+   "price_out_per_m": 0.18,
+   "vision": false,
+   "context_length": 1048576,
+   "arena_rank": 93,
+   "arena_elo": 1432.0715129421696,
+   "arena_elo_upper": 1436.1016618797694,
+   "arena_elo_lower": 1428.04136400457,
+   "arena_votes": 51368,
+   "arena_org": "DeepSeek",
+   "arena_license": "MIT",
+   "arena_model": "deepseek-v4-flash",
+   "arena_variants": [
+    "deepseek-v4-flash",
+    "deepseek-v4-flash-preview-high"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "openai/gpt-5.6-luna",
+   "or_name": "OpenAI: GPT-5.6 Luna",
+   "price_in_per_m": 0.2,
+   "price_out_per_m": 1.2,
+   "vision": true,
+   "context_length": 1050000,
+   "arena_rank": 94,
+   "arena_elo": 1431.009952898797,
+   "arena_elo_upper": 1435.3148556872789,
+   "arena_elo_lower": 1426.705050110315,
+   "arena_votes": 40641,
+   "arena_org": "OpenAI",
+   "arena_license": "Proprietary",
+   "arena_model": "gpt-5.6-luna-xhigh",
+   "arena_variants": [
+    "gpt-5.6-luna-xhigh"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "z-ai/glm-4.5",
+   "or_name": "Z.ai: GLM 4.5",
+   "price_in_per_m": 0.6,
+   "price_out_per_m": 2.2,
+   "vision": false,
+   "context_length": 131072,
+   "arena_rank": 95,
+   "arena_elo": 1430.1898500000298,
+   "arena_elo_upper": 1435.0892450345013,
+   "arena_elo_lower": 1425.2904549655582,
+   "arena_votes": 23759,
+   "arena_org": "Z.ai",
+   "arena_license": "MIT",
+   "arena_model": "glm-4.5",
+   "arena_variants": [
+    "glm-4.5"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "x-ai/grok-4.6",
+   "or_name": "SpaceXAI: Grok 4.6",
+   "price_in_per_m": 2.0,
+   "price_out_per_m": 6.0,
+   "vision": true,
+   "context_length": 500000,
+   "arena_rank": 96,
+   "arena_elo": 1429.8825897955767,
+   "arena_elo_upper": 1434.5398430234795,
+   "arena_elo_lower": 1425.2253365676734,
+   "arena_votes": 34616,
+   "arena_org": "xAI",
+   "arena_license": "Proprietary",
+   "arena_model": "grok-4.6-high",
+   "arena_variants": [
+    "grok-4.6-high"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "mistralai/mistral-large",
+   "or_name": "Mistral Large",
+   "price_in_per_m": 2.0,
+   "price_out_per_m": 6.0,
+   "vision": false,
+   "context_length": 128000,
+   "arena_rank": 98,
+   "arena_elo": 1428.6218230728227,
+   "arena_elo_upper": 1431.4143779684214,
+   "arena_elo_lower": 1425.8292681772236,
+   "arena_votes": 88641,
+   "arena_org": "Mistral",
+   "arena_license": "Apache 2.0",
+   "arena_model": "mistral-large-3",
+   "arena_variants": [
+    "mistral-large-2-2407",
+    "mistral-large-2402",
+    "mistral-large-2411",
+    "mistral-large-3",
+    "mistral-large-4"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "prefix-base",
+   "match_ratio": null
+  },
+  {
+   "or_id": "minimax/minimax-m3",
+   "or_name": "MiniMax: MiniMax M3",
+   "price_in_per_m": 0.3,
+   "price_out_per_m": 1.2,
+   "vision": true,
+   "context_length": 1048576,
+   "arena_rank": 100,
+   "arena_elo": 1428.2232151443436,
+   "arena_elo_upper": 1431.8798647965818,
+   "arena_elo_lower": 1424.5665654921054,
+   "arena_votes": 72963,
+   "arena_org": "MiniMax",
+   "arena_license": "MiniMax Community License",
+   "arena_model": "minimax-m3",
+   "arena_variants": [
+    "minimax-m3"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "deepseek/deepseek-r1-0528",
+   "or_name": "DeepSeek: R1 0528",
+   "price_in_per_m": 0.5,
+   "price_out_per_m": 2.15,
+   "vision": false,
+   "context_length": 163840,
+   "arena_rank": 101,
+   "arena_elo": 1427.700886188908,
+   "arena_elo_upper": 1433.356884378025,
+   "arena_elo_lower": 1422.0448879997912,
+   "arena_votes": 18153,
+   "arena_org": "DeepSeek",
+   "arena_license": "MIT",
+   "arena_model": "deepseek-r1-0528",
+   "arena_variants": [
+    "deepseek-r1",
+    "deepseek-r1-0528"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "xiaomi/mimo-v2.5",
+   "or_name": "Xiaomi: MiMo-V2.5",
+   "price_in_per_m": 0.4,
+   "price_out_per_m": 2.0,
+   "vision": true,
+   "context_length": 1000000,
+   "arena_rank": 102,
+   "arena_elo": 1427.6392544267055,
+   "arena_elo_upper": 1431.8699332954488,
+   "arena_elo_lower": 1423.4085755579622,
+   "arena_votes": 46820,
+   "arena_org": "Xiaomi",
+   "arena_license": "MIT",
+   "arena_model": "mimo-v2.5",
+   "arena_variants": [
+    "mimo-v2.5"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "deepseek/deepseek-v3.2",
+   "or_name": "DeepSeek: DeepSeek V3.2",
+   "price_in_per_m": 0.26,
+   "price_out_per_m": 0.38,
+   "vision": false,
+   "context_length": 163840,
+   "arena_rank": 105,
+   "arena_elo": 1425.0828717196378,
+   "arena_elo_upper": 1431.6446576857534,
+   "arena_elo_lower": 1418.5210857535221,
+   "arena_votes": 8966,
+   "arena_org": "DeepSeek",
+   "arena_license": "MIT",
+   "arena_model": "deepseek-v3.2-exp-thinking",
+   "arena_variants": [
+    "deepseek-v3.2",
+    "deepseek-v3.2-exp",
+    "deepseek-v3.2-exp-thinking",
+    "deepseek-v3.2-thinking"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "prefix-base",
+   "match_ratio": null
+  },
+  {
+   "or_id": "reflection/beam-1.0-501b-a23b",
+   "or_name": "Reflection: Beam 1.0 501B A23B",
+   "price_in_per_m": 0.3,
+   "price_out_per_m": 1.0,
+   "vision": false,
+   "context_length": 1048576,
+   "arena_rank": 106,
+   "arena_elo": 1424.6886203897343,
+   "arena_elo_upper": 1434.2901825780382,
+   "arena_elo_lower": 1415.0870582014304,
+   "arena_votes": 4006,
+   "arena_org": "reflection",
+   "arena_license": "Apache 2.0",
+   "arena_model": "beam-1.0-501b-a23b",
+   "arena_variants": [
+    "beam-1.0-501b-a23b"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "mistralai/mistral-medium-3.1",
+   "or_name": "Mistral: Mistral Medium 3.1",
+   "price_in_per_m": 0.4,
+   "price_out_per_m": 2.0,
+   "vision": true,
+   "context_length": 131072,
+   "arena_rank": 108,
+   "arena_elo": 1424.538396338714,
+   "arena_elo_upper": 1427.1059469903385,
+   "arena_elo_lower": 1421.9708456870894,
+   "arena_votes": 94801,
+   "arena_org": "Mistral",
+   "arena_license": "Proprietary",
+   "arena_model": "mistral-medium-3.1-2508",
+   "arena_variants": [
+    "mistral-medium-3.1-2508"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "mistralai/mistral-medium-3-5",
+   "or_name": "Mistral: Mistral Medium 3.5",
+   "price_in_per_m": 1.5,
+   "price_out_per_m": 7.5,
+   "vision": true,
+   "context_length": 262144,
+   "arena_rank": 114,
+   "arena_elo": 1420.9720341412935,
+   "arena_elo_upper": 1427.3706100667546,
+   "arena_elo_lower": 1414.5734582158325,
+   "arena_votes": 11656,
+   "arena_org": "Mistral",
+   "arena_license": "Modified MIT",
+   "arena_model": "mistral-medium-3.5",
+   "arena_variants": [
+    "mistral-medium-3.5"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "qwen/qwen3-vl-235b-a22b-instruct",
+   "or_name": "Qwen: Qwen3 VL 235B A22B Instruct",
+   "price_in_per_m": 0.21,
+   "price_out_per_m": 1.9,
+   "vision": true,
+   "context_length": 262144,
+   "arena_rank": 117,
+   "arena_elo": 1420.0128010323347,
+   "arena_elo_upper": 1426.5217637926953,
+   "arena_elo_lower": 1413.5038382719736,
+   "arena_votes": 11288,
+   "arena_org": "Alibaba",
+   "arena_license": "Apache 2.0",
+   "arena_model": "qwen3-vl-235b-a22b-instruct",
+   "arena_variants": [
+    "qwen3-vl-235b-a22b-instruct"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "deepseek/deepseek-v3.1-terminus",
+   "or_name": "DeepSeek: DeepSeek V3.1 Terminus",
+   "price_in_per_m": 0.27,
+   "price_out_per_m": 1.0,
+   "vision": false,
+   "context_length": 163840,
+   "arena_rank": 118,
+   "arena_elo": 1419.8929312942228,
+   "arena_elo_upper": 1425.941900566439,
+   "arena_elo_lower": 1413.8439620220065,
+   "arena_votes": 14586,
+   "arena_org": "DeepSeek",
+   "arena_license": "MIT",
+   "arena_model": "deepseek-v3.1",
+   "arena_variants": [
+    "deepseek-v3.1",
+    "deepseek-v3.1-terminus",
+    "deepseek-v3.1-terminus-thinking"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "prefix-variant",
+   "match_ratio": null
+  },
+  {
+   "or_id": "anthropic/claude-opus-4.1",
+   "or_name": "Anthropic: Claude Opus 4.1",
+   "price_in_per_m": 15.0,
+   "price_out_per_m": 75.0,
+   "vision": true,
+   "context_length": 200000,
+   "arena_rank": 121,
+   "arena_elo": 1419.2598118007131,
+   "arena_elo_upper": 1422.724077379712,
+   "arena_elo_lower": 1415.7955462217142,
+   "arena_votes": 49374,
+   "arena_org": "Anthropic",
+   "arena_license": "Proprietary",
+   "arena_model": "claude-opus-4.1-thinking-16k-20250805",
+   "arena_variants": [
+    "claude-opus-4.1-20250805",
+    "claude-opus-4.1-thinking-16k-20250805"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "prefix-base",
+   "match_ratio": null
+  },
+  {
+   "or_id": "qwen/qwen3-235b-a22b-2507",
+   "or_name": "Qwen: Qwen3 235B A22B Instruct 2507",
+   "price_in_per_m": 0.14,
+   "price_out_per_m": 0.8,
+   "vision": false,
+   "context_length": 262144,
+   "arena_rank": 123,
+   "arena_elo": 1419.1703362744033,
+   "arena_elo_upper": 1421.7099955923068,
+   "arena_elo_lower": 1416.6306769565003,
+   "arena_votes": 97642,
+   "arena_org": "Alibaba",
+   "arena_license": "Apache 2.0",
+   "arena_model": "qwen3-235b-a22b-instruct-2507",
+   "arena_variants": [
+    "qwen3-235b-a22b",
+    "qwen3-235b-a22b-instruct-2507",
+    "qwen3-235b-a22b-non-thinking"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "prefix-base",
+   "match_ratio": null
+  },
+  {
+   "or_id": "openai/gpt-4",
+   "or_name": "OpenAI: GPT-4",
+   "price_in_per_m": 30.0,
+   "price_out_per_m": 60.0,
+   "vision": false,
+   "context_length": 8191,
+   "arena_rank": 125,
+   "arena_elo": 1417.3768530995617,
+   "arena_elo_upper": 1423.0628680829095,
+   "arena_elo_lower": 1411.6908381162134,
+   "arena_votes": 14547,
+   "arena_org": "OpenAI",
+   "arena_license": "Proprietary",
+   "arena_model": "gpt-4.5-preview-2025-02-27",
+   "arena_variants": [
+    "gpt-4-0314",
+    "gpt-4-0613",
+    "gpt-4-turbo-2024-04-09",
+    "gpt-4-turbo-preview-0125",
+    "gpt-4-turbo-preview-1106",
+    "gpt-4.5-preview-2025-02-27"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "prefix-base",
+   "match_ratio": null
+  },
+  {
+   "or_id": "qwen/qwen3.5-122b-a10b",
+   "or_name": "Qwen: Qwen3.5-122B-A10B",
+   "price_in_per_m": 0.26,
+   "price_out_per_m": 2.08,
+   "vision": true,
+   "context_length": 262144,
+   "arena_rank": 126,
+   "arena_elo": 1417.3448440077705,
+   "arena_elo_upper": 1421.6163575900819,
+   "arena_elo_lower": 1413.073330425459,
+   "arena_votes": 29496,
+   "arena_org": "Alibaba",
+   "arena_license": "Apache 2.0",
+   "arena_model": "qwen3.5-122b-a10b",
+   "arena_variants": [
+    "qwen3.5-122b-a10b"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "qwen/qwen3-next-80b-a3b-instruct",
+   "or_name": "Qwen: Qwen3 Next 80B A3B Instruct",
+   "price_in_per_m": 0.09,
+   "price_out_per_m": 1.1,
+   "vision": false,
+   "context_length": 262144,
+   "arena_rank": 127,
+   "arena_elo": 1417.2539457135258,
+   "arena_elo_upper": 1421.9946807869087,
+   "arena_elo_lower": 1412.5132106401425,
+   "arena_votes": 22692,
+   "arena_org": "Alibaba",
+   "arena_license": "Apache 2.0",
+   "arena_model": "qwen3-next-80b-a3b-instruct",
+   "arena_variants": [
+    "qwen3-next-80b-a3b-instruct"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "google/gemini-2.5-flash",
+   "or_name": "Google: Gemini 2.5 Flash",
+   "price_in_per_m": 0.3,
+   "price_out_per_m": 2.5,
+   "vision": true,
+   "context_length": 1048576,
+   "arena_rank": 129,
+   "arena_elo": 1416.987722764275,
+   "arena_elo_upper": 1419.3948721866486,
+   "arena_elo_lower": 1414.5805733419015,
+   "arena_votes": 124953,
+   "arena_org": "Google",
+   "arena_license": "Proprietary",
+   "arena_model": "gemini-2.5-flash",
+   "arena_variants": [
+    "gemini-2.5-flash",
+    "gemini-2.5-flash-preview-09-2025"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "openai/gpt-5.2",
+   "or_name": "OpenAI: GPT-5.2",
+   "price_in_per_m": 1.75,
+   "price_out_per_m": 14.0,
+   "vision": true,
+   "context_length": 400000,
+   "arena_rank": 131,
+   "arena_elo": 1416.3298459789326,
+   "arena_elo_upper": 1419.8517950597388,
+   "arena_elo_lower": 1412.8078968981258,
+   "arena_votes": 49309,
+   "arena_org": "OpenAI",
+   "arena_license": "Proprietary",
+   "arena_model": "gpt-5.2-high",
+   "arena_variants": [
+    "gpt-5.2",
+    "gpt-5.2-high"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "google/gemini-3.1-flash-lite",
+   "or_name": "Google: Gemini 3.1 Flash Lite",
+   "price_in_per_m": 0.25,
+   "price_out_per_m": 1.5,
+   "vision": true,
+   "context_length": 1048576,
+   "arena_rank": 132,
+   "arena_elo": 1415.9810521793756,
+   "arena_elo_upper": 1419.603730561148,
+   "arena_elo_lower": 1412.3583737976028,
+   "arena_votes": 63629,
+   "arena_org": "Google",
+   "arena_license": "Proprietary",
+   "arena_model": "gemini-3.1-flash-lite-preview",
+   "arena_variants": [
+    "gemini-3.1-flash-lite-preview"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "qwen/qwen3-235b-a22b-thinking-2507",
+   "or_name": "Qwen: Qwen3 235B A22B Thinking 2507",
+   "price_in_per_m": 0.45,
+   "price_out_per_m": 3.5,
+   "vision": false,
+   "context_length": 128000,
+   "arena_rank": 133,
+   "arena_elo": 1415.5429590912127,
+   "arena_elo_upper": 1422.0806693876561,
+   "arena_elo_lower": 1409.0052487947692,
+   "arena_votes": 8812,
+   "arena_org": "Alibaba",
+   "arena_license": "Apache 2.0",
+   "arena_model": "qwen3-235b-a22b-thinking-2507",
+   "arena_variants": [
+    "qwen3-235b-a22b-thinking-2507"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "moonshotai/kimi-k2-thinking",
+   "or_name": "MoonshotAI: Kimi K2 Thinking",
+   "price_in_per_m": 0.6,
+   "price_out_per_m": 2.5,
+   "vision": false,
+   "context_length": 262144,
+   "arena_rank": 135,
+   "arena_elo": 1414.4978668990511,
+   "arena_elo_upper": 1417.5701372657177,
+   "arena_elo_lower": 1411.4255965323846,
+   "arena_votes": 62955,
+   "arena_org": "Moonshot",
+   "arena_license": "Modified MIT",
+   "arena_model": "kimi-k2-thinking-turbo",
+   "arena_variants": [
+    "kimi-k2-thinking-turbo"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "prefix-base",
+   "match_ratio": null
+  },
+  {
+   "or_id": "thinkingmachines/inkling-small",
+   "or_name": "Thinking Machines: Inkling Small",
+   "price_in_per_m": 0.45,
+   "price_out_per_m": 1.2,
+   "vision": true,
+   "context_length": 524288,
+   "arena_rank": 137,
+   "arena_elo": 1413.994063429453,
+   "arena_elo_upper": 1418.5123939639798,
+   "arena_elo_lower": 1409.4757328949263,
+   "arena_votes": 37665,
+   "arena_org": "Thinky",
+   "arena_license": "Apache 2.0",
+   "arena_model": "inkling-small",
+   "arena_variants": [
+    "inkling-small"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "openai/gpt-5.4-mini",
+   "or_name": "OpenAI: GPT-5.4 Mini",
+   "price_in_per_m": 0.75,
+   "price_out_per_m": 4.5,
+   "vision": true,
+   "context_length": 400000,
+   "arena_rank": 140,
+   "arena_elo": 1411.8315752456379,
+   "arena_elo_upper": 1415.5578050222043,
+   "arena_elo_lower": 1408.1053454690714,
+   "arena_votes": 62795,
+   "arena_org": "OpenAI",
+   "arena_license": "Proprietary",
+   "arena_model": "gpt-5.4-mini-high",
+   "arena_variants": [
+    "gpt-5.4-mini-high"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "openai/o3",
+   "or_name": "OpenAI: o3",
+   "price_in_per_m": 2.0,
+   "price_out_per_m": 8.0,
+   "vision": true,
+   "context_length": 200000,
+   "arena_rank": 143,
+   "arena_elo": 1409.750886127375,
+   "arena_elo_upper": 1413.363029483272,
+   "arena_elo_lower": 1406.138742771478,
+   "arena_votes": 58811,
+   "arena_org": "OpenAI",
+   "arena_license": "Proprietary",
+   "arena_model": "o3-2025-04-16",
+   "arena_variants": [
+    "o3-2025-04-16",
+    "o3-mini",
+    "o3-mini-high"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "qwen/qwen3.5-27b",
+   "or_name": "Qwen: Qwen3.5-27B",
+   "price_in_per_m": 0.26,
+   "price_out_per_m": 2.6,
+   "vision": true,
+   "context_length": 262144,
+   "arena_rank": 144,
+   "arena_elo": 1408.8173537842285,
+   "arena_elo_upper": 1413.098814069332,
+   "arena_elo_lower": 1404.5358934991255,
+   "arena_votes": 28424,
+   "arena_org": "Alibaba",
+   "arena_license": "Apache 2.0",
+   "arena_model": "qwen3.5-27b",
+   "arena_variants": [
+    "qwen3.5-27b"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "openai/gpt-5",
+   "or_name": "OpenAI: GPT-5",
+   "price_in_per_m": 1.25,
+   "price_out_per_m": 10.0,
+   "vision": true,
+   "context_length": 400000,
+   "arena_rank": 149,
+   "arena_elo": 1406.360510180139,
+   "arena_elo_upper": 1410.7879860163412,
+   "arena_elo_lower": 1401.9330343439365,
+   "arena_votes": 31638,
+   "arena_org": "OpenAI",
+   "arena_license": "Proprietary",
+   "arena_model": "gpt-5-high",
+   "arena_variants": [
+    "gpt-5-chat",
+    "gpt-5-high",
+    "gpt-5.3-chat"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "minimax/minimax-m2.7",
+   "or_name": "MiniMax: MiniMax M2.7",
+   "price_in_per_m": 0.21,
+   "price_out_per_m": 0.84,
+   "vision": false,
+   "context_length": 196608,
+   "arena_rank": 151,
+   "arena_elo": 1404.718127762354,
+   "arena_elo_upper": 1408.002510675392,
+   "arena_elo_lower": 1401.433744849316,
+   "arena_votes": 89504,
+   "arena_org": "MiniMax",
+   "arena_license": "Modified MIT",
+   "arena_model": "minimax-m2.7",
+   "arena_variants": [
+    "minimax-m2.7"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "thinkingmachines/inkling-2-small:free",
+   "or_name": "Thinking Machines: Inkling 2 Small (free)",
+   "price_in_per_m": 0.0,
+   "price_out_per_m": 0.0,
+   "vision": true,
+   "context_length": 1048576,
+   "arena_rank": 153,
+   "arena_elo": 1403.175477868264,
+   "arena_elo_upper": 1414.9178803270775,
+   "arena_elo_lower": 1391.4330754094508,
+   "arena_votes": 2668,
+   "arena_org": "Thinky",
+   "arena_license": "Proprietary",
+   "arena_model": "inkling-2-small",
+   "arena_variants": [
+    "inkling-2-small"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "stepfun/step-3.5-flash",
+   "or_name": "StepFun: Step 3.5 Flash",
+   "price_in_per_m": 0.1,
+   "price_out_per_m": 0.3,
+   "vision": false,
+   "context_length": 262144,
+   "arena_rank": 154,
+   "arena_elo": 1402.6613526441433,
+   "arena_elo_upper": 1406.180438069871,
+   "arena_elo_lower": 1399.1422672184153,
+   "arena_votes": 59777,
+   "arena_org": "StepFun",
+   "arena_license": "Apache 2.0",
+   "arena_model": "step-3.5-flash",
+   "arena_variants": [
+    "step-3.5-flash"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "anthropic/claude-haiku-5.5",
+   "or_name": "Anthropic: Claude Haiku 5.5",
+   "price_in_per_m": 0.1,
+   "price_out_per_m": 0.5,
+   "vision": true,
+   "context_length": 1000000,
+   "arena_rank": 159,
+   "arena_elo": 1398.6963697768351,
+   "arena_elo_upper": 1404.959770578902,
+   "arena_elo_lower": 1392.4329689747683,
+   "arena_votes": 13239,
+   "arena_org": "Anthropic",
+   "arena_license": "Proprietary",
+   "arena_model": "claude-haiku-5.5-high",
+   "arena_variants": [
+    "claude-haiku-5.5-high"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "x-ai/grok-4.7",
+   "or_name": "SpaceXAI: Grok 4.7",
+   "price_in_per_m": 2.0,
+   "price_out_per_m": 6.0,
+   "vision": true,
+   "context_length": 500000,
+   "arena_rank": 160,
+   "arena_elo": 1398.469600223421,
+   "arena_elo_upper": 1403.804586487242,
+   "arena_elo_lower": 1393.1346139595998,
+   "arena_votes": 21586,
+   "arena_org": "xAI",
+   "arena_license": "Proprietary",
+   "arena_model": "grok-4.7-xhigh",
+   "arena_variants": [
+    "grok-4.7-xhigh"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "qwen/qwen3.5-flash-02-23",
+   "or_name": "Qwen: Qwen3.5-Flash",
+   "price_in_per_m": 0.065,
+   "price_out_per_m": 0.26,
+   "vision": true,
+   "context_length": 1000000,
+   "arena_rank": 161,
+   "arena_elo": 1397.134784465809,
+   "arena_elo_upper": 1400.7913621184784,
+   "arena_elo_lower": 1393.4782068131394,
+   "arena_votes": 61168,
+   "arena_org": "Alibaba",
+   "arena_license": "Proprietary",
+   "arena_model": "qwen3.5-flash",
+   "arena_variants": [
+    "qwen3.5-flash"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "x-ai/grok-4.3",
+   "or_name": "SpaceXAI: Grok 4.3",
+   "price_in_per_m": 1.25,
+   "price_out_per_m": 2.5,
+   "vision": true,
+   "context_length": 1000000,
+   "arena_rank": 162,
+   "arena_elo": 1396.9857922491929,
+   "arena_elo_upper": 1400.6111057929133,
+   "arena_elo_lower": 1393.3604787054724,
+   "arena_votes": 70242,
+   "arena_org": "xAI",
+   "arena_license": "Proprietary",
+   "arena_model": "grok-4.3",
+   "arena_variants": [
+    "grok-4.3"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "openai/gpt-6-sol",
+   "or_name": "OpenAI: GPT-6 Sol",
+   "price_in_per_m": 2.0,
+   "price_out_per_m": 10.0,
+   "vision": true,
+   "context_length": 1050000,
+   "arena_rank": 163,
+   "arena_elo": 1396.535649786022,
+   "arena_elo_upper": 1402.0351904063896,
+   "arena_elo_lower": 1391.0361091656546,
+   "arena_votes": 19890,
+   "arena_org": "OpenAI",
+   "arena_license": "Proprietary",
+   "arena_model": "gpt-6-sol-max",
+   "arena_variants": [
+    "gpt-6-sol-max"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "anthropic/claude-haiku-4.5",
+   "or_name": "Anthropic: Claude Haiku 4.5",
+   "price_in_per_m": 1.0,
+   "price_out_per_m": 5.0,
+   "vision": true,
+   "context_length": 200000,
+   "arena_rank": 164,
+   "arena_elo": 1396.5157588084426,
+   "arena_elo_upper": 1398.8947795017298,
+   "arena_elo_lower": 1394.1367381151554,
+   "arena_votes": 154057,
+   "arena_org": "Anthropic",
+   "arena_license": "Proprietary",
+   "arena_model": "claude-haiku-4.5-20251001",
+   "arena_variants": [
+    "claude-haiku-4.5-20251001"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "qwen/qwen3.5-35b-a3b",
+   "or_name": "Qwen: Qwen3.5-35B-A3B",
+   "price_in_per_m": 0.14,
+   "price_out_per_m": 1.0,
+   "vision": true,
+   "context_length": 262144,
+   "arena_rank": 166,
+   "arena_elo": 1394.7399080714358,
+   "arena_elo_upper": 1398.9529335823108,
+   "arena_elo_lower": 1390.5268825605608,
+   "arena_votes": 30206,
+   "arena_org": "Alibaba",
+   "arena_license": "Apache 2.0",
+   "arena_model": "qwen3.5-35b-a3b",
+   "arena_variants": [
+    "qwen3.5-35b-a3b"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "meta/muse-glimmer-30b",
+   "or_name": "Meta: Muse Glimmer 30B",
+   "price_in_per_m": 0.3,
+   "price_out_per_m": 1.2,
+   "vision": true,
+   "context_length": 131072,
+   "arena_rank": 172,
+   "arena_elo": 1388.8817239893056,
+   "arena_elo_upper": 1398.634809767977,
+   "arena_elo_lower": 1379.1286382106337,
+   "arena_votes": 3793,
+   "arena_org": "Meta",
+   "arena_license": "Apache-2.0",
+   "arena_model": "muse-glimmer",
+   "arena_variants": [
+    "muse-glimmer"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "prefix-variant",
+   "match_ratio": null
+  },
+  {
+   "or_id": "openai/gpt-6-luna",
+   "or_name": "OpenAI: GPT-6 Luna",
+   "price_in_per_m": 0.1,
+   "price_out_per_m": 0.5,
+   "vision": true,
+   "context_length": 1050000,
+   "arena_rank": 173,
+   "arena_elo": 1388.3808756273925,
+   "arena_elo_upper": 1392.45296286774,
+   "arena_elo_lower": 1384.308788387045,
+   "arena_votes": 107021,
+   "arena_org": "OpenAI",
+   "arena_license": "Proprietary",
+   "arena_model": "gpt-6-luna-max",
+   "arena_variants": [
+    "gpt-6-luna-max"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "upstage/solar-pro4",
+   "or_name": "Upstage: Solar Pro 4",
+   "price_in_per_m": 0.15,
+   "price_out_per_m": 0.6,
+   "vision": false,
+   "context_length": 524288,
+   "arena_rank": 174,
+   "arena_elo": 1388.1968381331894,
+   "arena_elo_upper": 1393.2222702989407,
+   "arena_elo_lower": 1383.1714059674382,
+   "arena_votes": 27104,
+   "arena_org": "Upstage",
+   "arena_license": "Proprietary",
+   "arena_model": "solar-pro-4",
+   "arena_variants": [
+    "solar-pro-4"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "fuzzy",
+   "match_ratio": 0.95
+  },
+  {
+   "or_id": "qwen/qwen3-30b-a3b-instruct-2507",
+   "or_name": "Qwen: Qwen3 30B A3B Instruct 2507",
+   "price_in_per_m": 0.1,
+   "price_out_per_m": 0.3,
+   "vision": false,
+   "context_length": 262144,
+   "arena_rank": 175,
+   "arena_elo": 1383.8377701870368,
+   "arena_elo_upper": 1388.7199838946353,
+   "arena_elo_lower": 1378.9555564794382,
+   "arena_votes": 23287,
+   "arena_org": "Alibaba",
+   "arena_license": "Apache 2.0",
+   "arena_model": "qwen3-30b-a3b-instruct-2507",
+   "arena_variants": [
+    "qwen3-30b-a3b-instruct-2507"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "z-ai/glm-4.5-air",
+   "or_name": "Z.ai: GLM 4.5 Air",
+   "price_in_per_m": 0.2,
+   "price_out_per_m": 1.1,
+   "vision": false,
+   "context_length": 131072,
+   "arena_rank": 176,
+   "arena_elo": 1383.6745877603603,
+   "arena_elo_upper": 1387.9047073952142,
+   "arena_elo_lower": 1379.4444681255063,
+   "arena_votes": 30591,
+   "arena_org": "Z.ai",
+   "arena_license": "MIT",
+   "arena_model": "glm-4.5-air",
+   "arena_variants": [
+    "glm-4.5-air"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "openai/gpt-4.1",
+   "or_name": "OpenAI: GPT-4.1",
+   "price_in_per_m": 2.0,
+   "price_out_per_m": 8.0,
+   "vision": true,
+   "context_length": 1047576,
+   "arena_rank": 177,
+   "arena_elo": 1382.9078482014697,
+   "arena_elo_upper": 1386.604597224974,
+   "arena_elo_lower": 1379.2110991779655,
+   "arena_votes": 50235,
+   "arena_org": "OpenAI",
+   "arena_license": "Proprietary",
+   "arena_model": "gpt-4.1-2025-04-14",
+   "arena_variants": [
+    "gpt-4.1-2025-04-14"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "moonshotai/kimi-k2",
+   "or_name": "MoonshotAI: Kimi K2 0711",
+   "price_in_per_m": 0.57,
+   "price_out_per_m": 2.3,
+   "vision": false,
+   "context_length": 131072,
+   "arena_rank": 178,
+   "arena_elo": 1379.8274633584892,
+   "arena_elo_upper": 1386.3254591642435,
+   "arena_elo_lower": 1373.3294675527347,
+   "arena_votes": 11578,
+   "arena_org": "Moonshot",
+   "arena_license": "Modified MIT",
+   "arena_model": "kimi-k2-preview-0905",
+   "arena_variants": [
+    "kimi-k2-preview-0711",
+    "kimi-k2-preview-0905"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "google/gemini-2.5-flash-lite",
+   "or_name": "Google: Gemini 2.5 Flash Lite",
+   "price_in_per_m": 0.1,
+   "price_out_per_m": 0.4,
+   "vision": true,
+   "context_length": 1048576,
+   "arena_rank": 179,
+   "arena_elo": 1379.3569111765519,
+   "arena_elo_upper": 1382.7573070745766,
+   "arena_elo_lower": 1375.9565152785276,
+   "arena_votes": 47219,
+   "arena_org": "Google",
+   "arena_license": "Proprietary",
+   "arena_model": "gemini-2.5-flash-lite-preview-non-thinking-09-2025",
+   "arena_variants": [
+    "gemini-2.0-flash-lite-preview-02-05",
+    "gemini-2.5-flash-lite-preview-non-thinking-09-2025",
+    "gemini-2.5-flash-lite-preview-thinking-06-17"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "prefix-base",
+   "match_ratio": null
+  },
+  {
+   "or_id": "z-ai/glm-4.6v",
+   "or_name": "Z.ai: GLM 4.6V",
+   "price_in_per_m": 0.3,
+   "price_out_per_m": 0.9,
+   "vision": true,
+   "context_length": 131072,
+   "arena_rank": 183,
+   "arena_elo": 1376.480261938766,
+   "arena_elo_upper": 1387.635068113072,
+   "arena_elo_lower": 1365.3254557644598,
+   "arena_votes": 2825,
+   "arena_org": "Z.ai",
+   "arena_license": "MIT",
+   "arena_model": "glm-4.6v",
+   "arena_variants": [
+    "glm-4.6v"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "openai/gpt-5-mini",
+   "or_name": "OpenAI: GPT-5 Mini",
+   "price_in_per_m": 0.25,
+   "price_out_per_m": 2.0,
+   "vision": true,
+   "context_length": 400000,
+   "arena_rank": 185,
+   "arena_elo": 1373.3617965651488,
+   "arena_elo_upper": 1377.9253661628813,
+   "arena_elo_lower": 1368.7982269674167,
+   "arena_votes": 26718,
+   "arena_org": "OpenAI",
+   "arena_license": "Proprietary",
+   "arena_model": "gpt-5-mini-high",
+   "arena_variants": [
+    "gpt-5-mini-high"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "openai/gpt-5.4-nano",
+   "or_name": "OpenAI: GPT-5.4 Nano",
+   "price_in_per_m": 0.2,
+   "price_out_per_m": 1.25,
+   "vision": true,
+   "context_length": 400000,
+   "arena_rank": 187,
+   "arena_elo": 1371.7828100109446,
+   "arena_elo_upper": 1375.5521492217797,
+   "arena_elo_lower": 1368.0134708001096,
+   "arena_votes": 61636,
+   "arena_org": "OpenAI",
+   "arena_license": "Proprietary",
+   "arena_model": "gpt-5.4-nano-high",
+   "arena_variants": [
+    "gpt-5.4-nano-high"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "mistralai/mistral-medium-3",
+   "or_name": "Mistral: Mistral Medium 3",
+   "price_in_per_m": 0.4,
+   "price_out_per_m": 2.0,
+   "vision": true,
+   "context_length": 131072,
+   "arena_rank": 189,
+   "arena_elo": 1370.147415741093,
+   "arena_elo_upper": 1374.8354101714135,
+   "arena_elo_lower": 1365.4594213107725,
+   "arena_votes": 32751,
+   "arena_org": "Mistral",
+   "arena_license": "Proprietary",
+   "arena_model": "mistral-medium-3-2505",
+   "arena_variants": [
+    "mistral-medium-3-2505"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "qwen/qwen2.5-vl-72b-instruct",
+   "or_name": "Qwen: Qwen2.5 VL 72B Instruct",
+   "price_in_per_m": 0.8,
+   "price_out_per_m": 1.0,
+   "vision": true,
+   "context_length": 128000,
+   "arena_rank": 193,
+   "arena_elo": 1366.6746862900786,
+   "arena_elo_upper": 1370.765644520045,
+   "arena_elo_lower": 1362.5837280601122,
+   "arena_votes": 32484,
+   "arena_org": "Alibaba",
+   "arena_license": "Proprietary",
+   "arena_model": "qwen2.5-max",
+   "arena_variants": [
+    "qwen2.5-max"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "prefix-variant",
+   "match_ratio": null
+  },
+  {
+   "or_id": "openai/gpt-oss-120b",
+   "or_name": "OpenAI: gpt-oss-120b",
+   "price_in_per_m": 0.15,
+   "price_out_per_m": 0.6,
+   "vision": false,
+   "context_length": 131072,
+   "arena_rank": 197,
+   "arena_elo": 1365.466613194138,
+   "arena_elo_upper": 1369.820841280873,
+   "arena_elo_lower": 1361.112385107403,
+   "arena_votes": 30133,
+   "arena_org": "OpenAI",
+   "arena_license": "Apache 2.0",
+   "arena_model": "gpt-oss-120b",
+   "arena_variants": [
+    "gpt-oss-120b"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "minimax/minimax-m2.5",
+   "or_name": "MiniMax: MiniMax M2.5",
+   "price_in_per_m": 0.27,
+   "price_out_per_m": 1.08,
+   "vision": false,
+   "context_length": 200000,
+   "arena_rank": 203,
+   "arena_elo": 1359.3004164775448,
+   "arena_elo_upper": 1363.1802213149645,
+   "arena_elo_lower": 1355.420611640125,
+   "arena_votes": 42459,
+   "arena_org": "MiniMax",
+   "arena_license": "Modified MIT",
+   "arena_model": "minimax-m2.5",
+   "arena_variants": [
+    "minimax-m2.5"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "google/gemma-3-27b-it",
+   "or_name": "Google: Gemma 3 27B",
+   "price_in_per_m": 0.08,
+   "price_out_per_m": 0.35,
+   "vision": true,
+   "context_length": 131072,
+   "arena_rank": 204,
+   "arena_elo": 1357.7842652283516,
+   "arena_elo_upper": 1361.448061991186,
+   "arena_elo_lower": 1354.1204684655174,
+   "arena_votes": 46613,
+   "arena_org": "Google",
+   "arena_license": "Gemma",
+   "arena_model": "gemma-3-27b-it",
+   "arena_variants": [
+    "gemma-3-27b-it"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "qwen/qwen3-coder",
+   "or_name": "Qwen: Qwen3 Coder 480B A35B",
+   "price_in_per_m": 0.3,
+   "price_out_per_m": 1.0,
+   "vision": false,
+   "context_length": 262144,
+   "arena_rank": 205,
+   "arena_elo": 1356.5798096204558,
+   "arena_elo_upper": 1361.5763290996545,
+   "arena_elo_lower": 1351.583290141257,
+   "arena_votes": 25155,
+   "arena_org": "Alibaba",
+   "arena_license": "Apache 2.0",
+   "arena_model": "qwen3-coder-480b-a35b-instruct",
+   "arena_variants": [
+    "qwen3-coder-480b-a35b-instruct"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "prefix-base",
+   "match_ratio": null
+  },
+  {
+   "or_id": "z-ai/glm-4.7-flash",
+   "or_name": "Z.ai: GLM 4.7 Flash",
+   "price_in_per_m": 0.0605,
+   "price_out_per_m": 0.4,
+   "vision": false,
+   "context_length": 200000,
+   "arena_rank": 212,
+   "arena_elo": 1350.5695470423655,
+   "arena_elo_upper": 1356.257709286916,
+   "arena_elo_lower": 1344.881384797815,
+   "arena_votes": 11937,
+   "arena_org": "Z.ai",
+   "arena_license": "MIT",
+   "arena_model": "glm-4.7-flash",
+   "arena_variants": [
+    "glm-4.7-flash"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "openai/gpt-4.1-mini",
+   "or_name": "OpenAI: GPT-4.1 Mini",
+   "price_in_per_m": 0.4,
+   "price_out_per_m": 1.6,
+   "vision": true,
+   "context_length": 1047576,
+   "arena_rank": 216,
+   "arena_elo": 1340.5315219529643,
+   "arena_elo_upper": 1344.8401826417094,
+   "arena_elo_lower": 1336.2228612642189,
+   "arena_votes": 38657,
+   "arena_org": "OpenAI",
+   "arena_license": "Proprietary",
+   "arena_model": "gpt-4.1-mini-2025-04-14",
+   "arena_variants": [
+    "gpt-4.1-mini-2025-04-14"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "qwen/qwen3-32b",
+   "or_name": "Qwen: Qwen3 32B",
+   "price_in_per_m": 0.08,
+   "price_out_per_m": 0.28,
+   "vision": false,
+   "context_length": 131072,
+   "arena_rank": 219,
+   "arena_elo": 1340.075563631161,
+   "arena_elo_upper": 1349.3842114339502,
+   "arena_elo_lower": 1330.7669158283718,
+   "arena_votes": 3926,
+   "arena_org": "Alibaba",
+   "arena_license": "Apache 2.0",
+   "arena_model": "qwen3-32b",
+   "arena_variants": [
+    "qwen3-32b"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "mistralai/mistral-small-2603",
+   "or_name": "Mistral: Mistral Small 4",
+   "price_in_per_m": 0.15,
+   "price_out_per_m": 0.6,
+   "vision": true,
+   "context_length": 262144,
+   "arena_rank": 222,
+   "arena_elo": 1338.3063106729169,
+   "arena_elo_upper": 1343.4999888926359,
+   "arena_elo_lower": 1333.112632453198,
+   "arena_votes": 17437,
+   "arena_org": "Mistral",
+   "arena_license": "Apache 2.0",
+   "arena_model": "mistral-small-3.2-2506",
+   "arena_variants": [
+    "mistral-small-3.2-2506"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "prefix-base",
+   "match_ratio": null
+  },
+  {
+   "or_id": "google/gemma-3-12b-it",
+   "or_name": "Google: Gemma 3 12B",
+   "price_in_per_m": 0.05,
+   "price_out_per_m": 0.15,
+   "vision": true,
+   "context_length": 131072,
+   "arena_rank": 226,
+   "arena_elo": 1334.2092129332286,
+   "arena_elo_upper": 1343.582408769826,
+   "arena_elo_lower": 1324.8360170966312,
+   "arena_votes": 3829,
+   "arena_org": "Google",
+   "arena_license": "Gemma",
+   "arena_model": "gemma-3-12b-it",
+   "arena_variants": [
+    "gemma-3-12b-it"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "z-ai/glm-4.5v",
+   "or_name": "Z.ai: GLM 4.5V",
+   "price_in_per_m": 0.6,
+   "price_out_per_m": 1.8,
+   "vision": true,
+   "context_length": 65536,
+   "arena_rank": 228,
+   "arena_elo": 1332.5384132485751,
+   "arena_elo_upper": 1340.9667933250075,
+   "arena_elo_lower": 1324.1100331721423,
+   "arena_votes": 4813,
+   "arena_org": "Z.ai",
+   "arena_license": "MIT",
+   "arena_model": "glm-4.5v",
+   "arena_variants": [
+    "glm-4.5v"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "cohere/command-a",
+   "or_name": "Cohere: Command A",
+   "price_in_per_m": 2.5,
+   "price_out_per_m": 10.0,
+   "vision": false,
+   "context_length": 256000,
+   "arena_rank": 230,
+   "arena_elo": 1330.9530528351497,
+   "arena_elo_upper": 1334.4067776628503,
+   "arena_elo_lower": 1327.4993280074493,
+   "arena_votes": 55679,
+   "arena_org": "Cohere",
+   "arena_license": "CC-BY-NC-4.0",
+   "arena_model": "command-a-03-2025",
+   "arena_variants": [
+    "command-a-03-2025"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "prefix-base",
+   "match_ratio": null
+  },
+  {
+   "or_id": "qwen/qwen-plus",
+   "or_name": "Qwen: Qwen-Plus",
+   "price_in_per_m": 0.26,
+   "price_out_per_m": 0.78,
+   "vision": false,
+   "context_length": 1000000,
+   "arena_rank": 235,
+   "arena_elo": 1326.4187330596249,
+   "arena_elo_upper": 1334.6997238631993,
+   "arena_elo_lower": 1318.1377422560502,
+   "arena_votes": 5819,
+   "arena_org": "Alibaba",
+   "arena_license": "Proprietary",
+   "arena_model": "qwen-plus-0125",
+   "arena_variants": [
+    "qwen-plus-0125"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "openai/gpt-5-nano",
+   "or_name": "OpenAI: GPT-5 Nano",
+   "price_in_per_m": 0.05,
+   "price_out_per_m": 0.4,
+   "vision": true,
+   "context_length": 400000,
+   "arena_rank": 237,
+   "arena_elo": 1319.9942324670371,
+   "arena_elo_upper": 1326.8461384644893,
+   "arena_elo_lower": 1313.142326469585,
+   "arena_votes": 8126,
+   "arena_org": "OpenAI",
+   "arena_license": "Proprietary",
+   "arena_model": "gpt-5-nano-high",
+   "arena_variants": [
+    "gpt-5-nano-high"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "ibm-granite/granite-4.2-8b",
+   "or_name": "IBM: Granite 4.2 8B",
+   "price_in_per_m": 0.06,
+   "price_out_per_m": 0.15,
+   "vision": false,
+   "context_length": 131072,
+   "arena_rank": 242,
+   "arena_elo": 1318.8220227076013,
+   "arena_elo_upper": 1330.0032507545748,
+   "arena_elo_lower": 1307.6407946606278,
+   "arena_votes": 3196,
+   "arena_org": "IBM",
+   "arena_license": "Apache 2.0",
+   "arena_model": "granite-4.2-8b",
+   "arena_variants": [
+    "granite-4.2-8b"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "qwen/qwen3-30b-a3b",
+   "or_name": "Qwen: Qwen3 30B A3B",
+   "price_in_per_m": 0.12,
+   "price_out_per_m": 0.5,
+   "vision": false,
+   "context_length": 40960,
+   "arena_rank": 244,
+   "arena_elo": 1316.78847404025,
+   "arena_elo_upper": 1321.5056030476926,
+   "arena_elo_lower": 1312.0713450328074,
+   "arena_votes": 26137,
+   "arena_org": "Alibaba",
+   "arena_license": "Apache 2.0",
+   "arena_model": "qwen3-30b-a3b",
+   "arena_variants": [
+    "qwen3-30b-a3b"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "openai/gpt-4o",
+   "or_name": "OpenAI: GPT-4o",
+   "price_in_per_m": 2.5,
+   "price_out_per_m": 10.0,
+   "vision": true,
+   "context_length": 128000,
+   "arena_rank": 252,
+   "arena_elo": 1300.443096004425,
+   "arena_elo_upper": 1303.8781225383739,
+   "arena_elo_lower": 1297.0080694704761,
+   "arena_votes": 112881,
+   "arena_org": "OpenAI",
+   "arena_license": "Proprietary",
+   "arena_model": "gpt-4o-2024-05-13",
+   "arena_variants": [
+    "gpt-4o-2024-05-13",
+    "gpt-4o-2024-08-06"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "google/gemma-3-4b-it",
+   "or_name": "Google: Gemma 3 4B",
+   "price_in_per_m": 0.05,
+   "price_out_per_m": 0.1,
+   "vision": true,
+   "context_length": 131072,
+   "arena_rank": 261,
+   "arena_elo": 1290.7924141279268,
+   "arena_elo_upper": 1300.0188734000258,
+   "arena_elo_lower": 1281.5659548558278,
+   "arena_votes": 4171,
+   "arena_org": "Google",
+   "arena_license": "Gemma",
+   "arena_model": "gemma-3-4b-it",
+   "arena_variants": [
+    "gemma-3-4b-it"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "openai/gpt-oss-20b",
+   "or_name": "OpenAI: gpt-oss-20b",
+   "price_in_per_m": 0.03,
+   "price_out_per_m": 0.13,
+   "vision": false,
+   "context_length": 131072,
+   "arena_rank": 264,
+   "arena_elo": 1287.5999005724748,
+   "arena_elo_upper": 1293.9940981551777,
+   "arena_elo_lower": 1281.205702989772,
+   "arena_votes": 10400,
+   "arena_org": "OpenAI",
+   "arena_license": "Apache 2.0",
+   "arena_model": "gpt-oss-20b",
+   "arena_variants": [
+    "gpt-oss-20b"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "meta-llama/llama-4-maverick",
+   "or_name": "Meta: Llama 4 Maverick",
+   "price_in_per_m": 0.35,
+   "price_out_per_m": 1.0,
+   "vision": true,
+   "context_length": 524288,
+   "arena_rank": 265,
+   "arena_elo": 1287.2611855159876,
+   "arena_elo_upper": 1291.5205162251327,
+   "arena_elo_lower": 1283.0018548068426,
+   "arena_votes": 39397,
+   "arena_org": "Meta",
+   "arena_license": "Llama 4",
+   "arena_model": "llama-4-maverick-17b-128e-instruct",
+   "arena_variants": [
+    "llama-4-maverick-17b-128e-instruct"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "prefix-base",
+   "match_ratio": null
+  },
+  {
+   "or_id": "openai/gpt-4o-mini",
+   "or_name": "OpenAI: GPT-4o-mini",
+   "price_in_per_m": 0.15,
+   "price_out_per_m": 0.6,
+   "vision": true,
+   "context_length": 128000,
+   "arena_rank": 268,
+   "arena_elo": 1286.3843413327656,
+   "arena_elo_upper": 1289.9082598645937,
+   "arena_elo_lower": 1282.8604228009376,
+   "arena_votes": 68705,
+   "arena_org": "OpenAI",
+   "arena_license": "Proprietary",
+   "arena_model": "gpt-4o-mini-2024-07-18",
+   "arena_variants": [
+    "gpt-4o-mini-2024-07-18"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "openai/gpt-4.1-nano",
+   "or_name": "OpenAI: GPT-4.1 Nano",
+   "price_in_per_m": 0.1,
+   "price_out_per_m": 0.4,
+   "vision": true,
+   "context_length": 1047576,
+   "arena_rank": 269,
+   "arena_elo": 1284.7871224037058,
+   "arena_elo_upper": 1292.4288644780108,
+   "arena_elo_lower": 1277.145380329401,
+   "arena_votes": 6103,
+   "arena_org": "OpenAI",
+   "arena_license": "Proprietary",
+   "arena_model": "gpt-4.1-nano-2025-04-14",
+   "arena_variants": [
+    "gpt-4.1-nano-2025-04-14"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "meta-llama/llama-4-scout",
+   "or_name": "Meta: Llama 4 Scout",
+   "price_in_per_m": 0.1,
+   "price_out_per_m": 0.3,
+   "vision": true,
+   "context_length": 1310720,
+   "arena_rank": 278,
+   "arena_elo": 1279.2065314031074,
+   "arena_elo_upper": 1283.9206873570588,
+   "arena_elo_lower": 1274.492375449156,
+   "arena_votes": 29777,
+   "arena_org": "Meta",
+   "arena_license": "Llama",
+   "arena_model": "llama-4-scout-17b-16e-instruct",
+   "arena_variants": [
+    "llama-4-scout-17b-16e-instruct"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "prefix-base",
+   "match_ratio": null
+  },
+  {
+   "or_id": "mistralai/mistral-small-3.1-24b-instruct",
+   "or_name": "Mistral: Mistral Small 3.1 24B",
+   "price_in_per_m": 0.351,
+   "price_out_per_m": 0.555,
+   "vision": true,
+   "context_length": 128000,
+   "arena_rank": 280,
+   "arena_elo": 1277.1483244931092,
+   "arena_elo_upper": 1281.6817870995353,
+   "arena_elo_lower": 1272.6148618866828,
+   "arena_votes": 32666,
+   "arena_org": "Mistral",
+   "arena_license": "Apache 2.0",
+   "arena_model": "mistral-small-3.1-24b-instruct-2503",
+   "arena_variants": [
+    "mistral-small-3.1-24b-instruct-2503"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "meta-llama/llama-3.3-70b-instruct",
+   "or_name": "Meta: Llama 3.3 70B Instruct",
+   "price_in_per_m": 0.71,
+   "price_out_per_m": 0.71,
+   "vision": false,
+   "context_length": 131072,
+   "arena_rank": 281,
+   "arena_elo": 1274.2433318364738,
+   "arena_elo_upper": 1277.7298887131187,
+   "arena_elo_lower": 1270.7567749598288,
+   "arena_votes": 54482,
+   "arena_org": "Meta",
+   "arena_license": "Llama-3.3",
+   "arena_model": "llama-3.3-70b-instruct",
+   "arena_variants": [
+    "llama-3-70b-instruct",
+    "llama-3.3-70b-instruct"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "qwen/qwen-2.5-72b-instruct",
+   "or_name": "Qwen2.5 72B Instruct",
+   "price_in_per_m": 0.36,
+   "price_out_per_m": 0.4,
+   "vision": false,
+   "context_length": 32768,
+   "arena_rank": 287,
+   "arena_elo": 1269.0258520993934,
+   "arena_elo_upper": 1273.088825630637,
+   "arena_elo_lower": 1264.9628785681498,
+   "arena_votes": 39406,
+   "arena_org": "Alibaba",
+   "arena_license": "Qwen",
+   "arena_model": "qwen2.5-72b-instruct",
+   "arena_variants": [
+    "qwen2.5-72b-instruct"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "fuzzy",
+   "match_ratio": 0.98
+  },
+  {
+   "or_id": "meta-llama/llama-3.1-70b-instruct",
+   "or_name": "Meta: Llama 3.1 70B Instruct",
+   "price_in_per_m": 0.72,
+   "price_out_per_m": 0.72,
+   "vision": false,
+   "context_length": 131072,
+   "arena_rank": 295,
+   "arena_elo": 1260.9148355676243,
+   "arena_elo_upper": 1264.6289339285577,
+   "arena_elo_lower": 1257.200737206691,
+   "arena_votes": 55240,
+   "arena_org": "Meta",
+   "arena_license": "Llama 3.1 Community",
+   "arena_model": "llama-3.1-70b-instruct",
+   "arena_variants": [
+    "llama-3.1-70b-instruct"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "mistralai/mistral-small-24b-instruct-2501",
+   "or_name": "Mistral: Mistral Small 3",
+   "price_in_per_m": 0.05,
+   "price_out_per_m": 0.08,
+   "vision": false,
+   "context_length": 32768,
+   "arena_rank": 304,
+   "arena_elo": 1233.5666665857443,
+   "arena_elo_upper": 1239.4448117756801,
+   "arena_elo_lower": 1227.688521395808,
+   "arena_votes": 14681,
+   "arena_org": "Mistral",
+   "arena_license": "Apache 2.0",
+   "arena_model": "mistral-small-24b-instruct-2501",
+   "arena_variants": [
+    "mistral-small-24b-instruct-2501"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "google/gemma-2-27b-it",
+   "or_name": "Google: Gemma 2 27B",
+   "price_in_per_m": 0.65,
+   "price_out_per_m": 0.65,
+   "vision": false,
+   "context_length": 8192,
+   "arena_rank": 305,
+   "arena_elo": 1231.3865915149663,
+   "arena_elo_upper": 1234.7592688228858,
+   "arena_elo_lower": 1228.0139142070466,
+   "arena_votes": 75754,
+   "arena_org": "Google",
+   "arena_license": "Gemma license",
+   "arena_model": "gemma-2-27b-it",
+   "arena_variants": [
+    "gemma-2-27b-it",
+    "gemma-2-2b-it"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "qwen/qwen-2.5-coder-32b-instruct",
+   "or_name": "Qwen2.5 Coder 32B Instruct",
+   "price_in_per_m": 0.66,
+   "price_out_per_m": 1.0,
+   "vision": false,
+   "context_length": 32768,
+   "arena_rank": 306,
+   "arena_elo": 1230.0509479447442,
+   "arena_elo_upper": 1238.0952470279321,
+   "arena_elo_lower": 1222.0066488615566,
+   "arena_votes": 5432,
+   "arena_org": "Alibaba",
+   "arena_license": "Apache 2.0",
+   "arena_model": "qwen2.5-coder-32b-instruct",
+   "arena_variants": [
+    "qwen2.5-coder-32b-instruct"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "fuzzy",
+   "match_ratio": 0.98
+  },
+  {
+   "or_id": "cohere/command-r-08-2024",
+   "or_name": "Cohere: Command R (08-2024)",
+   "price_in_per_m": 0.15,
+   "price_out_per_m": 0.6,
+   "vision": false,
+   "context_length": 128000,
+   "arena_rank": 307,
+   "arena_elo": 1228.9059348077944,
+   "arena_elo_upper": 1235.446797373154,
+   "arena_elo_lower": 1222.365072242435,
+   "arena_votes": 9866,
+   "arena_org": "Cohere",
+   "arena_license": "CC-BY-NC-4.0",
+   "arena_model": "command-r+-08-2024",
+   "arena_variants": [
+    "command-r+-08-2024",
+    "command-r-08-2024"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "fuzzy",
+   "match_ratio": 0.96
+  },
+  {
+   "or_id": "rekaai/reka-flash-3",
+   "or_name": "Reka Flash 3",
+   "price_in_per_m": 0.1,
+   "price_out_per_m": 0.2,
+   "vision": false,
+   "context_length": 65536,
+   "arena_rank": 318,
+   "arena_elo": 1217.9274275287812,
+   "arena_elo_upper": 1224.8544673985389,
+   "arena_elo_lower": 1211.000387659023,
+   "arena_votes": 7536,
+   "arena_org": "rekaai",
+   "arena_license": "Proprietary",
+   "arena_model": "reka-flash-20240904",
+   "arena_variants": [
+    "reka-flash-20240904"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "prefix-variant",
+   "match_ratio": null
+  },
+  {
+   "or_id": "microsoft/phi-4",
+   "or_name": "Microsoft: Phi 4",
+   "price_in_per_m": 0.07,
+   "price_out_per_m": 0.14,
+   "vision": false,
+   "context_length": 16384,
+   "arena_rank": 319,
+   "arena_elo": 1216.694364221165,
+   "arena_elo_upper": 1221.2786152169654,
+   "arena_elo_lower": 1212.1101132253643,
+   "arena_votes": 24126,
+   "arena_org": "Microsoft",
+   "arena_license": "MIT",
+   "arena_model": "phi-4",
+   "arena_variants": [
+    "phi-4"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "mistralai/ministral-8b-2512",
+   "or_name": "Mistral: Ministral 3 8B 2512",
+   "price_in_per_m": 0.15,
+   "price_out_per_m": 0.15,
+   "vision": true,
+   "context_length": 262144,
+   "arena_rank": 329,
+   "arena_elo": 1190.9257950419073,
+   "arena_elo_upper": 1199.896844124978,
+   "arena_elo_lower": 1181.954745958837,
+   "arena_votes": 4781,
+   "arena_org": "Mistral",
+   "arena_license": "MRL",
+   "arena_model": "ministral-8b-2410",
+   "arena_variants": [
+    "ministral-8b-2410"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "meta-llama/llama-3.1-8b-instruct",
+   "or_name": "Meta: Llama 3.1 8B Instruct",
+   "price_in_per_m": 0.02,
+   "price_out_per_m": 0.04,
+   "vision": false,
+   "context_length": 131072,
+   "arena_rank": 332,
+   "arena_elo": 1186.5849689672357,
+   "arena_elo_upper": 1190.686046438871,
+   "arena_elo_lower": 1182.4838914956003,
+   "arena_votes": 49605,
+   "arena_org": "Meta",
+   "arena_license": "Llama 3.1 Community",
+   "arena_model": "llama-3.1-8b-instruct",
+   "arena_variants": [
+    "llama-3-8b-instruct",
+    "llama-3.1-8b-instruct"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "mistralai/mixtral-8x22b-instruct",
+   "or_name": "Mistral: Mixtral 8x22B Instruct",
+   "price_in_per_m": 2.0,
+   "price_out_per_m": 6.0,
+   "vision": false,
+   "context_length": 65536,
+   "arena_rank": 344,
+   "arena_elo": 1161.9933731289793,
+   "arena_elo_upper": 1166.5098024255178,
+   "arena_elo_lower": 1157.4769438324406,
+   "arena_votes": 51416,
+   "arena_org": "Mistral",
+   "arena_license": "Apache 2.0",
+   "arena_model": "mixtral-8x22b-instruct-v0.1",
+   "arena_variants": [
+    "mixtral-8x22b-instruct-v0.1"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "prefix-base",
+   "match_ratio": null
+  },
+  {
+   "or_id": "openai/gpt-3.5-turbo-0613",
+   "or_name": "OpenAI: GPT-3.5 Turbo (older v0613)",
+   "price_in_per_m": 1.0,
+   "price_out_per_m": 2.0,
+   "vision": false,
+   "context_length": 4095,
+   "arena_rank": 359,
+   "arena_elo": 1124.926855400359,
+   "arena_elo_upper": 1129.5906045639904,
+   "arena_elo_lower": 1120.2631062367277,
+   "arena_votes": 66207,
+   "arena_org": "OpenAI",
+   "arena_license": "Proprietary",
+   "arena_model": "gpt-3.5-turbo-0125",
+   "arena_variants": [
+    "gpt-3.5-turbo-0125",
+    "gpt-3.5-turbo-1106"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "meta-llama/llama-3.2-3b-instruct",
+   "or_name": "Meta: Llama 3.2 3B Instruct",
+   "price_in_per_m": 0.05,
+   "price_out_per_m": 0.33,
+   "vision": false,
+   "context_length": 131072,
+   "arena_rank": 366,
+   "arena_elo": 1109.5405651673113,
+   "arena_elo_upper": 1117.090782166416,
+   "arena_elo_lower": 1101.990348168207,
+   "arena_votes": 7936,
+   "arena_org": "Meta",
+   "arena_license": "Llama 3.2",
+   "arena_model": "llama-3.2-3b-instruct",
+   "arena_variants": [
+    "llama-3.2-3b-instruct"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  },
+  {
+   "or_id": "meta-llama/llama-3.2-1b-instruct",
+   "or_name": "Meta: Llama 3.2 1B Instruct",
+   "price_in_per_m": 0.027,
+   "price_out_per_m": 0.201,
+   "vision": false,
+   "context_length": 60000,
+   "arena_rank": 394,
+   "arena_elo": 1054.6410197403475,
+   "arena_elo_upper": 1062.3355311700025,
+   "arena_elo_lower": 1046.9465083106925,
+   "arena_votes": 8045,
+   "arena_org": "Meta",
+   "arena_license": "Llama 3.2",
+   "arena_model": "llama-3.2-1b-instruct",
+   "arena_variants": [
+    "llama-3.2-1b-instruct"
+   ],
+   "arena_context_length": null,
+   "arena_model_url": null,
+   "arena_price_in_per_m": null,
+   "arena_price_out_per_m": null,
+   "match_method": "exact",
+   "match_ratio": null
+  }
+ ],
+ "meta": {
+  "fetched_at": "2026-11-12T00:40:53Z",
+  "sources": {
+   "arena": {
+    "url": "https://huggingface.co/datasets/lmarena-ai/leaderboard-dataset",
+    "dataset": "lmarena-ai/leaderboard-dataset",
+    "config": "text",
+    "split": "latest",
+    "entries": 421,
+    "publish_date": "2026-11-09",
+    "ratings_as_of": "2026-11-09"
+   },
+   "openrouter": {
+    "url": "https://openrouter.ai/api/v1/models",
+    "models": 363
+   }
+  },
+  "join": {
+   "combined": 156,
+   "unmatched_arena": 213,
+   "unmatched_openrouter": 207,
+   "by_method": {
+    "exact": 156,
+    "prefix-variant": 7,
+    "prefix-base": 36,
+    "override": 1,
+    "fuzzy": 8
+   },
+   "variants_collapsed": 36,
+   "collisions": [
+    "lfm-3-1-7b: liquid/lfm-3-1.7b vs liquid/lfm-3-1.7b:free",
+    "nemotron-3-5-super-vl: nvidia/nemotron-3.5-super-vl vs nvidia/nemotron-3.5-super-vl:free",
+    "pareto: unbiased/pareto-26.10 vs unbiased/pareto-26.10-preview",
+    "deepseek-v4-1-flash: deepseek/deepseek-v4.1-flash-1017 vs deepseek/deepseek-v4.1-flash",
+    "hy4: tencent/hy4 vs tencent/hy4-preview",
+    "lfm-2-5-2-6b: liquid/lfm-2.5-2.6b vs liquid/lfm-2.5-2.6b:free",
+    "nemotron-3-5-lightning: nvidia/nemotron-3.5-lightning vs nvidia/nemotron-3.5-lightning:free",
+    "nemotron-3-ultra-550b-a55b: nvidia/nemotron-3-ultra-550b-a55b vs nvidia/nemotron-3-ultra-550b-a55b:free",
+    "deepseek-v4-pro: deepseek/deepseek-v4-pro-0813 vs deepseek/deepseek-v4-pro",
+    "deepseek-v4-flash: deepseek/deepseek-v4-flash-0731 vs deepseek/deepseek-v4-flash",
+    "hy3: tencent/hy3 vs tencent/hy3-preview",
+    "gemma-4-26b-a4b-it: google/gemma-4-26b-a4b-it vs google/gemma-4-26b-a4b-it:free",
+    "gemma-4-31b-it: google/gemma-4-31b-it vs google/gemma-4-31b-it:free",
+    "gemini-3-1-flash-lite: google/gemini-3.1-flash-lite vs google/gemini-3.1-flash-lite-preview",
+    "gemini-3-1-flash-image: google/gemini-3.1-flash-image vs google/gemini-3.1-flash-image-preview",
+    "qwen3-5-plus: qwen/qwen3.5-plus-20260420 vs qwen/qwen3.5-plus-02-15",
+    "gemini-3-pro-image: google/gemini-3-pro-image vs google/gemini-3-pro-image-preview",
+    "gpt-5-1-codex: openai/gpt-5.1-codex-max vs openai/gpt-5.1-codex",
+    "deepseek-v3-2: deepseek/deepseek-v3.2 vs deepseek/deepseek-v3.2-exp",
+    "kimi-k2: moonshotai/kimi-k2-0905 vs moonshotai/kimi-k2",
+    "gemini-2-5-pro: google/gemini-2.5-pro vs google/gemini-2.5-pro-preview",
+    "mistral-large: mistralai/mistral-large-2512 vs mistralai/mistral-large-2407",
+    "gpt-4o: openai/gpt-4o-2024-11-20 vs openai/gpt-4o-2024-08-06",
+    "gpt-4o-mini: openai/gpt-4o-mini vs openai/gpt-4o-mini-2024-07-18",
+    "gpt-4o: openai/gpt-4o-2024-11-20 vs openai/gpt-4o",
+    "gpt-4o: openai/gpt-4o vs openai/gpt-4o-2024-05-13",
+    "mistral-large: mistralai/mistral-large-2512 vs mistralai/mistral-large",
+    "auto: openrouter/auto vs openrouter/auto-beta"
+   ],
+   "overrides_loaded": 1,
+   "overrides_applied": [
+    {
+     "arena": "muse-spark",
+     "openrouter_id": "meta/muse-spark-1.3"
+    }
+   ]
+  },
+  "provider": {
+   "sources": {
+    "endpoints_api": "https://openrouter.ai/api/v1/models/{or_id}/endpoints",
+    "model_page": "https://openrouter.ai/{or_id}"
+   },
+   "models": 156,
+   "endpoints": 917,
+   "stats": {
+    "models_with_stats": 154,
+    "endpoints_with_stats": 862
+   },
+   "joined_page_endpoints": 917,
+   "page_endpoints_unjoined": 0,
+   "duplicates_merged": 0
+  }
+ },
+ "speed": {
+  "google/gemini-4-carbon": {
+   "p50_throughput": 33,
+   "throughput_request_count": 30267
+  },
+  "google/gemini-4-argon": {
+   "p50_throughput": 47.5,
+   "throughput_request_count": 67123
+  },
+  "anthropic/claude-opus-5.5": {
+   "p50_throughput": 80.5,
+   "throughput_request_count": 146305
+  },
+  "anthropic/claude-fable-5.1": {
+   "p50_throughput": 60.5,
+   "throughput_request_count": 4190
+  },
+  "anthropic/claude-opus-5": {
+   "p50_throughput": 65.0,
+   "throughput_request_count": 16900
+  },
+  "meta/muse-wonder": {
+   "p50_throughput": 92.25,
+   "throughput_request_count": 4934
+  },
+  "anthropic/claude-opus-4.6": {
+   "p50_throughput": 36.0,
+   "throughput_request_count": 7595
+  },
+  "google/gemini-3.8-flash": {
+   "p50_throughput": 82,
+   "throughput_request_count": 248426
+  },
+  "xiaomi/mimo-v2.6-pro": {
+   "p50_throughput": 42,
+   "throughput_request_count": 41962
+  },
+  "anthropic/claude-fable-5": {
+   "p50_throughput": 52.5,
+   "throughput_request_count": 8231
+  },
+  "meta/muse-spark-1.3": {
+   "p50_throughput": 128.0,
+   "throughput_request_count": 2429
+  },
+  "anthropic/claude-opus-4.7": {
+   "p50_throughput": 53.0,
+   "throughput_request_count": 950
+  },
+  "google/gemini-3.7-flash": {
+   "p50_throughput": 70.5,
+   "throughput_request_count": 48718
+  },
+  "qwen/qwen3.8-max-0902": {
+   "p50_throughput": 34.0,
+   "throughput_request_count": 8407
+  },
+  "meta/muse-spark-1.2": {
+   "p50_throughput": 140,
+   "throughput_request_count": 459
+  },
+  "google/gemini-3.5-flash": {
+   "p50_throughput": 113,
+   "throughput_request_count": 16345
+  },
+  "google/gemini-3.1-pro-preview": {
+   "p50_throughput": 80,
+   "throughput_request_count": 39662
+  },
+  "google/gemini-3.6-flash": {
+   "p50_throughput": 107,
+   "throughput_request_count": 85104
+  },
+  "meta/muse-spark-1.1": {
+   "p50_throughput": 216,
+   "throughput_request_count": 184
+  },
+  "z-ai/glm-5.3": {
+   "p50_throughput": 62,
+   "throughput_request_count": 269187
+  },
+  "qwen/qwen3.7-max": {
+   "p50_throughput": 46,
+   "throughput_request_count": 764
+  },
+  "moonshotai/kimi-k3": {
+   "p50_throughput": 78,
+   "throughput_request_count": 61954
+  },
+  "openai/gpt-5.5": {
+   "p50_throughput": 54,
+   "throughput_request_count": 769632
+  },
+  "z-ai/glm-5.3-flash": {
+   "p50_throughput": 77.5,
+   "throughput_request_count": 790634
+  },
+  "z-ai/glm-5.2": {
+   "p50_throughput": 65.0,
+   "throughput_request_count": 140770
+  },
+  "openai/gpt-5.4": {
+   "p50_throughput": 62.25,
+   "throughput_request_count": 22009
+  },
+  "anthropic/claude-sonnet-5.5": {
+   "p50_throughput": 108,
+   "throughput_request_count": 153243
+  },
+  "google/gemini-3-flash-preview": {
+   "p50_throughput": 93.5,
+   "throughput_request_count": 159671
+  },
+  "xiaomi/mimo-v2.5-pro": {
+   "p50_throughput": 52.0,
+   "throughput_request_count": 2002
+  },
+  "deepseek/deepseek-v4.1-flash": {
+   "p50_throughput": 124.5,
+   "throughput_request_count": 1042340
+  },
+  "z-ai/glm-5.1": {
+   "p50_throughput": 35.0,
+   "throughput_request_count": 8826
+  },
+  "anthropic/claude-opus-4.8": {
+   "p50_throughput": 70,
+   "throughput_request_count": 52025
+  },
+  "google/gemini-2.5-pro": {
+   "p50_throughput": 74,
+   "throughput_request_count": 9533
+  },
+  "anthropic/claude-sonnet-4.6": {
+   "p50_throughput": 53,
+   "throughput_request_count": 56425
+  },
+  "moonshotai/kimi-k3.1-pro": {
+   "p50_throughput": 76,
+   "throughput_request_count": 160410
+  },
+  "openai/gpt-5.6-sol": {
+   "p50_throughput": 61,
+   "throughput_request_count": 33037
+  },
+  "moonshotai/kimi-k2.6": {
+   "p50_throughput": 37,
+   "throughput_request_count": 12884
+  },
+  "qwen/qwen3.7-plus": {
+   "p50_throughput": 37.0,
+   "throughput_request_count": 34958
+  },
+  "deepseek/deepseek-v4-pro": {
+   "p50_throughput": 49,
+   "throughput_request_count": 53061
+  },
+  "x-ai/grok-4.20": {
+   "p50_throughput": 78,
+   "throughput_request_count": 7543
+  },
+  "anthropic/claude-opus-4.5": {
+   "p50_throughput": 44,
+   "throughput_request_count": 9466
+  },
+  "x-ai/grok-4.20-multi-agent": {
+   "p50_throughput": 324.0,
+   "throughput_request_count": 2907
+  },
+  "xiaomi/mimo-v2.6-flash": {
+   "p50_throughput": 28,
+   "throughput_request_count": 127017
+  },
+  "openai/gpt-5.6-terra": {
+   "p50_throughput": 80,
+   "throughput_request_count": 55779
+  },
+  "x-ai/grok-4.5": {
+   "p50_throughput": 54.5,
+   "throughput_request_count": 12303
+  },
+  "z-ai/glm-5": {
+   "p50_throughput": 54.5,
+   "throughput_request_count": 15079
+  },
+  "openai/gpt-6.1-sol": {
+   "p50_throughput": 41,
+   "throughput_request_count": 158247
+  },
+  "moonshotai/kimi-k2.5": {
+   "p50_throughput": 35,
+   "throughput_request_count": 6551
+  },
+  "thinkingmachines/inkling": {
+   "p50_throughput": 119,
+   "throughput_request_count": 1807
+  },
+  "stepfun/step-5-preview": {
+   "p50_throughput": 63.75,
+   "throughput_request_count": 581
+  },
+  "openai/gpt-5.1": {
+   "p50_throughput": 53,
+   "throughput_request_count": 4806
+  },
+  "google/gemma-4-31b-it": {
+   "p50_throughput": 45.5,
+   "throughput_request_count": 203334
+  },
+  "anthropic/claude-sonnet-5": {
+   "p50_throughput": 77,
+   "throughput_request_count": 31114
+  },
+  "z-ai/glm-4.6": {
+   "p50_throughput": 28.5,
+   "throughput_request_count": 2315
+  },
+  "openai/gpt-6-astra": {
+   "p50_throughput": 35,
+   "throughput_request_count": 36061
+  },
+  "tencent/hy3": {
+   "p50_throughput": 49.5,
+   "throughput_request_count": 79362
+  },
+  "anthropic/claude-sonnet-4.5": {
+   "p50_throughput": 41,
+   "throughput_request_count": 19283
+  },
+  "z-ai/glm-5v-turbo": {
+   "p50_throughput": 40,
+   "throughput_request_count": 287
+  },
+  "qwen/qwen3.5-397b-a17b": {
+   "p50_throughput": 49.0,
+   "throughput_request_count": 12926
+  },
+  "qwen/qwen3.6-plus": {
+   "p50_throughput": 45,
+   "throughput_request_count": 785
+  },
+  "qwen/qwen3.8-27b": {
+   "p50_throughput": 56,
+   "throughput_request_count": 193941
+  },
+  "z-ai/glm-4.7": {
+   "p50_throughput": 31.5,
+   "throughput_request_count": 6309
+  },
+  "google/gemini-3.5-flash-lite": {
+   "p50_throughput": 136.5,
+   "throughput_request_count": 107007
+  },
+  "google/gemma-4-26b-a4b-it": {
+   "p50_throughput": 70,
+   "throughput_request_count": 282191
+  },
+  "deepseek/deepseek-v4-flash": {
+   "p50_throughput": 71,
+   "throughput_request_count": 587267
+  },
+  "openai/gpt-5.6-luna": {
+   "p50_throughput": 104.5,
+   "throughput_request_count": 311111
+  },
+  "z-ai/glm-4.5": {
+   "p50_throughput": 18,
+   "throughput_request_count": 1136
+  },
+  "x-ai/grok-4.6": {
+   "p50_throughput": 69.0,
+   "throughput_request_count": 5507
+  },
+  "mistralai/mistral-large": {
+   "p50_throughput": 88,
+   "throughput_request_count": 265
+  },
+  "minimax/minimax-m3": {
+   "p50_throughput": 85,
+   "throughput_request_count": 460476
+  },
+  "deepseek/deepseek-r1-0528": {
+   "p50_throughput": 36,
+   "throughput_request_count": 2511
+  },
+  "deepseek/deepseek-v3.2": {
+   "p50_throughput": 27,
+   "throughput_request_count": 64609
+  },
+  "reflection/beam-1.0-501b-a23b": {
+   "p50_throughput": 150,
+   "throughput_request_count": 8101
+  },
+  "mistralai/mistral-medium-3.1": {
+   "p50_throughput": 129.0,
+   "throughput_request_count": 1397
+  },
+  "mistralai/mistral-medium-3-5": {
+   "p50_throughput": 113.0,
+   "throughput_request_count": 410
+  },
+  "qwen/qwen3-vl-235b-a22b-instruct": {
+   "p50_throughput": 18,
+   "throughput_request_count": 20541
+  },
+  "deepseek/deepseek-v3.1-terminus": {
+   "p50_throughput": 21,
+   "throughput_request_count": 1011
+  },
+  "anthropic/claude-opus-4.1": {
+   "p50_throughput": 14.5,
+   "throughput_request_count": 182
+  },
+  "qwen/qwen3-235b-a22b-2507": {
+   "p50_throughput": 29.5,
+   "throughput_request_count": 71555
+  },
+  "openai/gpt-4": {
+   "p50_throughput": 91,
+   "throughput_request_count": 2087
+  },
+  "qwen/qwen3.5-122b-a10b": {
+   "p50_throughput": 67.25,
+   "throughput_request_count": 5278
+  },
+  "qwen/qwen3-next-80b-a3b-instruct": {
+   "p50_throughput": 68,
+   "throughput_request_count": 32239
+  },
+  "google/gemini-2.5-flash": {
+   "p50_throughput": 104,
+   "throughput_request_count": 128054
+  },
+  "openai/gpt-5.2": {
+   "p50_throughput": 48.75,
+   "throughput_request_count": 5305
+  },
+  "google/gemini-3.1-flash-lite": {
+   "p50_throughput": 119.5,
+   "throughput_request_count": 191728
+  },
+  "qwen/qwen3-235b-a22b-thinking-2507": {
+   "p50_throughput": 49,
+   "throughput_request_count": 94
+  },
+  "moonshotai/kimi-k2-thinking": {
+   "p50_throughput": 44,
+   "throughput_request_count": 106
+  },
+  "thinkingmachines/inkling-small": {
+   "p50_throughput": 15,
+   "throughput_request_count": 4005
+  },
+  "openai/gpt-5.4-mini": {
+   "p50_throughput": 100,
+   "throughput_request_count": 48880
+  },
+  "openai/o3": {
+   "p50_throughput": 57,
+   "throughput_request_count": 784
+  },
+  "qwen/qwen3.5-27b": {
+   "p50_throughput": 40.5,
+   "throughput_request_count": 66691
+  },
+  "openai/gpt-5": {
+   "p50_throughput": 67,
+   "throughput_request_count": 4492
+  },
+  "minimax/minimax-m2.7": {
+   "p50_throughput": 152.5,
+   "throughput_request_count": 2820
+  },
+  "thinkingmachines/inkling-2-small:free": {
+   "p50_throughput": 125,
+   "throughput_request_count": 17086
+  },
+  "stepfun/step-3.5-flash": {
+   "p50_throughput": 80,
+   "throughput_request_count": 167
+  },
+  "anthropic/claude-haiku-5.5": {
+   "p50_throughput": 149.0,
+   "throughput_request_count": 726113
+  },
+  "x-ai/grok-4.7": {
+   "p50_throughput": 65,
+   "throughput_request_count": 18743
+  },
+  "qwen/qwen3.5-flash-02-23": {
+   "p50_throughput": 75,
+   "throughput_request_count": 39395
+  },
+  "x-ai/grok-4.3": {
+   "p50_throughput": 79.5,
+   "throughput_request_count": 26593
+  },
+  "openai/gpt-6-sol": {
+   "p50_throughput": 64,
+   "throughput_request_count": 17997
+  },
+  "anthropic/claude-haiku-4.5": {
+   "p50_throughput": 81.0,
+   "throughput_request_count": 54263
+  },
+  "qwen/qwen3.5-35b-a3b": {
+   "p50_throughput": 66,
+   "throughput_request_count": 12072
+  },
+  "meta/muse-glimmer-30b": {
+   "p50_throughput": 49,
+   "throughput_request_count": 836
+  },
+  "openai/gpt-6-luna": {
+   "p50_throughput": 74.5,
+   "throughput_request_count": 1236629
+  },
+  "upstage/solar-pro4": {
+   "p50_throughput": 68,
+   "throughput_request_count": 6759
+  },
+  "qwen/qwen3-30b-a3b-instruct-2507": {
+   "p50_throughput": 48,
+   "throughput_request_count": 11244
+  },
+  "z-ai/glm-4.5-air": {
+   "p50_throughput": 53,
+   "throughput_request_count": 5402
+  },
+  "openai/gpt-4.1": {
+   "p50_throughput": 123,
+   "throughput_request_count": 22194
+  },
+  "moonshotai/kimi-k2": {
+   "p50_throughput": 35,
+   "throughput_request_count": 697
+  },
+  "google/gemini-2.5-flash-lite": {
+   "p50_throughput": 177,
+   "throughput_request_count": 191987
+  },
+  "z-ai/glm-4.6v": {
+   "p50_throughput": 32.5,
+   "throughput_request_count": 1080
+  },
+  "openai/gpt-5-mini": {
+   "p50_throughput": 82.5,
+   "throughput_request_count": 33143
+  },
+  "openai/gpt-5.4-nano": {
+   "p50_throughput": 61.75,
+   "throughput_request_count": 98963
+  },
+  "mistralai/mistral-medium-3": {
+   "p50_throughput": 125,
+   "throughput_request_count": 193
+  },
+  "qwen/qwen2.5-vl-72b-instruct": {
+   "p50_throughput": 33,
+   "throughput_request_count": 1204
+  },
+  "openai/gpt-oss-120b": {
+   "p50_throughput": 106.0,
+   "throughput_request_count": 299640
+  },
+  "minimax/minimax-m2.5": {
+   "p50_throughput": 65,
+   "throughput_request_count": 10150
+  },
+  "google/gemma-3-27b-it": {
+   "p50_throughput": 35.5,
+   "throughput_request_count": 13261
+  },
+  "qwen/qwen3-coder": {
+   "p50_throughput": 78.5,
+   "throughput_request_count": 416
+  },
+  "z-ai/glm-4.7-flash": {
+   "p50_throughput": 48.5,
+   "throughput_request_count": 3154
+  },
+  "openai/gpt-4.1-mini": {
+   "p50_throughput": 85,
+   "throughput_request_count": 42925
+  },
+  "qwen/qwen3-32b": {
+   "p50_throughput": 36,
+   "throughput_request_count": 30251
+  },
+  "mistralai/mistral-small-2603": {
+   "p50_throughput": 118,
+   "throughput_request_count": 20609
+  },
+  "google/gemma-3-12b-it": {
+   "p50_throughput": 23,
+   "throughput_request_count": 12065
+  },
+  "z-ai/glm-4.5v": {
+   "p50_throughput": 33.5,
+   "throughput_request_count": 5590
+  },
+  "cohere/command-a": {
+   "p50_throughput": 11,
+   "throughput_request_count": 2119
+  },
+  "qwen/qwen-plus": {
+   "p50_throughput": 53,
+   "throughput_request_count": 127
+  },
+  "openai/gpt-5-nano": {
+   "p50_throughput": 90.5,
+   "throughput_request_count": 38585
+  },
+  "ibm-granite/granite-4.2-8b": {
+   "p50_throughput": 100.0,
+   "throughput_request_count": 547
+  },
+  "qwen/qwen3-30b-a3b": {
+   "p50_throughput": 163,
+   "throughput_request_count": 532
+  },
+  "openai/gpt-4o": {
+   "p50_throughput": 101.5,
+   "throughput_request_count": 5729
+  },
+  "google/gemma-3-4b-it": {
+   "p50_throughput": 36.0,
+   "throughput_request_count": 12355
+  },
+  "openai/gpt-oss-20b": {
+   "p50_throughput": 101,
+   "throughput_request_count": 90905
+  },
+  "meta-llama/llama-4-maverick": {
+   "p50_throughput": 60,
+   "throughput_request_count": 5883
+  },
+  "openai/gpt-4o-mini": {
+   "p50_throughput": 64,
+   "throughput_request_count": 109635
+  },
+  "openai/gpt-4.1-nano": {
+   "p50_throughput": 100.75,
+   "throughput_request_count": 19148
+  },
+  "meta-llama/llama-4-scout": {
+   "p50_throughput": 67,
+   "throughput_request_count": 5839
+  },
+  "mistralai/mistral-small-3.1-24b-instruct": {
+   "p50_throughput": 51,
+   "throughput_request_count": 186
+  },
+  "meta-llama/llama-3.3-70b-instruct": {
+   "p50_throughput": 49,
+   "throughput_request_count": 23170
+  },
+  "qwen/qwen-2.5-72b-instruct": {
+   "p50_throughput": 21,
+   "throughput_request_count": 697
+  },
+  "meta-llama/llama-3.1-70b-instruct": {
+   "p50_throughput": 91,
+   "throughput_request_count": 402
+  },
+  "mistralai/mistral-small-24b-instruct-2501": {
+   "p50_throughput": 64,
+   "throughput_request_count": 6384
+  },
+  "google/gemma-2-27b-it": {
+   "p50_throughput": 52,
+   "throughput_request_count": 5695
+  },
+  "qwen/qwen-2.5-coder-32b-instruct": {
+   "p50_throughput": 32,
+   "throughput_request_count": 160
+  },
+  "cohere/command-r-08-2024": {
+   "p50_throughput": 15,
+   "throughput_request_count": 88
+  },
+  "rekaai/reka-flash-3": {
+   "p50_throughput": 80,
+   "throughput_request_count": 289
+  },
+  "microsoft/phi-4": {
+   "p50_throughput": 94,
+   "throughput_request_count": 696
+  },
+  "mistralai/ministral-8b-2512": {
+   "p50_throughput": 91.0,
+   "throughput_request_count": 1020
+  },
+  "meta-llama/llama-3.1-8b-instruct": {
+   "p50_throughput": 76.0,
+   "throughput_request_count": 32457
+  },
+  "mistralai/mixtral-8x22b-instruct": {
+   "p50_throughput": 131.5,
+   "throughput_request_count": 2869
+  },
+  "openai/gpt-3.5-turbo-0613": {
+   "p50_throughput": 100,
+   "throughput_request_count": 5444
+  },
+  "meta-llama/llama-3.2-3b-instruct": {
+   "p50_throughput": 164.5,
+   "throughput_request_count": 5730
+  },
+  "meta-llama/llama-3.2-1b-instruct": {
+   "p50_throughput": 126.5,
+   "throughput_request_count": 1362
+  }
+ }
+}
