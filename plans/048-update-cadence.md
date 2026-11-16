@@ -1,6 +1,10 @@
 # 048 — One daily data run (cron 08:15 UTC)
 
-Date: 2026-11-16. **Status: PROPOSED — not reviewed, not executed.**
+Date: 2026-11-16. **Status: EXECUTED (2026-11-16).** D1–D6 approved by the
+owner as the execution trigger; step 01 landed in `39867c3` (`.github/workflows/update-data.yml`
+cron + `README.md` cadence sentence), pushed to `main`, and the workflow is
+`active` on GitHub. Not archived yet: DoD item 3 — the first 08:15 UTC
+scheduled firing — is still pending.
 Source: triage of the 2026-11-12→16 `update-data` streak plus the owner's
 decision in session (2026-11-16). Supersedes `047` D6 ("Cadence unchanged:
 cron `15 */6 * * *`").
