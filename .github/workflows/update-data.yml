@@ -3,7 +3,7 @@ name: update-data
 
 on:
   schedule:
-    - cron: "15 */6 * * *"
+    - cron: "15 8 * * *"
   workflow_dispatch:
     inputs:
       force_fail:

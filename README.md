@@ -50,8 +50,8 @@ Open it live: <https://llm-pareto.kaidev.io/?view=3d&tour=1>
 ### Scheduled (default)
 
 The `update-data` GitHub Actions workflow
-(`.github/workflows/update-data.yml`) runs `python3 update.py` every 6 h
-(cron `15 */6 * * *` UTC) and can also be triggered by hand from the Actions
+(`.github/workflows/update-data.yml`) runs `python3 update.py` once a day
+(cron `15 8 * * *` UTC) and can also be triggered by hand from the Actions
 tab. If `arena.json`, `openrouter.json`, `combined.json`, `endpoints.json` or
 `history/` changed, it commits the data straight to `main` (as
 `github-actions[bot]`, message `data: scheduled refresh (<UTC stamp>)`) and
